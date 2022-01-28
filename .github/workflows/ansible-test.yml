@@ -17,8 +17,8 @@ on:
   schedule:
     - cron: '0 6 * * *'
 env:
-  NAMESPACE: NAMESPACE
-  COLLECTION_NAME: COLLECTION_NAME 
+  NAMESPACE: lowlydba
+  COLLECTION_NAME: sqlserver
 
 jobs:
 
@@ -73,7 +73,7 @@ jobs:
         run: ansible-test coverage xml -v --requirements --group-by command --group-by version
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
-      # See the reports at https://codecov.io/gh/GITHUBORG/REPONAME
+      # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
       - uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: false
@@ -128,7 +128,7 @@ jobs:
         run: ansible-test coverage xml -v --requirements --group-by command --group-by version
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
-      # See the reports at https://codecov.io/gh/GITHUBORG/REPONAME
+      # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
       - uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: false
@@ -199,7 +199,7 @@ jobs:
         run: ansible-test coverage xml -v --requirements --group-by command --group-by version
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
-      # See the reports at https://codecov.io/gh/GITHUBORG/REPONAME
+      # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
       - uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: false
