@@ -191,6 +191,14 @@ jobs:
       - name: Install collection dependencies
         run: ansible-galaxy collection install ansible.netcommon -p .
 
+      # TODO - Get pwsh modules working on this runner for int testing,
+      # & use this to get a container for mssql 2019 locally
+      # - name: Install SQL Server 2019
+      #   uses: potatoqualitee/mssqlsuite@v1
+      #   with:
+      #     install: sqlengine
+      #     sa-password: l0wlydb4
+
       # Run the integration tests
       - name: Run integration test
         run: ansible-test integration -v --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker --coverage
