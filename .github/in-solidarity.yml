@@ -1,0 +1,7 @@
+rules:
+  master:
+    level: warning
+ignore:
+ - ".github/in-solidarity.yml"  # default
+ - "**/*.yml"
+ - "README.md"
