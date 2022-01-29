@@ -2,4 +2,4 @@
 - name: Placeholder Integration Test
   assert:
     that:
-      - true : true
+      - true: true
