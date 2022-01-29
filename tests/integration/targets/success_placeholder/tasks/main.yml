@@ -1,0 +1,5 @@
+#TODO Add real integration tests
+- name: Placeholder Integration Test
+  assert:
+    that:
+      - true : true
