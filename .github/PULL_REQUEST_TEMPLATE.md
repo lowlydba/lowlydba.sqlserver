@@ -19,7 +19,6 @@
 ## Checklist:
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
-- [ ] I have updated the documentation accordingly.
-- [ ] I have read the [**CONTRIBUTING**](https://github.com/LowlyDBA/lowlydba.sqlserver/blob/main/.github/CONTRIBUTING.md) document.
+- [ ] I have read/followed the [**CONTRIBUTING**](https://github.com/LowlyDBA/lowlydba.sqlserver/blob/main/.github/CONTRIBUTING.md) document.
+- [ ] I have read/followed the [PR Quick Start Guide](https://github.com/ansible/community-docs/blob/main/create_pr_quick_start_guide.rst)  # TODO: update with link to published doc
 - [ ] I have added tests to cover my changes.
-- [ ] All new and existing tests passed.

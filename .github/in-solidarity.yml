@@ -4,4 +4,3 @@ rules:
 ignore:
  - ".github/in-solidarity.yml"  # default
  - "**/*.yml"
- - "README.md"
