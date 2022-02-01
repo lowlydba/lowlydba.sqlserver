@@ -7,13 +7,51 @@ __metaclass__ = type
 DOCUMENTATION = '''
 name: powershell
 version_added: historical
-short_description: Windows PowerShell
+short_description: Cross-Platform PowerShell
 description:
 - The only option when using 'winrm' or 'psrp' as a connection plugin.
 - Can also be used when using 'ssh' as a connection plugin and the C(DefaultShell) has been configured to PowerShell.
-extends_documentation_fragment:
-- shell_windows
+options:
+  async_dir:
+    description:
+    - Directory in which ansible will keep async job information.
+    - Before Ansible 2.8, this was set to C(remote_tmp + "\\.ansible_async").
+    default: '%HOME%/.ansible_async'
+    ini:
+    - section: pwsh
+      key: async_dir
+    vars:
+    - name: ansible_async_dir
+    version_added: '2.8'
+  remote_tmp:
+    description:
+    - Temporary directory to use on targets when copying files to the host.
+    default: '%HOME%/.ansible/tmp'
+    ini:
+    - section: pwsh
+      key: remote_tmp
+    vars:
+    - name: ansible_remote_tmp
+  set_module_language:
+    description:
+    - Controls if we set the locale for modules when executing on the
+      target.
+    - Windows only supports C(no) as an option.
+    type: bool
+    default: 'no'
+    choices: ['no', False]
+  environment:
+    description:
+    - List of dictionaries of environment variables and their values to use when
+      executing commands.
+    type: list
+    default: [{}]
 '''
+# original uses this, but we're copying into this plugin explicitly
+# so we can override windows-isms
+#
+# extends_documentation_fragment:
+# - shell_windows
 
 import base64
 import os
@@ -27,7 +65,7 @@ from ansible.module_utils._text import to_bytes, to_text
 from ansible.plugins.shell import ShellBase
 
 
-_common_args = ['PowerShell', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Unrestricted']
+_common_args = ['pwsh', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Unrestricted']
 
 
 def _parse_clixml(data, stream="Error"):
@@ -64,7 +102,7 @@ class ShellModule(ShellBase):
     # connection
     COMPATIBLE_SHELLS = frozenset()
     # Family of shells this has.  Must match the filename without extension
-    SHELL_FAMILY = 'powershell'
+    SHELL_FAMILY = 'pwsh'
 
     _SHELL_REDIRECT_ALLNULL = '> $null'
     _SHELL_AND = ';'
@@ -78,20 +116,20 @@ class ShellModule(ShellBase):
         # powershell/winrm env handling is handled in the exec wrapper
         return ""
 
-    def join_path(self, *args):
-        # use normpath() to remove doubled slashed and convert forward to backslashes
-        parts = [ntpath.normpath(self._unquote(arg)) for arg in args]
+    # def join_path(self, *args):
+    #     # use normpath() to remove doubled slashed and convert forward to backslashes
+    #     parts = [ntpath.normpath(self._unquote(arg)) for arg in args]
 
-        # Becuase ntpath.join treats any component that begins with a backslash as an absolute path,
-        # we have to strip slashes from at least the beginning, otherwise join will ignore all previous
-        # path components except for the drive.
-        return ntpath.join(parts[0], *[part.strip('\\') for part in parts[1:]])
+    #     # Becuase ntpath.join treats any component that begins with a backslash as an absolute path,
+    #     # we have to strip slashes from at least the beginning, otherwise join will ignore all previous
+    #     # path components except for the drive.
+    #     return ntpath.join(parts[0], *[part.strip('\\') for part in parts[1:]])
 
     def get_remote_filename(self, pathname):
         # powershell requires that script files end with .ps1
         base_name = os.path.basename(pathname.strip())
         name, ext = os.path.splitext(base_name.strip())
-        if ext.lower() not in ['.ps1', '.exe']:
+        if ext.lower() not in ['.ps1']:
             return name + '.ps1'
 
         return base_name.strip()
@@ -101,14 +139,14 @@ class ShellModule(ShellBase):
         path = self._unquote(path)
         return path.endswith('/') or path.endswith('\\')
 
-    def chmod(self, paths, mode):
-        raise NotImplementedError('chmod is not implemented for Powershell')
+    # def chmod(self, paths, mode):
+    #     raise NotImplementedError('chmod is not implemented for Powershell')
 
-    def chown(self, paths, user):
-        raise NotImplementedError('chown is not implemented for Powershell')
+    # def chown(self, paths, user):
+    #     raise NotImplementedError('chown is not implemented for Powershell')
 
-    def set_user_facl(self, paths, user, mode):
-        raise NotImplementedError('set_user_facl is not implemented for Powershell')
+    # def set_user_facl(self, paths, user, mode):
+    #     raise NotImplementedError('set_user_facl is not implemented for Powershell')
 
     def remove(self, path, recurse=False):
         path = self._escape(self._unquote(path))
@@ -197,7 +235,58 @@ class ShellModule(ShellBase):
             if not self._unquote(cmd_parts[0]).lower().endswith('.ps1'):
                 # we're running a module via the bootstrap wrapper
                 cmd_parts[0] = '"%s.ps1"' % self._unquote(cmd_parts[0])
-            wrapper_cmd = "type " + cmd_parts[0] + " | " + self._encode_script(script=bootstrap_wrapper, strict_mode=False, preserve_rc=False)
+            # HACK begin dirty, dirty hack
+            # we need to override the built-in Ansible.Basic module util
+            # to one that will work on non-Windows platforms.
+            # But, we don't have access to the code that processes those in anything pluggable.
+            # So instead, we're going to replace the bootstrap_wrapper with one that contains a slight modification
+            # that will replace the Ansible.Basic module util contents with the contents of the one in this collection.
+            # This particular way of hacking it will only work because we're relying on the connection being local.
+            # To make this hack work on remote hosts, we'd have to also copy that file's contents or modify the payload
+            # before it made it to the remote host. The reason we can't just embed it in commands as strings is because
+            # it will be too big.
+            local_mu = os.path.join(os.path.dirname(__file__), '..', 'module_utils')
+            ansible_basic_cs = os.path.join(local_mu, 'Ansible.Basic.cs')
+            addtype_ps = os.path.join(local_mu, 'Ansible.ModuleUtils.AddType.psm1')
+            wrapper_hacked = '''
+                &chcp.com 65001 > $null
+                $exec_wrapper_str = $input | Out-String
+                $split_parts = $exec_wrapper_str.Split(@("`0`0`0`0"), 2, [StringSplitOptions]::RemoveEmptyEntries)
+                If (-not $split_parts.Length -eq 2) { throw "invalid payload" }
+                Set-Variable -Name json_raw -Value $split_parts[1]
+                # begin hack
+                ############
+                function Get-EncodedFileContents {
+                    param($Path)
+
+                    $enc = [System.Text.Encoding]::UTF8
+                    $mustring = [System.IO.File]::ReadAllText($Path, $enc)
+                    $mubytes = $enc.GetBytes($mustring)
+                    $mu64 = [Convert]::ToBase64String($mubytes)
+
+                    $mu64
+                }
+
+                $payload_obj = $json_raw | ConvertFrom-Json
+
+                if ($payload_obj.csharp_utils.'Ansible.Basic') {
+                    $local_basic_file = '%s'
+                    $payload_obj.csharp_utils.'Ansible.Basic' = Get-EncodedFileContents($local_basic_file)
+                }
+
+                if ($payload_obj.powershell_modules.'Ansible.ModuleUtils.AddType') {
+                    $local_addtype_file = '%s'
+                    $payload_obj.powershell_modules.'Ansible.ModuleUtils.AddType' = Get-EncodedFileContents($local_addtype_file)
+                }
+
+                $json_raw = $payload_obj | ConvertTo-Json -Depth 99
+                ##########
+                # end hack
+                $exec_wrapper = [ScriptBlock]::Create($split_parts[0])
+                &$exec_wrapper
+            ''' % (ansible_basic_cs, addtype_ps)
+            bootstrap_wrapper = wrapper_hacked
+            wrapper_cmd = "cat " + cmd_parts[0] + " | " + self._encode_script(script=bootstrap_wrapper, strict_mode=False, preserve_rc=False)
             return wrapper_cmd
         elif shebang and shebang.startswith('#!'):
             cmd_parts.insert(0, shebang[2:])

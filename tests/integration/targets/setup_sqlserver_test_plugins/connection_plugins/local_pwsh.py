@@ -6,8 +6,8 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 DOCUMENTATION = '''
-    name: local
-    short_description: execute on controller
+    name: local_pwsh
+    short_description: execute on controller via pwsh
     description:
         - This connection plugin allows ansible to execute tasks on the Ansible 'controller' instead of on a remote host.
     author: ansible (@core)
@@ -19,6 +19,7 @@ DOCUMENTATION = '''
 '''
 
 import os
+import sys
 import pty
 import shutil
 import subprocess
@@ -42,6 +43,7 @@ class Connection(ConnectionBase):
 
     transport = 'local'
     has_pipelining = True
+    module_implementation_preferences = ('.ps1', '')
 
     def __init__(self, *args, **kwargs):
 
@@ -66,9 +68,14 @@ class Connection(ConnectionBase):
 
         super(Connection, self).exec_command(cmd, in_data=in_data, sudoable=sudoable)
 
-        display.debug("in local.exec_command()")
+        display.debug("in local_pwsh.exec_command()")
 
-        executable = C.DEFAULT_EXECUTABLE.split()[0] if C.DEFAULT_EXECUTABLE else None
+        # mac (darwin) has different pwsh install location than linux
+        if sys.platform.startswith('darwin'):
+            executable = '/usr/local/bin/pwsh'
+        else:
+            executable = '/usr/bin/pwsh'
+        # executable = C.DEFAULT_EXECUTABLE.split()[0] if C.DEFAULT_EXECUTABLE else None
 
         if not os.path.exists(to_bytes(executable, errors='surrogate_or_strict')):
             raise AnsibleError("failed to find the executable specified %s."

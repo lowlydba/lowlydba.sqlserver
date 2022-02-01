@@ -336,6 +336,10 @@ namespace Ansible.Basic
 
         public void LogEvent(string message, EventLogEntryType logEntryType = EventLogEntryType.Information, bool sanitise = true)
         {
+            // non-Windows hack; event log is not supported, not implementing a x-plat compat logger at this time
+            // original content left as comment, because it may make it easier to update this
+            return;
+            /*
             if (NoLog)
                 return;
 
@@ -378,6 +382,7 @@ namespace Ansible.Basic
                     warnings.Add(String.Format("Unknown error when creating event log entry: {0}", e.Message));
                 }
             }
+            */
         }
 
         public void Warn(string message)
