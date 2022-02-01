@@ -4,3 +4,5 @@ rules:
 ignore:
  - ".github/in-solidarity.yml"  # default
  - "**/*.yml"
+ - "tests/integration/targets/setup_sqlserver_test_plugins/connection_plugins/local_pwsh.py"
+ - "tests/integration/targets/setup_sqlserver_test_plugins/module_utils/Ansible.ModuleUtils.AddType.psm1"
