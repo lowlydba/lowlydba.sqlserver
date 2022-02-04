@@ -148,6 +148,14 @@ jobs:
   integration:
     runs-on: ubuntu-latest
     name: I (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        ports:
+          - 1433:1433
+        env:
+          ACCEPT_EULA: 'Y'
+          SA_PASSWORD: L0wlydb4
     strategy:
       fail-fast: false
       matrix:
@@ -192,11 +200,12 @@ jobs:
       #   run: ansible-galaxy collection install ansible.netcommon -p .
 
       # Install SQL Server
-      - name: Install SQL Server 2019
-        uses: potatoqualitee/mssqlsuite@v1
-        with:
-          install: sqlengine
-          sa-password: l0wlydb4
+      # - name: Install SQL Server 2019
+      #   uses: potatoqualitee/mssqlsuite@v1
+      #   with:
+      #     install: sqlengine
+      #     sa-password: l0wlydb4
+
 
       # Run the integration tests
       - name: Run integration test
