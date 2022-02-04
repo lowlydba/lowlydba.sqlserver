@@ -198,10 +198,6 @@ jobs:
           install: sqlengine
           sa-password: l0wlydb4
 
-      # Install Powershell Modules
-      - name: Install DBATools
-        run: pwsh -Command "Install-Module dbatools -Force"
-
       # Run the integration tests
       - name: Run integration test
         run: ansible-test integration -v --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker --coverage
