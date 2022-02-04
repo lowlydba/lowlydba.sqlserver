@@ -46,4 +46,3 @@
     - assert:
         that:
           - result is not changed
-          - result.data.MaxValue == 99999
