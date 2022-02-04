@@ -1,0 +1,43 @@
+---
+- name: Var block
+  vars:
+    ansible_connection: local_pwsh
+    ansible_shell_type: pwsh
+  module_defaults:
+    lowlydba.sqlserver.memory:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password: }}"
+  block:
+
+  - name: Dynamically set max memory
+    lowlydba.sqlserver.memory:
+      max: 0
+    register: result
+
+  - assert:
+      that:
+        - result.total != None
+        - result.previous_max_value != None
+        - result.total < result.max_value
+
+  - name: Set Maximum Memory
+    lowlydba.sqlserver.memory:
+      max: 99999
+    register: result
+
+  - assert:
+      that:
+        - result.total != None
+        - result.previous_max_value != None
+        - result.max_value == 99999
+        - result.changed: true
+
+  - name: Don't Set Maximum Memory
+    lowlydba.sqlserver.memory:
+      max: 99999
+    register: result
+
+  - assert:
+      that:
+        - result.changed: false

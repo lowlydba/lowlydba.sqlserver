@@ -34,7 +34,7 @@ jobs:
         ansible:
           # It's important that Sanity is tested against all stable-X.Y branches
           # Testing against `devel` may fail as new tests are added.
-        # - stable-2.9 # Only if your collection supports Ansible 2.9
+          - stable-2.9
           - stable-2.10
           - stable-2.11
           - stable-2.12
@@ -158,7 +158,7 @@ jobs:
           - stable-2.12
           - devel
         python:
-          # - 2.6
+        # - 2.6
           - 2.7
           - 3.5
           - 3.6
@@ -186,18 +186,21 @@ jobs:
       - name: Install ansible-base (${{ matrix.ansible }})
         run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
 
-      # OPTIONAL If your integration test requires Python libraries or modules from other collections
-      # Install them like this
-      - name: Install collection dependencies
-        run: ansible-galaxy collection install ansible.netcommon -p .
+      # # OPTIONAL If your integration test requires Python libraries or modules from other collections
+      # # Install them like this
+      # - name: Install collection dependencies
+      #   run: ansible-galaxy collection install ansible.netcommon -p .
 
-      # TODO - Get pwsh modules working on this runner for int testing,
-      # & use this to get a container for mssql 2019 locally
-      # - name: Install SQL Server 2019
-      #   uses: potatoqualitee/mssqlsuite@v1
-      #   with:
-      #     install: sqlengine
-      #     sa-password: l0wlydb4
+      # Install SQL Server
+      - name: Install SQL Server 2019
+        uses: potatoqualitee/mssqlsuite@v1
+        with:
+          install: sqlengine
+          sa-password: l0wlydb4
+
+      # Install Powershell Modules
+      - name: Install DBATools
+        run: pwsh -Command "Install-Module dbatools -Force"
 
       # Run the integration tests
       - name: Run integration test
