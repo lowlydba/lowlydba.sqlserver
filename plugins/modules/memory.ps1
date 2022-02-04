@@ -48,8 +48,13 @@ try {
         $outputHash = @{}
         $output = Set-DbaMaxMemory @setMemorySplat
         $module.Result.changed = $true
-        foreach ($property in $output.PSObject.Properties.Name ) {
-            $outputHash[$property] = [String]$output.$property
+        foreach ($property in $output.PSObject.Properties ) {
+            if ($property.TypeNameOfValue -like "Microsoft*") {
+                $outputHash[$property.Name] = [System.String]$output.$($property.Name)
+            }
+            else {
+                $outputHash[$property.Name] = $output.$($property.Name)
+            }
         }
         $module.Result.data = $outputHash
     }
