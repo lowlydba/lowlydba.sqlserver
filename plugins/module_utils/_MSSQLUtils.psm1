@@ -1,6 +1,6 @@
 # Private
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Scope = 'Function', Justification = 'Using proper name of module imported.')]
-param()
+#[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Scope = 'Function', Justification = 'Using proper name of module imported.')]
+#param()
 function Import-DbaTools {
     <#
         .SYNOPSIS
@@ -15,7 +15,7 @@ function Import-DbaTools {
         Import-Module -Name "DbaTools" -MinimumVersion $MinimumVersion
     }
     catch {
-        Write-Error -Message "Unable to install DbaTools v. $MinimumVersion. Try installing manually."
+        Write-Warning -Message "Unable to import DbaTools >= $MinimumVersion."
     }
 
 }
