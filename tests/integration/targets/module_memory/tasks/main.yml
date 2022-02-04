@@ -21,7 +21,7 @@
           - result.data.Total != None
           - result.data.PreviousMaxValue is defined
           - result.data.PreviousMaxValue != None
-          - result.data.Total < result.data.MaxValue
+          - result.data.Total > result.data.MaxValue
           - result is changed
 
     - name: Set Maximum Memory
