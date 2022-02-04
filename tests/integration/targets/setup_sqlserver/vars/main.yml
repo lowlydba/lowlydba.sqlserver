@@ -3,4 +3,4 @@ sqlserver_instance: localhost
 sqlserver_username: sa
 sqlserver_password: l0wlydb4
 
-dbatools_min_version: 1.4.0
+dbatools_min_version: 1.1.40
