@@ -1,5 +1,5 @@
 # Private
-[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Scope='Function', Justification='Using proper name of module imported.')]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Scope = 'Function', Justification = 'Using proper name of module imported.')]
 param()
 function Import-DbaTools {
     <#
@@ -9,13 +9,13 @@ function Import-DbaTools {
     [CmdletBinding()]
     param(
         [System.Version]
-        $MinimumVersion =   "1.1.40"
+        $MinimumVersion = "1.1.40"
     )
     try {
-        #Import-Module -Name "DbaTools" -MinimumVersion $MinimumVersion
+        Import-Module -Name "DbaTools" -MinimumVersion $MinimumVersion
     }
     catch {
-        Write-Error -Message "Unable to install DbaTools v. $MinimumVersion. Try installing manually: Install-Module Dbatools -MinimumVersion $MinimumVersion -Force"
+        Write-Error -Message "Unable to install DbaTools v. $MinimumVersion. Try installing manually."
     }
 
 }

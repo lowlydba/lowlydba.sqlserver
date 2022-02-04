@@ -7,7 +7,7 @@
     lowlydba.sqlserver.memory:
       sql_instance: "{{ sqlserver_instance }}"
       sql_username: "{{ sqlserver_username }}"
-      sql_password: "{{ sqlserver_password: }}"
+      sql_password: "{{ sqlserver_password }}"
   block:
 
   - name: Dynamically set max memory

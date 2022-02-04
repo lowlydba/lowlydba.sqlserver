@@ -13,13 +13,13 @@ Import-DbaTools
 # Get Csharp utility module
 $spec = @{
     supports_check_mode = $true
-    options             = @{
+    options = @{
         sql_instance = @{type = 'str'; required = $true }
         sql_username = @{type = 'str'; required = $false }
         sql_password = @{type = 'str'; required = $false; no_log = $true }
-        max          = @{type = 'int'; required = $false; default = 0 }
+        max = @{type = 'int'; required = $false; default = 0 }
     }
-    required_together   = @(, @('sql_username', 'sql_password'))
+    required_together = @(, @('sql_username', 'sql_password'))
 }
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
 $SqlUsername = $module.Params.sql_username
@@ -39,10 +39,10 @@ try {
     $memResult = Test-DbaMaxMemory -SqlInstance $SqlInstance -SqlCredential $sqlCredential -EnableException
     if ($memResult.MaxValue -ne $Maxmemory) {
         $setMemorySplat = @{
-            SqlInstance     = $SqlInstance
-            SqlCredential   = $sqlCredential
-            Max             = $MaxMemory
-            WhatIf          = $module.CheckMode
+            SqlInstance = $SqlInstance
+            SqlCredential = $sqlCredential
+            Max = $MaxMemory
+            WhatIf = $module.CheckMode
             EnableException = $true
         }
         $outputHash = @{}
