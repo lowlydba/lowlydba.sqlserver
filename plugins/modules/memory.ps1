@@ -33,10 +33,10 @@ $module.Result.changed = $false
 
 # Set max memory for SQL Instance
 try {
+    $memResult = Test-DbaMaxMemory -SqlInstance $SqlInstance -SqlCredential $sqlCredential -EnableException
     if ($MaxMemory -eq 0) {
         $MaxMemory = $memResult.RecommendedValue
     }
-    $memResult = Test-DbaMaxMemory -SqlInstance $SqlInstance -SqlCredential $sqlCredential -EnableException
     if ($memResult.MaxValue -ne $Maxmemory) {
         $setMemorySplat = @{
             SqlInstance = $SqlInstance
