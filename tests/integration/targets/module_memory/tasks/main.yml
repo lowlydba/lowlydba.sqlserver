@@ -19,7 +19,7 @@
       that:
         - result.data.Total != None
         - result.data.PreviousMaxValue != None
-        - result.data.Total < result.data.MaxValue
+        - result.data.Total > result.data.MaxValue
 
   - name: Set Maximum Memory
     lowlydba.sqlserver.memory:
