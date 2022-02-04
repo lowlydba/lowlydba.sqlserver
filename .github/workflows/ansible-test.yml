@@ -38,7 +38,7 @@ jobs:
           - stable-2.10
           - stable-2.11
           - stable-2.12
-        # - devel
+          - devel
     runs-on: ubuntu-latest
     steps:
 
@@ -160,7 +160,7 @@ jobs:
       fail-fast: false
       matrix:
         ansible:
-          # - stable-2.9 # Only if your collection supports Ansible 2.9
+          - stable-2.9
           - stable-2.10
           - stable-2.11
           - stable-2.12
@@ -198,13 +198,6 @@ jobs:
       # # Install them like this
       # - name: Install collection dependencies
       #   run: ansible-galaxy collection install ansible.netcommon -p .
-
-      # Install SQL Server
-      # - name: Install SQL Server 2019
-      #   uses: potatoqualitee/mssqlsuite@v1
-      #   with:
-      #     install: sqlengine
-      #     sa-password: l0wlydb4
 
       - name: Set integration test options
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration

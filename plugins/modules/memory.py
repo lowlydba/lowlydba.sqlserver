@@ -46,6 +46,6 @@ EXAMPLES = r'''
 RETURN = r'''
 data:
   description: Raw output from the Set-DbaMaxMemory function.
-  returned: changed
+  returned: success
   type: dict
 '''

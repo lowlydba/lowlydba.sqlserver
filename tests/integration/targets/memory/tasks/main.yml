@@ -8,27 +8,13 @@
       sql_instance: "{{ sqlserver_instance }}"
       sql_username: "{{ sqlserver_username }}"
       sql_password: "{{ sqlserver_password }}"
+  tags: ["memory"]
   block:
 
-    - name: Dynamically set max memory
-      lowlydba.sqlserver.memory:
-        max: 0
-      register: result
-
-    - assert:
-        that:
-          - result.data.Total is defined
-          - result.data.Total != None
-          - result.data.PreviousMaxValue is defined
-          - result.data.PreviousMaxValue != None
-          - result.data.Total > result.data.MaxValue
-          - result is changed
-
-    - name: Set Maximum Memory
+    - name: Set max memory
       lowlydba.sqlserver.memory:
         max: 99999
       register: result
-
     - assert:
         that:
           - result.data.Total is defined
@@ -36,13 +22,41 @@
           - result.data.PreviousMaxValue is defined
           - result.data.PreviousMaxValue != None
           - result.data.MaxValue == 99999
-          - result is changed
 
-    - name: Don't Set Maximum Memory
+    - name: Don't change max memory
       lowlydba.sqlserver.memory:
         max: 99999
       register: result
-
     - assert:
         that:
           - result is not changed
+
+    - name: Dynamically set max memory
+      lowlydba.sqlserver.memory:
+        max: 0
+      register: result
+    - assert:
+        that:
+          - result.data.PreviousMaxValue == 99999
+          - result.data.Total > result.data.MaxValue
+          - result is changed
+
+    - name: Set max memory in checkmode
+      lowlydba.sqlserver.memory:
+        max: 99999
+      check_mode: true
+      register: result
+    - assert:
+        that:
+          - result.data.MaxValue == 99999
+          - result is changed
+
+    - name: Verify unchanged checkmode max memory
+      lowlydba.sqlserver.memory:
+        max: 99999
+      register: result
+    - assert:
+        that:
+          - result.data.PreviousMaxValue != 99999
+          - result.data.MaxValue == 99999
+          - result is changed
