@@ -1,5 +1,5 @@
 ---
-sqlserver_instance: localhost
+sqlserver_instance: 172.17.0.1
 sqlserver_username: sa
 sqlserver_password: l0wlydb4
 
