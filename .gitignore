@@ -1,5 +1,6 @@
 /tests/output/
 /tests/integration/inventory/
+/tests/integration/integration_config.yml
 /changelogs/.plugin-cache.yaml
 
 # Byte-compiled / optimized / DLL files

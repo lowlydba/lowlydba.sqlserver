@@ -206,6 +206,9 @@ jobs:
       #     install: sqlengine
       #     sa-password: l0wlydb4
 
+      - name: Set integration test options
+        working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration
+        run: cp integration_config.sample.yml integration_config.yml
 
       # Run the integration tests
       - name: Run integration test
