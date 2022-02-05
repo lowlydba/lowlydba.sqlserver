@@ -1,7 +1,7 @@
 # Private
 #[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Scope = 'Function', Justification = 'Using proper name of module imported.')]
 #param()
-function Import-DbaTools {
+function Import-ModuleDependency {
     <#
         .SYNOPSIS
         Centralized way to import a standard minimum version across all modules in the collection.
@@ -20,4 +20,4 @@ function Import-DbaTools {
 
 }
 
-Export-ModuleMember -Function "Import-DbaTools"
+Export-ModuleMember -Function "Import-ModuleDependency"

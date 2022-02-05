@@ -7,7 +7,7 @@
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._MSSQLUtils
 
-Import-DbaTools
+Import-ModuleDependency
 $ErrorActionPreference = "Stop"
 
 # Get Csharp utility module
