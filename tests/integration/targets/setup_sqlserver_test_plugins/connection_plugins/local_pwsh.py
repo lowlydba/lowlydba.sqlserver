@@ -12,11 +12,33 @@ DOCUMENTATION = '''
         - This connection plugin allows ansible to execute tasks on the Ansible 'controller' instead of on a remote host.
     author: ansible (@core)
     version_added: historical
-    extends_documentation_fragment:
-        - connection_pipelining
+    options:
+        pipelining:
+            default: ANSIBLE_PIPELINING
+            description:
+                - Pipelining reduces the number of connection operations required to execute a module on the remote server,
+                by executing many Ansible modules without actual file transfers.
+                - This can result in a very significant performance improvement when enabled.
+                - However this can conflict with privilege escalation (become).
+                For example, when using sudo operations you must first disable 'requiretty' in the sudoers file for the target hosts,
+                which is why this feature is disabled by default.
+            env:
+                - name: ANSIBLE_PIPELINING
+            ini:
+                - section: defaults
+                key: pipelining
+                - section: connection
+                key: pipelining
+            type: boolean
+            vars:
+                - name: ansible_pipelining
     notes:
         - The remote user is ignored, the user with which the ansible CLI was executed is used instead.
 '''
+# Inlining this doc fragment above to maintain v2.9 compatibility
+# TODO remove once we care less about 2.9
+# extends_documentation_fragment:
+#     - connection_pipelining
 
 import os
 import sys
@@ -163,7 +185,7 @@ class Connection(ConnectionBase):
         if master:
             os.close(master)
 
-        display.debug("done with local.exec_command()")
+        display.debug("done with local_pwsh.exec_command()")
         return (p.returncode, stdout, stderr)
 
     def put_file(self, in_path, out_path):
