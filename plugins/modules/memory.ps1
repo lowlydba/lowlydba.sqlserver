@@ -44,7 +44,7 @@ try {
     $output = Set-DbaMaxMemory @setMemorySplat
 
     if ($checkMode) {
-        # Make an equivalent output
+        # Make an equivalent output since -WhatIf doesn't return anything
         $output = Test-DbaMaxMemory -SqlInstance $sqlInstance -SqlCredential $sqlCredential -EnableException
         $output | Add-Member -MemberType NoteProperty -Name "PreviousMaxValue" -Value $output.MaxValue
         $output | Select-Object -ExcludeProperty "InstanceCount"
