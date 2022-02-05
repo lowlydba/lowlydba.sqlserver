@@ -12,7 +12,7 @@ function Import-DbaTools {
         $MinimumVersion = "1.1.40"
     )
     try {
-        Import-Module -Name "DbaTools" -MinimumVersion $MinimumVersion
+        Import-Module -Name "DbaTools" -MinimumVersion $MinimumVersion -DisableNameChecking
     }
     catch {
         Write-Warning -Message "Unable to import DbaTools >= $MinimumVersion."
