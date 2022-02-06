@@ -1,4 +1,0 @@
----
-dependencies:
-  - setup_sqlserver_test_plugins
-  - setup_sqlserver
