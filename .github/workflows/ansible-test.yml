@@ -6,6 +6,19 @@
 
 name: CI
 on:
+  # Manual triggers
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: false
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+
   # Run CI against all pushes (direct commits, also merged PRs), Pull Requests
   push:
     branches:
@@ -16,6 +29,7 @@ on:
   # This ensures that even if there haven't been commits that we are still testing against latest version of ansible-test for each ansible-base version
   schedule:
     - cron: '0 6 * * *'
+
 env:
   NAMESPACE: lowlydba
   COLLECTION_NAME: sqlserver
@@ -34,7 +48,7 @@ jobs:
         ansible:
           # It's important that Sanity is tested against all stable-X.Y branches
           # Testing against `devel` may fail as new tests are added.
-        # - stable-2.9 # Only if your collection supports Ansible 2.9
+        # - stable-2.9
           - stable-2.10
           - stable-2.11
           - stable-2.12
@@ -64,8 +78,9 @@ jobs:
       # run ansible-test sanity inside of Docker.
       # The docker container has all the pinned dependencies that are required
       # and all python versions ansible supports.
+      # TODO unskip validate-modules: https://github.com/LowlyDBA/lowlydba.sqlserver/issues/6
       - name: Run sanity tests
-        run: ansible-test sanity --docker -v --color --coverage
+        run: ansible-test sanity --docker -v --color --coverage --skip-test validate-modules
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       # ansible-test support producing code coverage date
@@ -148,17 +163,25 @@ jobs:
   integration:
     runs-on: ubuntu-latest
     name: I (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
+    services:
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        ports:
+          - 1433:1433
+        env:
+          ACCEPT_EULA: 'Y'
+          SA_PASSWORD: L0wlydb4
     strategy:
       fail-fast: false
       matrix:
         ansible:
-          # - stable-2.9 # Only if your collection supports Ansible 2.9
+        # - stable-2.9
           - stable-2.10
           - stable-2.11
           - stable-2.12
           - devel
         python:
-          # - 2.6
+        # - 2.6
           - 2.7
           - 3.5
           - 3.6
@@ -186,22 +209,18 @@ jobs:
       - name: Install ansible-base (${{ matrix.ansible }})
         run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
 
-      # OPTIONAL If your integration test requires Python libraries or modules from other collections
-      # Install them like this
-      - name: Install collection dependencies
-        run: ansible-galaxy collection install ansible.netcommon -p .
+      # # OPTIONAL If your integration test requires Python libraries or modules from other collections
+      # # Install them like this
+      # - name: Install collection dependencies
+      #   run: ansible-galaxy collection install ansible.netcommon -p .
 
-      # TODO - Get pwsh modules working on this runner for int testing,
-      # & use this to get a container for mssql 2019 locally
-      # - name: Install SQL Server 2019
-      #   uses: potatoqualitee/mssqlsuite@v1
-      #   with:
-      #     install: sqlengine
-      #     sa-password: l0wlydb4
+      - name: Set integration test options
+        working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration
+        run: cp integration_config.sample.yml integration_config.yml
 
       # Run the integration tests
       - name: Run integration test
-        run: ansible-test integration -v --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker --coverage
+        run: ansible-test integration -v --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker --docker-network="${{ job.services.sqlserver.network }}" --coverage
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       # ansible-test support producing code coverage date

@@ -1,0 +1,10 @@
+# .ansible-lint file for integration tests
+---
+skip_list:
+  - unnamed-task
+  - truthy
+  - var-naming
+  - meta-no-info
+  - ignore-errors
+  - risky-file-permissions
+  - command-instead-of-shell
