@@ -14,7 +14,7 @@ $spec = @{
         sql_username = @{type = "str"; required = $false }
         sql_password = @{type = "str"; required = $false; no_log = $true }
         database = @{type = 'str'; required = $true }
-        query = @{type = 'str'; required = $true }
+        nonquery = @{type = 'str'; required = $true }
         query_timeout = @{type = 'int'; required = $false; default = 60 }
     }
 }
@@ -27,7 +27,7 @@ if ($null -ne $SqlUsername) {
     [pscredential]$sqlCredential = New-Object System.Management.Automation.PSCredential ($SqlUsername, $secPassword)
 }
 $database = $module.Params.database
-$query = $module.Params.query
+$nonquery = $module.Params.nonquery
 $queryTimeout = $module.Params.query_timeout
 $checkMode = $module.CheckMode
 
@@ -39,7 +39,7 @@ try {
             SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential
             Database = $database
-            Query = $query
+            Query = $nonquery
             QueryTimeout = $queryTimeout
             EnableException = $true
         }
@@ -49,5 +49,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Executing query failed.", $_.Exception.Message)
+    $module.FailJson("Executing nonquery failed.", $_.Exception.Message)
 }

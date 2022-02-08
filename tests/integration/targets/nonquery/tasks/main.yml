@@ -4,16 +4,16 @@
     ansible_connection: "{{ pwsh_ansible_connection }}"
     ansible_shell_type: "{{ pwsh_ansible_shell_type }}"
   module_defaults:
-    lowlydba.sqlserver.query:
+    lowlydba.sqlserver.nonquery:
       sql_instance: "{{ sqlserver_instance }}"
       sql_username: "{{ sqlserver_username }}"
       sql_password: "{{ sqlserver_password }}"
   tags: ["query"]
   block:
 
-    - name: Execute a query
-      lowlydba.sqlserver.query:
-        query: "SELECT 1"
+    - name: Execute a nonquery
+      lowlydba.sqlserver.nonquery:
+        nonquery: "SELECT 1"
         database: "master"
       register: result
     - assert:

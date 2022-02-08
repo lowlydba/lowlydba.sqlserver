@@ -6,10 +6,10 @@
 
 DOCUMENTATION = r'''
 ---
-module: query
-short_description: Executes a generic query.
+module: nonquery
+short_description: Executes a generic nonquery.
 description:
-     - Execute a query against a database. Does not return a resultset. Ideal for ad-hoc configurations or DML queries.
+     - Execute a nonquery against a database. Does not return a resultset. Ideal for ad-hoc configurations or DML queries.
 options:
   sql_instance:
     description:
@@ -28,31 +28,31 @@ options:
     required: false
   database:
     description:
-      - Name of the database to execute the query in.
+      - Name of the database to execute the nonquery in.
     type: str
     required: true
-  query:
+  nonquery:
     description:
-      - The query to be executed.
+      - The nonquery to be executed.
     type: str
     required: true
   query_timeout:
     description:
-      - Number of seconds to wait before timing out the query execution.
+      - Number of seconds to wait before timing out the nonquery execution.
     type: int
     required: false
     default: 60
 author: "John McCall (@lowlydba)"
 notes:
-  - Check mode is supported, but the query will not be parsed.
+  - Check mode is supported, but the nonquery will not be parsed.
 '''
 
 EXAMPLES = r'''
 - name: Update a table value
-  lowlydba.sqlserver.query:
+  lowlydba.sqlserver.nonquery:
     sql_instance: sql-01-myco.io
     database: userdb
-    query: "UPDATE dbo.User set IsActive = 1;"
+    nonquery: "UPDATE dbo.User set IsActive = 1;"
 '''
 
 RETURN = r''' # '''
