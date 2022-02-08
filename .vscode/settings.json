@@ -1,9 +1,5 @@
 {
     "files.eol": "\n",
     "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": true,
-    "files.associations": {
-        "*.yml": "ansible"
-    },
-    "restructuredtext.confPath": ""
+    "files.trimFinalNewlines": true
 }

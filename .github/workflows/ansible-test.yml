@@ -8,17 +8,6 @@ name: CI
 on:
   # Manual triggers
   workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: false
-        default: 'warning'
-        type: choice
-        options:
-        - info
-        - warning
-        - debug
-
   # Run CI against all pushes (direct commits, also merged PRs), Pull Requests
   push:
     branches:
@@ -181,13 +170,13 @@ jobs:
           - stable-2.12
           - devel
         python:
-        # - 2.6
-          - 2.7
-          - 3.5
-          - 3.6
-          - 3.7
-          - 3.8
-          - 3.9
+        #- 2.6
+        #- 2.7
+        #- 3.5
+        #- 3.6
+        #- 3.7
+         - 3.8
+        #- 3.9
         exclude:
           # Because ansible-test doesn't support python3.9 for Ansible 2.9
           - ansible: stable-2.9
