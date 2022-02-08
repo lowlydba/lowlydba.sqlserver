@@ -5,7 +5,7 @@
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
-#AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._MSSQLUtils
+#AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
 
 Import-ModuleDependency
 $ErrorActionPreference = "Stop"
@@ -34,21 +34,22 @@ $module.Result.changed = $false
 
 # Set max memory for SQL Instance
 try {
-    $setMemorySplat = @{
-        SqlInstance = $sqlInstance
-        SqlCredential = $sqlCredential
-        Max = $max
-        WhatIf = $module.CheckMode
-        EnableException = $true
-    }
-    $output = Set-DbaMaxMemory @setMemorySplat
-
     if ($checkMode) {
         # Make an equivalent output
         $output = Test-DbaMaxMemory -SqlInstance $sqlInstance -SqlCredential $sqlCredential -EnableException
         $output | Add-Member -MemberType NoteProperty -Name "PreviousMaxValue" -Value $output.MaxValue
         $output | Select-Object -ExcludeProperty "InstanceCount"
         $output.MaxValue = $max
+    }
+    else {
+        # Set max memory
+        $setMemorySplat = @{
+            SqlInstance = $sqlInstance
+            SqlCredential = $sqlCredential
+            Max = $max
+            EnableException = $true
+        }
+        $output = Set-DbaMaxMemory @setMemorySplat
     }
 
     if ($output.PreviousMaxValue -ne $max) {
@@ -57,11 +58,12 @@ try {
 
     $outputHash = @{}
     foreach ($property in $output.PSObject.Properties ) {
+        $propertyName = $property.Name
         if ($property.TypeNameOfValue -like "Microsoft*") {
-            $outputHash[$property.Name] = $output.$($property.Name).ToString()
+            $outputHash[$propertyName] = $output.$propertyName.Name
         }
         else {
-            $outputHash[$property.Name] = $output.$($property.Name)
+            $outputHash[$propertyName] = $output.$propertyName
         }
     }
     $module.Result.data = $outputHash
