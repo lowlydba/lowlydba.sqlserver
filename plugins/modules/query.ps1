@@ -40,7 +40,7 @@ try {
             SqlCredential = $sqlCredential
             Database = $database
             Query = $query
-            $QueryTimeout = $queryTimeout
+            QueryTimeout = $queryTimeout
             EnableException = $true
         }
         $null = Invoke-DbaQuery @invokeQuerySplat
