@@ -8,15 +8,15 @@ $ErrorActionPreference = "Stop"
 
 # Get Csharp utility module
 $spec = @{
-  supports_check_mode = $true
-  options = @{
-    sql_instance = @{type = 'str'; required = $true }
-    sql_username = @{type = "str"; required = $false }
-    sql_password = @{type = "str"; required = $false; no_log = $true }
-    database = @{type = 'str'; required = $true }
-    query = @{type = 'str'; required = $true }
-    query_timeout = @{type = 'int'; required = $false; default = 60 }
-  }
+    supports_check_mode = $true
+    options = @{
+        sql_instance = @{type = 'str'; required = $true }
+        sql_username = @{type = "str"; required = $false }
+        sql_password = @{type = "str"; required = $false; no_log = $true }
+        database = @{type = 'str'; required = $true }
+        query = @{type = 'str'; required = $true }
+        query_timeout = @{type = 'int'; required = $false; default = 60 }
+    }
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
@@ -35,7 +35,15 @@ $module.Result.changed = $false
 
 try {
     if (-not($checkMode)) {
-        $null = Invoke-DbaQuery -sqlInstance $sqlInstance -SqlCredential $sqlCredential -Database $database -Query $query -QueryTimeout $queryTimeout -EnableException
+        $invokeQuerySplat = @{
+            SqlInstance = $sqlInstance
+            SqlCredential = $sqlCredential
+            Database = $database
+            Query = $query
+            $QueryTimeout = $queryTimeout
+            EnableException = $true
+        }
+        $null = Invoke-DbaQuery @invokeQuerySplat
     }
     $module.Result.changed = $true
     $module.ExitJson()
