@@ -1,9 +1,24 @@
 # lowlydba.sqlserver Collection for Ansible
 
-<!-- Add CI and code coverage badges here. Samples included below. -->
 [![CI](https://github.com/lowlydba/lowlydba.sqlserver/workflows/CI/badge.svg?event=push)](https://github.com/lowlydba/lowlydba.sqlserver/actions) [![Codecov](https://img.shields.io/codecov/c/github/lowlydba/lowlydba.sqlserver)](https://codecov.io/gh/lowlydba/lowlydba.sqlserver)
 
-<!-- Describe the collection and why a user would want to use it. What does the collection do? -->
+- [Modules](#modules)
+- [Code of Conduct](#code-of-conduct)
+- [Communication](#communication)
+- [Contributing to this collection](#contributing-to-this-collection)
+- [Collection maintenance](#collection-maintenance)
+- [Tested with Ansible](#tested-with-ansible)
+- [External requirements](#external-requirements)
+- [Using this collection](#using-this-collection)
+  - [Installing the Collection from Ansible Galaxy](#installing-the-collection-from-ansible-galaxy)
+- [Release notes](#release-notes)
+- [Roadmap](#roadmap)
+
+## Modules
+
+| Module | Description |
+| ------ | ----------- |
+| [memory](plugins/modules/memory.ps1) | Sets the maximum memory for a SQL Server instance. |
 
 ## Code of Conduct
 
@@ -23,13 +38,7 @@ For more information about communication, refer to the [Ansible Communication gu
 
 ## Contributing to this collection
 
-The content of this collection is made by people like you, a community of individuals collaborating on making the world better through developing automation software.
-
-We are actively accepting new contributors.
-
-Any kind of contribution is very welcome.
-
-You don't know how to start? Refer to our [contribution guide](CONTRIBUTING.md)!
+The content of this collection is made by people like you, a community of individuals collaborating on making the world better through developing automation software. We are actively accepting new contributors.
 
 We use the following guidelines:
 
@@ -45,23 +54,16 @@ The current maintainers are listed in the [MAINTAINERS](MAINTAINERS) file. If yo
 
 To learn how to maintain / become a maintainer of this collection, refer to the [Maintainer guidelines](MAINTAINING.md).
 
-## Governance
-
-The process of decision making in this collection is based on discussing and finding consensus among participants.
-
-Every voice is important. If you have something on your mind, create an issue or dedicated discussion and let's discuss it!
-
 ## Tested with Ansible
 
-TBD
+* 2.10
+* 2.11
+* 2.12
+* dlevel
 
 ## External requirements
 
-* PowerShell module: [DbaTools][dbatools]
-
-## Included content
-
-TBD
+* PowerShell module: [DbaTools][dbatools] >= 1.1.40
 
 ## Using this collection
 
@@ -102,22 +104,6 @@ See the [changelog](https://github.com/lowlydba/lowlydba.sqlserver/tree/main/CHA
 ## Roadmap
 
 TBD
-
-## More information
-
-* [Ansible Collection overview](https://github.com/ansible-collections/overview)
-* [Ansible User guide](https://docs.ansible.com/ansible/devel/user_guide/index.html)
-* [Ansible Developer guide](https://docs.ansible.com/ansible/devel/dev_guide/index.html)
-* [Ansible Collections Checklist](https://github.com/ansible-collections/overview/blob/main/collection_requirements.rst)
-* [Ansible Community code of conduct](https://docs.ansible.com/ansible/devel/community/code_of_conduct.html)
-* [The Bullhorn (the Ansible Contributor newsletter)](https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&id=d6635f5420)
-* [Changes impacting Contributors](https://github.com/ansible-collections/news-for-maintainers)
-
-## Licensing
-
-GNU General Public License v3.0 or later.
-
-See [LICENSE](https://www.gnu.org/licenses/gpl-3.0.txt) to see the full text.
 
 <!-- Link shortcuts -->
 [dbatools]: https://dbatools.io
