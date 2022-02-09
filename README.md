@@ -13,6 +13,12 @@
 - [Release notes](#release-notes)
 - [Roadmap](#roadmap)
 
+## Modules
+
+| Module | Description |
+| ------ | ----------- |
+| [memory](plugins/modules/memory.ps1) | Sets the maximum memory for a SQL Server instance. |
+
 ## Code of Conduct
 
 We follow the [Ansible Code of Conduct](https://docs.ansible.com/ansible/devel/community/code_of_conduct.html) in all our interactions within this project.
