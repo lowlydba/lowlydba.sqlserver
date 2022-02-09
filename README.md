@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/lowlydba/lowlydba.sqlserver/workflows/CI/badge.svg?event=push)](https://github.com/lowlydba/lowlydba.sqlserver/actions) [![Codecov](https://img.shields.io/codecov/c/github/lowlydba/lowlydba.sqlserver)](https://codecov.io/gh/lowlydba/lowlydba.sqlserver)
 
+- [Modules](#modules)
 - [Code of Conduct](#code-of-conduct)
 - [Communication](#communication)
 - [Contributing to this collection](#contributing-to-this-collection)
