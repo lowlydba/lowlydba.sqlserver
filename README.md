@@ -2,18 +2,17 @@
 
 [![CI](https://github.com/lowlydba/lowlydba.sqlserver/workflows/CI/badge.svg?event=push)](https://github.com/lowlydba/lowlydba.sqlserver/actions) [![Codecov](https://img.shields.io/codecov/c/github/lowlydba/lowlydba.sqlserver)](https://codecov.io/gh/lowlydba/lowlydba.sqlserver)
 
-- [lowlydba.sqlserver Collection for Ansible](#lowlydbasqlserver-collection-for-ansible)
-  - [Modules](#modules)
-  - [Code of Conduct](#code-of-conduct)
-  - [Communication](#communication)
-  - [Contributing to this collection](#contributing-to-this-collection)
-  - [Collection maintenance](#collection-maintenance)
-  - [Tested with Ansible](#tested-with-ansible)
-  - [External requirements](#external-requirements)
-  - [Using this collection](#using-this-collection)
-    - [Installing the Collection from Ansible Galaxy](#installing-the-collection-from-ansible-galaxy)
-  - [Release notes](#release-notes)
-  - [Roadmap](#roadmap)
+- [Modules](#modules)
+- [Code of Conduct](#code-of-conduct)
+- [Communication](#communication)
+- [Contributing to this collection](#contributing-to-this-collection)
+- [Collection maintenance](#collection-maintenance)
+- [Tested with Ansible](#tested-with-ansible)
+- [External requirements](#external-requirements)
+- [Using this collection](#using-this-collection)
+  - [Installing the Collection from Ansible Galaxy](#installing-the-collection-from-ansible-galaxy)
+- [Release notes](#release-notes)
+- [Roadmap](#roadmap)
 
 ## Modules
 
