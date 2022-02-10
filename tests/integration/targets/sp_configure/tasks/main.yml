@@ -13,7 +13,7 @@
 
     - name: Configure
       lowlydba.sqlserver.sp_configure:
-        name: XPCmdShellEnabled
+        name: 'show advanced options'
         value: 1
       register: result
     - assert:
@@ -26,7 +26,7 @@
 
     - name: Configure in checkmode
       lowlydba.sqlserver.sp_configure:
-        name: XPCmdShellEnabled
+        name: 'show advanced options'
         value: 0
       register: result
       check_mode: true
@@ -38,7 +38,7 @@
 
     - name: Verify unchanged configuration
       lowlydba.sqlserver.sp_configure:
-        name: XPCmdShellEnabled
+        name: 'show advanced options'
         value: 0
       register: result
     - assert:
@@ -49,7 +49,7 @@
 
     - name: Unchanged configuration
       lowlydba.sqlserver.sp_configure:
-        name: XPCmdShellEnabled
+        name: 'show advanced options'
         value: 0
       register: result
     - assert:
