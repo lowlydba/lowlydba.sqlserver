@@ -1,0 +1,3 @@
+---
+pwsh_ansible_connection: local_pwsh
+pwsh_ansible_shell_type: pwsh

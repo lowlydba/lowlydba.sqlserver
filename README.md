@@ -19,6 +19,7 @@
 | Module | Description |
 | ------ | ----------- |
 | [memory](plugins/modules/memory.ps1) | Sets the maximum memory for a SQL Server instance. |
+| [nonquery](plugins/modules/nonquery.ps1) | Executes a generic nonquery. |
 
 ## Code of Conduct
 
