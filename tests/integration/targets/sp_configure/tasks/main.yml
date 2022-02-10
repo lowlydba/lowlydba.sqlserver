@@ -1,0 +1,59 @@
+---
+- name: Var block
+  vars:
+    ansible_connection: "{{ pwsh_ansible_connection }}"
+    ansible_shell_type: "{{ pwsh_ansible_shell_type }}"
+  module_defaults:
+    lowlydba.sqlserver.sp_configure:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+  tags: ["sp_configure"]
+  block:
+
+    - name: Configure
+      lowlydba.sqlserver.sp_configure:
+        name: XPCmdShellEnabled
+        value: 1
+      register: result
+    - assert:
+        that:
+          - result.data.NewValue == 1
+          - result.data.SqlInstance != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.PreviousValue != None
+
+    - name: Configure in checkmode
+      lowlydba.sqlserver.sp_configure:
+        name: XPCmdShellEnabled
+        value: 0
+      register: result
+      check_mode: true
+    - assert:
+        that:
+          - result.data.PreviousValue == 1
+          - result.data.NewValue == 0
+          - result is changed
+
+    - name: Verify unchanged configuration
+      lowlydba.sqlserver.sp_configure:
+        name: XPCmdShellEnabled
+        value: 0
+      register: result
+    - assert:
+        that:
+          - result.data.PreviousValue == 1
+          - result.data.NewValue == 0
+          - result is changed
+
+    - name: Unchanged configuration
+      lowlydba.sqlserver.sp_configure:
+        name: XPCmdShellEnabled
+        value: 0
+      register: result
+    - assert:
+        that:
+          - result.data.PreviousValue == 0
+          - result.data.NewValue == 0
+          - result is not changed
