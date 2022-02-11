@@ -20,6 +20,7 @@
 | ------ | ----------- |
 | [memory](plugins/modules/memory.ps1) | Sets the maximum memory for a SQL Server instance. |
 | [nonquery](plugins/modules/nonquery.ps1) | Executes a generic nonquery. |
+| [resource_governor](plugins/modules/resource_governor.ps1) | Configures the resource governor on a SQL Server instance. |
 
 ## Code of Conduct
 
