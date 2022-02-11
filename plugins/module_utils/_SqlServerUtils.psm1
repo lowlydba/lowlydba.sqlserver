@@ -17,7 +17,35 @@ function Import-ModuleDependency {
     catch {
         Write-Warning -Message "Unable to import DbaTools >= $MinimumVersion."
     }
-
 }
 
-Export-ModuleMember -Function "Import-ModuleDependency"
+function ConvertTo-HashTable {
+    <#
+        .SYNOPSIS
+        Centralized way to convert DBATools' returned objects into hash tables.
+    #>
+    [CmdletBinding()]
+    param(
+        [PSCustomObject]
+        $Object
+    )
+    try {
+        $outputHash = @{}
+        [string[]] $defaultDisplayProperty = $Object.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
+        $objectProperty = ($Object | Select-Object -Property $defaultDisplayProperty).PSObject.Properties
+        foreach ($property in $objectProperty) {
+            $propertyName = $property.Name
+            switch -Wildcard ($property.TypeNameOfValue) {
+                "Microsoft*Collection" { $outputHash[$propertyName] = [string[]]$Object.$propertyName.Name }
+                "Microsoft*" { $outputHash[$propertyName] = $Object.$propertyName.Name }
+                default { $outputHash[$propertyName] = $Object.$propertyName }
+            }
+        }
+        return $outputHash
+    }
+    catch {
+        Write-Error -Message "Unable to convert object to hash table: $($_.Exception.Message)" -TargetObject $Object
+    }
+}
+
+Export-ModuleMember -Function @("Import-ModuleDependency", "ConvertTo-HashTable")
