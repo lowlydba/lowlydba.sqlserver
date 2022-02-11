@@ -11,21 +11,6 @@ short_description: Executes a generic nonquery.
 description:
      - Execute a nonquery against a database. Does not return a resultset. Ideal for ad-hoc configurations or DML queries.
 options:
-  sql_instance:
-    description:
-      - The SQL Server instance to target.
-    type: str
-    required: true
-  sql_username:
-    description:
-      - Username for SQL Authentication.
-    type: str
-    required: false
-  sql_password:
-    description:
-      - Password for SQL Authentication.
-    type: str
-    required: false
   database:
     description:
       - Name of the database to execute the nonquery in.
@@ -45,6 +30,8 @@ options:
 author: "John McCall (@lowlydba)"
 notes:
   - Check mode is supported, but the nonquery will not be parsed.
+extends_documentation_fragment:
+  - lowlydba.sqlserver.sql_credentials
 '''
 
 EXAMPLES = r'''

@@ -11,21 +11,6 @@ short_description: Configures the resource governor on a SQL Server instance.
 description:
      - Enables or disables and optionally sets the classifier function for the resource governor feature.
 options:
-  sql_instance:
-    description:
-      - The target SQL Server instance.
-    type: str
-    required: true
-  sql_username:
-    description:
-      - Username for SQL Authentication.
-    type: str
-    required: false
-  sql_password:
-    description:
-      - Password for SQL Authentication.
-    type: str
-    required: false
   enabled:
     description:
       - Whether to enable or disable resource governor.
@@ -41,6 +26,8 @@ options:
 author: "John McCall (@lowlydba)"
 notes:
   - Check mode is supported.
+extends_documentation_fragment:
+  - lowlydba.sqlserver.sql_credentials
 '''
 
 EXAMPLES = r'''
