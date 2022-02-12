@@ -20,6 +20,7 @@
 | ------ | ----------- |
 | [memory](plugins/modules/memory.ps1) | Sets the maximum memory for a SQL Server instance. |
 | [nonquery](plugins/modules/nonquery.ps1) | Executes a generic nonquery. |
+| [sp_configure](plugins/modules/sp_configure.ps1) | Make instance level system configuration changes via sp_configure. |
 
 ## Code of Conduct
 
