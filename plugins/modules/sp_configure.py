@@ -38,7 +38,6 @@ options:
       - New value the configuration will be set to.
     type: int
     required: true
-
 author: "Sudhir Koduri (@kodurisudhir)"
 notes:
   - Check mode is supported.
@@ -46,7 +45,7 @@ notes:
 
 EXAMPLES = r'''
 - name: Enable remote DAC connection
-  sp_configure:
+  lowlydba.sqlserver.sp_configure:
     sql_instance: sql-01.myco.io
     name: RemoteDacConnectionsEnabled
     value: 1
