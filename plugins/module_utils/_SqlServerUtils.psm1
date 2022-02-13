@@ -38,6 +38,7 @@ function ConvertTo-HashTable {
             switch -Wildcard ($property.TypeNameOfValue) {
                 "Microsoft*Collection" { $outputHash[$propertyName] = [string[]]$Object.$propertyName.Name }
                 "Microsoft*" { $outputHash[$propertyName] = $Object.$propertyName.Name }
+                "SqlCollaborative.DbaTools.Parameter.DbaInstanceParameter" { $outputHash[$propertyName] = $Object.$propertyName.FullName }
                 default { $outputHash[$propertyName] = $Object.$propertyName }
             }
         }
