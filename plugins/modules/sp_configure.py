@@ -13,21 +13,6 @@ description:
      - Read instance level system configuration for a given configuration and update to a new value as provided.
      - If the configuration needs a restart, a warning message will be returned stating a restart is required for the new value to be used.
 options:
-  sql_instance:
-    description:
-      - The target SQL Server instance.
-    type: str
-    required: true
-  sql_username:
-    description:
-      - Username for SQL Authentication.
-    type: str
-    required: false
-  sql_password:
-    description:
-      - Password for SQL Authentication.
-    type: str
-    required: false
   name:
     description:
       - Name of the configuration that will be changed.
@@ -41,6 +26,8 @@ options:
 author: "Sudhir Koduri (@kodurisudhir)"
 notes:
   - Check mode is supported.
+extends_documentation_fragment:
+  - lowlydba.sqlserver.sql_credentials
 '''
 
 EXAMPLES = r'''
