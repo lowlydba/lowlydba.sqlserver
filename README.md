@@ -18,6 +18,7 @@
 
 | Module | Description |
 | ------ | ----------- |
+| [maintenance_solution](plugins/modules/memory.ps1) | Install the latest version of the Ola Hallengren's Maintenance Solution, or install from a local cached version. |
 | [memory](plugins/modules/memory.ps1) | Sets the maximum memory for a SQL Server instance. |
 | [nonquery](plugins/modules/nonquery.ps1) | Executes a generic nonquery. |
 | [sp_configure](plugins/modules/sp_configure.ps1) | Make instance level system configuration changes via sp_configure. |
