@@ -56,16 +56,7 @@ try {
         $module.Result.changed = $true
     }
 
-    $outputHash = @{}
-    foreach ($property in $output.PSObject.Properties ) {
-        $propertyName = $property.Name
-        if ($property.TypeNameOfValue -like "Microsoft*") {
-            $outputHash[$propertyName] = $output.$propertyName.Name
-        }
-        else {
-            $outputHash[$propertyName] = $output.$propertyName
-        }
-    }
+    $outputHash = ConvertTo-HashTable -Object $output
     $module.Result.data = $outputHash
     $module.ExitJson()
 }

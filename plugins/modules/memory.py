@@ -11,21 +11,6 @@ short_description: Sets the maximum memory for a SQL Server instance.
 description:
      - Sets the maximum memory for a SQL Server instance.
 options:
-  sql_instance:
-    description:
-      - The SQL Server instance to modify.
-    type: str
-    required: true
-  sql_username:
-    description:
-      - Username for SQL Authentication.
-    type: str
-    required: false
-  sql_password:
-    description:
-      - Password for SQL Authentication.
-    type: str
-    required: false
   max:
     description:
       - The maximum memory in MB that the SQL Server instance can utilize. 0 will automatically calculate the ideal value.
@@ -35,6 +20,8 @@ options:
 author: "John McCall (@lowlydba)"
 notes:
   - Check mode is supported.
+extends_documentation_fragment:
+  - lowlydba.sqlserver.sql_credentials
 '''
 
 EXAMPLES = r'''
