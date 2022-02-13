@@ -87,7 +87,8 @@ try {
     catch {
         $errMessage = $_.Exception.Message
         if ($errMessage -like "*Maintenance Solution already exists*") {
-            $connection = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential | Select-Object -Property ComputerName, InstanceName, SqlInstance
+            $connection = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
+            $connection = $connection | Select-Object -Property ComputerName, InstanceName, SqlInstance
             $connection | Add-Member -MemberType NoteProperty -Name "Results" -Value "Success"
             $output = $connection
         }
