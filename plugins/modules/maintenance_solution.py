@@ -33,7 +33,6 @@ options:
         - If this switch is enabled, objects already present in the target database will be dropped and recreated.
     type: bool
     required: false
-    default: false
   log_to_table:
     description:
       - If this switch is enabled, the Maintenance Solution will be configured to log commands to a table.
