@@ -1,6 +1,4 @@
 # Private
-#[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseSingularNouns', '', Scope = 'Function', Justification = 'Using proper name of module imported.')]
-#param()
 function Import-ModuleDependency {
     <#
         .SYNOPSIS
@@ -9,7 +7,7 @@ function Import-ModuleDependency {
     [CmdletBinding()]
     param(
         [System.Version]
-        $MinimumVersion = "1.1.40"
+        $MinimumVersion = "1.1.71"
     )
     try {
         Import-Module -Name "DbaTools" -MinimumVersion $MinimumVersion -DisableNameChecking
