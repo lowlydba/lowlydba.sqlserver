@@ -1,1 +1,4 @@
 *   text=auto eol=lf
+
+# Ignore Ansible hacks for Powershell Core support in linguist statistics
+tests/integration/targets/setup_sqlserver_test_plugins/module_utils/* linguist-vendored
