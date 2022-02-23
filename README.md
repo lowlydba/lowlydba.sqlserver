@@ -7,7 +7,7 @@
 - [Communication](#communication)
 - [Contributing to this collection](#contributing-to-this-collection)
 - [Collection maintenance](#collection-maintenance)
-- [Tested with Ansible](#tested-with-ansible)
+- [Tested with](#tested-with)
 - [External requirements](#external-requirements)
 - [Using this collection](#using-this-collection)
   - [Installing the Collection from Ansible Galaxy](#installing-the-collection-from-ansible-galaxy)
@@ -21,6 +21,7 @@
 | [maintenance_solution](plugins/modules/memory.ps1) | Install the latest version of the Ola Hallengren's Maintenance Solution, or install from a local cached version. |
 | [memory](plugins/modules/memory.ps1) | Sets the maximum memory for a SQL Server instance. |
 | [nonquery](plugins/modules/nonquery.ps1) | Executes a generic nonquery. |
+| [resource_governor](plugins/modules/resource_governor.ps1) | Configures the resource governor on a SQL Server instance. |
 | [sp_configure](plugins/modules/sp_configure.ps1) | Make instance level system configuration changes via sp_configure. |
 
 ## Code of Conduct
@@ -45,11 +46,11 @@ The content of this collection is made by people like you, a community of indivi
 
 We use the following guidelines:
 
-* [CONTRIBUTING.md](CONTRIBUTING.md)
-* [REVIEW_CHECKLIST.md](REVIEW_CHECKLIST.md)
-* [Ansible Community Guide](https://docs.ansible.com/ansible/latest/community/index.html)
-* [Ansible Development Guide](https://docs.ansible.com/ansible/devel/dev_guide/index.html)
-* [Ansible Collection Development Guide](https://docs.ansible.com/ansible/devel/dev_guide/developing_collections.html#contributing-to-collections)
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+- [REVIEW_CHECKLIST.md](REVIEW_CHECKLIST.md)
+- [Ansible Community Guide](https://docs.ansible.com/ansible/latest/community/index.html)
+- [Ansible Development Guide](https://docs.ansible.com/ansible/devel/dev_guide/index.html)
+- [Ansible Collection Development Guide](https://docs.ansible.com/ansible/devel/dev_guide/developing_collections.html#contributing-to-collections)
 
 ## Collection maintenance
 
@@ -57,16 +58,22 @@ The current maintainers are listed in the [MAINTAINERS](MAINTAINERS) file. If yo
 
 To learn how to maintain / become a maintainer of this collection, refer to the [Maintainer guidelines](MAINTAINING.md).
 
-## Tested with Ansible
+## Tested with
 
-* 2.10
-* 2.11
-* 2.12
-* dlevel
+### Ansible
+
+- 2.10
+- 2.11
+- 2.12
+- dlevel
+
+### SQL Server
+
+- SQL Server 2000 - current (via DBATools)
 
 ## External requirements
 
-* PowerShell module: [DbaTools][dbatools] >= 1.1.40
+- PowerShell module: [DbaTools][dbatools] >= 1.1.71
 
 ## Using this collection
 
