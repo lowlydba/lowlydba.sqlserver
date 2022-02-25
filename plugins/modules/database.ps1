@@ -235,7 +235,7 @@ elseif ($state -eq "present") {
             }
         }
         catch {
-            $module.FailJson("Setting MaxDop for secondary mode for [$database] failed.", $_.Exception.Message)
+            $module.FailJson("Setting MaxDop for secondary mode for [$database] failed.", $_)
         }
     }
 }
