@@ -130,7 +130,7 @@ elseif ($state -eq "present") {
             $module.Result.changed = $true
         }
         catch {
-            $module.FailJson("Setting database owner for [$database] failed.", $_.Exception.Message)
+            $module.FailJson("Setting database owner for [$database] failed.", $_)
         }
     }
 
