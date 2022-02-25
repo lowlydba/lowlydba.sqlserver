@@ -52,7 +52,7 @@ options:
   compatibility:
     description:
       - Compatibility mode for the database. Follows the format of "Version90", "Version100", and so on.
-        String is validated by Set-DbaDbCompatibility.
+        String is validated by C(Set-DbaDbCompatibility).
     required: false
     type: str
   rcsi:
