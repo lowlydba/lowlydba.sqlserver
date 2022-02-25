@@ -218,7 +218,7 @@ elseif ($state -eq "present") {
             }
         }
         catch {
-            $module.FailJson("Setting MAXDOP for [$database] failed.", $_.Exception.Message)
+            $module.FailJson("Setting MAXDOP for [$database] failed.", $_)
         }
     }
 
