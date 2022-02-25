@@ -6,7 +6,7 @@
     database_name: sqlserver_integration_db
     maxdop: 1
     secondary_maxdop: 0
-    owner_name: lowlydba
+    owner_name: sa
     recovery_model: Simple
     compatibility_low: Version140
     compatibility_high: Version150
