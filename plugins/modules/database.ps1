@@ -103,7 +103,7 @@ elseif ($state -eq "present") {
             $module.Result.changed = $true
         }
         catch {
-            $module.FailJson("Creating database [$database] failed.", $_.Exception.Message)
+            $module.FailJson("Creating database [$database] failed.", $_)
         }
     }
 
