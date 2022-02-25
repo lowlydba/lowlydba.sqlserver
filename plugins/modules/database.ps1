@@ -178,7 +178,7 @@ elseif ($state -eq "present") {
             }
         }
         catch {
-            $module.FailJson("Setting Compatibility for [$database] failed.", $_.Exception.Message)
+            $module.FailJson("Setting Compatibility for [$database] failed.", $_)
         }
     }
 
