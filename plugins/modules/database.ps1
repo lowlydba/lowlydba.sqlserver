@@ -28,7 +28,7 @@ $spec = @{
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
     required_together = @(
-        ,@('sql_username', 'sql_password')
+        , @('sql_username', 'sql_password')
     )
 }
 
@@ -80,9 +80,6 @@ if ($state -eq "absent") {
         Remove-DbaDatabase @dropHash
         $module.Result.changed = $true
     }
-    #TODO: Is it wrong to not return a useless dictionary of dropped db
-    # attributes here? It makes different states = different output values.
-    # or maybe default to a few basic properties (see memory module's output)
     $module.ExitJson()
 }
 elseif ($state -eq "present") {
