@@ -19,6 +19,9 @@ $spec = @{
         enabled = @{type = 'bool'; required = $false; default = $true }
         classifier_function = @{type = 'str'; required = $false }
     }
+    required_together = @(
+        , @('sql_username', 'sql_password')
+    )
 }
 
 # Get Csharp utility module

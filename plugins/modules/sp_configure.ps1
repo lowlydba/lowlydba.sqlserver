@@ -21,6 +21,9 @@ $spec = @{
         name = @{type = 'str'; required = $true }
         value = @{type = 'int'; required = $true }
     }
+    required_together = @(
+        , @('sql_username', 'sql_password')
+    )
 }
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
 $sqlInstance = $module.Params.sql_instance

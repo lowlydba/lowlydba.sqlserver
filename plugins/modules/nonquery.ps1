@@ -21,6 +21,9 @@ $spec = @{
         nonquery = @{type = 'str'; required = $true }
         query_timeout = @{type = 'int'; required = $false; default = 60 }
     }
+    required_together = @(
+        , @('sql_username', 'sql_password')
+    )
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)

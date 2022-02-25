@@ -28,6 +28,9 @@ $spec = @{
         force = @{type = 'bool'; required = $false; default = $false }
         install_parallel = @{type = 'bool'; required = $false; default = $false }
     }
+    required_together = @(
+        , @('sql_username', 'sql_password')
+    )
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
