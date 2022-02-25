@@ -154,7 +154,7 @@ elseif ($state -eq "present") {
             }
         }
         catch {
-            $module.FailJson("Setting recovery model for [$database] failed.", $_.Exception.Message)
+            $module.FailJson("Setting recovery model for [$database] failed.", $_)
         }
     }
 
