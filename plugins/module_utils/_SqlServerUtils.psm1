@@ -35,9 +35,9 @@ function ConvertTo-HashTable {
         foreach ($property in $objectProperty) {
             $propertyName = $property.Name
             switch -Wildcard ($property.TypeNameOfValue) {
-                "Microsoft.*Collection" { $outputHash[$propertyName] = [string[]]$Object.$propertyName.Name; break}
-                "Microsoft.SqlServer.Management.Smo*" { $outputHash[$propertyName] = $Object.$propertyName.ToString(); break}
-                "SqlCollaborative.DbaTools.Parameter.DbaInstanceParameter" { $outputHash[$propertyName] = $Object.$propertyName.FullName; break}
+                "Microsoft.*Collection" { $outputHash[$propertyName] = [string[]]$Object.$propertyName.Name; break }
+                "Microsoft.SqlServer.Management.Smo*" { $outputHash[$propertyName] = $Object.$propertyName.ToString(); break }
+                "SqlCollaborative.DbaTools.Parameter.DbaInstanceParameter" { $outputHash[$propertyName] = $Object.$propertyName.FullName; break }
                 default { $outputHash[$propertyName] = $Object.$propertyName }
             }
         }
