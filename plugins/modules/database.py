@@ -62,7 +62,7 @@ options:
     type: bool
   state:
     description:
-      - Whether or not the database should be created, remain, or be dropped.
+      - Whether or not the database should be C(present) or C(absent).
     required: false
     type: str
     default: 'present'
