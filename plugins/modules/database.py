@@ -16,9 +16,22 @@ options:
       - Name of the target database.
     type: str
     required: true
+  recovery_model:
+    description:
+      - Choose the recovery model for the database.
+    type: str
+    required: false
+    choices: ['Full', 'Simple', 'BulkLogged']
   data_file_path:
     description:
-      - Directory where the data and log files should be placed. Uses SQL Server's default if not supplied.
+      - Directory where the data files should be placed. Uses SQL Server's default if not supplied.
+        Only used if database is being created.
+    type: str
+    required: false
+  log_file_path:
+    description:
+      - Directory where the log files should be placed. Uses SQL Server's default if not supplied.
+        Only used if database is being created.
     type: str
     required: false
   owner_name:
@@ -26,51 +39,34 @@ options:
       - Database owner login
     type: str
     required: false
-    default: sa
   maxdop:
     description:
-      - Integer MAXDOP value for the database.
+      - MAXDOP value for the database.
     required: false
     type: int
-    default: 0
   secondary_maxdop:
     description:
-      - Integer MAXDOP value for the database when it is a non-primary replica in an availability group.
+      - MAXDOP value for the database when it is a non-primary replica in an availability group.
     required: false
     type: int
-    default: 4
-  compatibility_mode:
+  compatibility:
     description:
-      - Compatibility mode for the database.
+      - Compatibility mode for the database. Follows the format of "Version90", "Version100", and so on.
+        String is validated by Set-DbaDbCompatibility.
     required: false
-    type: int
-    default: 15
-    choices: [13, 14, 15]
+    type: str
   rcsi:
     description:
       - Whether or not to enable Read Committed Snapshot Isolation.
     required: false
     type: bool
-    default: true
-  growth_type:
+  state:
     description:
-      - The measurement of the 'growth' parameter
-    required: false
-    type: str
-    default: 'MB'
-    choices: ['KB', 'MB', 'GB', 'TB']
-  growth:
-    description:
-      - How large to auto grow database files in the chosen 'growth_type'.
-    required: false
-    type: int
-  status:
-    description:
-      - Placeholder for future ability to add and drop a database.
+      - Whether or not the database should be created, remain, or be dropped.
     required: false
     type: str
     default: 'present'
-    choices: ['present']
+    choices: ['present', 'absent']
 author: "John McCall (@lowlydba)"
 notes:
   - Check mode is supported.

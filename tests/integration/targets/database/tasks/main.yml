@@ -1,0 +1,88 @@
+---
+- name: Var block
+  vars:
+    ansible_connection: "{{ pwsh_ansible_connection }}"
+    ansible_shell_type: "{{ pwsh_ansible_shell_type }}"
+    database_name: sqlserver_integration_db
+    maxdop: 1
+    secondary_maxdop: 0
+    owner_name: lowlydba
+    recovery_model: Simple
+    compatibility_low: Version140
+    compatibility_high: Version150
+  module_defaults:
+    lowlydba.sqlserver.database:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+  tags: ["database"]
+  block:
+
+    - name: Ensure a database exists
+      lowlydba.sqlserver.database:
+        database: "{{ database_name }}"
+        maxdop: "{{ maxdop }}"
+        secondary_maxdop: "{{ secondary_maxdop }}"
+        rcsi: true
+        owner_name: "{{ owner_name }}"
+        recovery_model: "{{ recovery_model }}"
+        compatibility: "{{ compatibility_low }}"
+      register: result
+    - assert:
+        that:
+          - result.data.Name == "{{ database_name }}"
+          - result.data.SecondaryMaxDop == {{ secondary_maxdop }}
+          - result.data.RCSI is true
+          - result.data.Owner == "{{ owner_name }}"
+          - result.data.RecoveryModel == "{{ recovery_model }}"
+          - result.data.MaxDop == {{ maxdop }}
+          - result.data.Compatibility == "{{ compatibility_low }}"
+
+    - name: Change a database
+      lowlydba.sqlserver.database:
+        database: "{{ database_name }}"
+        compatibility: "{{ compatibility_high }}"
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.Compatibility == "{{ compatibility_high }}"
+
+    - name: Change a database in checkmode
+      lowlydba.sqlserver.database:
+        database: "{{ database_name }}"
+        rcsi: false
+      register: result
+      check_mode: true
+    - assert:
+        that:
+          - result is changed
+          - result.data.RCSI is false
+
+    - name: Verify database unchanged from checkmode
+      lowlydba.sqlserver.database:
+        database: "{{ database_name }}"
+        rcsi: false
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.RCSI is false
+
+    - name: Drop a database
+      lowlydba.sqlserver.database:
+        database: "{{ database_name }}"
+        state: absent
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Create a database
+      lowlydba.sqlserver.database:
+        database: "{{ database_name }}"
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.Name == "sqlserver_integration_db"
