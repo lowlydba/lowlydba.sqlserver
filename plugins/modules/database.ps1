@@ -197,7 +197,7 @@ elseif ($state -eq "present") {
             }
         }
         catch {
-            $module.FailJson("Setting Read Commmitted Snapshot Isolation for [$database] failed.", $_.Exception.Message)
+            $module.FailJson("Setting Read Commmitted Snapshot Isolation for [$database] failed.", $_)
         }
     }
 
