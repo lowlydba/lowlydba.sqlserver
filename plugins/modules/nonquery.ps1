@@ -41,17 +41,19 @@ $checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 try {
-    if (-not($checkMode)) {
-        $invokeQuerySplat = @{
-            SqlInstance = $sqlInstance
-            SqlCredential = $sqlCredential
-            Database = $database
-            Query = $nonquery
-            QueryTimeout = $queryTimeout
-            EnableException = $true
-        }
-        $null = Invoke-DbaQuery @invokeQuerySplat
+    $invokeQuerySplat = @{
+        SqlInstance = $sqlInstance
+        SqlCredential = $sqlCredential
+        Database = $database
+        Query = $nonquery
+        QueryTimeout = $queryTimeout
+        EnableException = $true
     }
+    if ($checkMode) {
+        $invokeQuerySplat.Add("NoExec", $true)
+    }
+    $null = Invoke-DbaQuery @invokeQuerySplat
+
     $module.Result.changed = $true
     $module.ExitJson()
 }
