@@ -1,0 +1,96 @@
+---
+- name: Var block
+  vars:
+    ansible_connection: "{{ pwsh_ansible_connection }}"
+    ansible_shell_type: "{{ pwsh_ansible_shell_type }}"
+  module_defaults:
+    lowlydba.sqlserver.traceflag:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+  tags: ["traceflag"]
+  block:
+
+    - name: Set a traceflag
+      lowlydba.sqlserver.traceflag:
+        trace_flag: 999
+        enabled: true
+      register: result
+    - assert:
+        that:
+          - result.data.SqlInstance != None
+          - result.data.InstanceName != None
+          - result.data.TraceFlag == 999
+
+    - name: Enable an enabled traceflag
+      lowlydba.sqlserver.traceflag:
+        trace_flag: 999
+        enabled: true
+      register: result
+    - assert:
+        that:
+          - result.data.SqlInstance != None
+          - result.data.InstanceName != None
+          - result.data.TraceFlag == 999
+          - result is not changed
+
+    - name: Disable a traceflag
+      lowlydba.sqlserver.traceflag:
+        trace_flag: 999
+        enabled: false
+      register: result
+    - assert:
+        that:
+          - result.data.SqlInstance != None
+          - result.data.InstanceName != None
+          - result.data.TraceFlag == 999
+          - result is changed
+
+    - name: Disable a disabled traceflag
+      lowlydba.sqlserver.traceflag:
+        trace_flag: 999
+        enabled: false
+      register: result
+    - assert:
+        that:
+          - result.data.SqlInstance != None
+          - result.data.InstanceName != None
+          - result.data.TraceFlag == 999
+          - result is not changed
+
+    - name: Enable a traceflag
+      lowlydba.sqlserver.traceflag:
+        trace_flag: 999
+        enabled: true
+      register: result
+    - assert:
+        that:
+          - result.data.SqlInstance != None
+          - result.data.InstanceName != None
+          - result.data.TraceFlag == 999
+          - result is changed
+
+    - name: Disable a traceflag in checkmode
+      lowlydba.sqlserver.traceflag:
+        trace_flag: 999
+        enabled: false
+      register: result
+      check_mode: true
+    - assert:
+        that:
+          - result.data.SqlInstance != None
+          - result.data.InstanceName != None
+          - result.data.TraceFlag == 999
+          - result is changed
+
+    - name: Verify unchanged in checkmode
+      lowlydba.sqlserver.traceflag:
+        trace_flag: 999
+        enabled: false
+      register: result
+    - assert:
+        that:
+          - result.data.SqlInstance != None
+          - result.data.InstanceName != None
+          - result.data.TraceFlag == 999
+          - result is changed
