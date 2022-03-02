@@ -25,7 +25,7 @@ options:
     required: true
 author: "Sudhir Koduri (@kodurisudhir)"
 notes:
-  - Check mode is supported but the query is not parsed in check mode.
+  - Check mode is supported.
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
 '''
@@ -40,7 +40,7 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from the C(Enable-DbaTraceFlag) function.
+  description: Output from the C(Enable-DbaTraceFlag) or C(Disable-DbaTraceFlag) function.
   returned: success
   type: dict
 '''
