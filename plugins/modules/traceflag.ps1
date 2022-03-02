@@ -48,7 +48,7 @@ try {
     $server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
 
     if ($checkMode) {
-        $output =[PSCustomObject]@{
+        $output = [PSCustomObject]@{
             InstanceName = $server.ServiceName
             SqlInstance = $server.DomainInstanceName
             TraceFlag = $traceFlag
