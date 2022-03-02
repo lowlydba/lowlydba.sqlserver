@@ -75,7 +75,7 @@ To learn how to maintain / become a maintainer of this collection, refer to the 
 
 ## External requirements
 
-- PowerShell module: [DbaTools][dbatools] >= 1.1.71
+- PowerShell module: [DbaTools][dbatools] >= 1.1.74
 
 ## Using this collection
 
