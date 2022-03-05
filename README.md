@@ -24,6 +24,7 @@
 | [nonquery](plugins/modules/nonquery.ps1) | Executes a generic nonquery. |
 | [resource_governor](plugins/modules/resource_governor.ps1) | Configures the resource governor on a SQL Server instance. |
 | [sp_configure](plugins/modules/sp_configure.ps1) | Make instance level system configuration changes via sp_configure. |
+| [sp_whoisactive](plugins/modules/sp_whoisactive.ps1) | Install/update sp_whoisactive by Adam Mechanic. |
 | [trace_flag](plugins/modules/traceflag.ps1) | Enable or disable global trace flags on a SQL  Server instance. |
 
 ## Code of Conduct
