@@ -1,0 +1,43 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+# (c) 2022, John McCall (@lowlydba)
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+DOCUMENTATION = r'''
+---
+module: sp_whoisactive
+short_description: Install/update sp_whoisactive by Adam Mechanic.
+description:
+  - A wrapper for C(Install-DbaWhoIsActive) to fetch the latest version of the script, or install from a local cached version.
+options:
+  local_file:
+    description:
+      - Specifies the path to a local file to install sp_WhoisActive from.
+        This can be either the zip file as distributed by the website or the expanded SQL script.
+        If this parameter is not specified, the latest version will be downloaded and installed from https://github.com/amachanic/sp_whoisactive/releases
+    type: str
+    required: false
+  database:
+    description:
+      - Name of the target database.
+    type: str
+    required: true
+  force:
+    description:
+      - If this switch is enabled, then sp_WhoisActive will be downloaded from the internet even if previously cached.
+    type: bool
+    default: false
+author: "John McCall (@lowlydba)"
+notes:
+  - Check mode is supported.
+extends_documentation_fragment:
+  - lowlydba.sqlserver.sql_credentials
+'''
+
+EXAMPLES = r'''
+- name: Install/Update sp_whoisactive
+  lowlydba.sqlserver.sp_whoisactive:
+    sql_instance: sql-01.myco.io
+    database_name: lowlydba
+'''
