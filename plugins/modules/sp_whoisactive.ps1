@@ -41,11 +41,11 @@ $module.Result.changed = $false
 $name = "sp_whoisactive"
 $status = "Installed"
 $whoIsActiveSplat = @{
-    SqlInstance     = $SqlInstance
-    SqlCredential   = $SqlCredential
-    Database        = $Database
-    Force           = $force
-    Confirm         = $false
+    SqlInstance = $SqlInstance
+    SqlCredential = $SqlCredential
+    Database = $Database
+    Force = $force
+    Confirm = $false
     EnableException = $true
 }
 if ($null -ne $LocalFile) {
