@@ -1,0 +1,84 @@
+---
+- name: Var block
+  vars:
+    ansible_connection: "{{ pwsh_ansible_connection }}"
+    ansible_shell_type: "{{ pwsh_ansible_shell_type }}"
+    category_name: "Integration Tests"
+  module_defaults:
+    lowlydba.sqlserver.agent_job_category:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      category: "{{ category_name }}"
+  tags: ["agent_job_category"]
+  block:
+
+    - name: Create job category
+      lowlydba.sqlserver.agent_job_category:
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Name == "{{ category_name }}"
+          - result.data.ID != None
+          - result.data.CategoryType == "LocalJob"
+          - result.data.JobCount == 0
+
+    - name: Create existing job category
+      lowlydba.sqlserver.agent_job_category:
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Name == "{{ category_name }}"
+          - result.data.ID != None
+          - result.data.CategoryType == "LocalJob"
+          - result.data.JobCount == 0
+          - result is not changed
+
+    - name: Remove job category in check mode
+      lowlydba.sqlserver.agent_job_category:
+        state: absent
+      register: result
+      check_mode: true
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Name == "{{ category_name }}"
+          - result.data.Status == "Dropped"
+          - result.data.IsRemoved is true
+          - result is changed
+
+    - name: Remove job category
+      lowlydba.sqlserver.agent_job_category:
+        state: absent
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Name == "{{ category_name }}"
+          - result.data.Status == "Dropped"
+          - result.data.IsRemoved is true
+          - result is changed
+
+    - name: Create new job category
+      lowlydba.sqlserver.agent_job_category:
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Name == "{{ category_name }}"
+          - result.data.ID != None
+          - result.data.CategoryType == "LocalJob"
+          - result.data.JobCount == 0
+          - result is changed
