@@ -16,13 +16,13 @@ options:
       - Name of the category.
     required: true
     type: str
-	category_type:
-		description:
-			- The type of category. This can be C(LocalJob), C(MultiServerJob) or C(None).
+  category_type:
+    description:
+      - The type of category. This can be C(LocalJob), C(MultiServerJob) or C(None).
         If no category is used all categories types will be removed.
-		required: false
-		type: str
-		choices: ['LocalJob', 'MultiServerJob', 'None']
+    required: false
+    type: str
+    choices: ['LocalJob', 'MultiServerJob', 'None']
   state:
     description:
       - Whether or not the job category should be C(present) or C(absent).
