@@ -32,7 +32,7 @@ extends_documentation_fragment:
 
 EXAMPLES = r'''
 - name: Eliminate successful backup information from SQL Error Log
-  traceflag:
+  lowlydba.sqlserver.traceflag:
     sql_instance: sql-01.myco.io
     trace_flag: 3226
     enabled: true
