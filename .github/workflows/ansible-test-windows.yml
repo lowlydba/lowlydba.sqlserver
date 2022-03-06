@@ -269,13 +269,13 @@ jobs:
       # Run the integration tests
       - name: Run integration test
         run: |
-          pushd "${{ env.GHWS }}"
+          pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
           ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements
 
-      # ansible-test support producing code coverage date
+      # ansible-test support producing code coverage data
       - name: Generate coverage report
         run: |
-          pushd "${{ env.GHWS }}"
+          pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
           ansible-test coverage xml -v --requirements --group-by command --group-by version
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
