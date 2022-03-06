@@ -247,7 +247,7 @@ jobs:
               }
           }
           $ws = ConvertTo-LinuxPathCrappy -LiteralPath "${{ github.workspace }}"
-          Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$ws"
+          Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$ws`n" -NoNewLine
 
       - name: Install ansible-base (${{ matrix.ansible }})
         run: |
