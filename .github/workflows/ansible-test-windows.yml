@@ -257,8 +257,7 @@ jobs:
       # # OPTIONAL If your integration test requires Python libraries or modules from other collections
       # # Install them like this
       - name: Install collection dependencies
-        run: ansible-galaxy collection install ansible.windows -p .
-        working-directory: ${{ env.GHWS }}
+        run: ansible-galaxy collection install ansible.windows -p "${{ env.GHWS }}"
 
       - name: Set integration test options
         shell: bash
@@ -269,13 +268,15 @@ jobs:
 
       # Run the integration tests
       - name: Run integration test
-        run: ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements
-        working-directory: ${{ env.GHWS }}
+        run: |
+          pushd "${{ env.GHWS }}"
+          ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements
 
       # ansible-test support producing code coverage date
       - name: Generate coverage report
-        run: ansible-test coverage xml -v --requirements --group-by command --group-by version
-        working-directory: ${{ env.GHWS }}
+        run: |
+          pushd "${{ env.GHWS }}"
+          ansible-test coverage xml -v --requirements --group-by command --group-by version
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
       - uses: codecov/codecov-action@v1
