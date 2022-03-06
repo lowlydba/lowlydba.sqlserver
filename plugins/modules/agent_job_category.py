@@ -9,7 +9,8 @@ DOCUMENTATION = r'''
 module: agent_job_category
 short_description: Configures a SQL Agent job category.
 description:
-     - Creates if it doesn't exist, else does nothing. Should be run in advance of agent_job to ensure all needed categories are present.
+  - Creates if it doesn't exist, else does nothing.
+    Should be run in advance of agent_job to ensure all needed categories are present.
 options:
   category:
     description:
@@ -38,7 +39,7 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Remove any job steps > 2 from the Backup Job
+- name: Create a maintenance job category
   lowlydba.sqlserver.agent_job_category:
     sql_instance: sql-01.myco.io
     category: "Index Maintenance"
@@ -46,7 +47,7 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from the C(New-DbaAgentJobCategory) function.
+  description: Output from the C(New-DbaAgentJobCategory) or C(Remove-DbaAgentJobCategory) function.
   returned: success
   type: dict
 '''
