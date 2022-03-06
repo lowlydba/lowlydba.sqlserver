@@ -226,11 +226,11 @@ jobs:
       - name: Get Linux workspace path
         shell: pwsh
         run: |
-          Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$(wslpath --% -u -a "${{ github.workspace }}")"
+          Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$(wslpath --% -u -a ${{ github.workspace }})"
 
       - name: Install ansible-base (${{ matrix.ansible }})
         run: |
-          python3 -m pip install --upgrade pip setuptools --disable-pip-version-check
+          python3 -m pip install --upgrade pip setuptools pypsrp --disable-pip-version-check
           python3 -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
 
       # # OPTIONAL If your integration test requires Python libraries or modules from other collections
