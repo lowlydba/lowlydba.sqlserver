@@ -22,12 +22,12 @@ options:
       - Schedules and jobs can also be associated via agent_job.
       - See https://docs.dbatools.io/New-DbaAgentSchedule for more detailed usage.
     type: str
-  status:
+    required: true
+  enabled:
     description:
-      - Whether the schedule is C(Enabled) or C(Disabled).
-    type: str
-    default: 'Enabled'
-    choices: ['Enabled', 'Disabled']
+      - Whether the schedule is enabled or disabled.
+    type: bool
+    default: true
   force:
     description:
       - The force parameter will ignore some errors in the parameters and assume defaults.

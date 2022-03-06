@@ -17,8 +17,8 @@ $spec = @{
         sql_username = @{type = 'str'; required = $false }
         sql_password = @{type = 'str'; required = $false; no_log = $true }
         schedule = @{type = 'str'; required = $true }
-        job = @{type = 'str'; required = $false }
-        status = @{type = 'str'; required = $false; default = 'Enabled'; choices = @('Enabled', 'Disabled') }
+        job = @{type = 'str'; required = $true }
+        enabled = @{type = 'bool'; required = $false; default = $true }
         force = @{type = 'bool'; required = $false }
         frequency_type = @{type = 'str'; required = $false; choices = @('Once', 'OneTime', 'Daily', 'Weekly', 'Monthly', 'MonthlyRelative', 'AgentStart', 'AutoStart', 'IdleComputer', 'OnIdle') }
         frequency_interval = @{type = 'str'; required = $false; }
@@ -46,7 +46,7 @@ if ($null -ne $sqlUsername) {
 }
 $schedule = $module.Params.schedule
 $job = $module.Params.job
-$status = $module.Params.status
+$enabled = $module.Params.enabled
 $force = $module.Params.force
 $frequencyType = $module.Params.frequency_type
 $frequencyInterval = $module.Params.frequency_interval
@@ -64,15 +64,16 @@ $module.Result.changed = $false
 $scheduleParams = @{
     SqlInstance = $SqlInstance
     SqlCredential = $sqlCredential
-    Job = $job
     Force = $force
     Schedule = $schedule
-    FrequencyType = $frequencyType
     EnableException = $true
 }
 
-if ($status -eq "disabled") {
+if ($enabled -eq $false) {
     $scheduleParams.add("Disabled", $true)
+}
+if ($null -ne $job) {
+    $scheduleParams.add("Job", $job)
 }
 if ($null -ne $startDate) {
     $scheduleParams.add("StartDate", $startDate)
@@ -85,6 +86,9 @@ if ($null -ne $startTime) {
 }
 if ($null -ne $endTime) {
     $scheduleParams.add("EndTime", $endTime)
+}
+if ($null -ne $frequencyType) {
+    $scheduleParams.add("FrequencyType", $frequencyType)
 }
 if ($null -ne $frequencyInterval) {
     $scheduleParams.add("FrequencyInterval", $frequencyInterval)
@@ -103,16 +107,15 @@ if ($null -ne $frequencyRecurrenceFactor) {
 }
 
 try {
-    $existingSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -Schedule $ScheduleName -EnableException
-
+    $existingSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $schedule -EnableException
     if ($state -eq "present") {
         # Update schedule
         if ($null -ne $existingSchedule) {
             if (-not $checkMode) {
                 $output = Set-DbaAgentSchedule @scheduleParams
                 # Check if schedule was actually changed
-                $newSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -Schedule $ScheduleName -EnableException
-                $scheduleDiff = Compare-Object -ReferenceObject $existingSchedule -DifferenceObject $newSchedule
+                $modifiedSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $ScheduleName -EnableException
+                $scheduleDiff = Compare-Object -ReferenceObject $existingSchedule -DifferenceObject $modifiedSchedule
                 if ($null -ne $scheduleDiff) {
                     $module.Result.changed = $true
                 }
@@ -130,20 +133,27 @@ try {
             $module.Result.changed = $true
         }
     }
-    elseif ($state -eq "absent" -and $null -ne $existingSchedule) {
-        if (-not $checkMode) {
-            $removeScheduleSplat = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                Schedule = $schedule
-                Force = $true
-            }
-            $output = Remove-DbaAgentSchedule @removeScheduleSplat
+    elseif ($state -eq "absent") {
+        # Nothing to remove
+        if ($null -eq $existingSchedule) {
+            $module.ExitJson()
         }
-        $module.Result.changed = $true
+        # Remove schedule
+        else {
+            if (-not $checkMode) {
+                $removeScheduleSplat = @{
+                    SqlInstance = $sqlInstance
+                    SqlCredential = $sqlCredential
+                    Schedule = $schedule
+                    Confirm = $false
+                    Force = $true
+                }
+                $output = Remove-DbaAgentSchedule @removeScheduleSplat
+            }
+            $module.Result.changed = $true
+        }
     }
-    $outputHash = ConvertTo-HashTable -Object $output
-    $module.Result.data = $outputHash
+    $module.Result.data = Format-JsonOutput -Object $output
     $module.ExitJson()
 }
 catch {
