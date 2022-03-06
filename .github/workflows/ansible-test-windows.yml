@@ -226,7 +226,8 @@ jobs:
       - name: Get Linux workspace path
         shell: pwsh
         run: |
-          Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$(wslpath --% -u -a ${{ github.workspace }})"
+          $ws = & wslpath --% -u -a "${{ github.workspace }}""
+          Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$ws"
 
       - name: Install ansible-base (${{ matrix.ansible }})
         run: |
