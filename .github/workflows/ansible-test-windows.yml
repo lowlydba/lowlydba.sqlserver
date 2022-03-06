@@ -247,7 +247,7 @@ jobs:
               }
           }
           $ws = ConvertTo-LinuxPathCrappy -LiteralPath "${{ github.workspace }}"
-          Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$ws`n" -NoNewLine
+          Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$ws"
 
       - name: Install ansible-base (${{ matrix.ansible }})
         run: |
@@ -257,7 +257,8 @@ jobs:
       # # OPTIONAL If your integration test requires Python libraries or modules from other collections
       # # Install them like this
       - name: Install collection dependencies
-        run: ansible-galaxy collection install ansible.windows -p "$GHWS"
+        run: ansible-galaxy collection install ansible.windows -p .
+        working-directory: ${{ env.GHWS }}
 
       - name: Set integration test options
         shell: bash
