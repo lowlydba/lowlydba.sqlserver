@@ -216,6 +216,7 @@ jobs:
             git
             python3
             python3-pip
+            openssh-client
 
       # - name: Set up Python
       #   uses: actions/setup-python@v2
