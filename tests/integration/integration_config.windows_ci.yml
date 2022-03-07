@@ -1,0 +1,4 @@
+---
+sqlserver_instance: localhost
+sqlserver_username: sa
+sqlserver_password: L0wlydb4

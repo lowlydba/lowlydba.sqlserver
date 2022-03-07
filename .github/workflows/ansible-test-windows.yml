@@ -203,11 +203,11 @@ jobs:
           $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1'))
           & $sb -Verbose -ForceNewSSLCert 4>&1
 
-      # - name: Install a SQL Server
-      #   uses: potatoqualitee/mssqlsuite@v1
-      #   with:
-      #     install: sqlengine  #, sqlclient, sqlpackage, localdb
-      #     sa-password: L0wlydb4
+      - name: Install a SQL Server
+        uses: potatoqualitee/mssqlsuite@v1
+        with:
+          install: sqlengine  #, sqlclient, sqlpackage, localdb
+          sa-password: L0wlydb4
 
       - uses: Vampire/setup-wsl@v1
         with:
@@ -264,7 +264,7 @@ jobs:
         shell: bash
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration
         run: |
-          cp integration_config.sample.yml integration_config.yml
+          cp integration_config.windows_ci.yml integration_config.yml
           cp inventory.winrm.ci inventory.winrm
 
       # Run the integration tests
