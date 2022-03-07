@@ -22,6 +22,7 @@ on:
 env:
   NAMESPACE: lowlydba
   COLLECTION_NAME: sqlserver
+  DBATOOLS_VERSION: '1.1.74'
 
 jobs:
 
@@ -208,6 +209,12 @@ jobs:
         with:
           install: sqlengine  #, sqlclient, sqlpackage, localdb
           sa-password: L0wlydb4
+      
+      - name: Install and cache PowerShell modules
+        uses: potatoqualitee/psmodulecache@v4
+        with:
+          modules-to-cache: dbatools:1.1.74
+          shell: powershell
 
       - uses: Vampire/setup-wsl@v1
         with:
