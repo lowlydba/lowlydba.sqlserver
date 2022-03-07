@@ -3,4 +3,4 @@
   when: not sqlserver_windows
   ansible.builtin.command: >
     pwsh -Command "{{ dbatools_install_cmd }}"
-  no_log: '{{ ansible_verbosity < 3 }}'
+  no_log: '{{ ansible_verbosity | int < 3 }}'

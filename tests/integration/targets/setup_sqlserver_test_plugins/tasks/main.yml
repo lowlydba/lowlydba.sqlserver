@@ -1,0 +1,5 @@
+---
+- name: Set the connection and shell
+  set_fact:
+    ansible_connection: "{{ pwsh_ansible_connection }}"
+    ansible_shell_type: "{{ pwsh_ansible_shell_type }}"

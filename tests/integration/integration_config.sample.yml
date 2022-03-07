@@ -2,6 +2,3 @@
 sqlserver_instance: sqlserver
 sqlserver_username: sa
 sqlserver_password: L0wlydb4
-
-ansible_connection: "{{ pwsh_ansible_connection }}"
-ansible_shell_type: "{{ pwsh_ansible_shell_type }}"

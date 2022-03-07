@@ -2,4 +2,4 @@
 - name: Install Powershell modules
   ansible.windows.win_shell: |
     {{ dbatools_install_cmd }}
-  no_log: '{{ ansible_verbosity < 3 }}'
+  no_log: '{{ ansible_verbosity | int < 3 }}'
