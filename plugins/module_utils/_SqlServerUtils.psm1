@@ -58,10 +58,11 @@ function Format-JsonOutput {
         $Object
     )
     try {
-        # SMO properties that aren't useful generally
+        # SMO properties that aren't useful or may contain secrets
         $excludeProperty = @("Properties", "Urn", "ExecutionManager", "UserData")
         # If present, only use default property set
         $defaultPropertySet = $Object.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
+
         $output = $Object | Select-Object -Property $defaultPropertySet -ExcludeProperty $excludeProperty | ConvertTo-Json -Depth 0 -EnumsAsStrings
         return $output
     }
