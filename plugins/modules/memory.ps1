@@ -56,8 +56,7 @@ try {
         $module.Result.changed = $true
     }
 
-    $outputHash = ConvertTo-HashTable -Object $output
-    $module.Result.data = $outputHash
+    $module.Result.data = Format-JsonOutput -Object $output
     $module.ExitJson()
 }
 catch {

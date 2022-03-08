@@ -17,36 +17,6 @@ function Import-ModuleDependency {
     }
 }
 
-function ConvertTo-HashTable {
-    <#
-        .SYNOPSIS
-        Centralized way to convert DBATools' returned objects into hash tables.
-    #>
-    [CmdletBinding()]
-    param(
-        [PSCustomObject]
-        $Object
-    )
-    try {
-        $outputHash = @{}
-        [string[]] $defaultDisplayProperty = $Object.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
-        $objectProperty = ($Object | Select-Object -Property $defaultDisplayProperty).PSObject.Properties
-        foreach ($property in $objectProperty) {
-            $propertyName = $property.Name
-            switch -Wildcard ($property.TypeNameOfValue) {
-                "Microsoft.*Collection" { $outputHash[$propertyName] = [string[]]$Object.$propertyName.Name; break }
-                "Microsoft.SqlServer.Management.Smo*" { $outputHash[$propertyName] = $Object.$propertyName.ToString(); break }
-                "SqlCollaborative.DbaTools.Parameter.DbaInstanceParameter" { $outputHash[$propertyName] = $Object.$propertyName.FullName; break }
-                default { $outputHash[$propertyName] = $Object.$propertyName }
-            }
-        }
-        return $outputHash
-    }
-    catch {
-        Write-Error -Message "Unable to convert object to hash table: $($_.Exception.Message)" -TargetObject $Object
-    }
-}
-
 function Format-JsonOutput {
     <#
         .SYNOPSIS
@@ -71,4 +41,4 @@ function Format-JsonOutput {
     }
 }
 
-Export-ModuleMember -Function @("Import-ModuleDependency", "ConvertTo-HashTable", "Format-JsonOutput")
+Export-ModuleMember -Function @("Import-ModuleDependency", "Format-JsonOutput")

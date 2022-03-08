@@ -20,7 +20,7 @@ $spec = @{
         recovery_model = @{type = 'str'; required = $false; choices = @('Full', 'Simple', 'BulkLogged') }
         data_file_path = @{type = 'str'; required = $false }
         log_file_path = @{type = 'str'; required = $false }
-        owner_name = @{type = 'str'; required = $false; }
+        owner = @{type = 'str'; required = $false; }
         maxdop = @{type = 'int'; required = $false; }
         secondary_maxdop = @{type = 'int'; required = $false; }
         compatibility = @{type = 'str'; required = $false; }
@@ -43,7 +43,7 @@ $database = $module.Params.database
 $recoveryModel = $module.Params.recovery_model
 $dataFilePath = $module.Params.data_file_path
 $logFilePath = $module.Params.log_file_path
-$ownerName = $module.Params.owner_name
+$ownerName = $module.Params.owner
 $compatibility = $module.Params.compatibility
 [nullable[bool]]$rcsiEnabled = $module.Params.rcsi
 [nullable[int]]$maxDop = $module.Params.maxdop
@@ -239,6 +239,6 @@ elseif ($state -eq "present") {
         }
     }
 }
-$outputHash = ConvertTo-HashTable -Object $output
-$module.Result.data = $outputHash
+
+$module.Result.data = Format-JsonOutput -Object $output
 $module.ExitJson()

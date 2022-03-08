@@ -100,10 +100,9 @@ try {
         }
     }
 
-    $outputHash = ConvertTo-HashTable -Object $output
-    $module.Result.data = $outputHash
+    $module.Result.data = Format-JsonOutput -Object $output
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Installing Maintenance Solution failed.", $_.Exception.Message)
+    $module.FailJson("Installing Maintenance Solution failed.", $_)
 }

@@ -69,10 +69,9 @@ try {
         $module.Result.changed = $true
     }
 
-    $outputHash = ConvertTo-HashTable -Object $output
-    $module.Result.data = $outputHash
+    $module.Result.data = Format-JsonOutput -Object $output
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Setting resource governor failed.", $_.Exception.Message)
+    $module.FailJson("Setting resource governor failed.", $_)
 }

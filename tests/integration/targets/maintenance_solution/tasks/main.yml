@@ -18,7 +18,7 @@
       register: result
     - assert:
         that:
-          - result.data.Results == "Success"
+          - (result.data | from_json | json_query('Results')) == "Success"
           - result is changed
 
     - name: Install Maintenance Solution if not already present
@@ -27,5 +27,5 @@
       register: result
     - assert:
         that:
-          - result.data.Results == "Success"
+          - (result.data | from_json | json_query('Results')) == "Success"
           - result is not changed
