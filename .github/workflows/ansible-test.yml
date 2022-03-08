@@ -197,9 +197,6 @@ jobs:
       - name: Install ansible-base (${{ matrix.ansible }})
         run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
 
-      - name: Install required testing packages
-        run: pip install jmespath --disable-pip-version-check
-
       - name: Install collection dependencies
         run: ansible-galaxy collection install community.general -p .
 

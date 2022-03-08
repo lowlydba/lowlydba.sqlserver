@@ -6,3 +6,7 @@
         Install-Module dbatools -MinimumVersion {{ dbatools_min_version }} -Force
       }"
   no_log: true
+
+- name: Install python packages
+  ansible.builtin.pip:
+    name: jmespath
