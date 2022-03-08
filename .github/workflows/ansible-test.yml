@@ -60,6 +60,9 @@ jobs:
           # will run on all python versions it supports.
           python-version: 3.8
 
+      - name: Install required testing packages
+        run: pip install jmespath --disable-pip-version-check
+
       # Install the head of the given branch (devel, stable-2.10)
       - name: Install ansible-base (${{ matrix.ansible }})
         run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
