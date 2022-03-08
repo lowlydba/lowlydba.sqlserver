@@ -87,7 +87,7 @@ function ConvertTo-SerializableObject {
                     }
                     break
                 }
-                { $pValue -is [enum] -or $_ -is [type] } {
+                { $pValue -is [enum] -or $pValue -is [type] } {
                     @{
                         Name = $pName
                         Expression = { $pValue.ToString() }.GetNewClosure()
