@@ -18,8 +18,8 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('ComputerName')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
           - result.data.SqlInstance != None
           - result.data.Name == "{{ category_name }}"
           - result.data.ID != None
