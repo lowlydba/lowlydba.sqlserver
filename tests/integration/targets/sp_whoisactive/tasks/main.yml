@@ -18,13 +18,13 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('Status')) != None
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('ComputerName')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('Database')) == "{{ target_database }}"
-          - (result.data | from_json | json_query('Version')) != None
-          - (result.data | from_json | json_query('Status')) in ('Installed', 'Updated')
+          - result.data.Status != None
+          - result.data.SqlInstance != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.Database == "{{ target_database }}"
+          - result.data.Version != None
+          - result.data.Status in ('Installed', 'Updated')
           - result is changed
 
     - name: Update sp_whoisactive
@@ -32,12 +32,12 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('ComputerName')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('Database')) == "{{ target_database }}"
-          - (result.data | from_json | json_query('Version')) != None
-          - (result.data | from_json | json_query('Status')) == 'Updated'
+          - result.data.SqlInstance != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.Database == "{{ target_database }}"
+          - result.data.Version != None
+          - result.data.Status == 'Updated'
           - result is changed
 
     - name: Update sp_whoisactive in checkmode
@@ -46,10 +46,10 @@
       check_mode: true
     - assert:
         that:
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('ComputerName')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('Database')) == "{{ target_database }}"
-          - (result.data | from_json | json_query('Version')) == "n/a in check mode"
-          - (result.data | from_json | json_query('Status')) == 'Updated'
+          - result.data.SqlInstance != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.Database == "{{ target_database }}"
+          - result.data.Version == "n/a in check mode"
+          - result.data.Status == 'Updated'
           - result is changed

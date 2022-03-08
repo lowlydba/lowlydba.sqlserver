@@ -19,13 +19,13 @@
     - assert:
         that:
           - result.data != None
-          - (result.data | from_json | json_query('ComputerName')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('Name')) == "{{ category_name }}"
-          - (result.data | from_json | json_query('ID')) != None
-          - (result.data | from_json | json_query('CategoryType')) == "LocalJob"
-          - (result.data | from_json | json_query('JobCount')) == 0
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Name == "{{ category_name }}"
+          - result.data.ID != None
+          - result.data.CategoryType == "LocalJob"
+          - result.data.JobCount == 0
 
     - name: Create existing job category
       lowlydba.sqlserver.agent_job_category:
@@ -33,13 +33,13 @@
     - assert:
         that:
           - result.data != None
-          - (result.data | from_json | json_query('ComputerName')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('Name')) == "{{ category_name }}"
-          - (result.data | from_json | json_query('ID')) != None
-          - (result.data | from_json | json_query('CategoryType')) == "LocalJob"
-          - (result.data | from_json | json_query('JobCount')) == 0
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Name == "{{ category_name }}"
+          - result.data.ID != None
+          - result.data.CategoryType == "LocalJob"
+          - result.data.JobCount == 0
           - result is not changed
 
     - name: Remove job category in check mode
@@ -50,12 +50,12 @@
     - assert:
         that:
           - result.data != None
-          - (result.data | from_json | json_query('ComputerName')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('Name')) == "{{ category_name }}"
-          - (result.data | from_json | json_query('Status')) == "Dropped"
-          - (result.data | from_json | json_query('IsRemoved')) is true
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Name == "{{ category_name }}"
+          - result.data.Status == "Dropped"
+          - result.data.IsRemoved is true
           - result is changed
 
     - name: Remove job category
@@ -65,12 +65,12 @@
     - assert:
         that:
           - result.data != None
-          - (result.data | from_json | json_query('ComputerName')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('Name')) == "{{ category_name }}"
-          - (result.data | from_json | json_query('Status')) == "Dropped"
-          - (result.data | from_json | json_query('IsRemoved')) is true
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Name == "{{ category_name }}"
+          - result.data.Status == "Dropped"
+          - result.data.IsRemoved is true
           - result is changed
 
     - name: Create new job category
@@ -79,13 +79,13 @@
     - assert:
         that:
           - result.data != None
-          - (result.data | from_json | json_query('ComputerName')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('Name')) == "{{ category_name }}"
-          - (result.data | from_json | json_query('ID')) != None
-          - (result.data | from_json | json_query('CategoryType')) == "LocalJob"
-          - (result.data | from_json | json_query('JobCount')) == 0
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Name == "{{ category_name }}"
+          - result.data.ID != None
+          - result.data.CategoryType == "LocalJob"
+          - result.data.JobCount == 0
           - result is changed
 
   always:

@@ -18,10 +18,10 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('Total')) != None
-          - (result.data | from_json | json_query('PreviousMaxValue')) is defined
-          - (result.data | from_json | json_query('PreviousMaxValue')) != None
-          - (result.data | from_json | json_query('MaxValue')) == {{ max_memory_over_9000 }}
+          - result.data.Total != None
+          - result.data.PreviousMaxValue is defined
+          - result.data.PreviousMaxValue != None
+          - result.data.MaxValue == {{ max_memory_over_9000 }}
 
     - name: Don't change max memory
       lowlydba.sqlserver.memory:
@@ -37,9 +37,9 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('PreviousMaxValue')) == {{ max_memory_over_9000 }}
-          - (result.data | from_json | json_query('MaxValue')) != {{ max_memory_over_9000 }}
-          - (result.data | from_json | json_query('Total'))  > (result.data | from_json | json_query('MaxValue'))
+          - result.data.PreviousMaxValue == {{ max_memory_over_9000 }}
+          - result.data.MaxValue != {{ max_memory_over_9000 }}
+          - result.data.Total  > result.data.MaxValue
           - result is changed
 
     - name: Set max memory in checkmode
@@ -49,7 +49,7 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('MaxValue')) == {{ max_memory_over_9000 }}
+          - result.data.MaxValue == {{ max_memory_over_9000 }}
           - result is changed
 
     - name: Verify unchanged checkmode max memory
@@ -58,8 +58,8 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('PreviousMaxValue')) != {{ max_memory_over_9000 }}
-          - (result.data | from_json | json_query('MaxValue')) == {{ max_memory_over_9000 }}
+          - result.data.PreviousMaxValue != {{ max_memory_over_9000 }}
+          - result.data.MaxValue == {{ max_memory_over_9000 }}
           - result is changed
 
   always:

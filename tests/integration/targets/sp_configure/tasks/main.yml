@@ -18,11 +18,11 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('NewValue')) == 1
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('ComputerName')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('PreviousValue')) != None
+          - result.data.NewValue == 1
+          - result.data.SqlInstance != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.PreviousValue != None
 
     - name: Configure in checkmode
       lowlydba.sqlserver.sp_configure:
@@ -32,8 +32,8 @@
       check_mode: true
     - assert:
         that:
-          - (result.data | from_json | json_query('PreviousValue')) == 1
-          - (result.data | from_json | json_query('NewValue')) == 0
+          - result.data.PreviousValue == 1
+          - result.data.NewValue == 0
           - result is changed
 
     - name: Verify unchanged configuration
@@ -43,8 +43,8 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('PreviousValue')) == 1
-          - (result.data | from_json | json_query('NewValue')) == 0
+          - result.data.PreviousValue == 1
+          - result.data.NewValue == 0
           - result is changed
 
     - name: Unchanged configuration
@@ -54,6 +54,6 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('PreviousValue')) == 0
-          - (result.data | from_json | json_query('NewValue')) == 0
+          - result.data.PreviousValue == 0
+          - result.data.NewValue == 0
           - result is not changed

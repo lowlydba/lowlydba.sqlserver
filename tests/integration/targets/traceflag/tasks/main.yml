@@ -9,7 +9,7 @@
       sql_instance: "{{ sqlserver_instance }}"
       sql_username: "{{ sqlserver_username }}"
       sql_password: "{{ sqlserver_password }}"
-      trace_flag: "{{ trace_flag }}"
+      trace_flag:  "{{ trace_flag }}"
   tags: ["traceflag"]
   block:
 
@@ -19,9 +19,9 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('TraceFlag')) == "{{ trace_flag }}"
+          - result.data.SqlInstance != None
+          - result.data.InstanceName != None
+          - result.data.TraceFlag == {{ trace_flag }}
 
     - name: Enable an enabled traceflag
       lowlydba.sqlserver.traceflag:
@@ -29,9 +29,9 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('TraceFlag')) == "{{ trace_flag }}"
+          - result.data.SqlInstance != None
+          - result.data.InstanceName != None
+          - result.data.TraceFlag == {{ trace_flag }}
           - result is not changed
 
     - name: Disable a traceflag
@@ -40,9 +40,9 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('TraceFlag')) == "{{ trace_flag }}"
+          - result.data.SqlInstance != None
+          - result.data.InstanceName != None
+          - result.data.TraceFlag == {{ trace_flag }}
           - result is changed
 
     - name: Disable a disabled traceflag
@@ -51,9 +51,9 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('TraceFlag')) == "{{ trace_flag }}"
+          - result.data.SqlInstance != None
+          - result.data.InstanceName != None
+          - result.data.TraceFlag ==  {{ trace_flag }}
           - result is not changed
 
     - name: Enable a traceflag
@@ -62,9 +62,9 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('TraceFlag')) == "{{ trace_flag }}"
+          - result.data.SqlInstance != None
+          - result.data.InstanceName != None
+          - result.data.TraceFlag ==  {{ trace_flag }}
           - result is changed
 
     - name: Disable a traceflag in checkmode
@@ -74,9 +74,9 @@
       check_mode: true
     - assert:
         that:
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('TraceFlag')) == "{{ trace_flag }}"
+          - result.data.SqlInstance != None
+          - result.data.InstanceName != None
+          - result.data.TraceFlag ==  {{ trace_flag }}
           - result is changed
 
     - name: Verify unchanged in checkmode
@@ -85,9 +85,9 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - (result.data | from_json | json_query('InstanceName')) != None
-          - (result.data | from_json | json_query('TraceFlag')) == "{{ trace_flag }}"
+          - result.data.SqlInstance != None
+          - result.data.InstanceName != None
+          - result.data.TraceFlag ==  {{ trace_flag }}
           - result is changed
 
   always:

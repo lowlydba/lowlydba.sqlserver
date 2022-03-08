@@ -29,12 +29,12 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('Name')) == "{{ database_name }}"
-          - (result.data | from_json | json_query('RCSI')) is true
-          - (result.data | from_json | json_query('Owner')) == "{{ sqlserver_username }}"
-          - (result.data | from_json | json_query('RecoveryModel')) == "{{ recovery_model }}"
-          - (result.data | from_json | json_query('MaxDop')) == {{ maxdop }}
-          - (result.data | from_json | json_query('Compatibility')) == "{{ compatibility_low }}"
+          - result.data.Name == "{{ database_name }}"
+          - result.data.RCSI is true
+          - result.data.Owner == "{{ sqlserver_username }}"
+          - result.data.RecoveryModel == "{{ recovery_model }}"
+          - result.data.MaxDop == {{ maxdop }}
+          - result.data.Compatibility == "{{ compatibility_low }}"
 
     - name: Change a database
       lowlydba.sqlserver.database:
@@ -46,9 +46,9 @@
     - assert:
         that:
           - result is changed
-          - (result.data | from_json | json_query('Compatibility')) =="{{ compatibility_high }}"
-          - (result.data | from_json | json_query('Owner')) == "{{ owner_name }}"
-          - (result.data | from_json | json_query('SecondaryMaxDop')) == {{ secondary_maxdop }}
+          - result.data.Compatibility =="{{ compatibility_high }}"
+          - result.data.Owner == "{{ owner_name }}"
+          - result.data.SecondaryMaxDop == {{ secondary_maxdop }}
 
     - name: Change a database in checkmode
       lowlydba.sqlserver.database:
@@ -59,7 +59,7 @@
     - assert:
         that:
           - result is changed
-          - (result.data | from_json | json_query('RCSI')) is false
+          - result.data.RCSI is false
 
     - name: Verify database unchanged from checkmode
       lowlydba.sqlserver.database:
@@ -69,7 +69,7 @@
     - assert:
         that:
           - result is changed
-          - (result.data | from_json | json_query('RCSI')) is false
+          - result.data.RCSI is false
 
     - name: Drop a database
       lowlydba.sqlserver.database:
@@ -87,7 +87,7 @@
     - assert:
         that:
           - result is changed
-          - (result.data | from_json | json_query('Name')) == "{{ database_name }}"
+          - result.data.Name == "{{ database_name }}"
 
   always:
     - name: Drop a database

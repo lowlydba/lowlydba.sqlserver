@@ -80,7 +80,8 @@ try {
         }
     }
 
-    $module.Result.data = Format-JsonOutput -Object $output
+    $resultData = ConvertTo-SerializableObject -InputObject $output
+    $module.Result.data = $resultData
     $module.ExitJson()
 }
 catch {

@@ -17,10 +17,10 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('Enabled')) is true
-          - (result.data | from_json | json_query('ComputerName')) != None
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - "'default' in (result.data | from_json | json_query('ResourcePools'))"
+          - result.data.Enabled is true
+          - result.data.ComputerName != None
+          - result.data.SqlInstance != None
+          - "'default' in result.data.ResourcePools"
 
     - name: Disable resource_governor
       lowlydba.sqlserver.resource_governor:
@@ -28,8 +28,8 @@
       register: result
     - assert:
         that:
-          - (result.data | from_json | json_query('Enabled')) is false
-          - (result.data | from_json | json_query('ComputerName')) != None
-          - (result.data | from_json | json_query('SqlInstance')) != None
-          - "'default' in (result.data | from_json | json_query('ResourcePools'))"
+          - result.data.Enabled is false
+          - result.data.ComputerName != None
+          - result.data.SqlInstance != None
+          - "'default' in result.data.ResourcePools"
           - result is changed
