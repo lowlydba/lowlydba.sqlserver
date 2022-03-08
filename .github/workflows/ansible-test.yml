@@ -197,10 +197,8 @@ jobs:
       - name: Install ansible-base (${{ matrix.ansible }})
         run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
 
-      # # OPTIONAL If your integration test requires Python libraries or modules from other collections
-      # # Install them like this
-      # - name: Install collection dependencies
-      #   run: ansible-galaxy collection install ansible.netcommon -p .
+      - name: Install collection dependencies
+        run: ansible-galaxy collection install community.general -p .
 
       - name: Set integration test options
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration
