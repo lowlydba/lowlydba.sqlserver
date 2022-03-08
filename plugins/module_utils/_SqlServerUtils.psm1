@@ -33,7 +33,7 @@ function Format-JsonOutput {
         # If present, only use default property set
         $defaultPropertySet = $Object.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
 
-        $output = $Object | Select-Object -Property $defaultPropertySet -ExcludeProperty $excludeProperty | ConvertTo-Json -Depth 0 -EnumsAsStrings
+        $output = $Object | Select-Object -Property $defaultPropertySet -ExcludeProperty $excludeProperty | ConvertTo-Json -Depth 1 -EnumsAsStrings
         return $output
     }
     catch {
