@@ -80,28 +80,28 @@ function ConvertTo-SerializableObject {
             $pValue = $p.Value
 
             switch ($p) {
-                {$pValue -is [datetime] } {
+                { $pValue -is [datetime] } {
                     @{
                         Name = $pName
                         Expression = { $pValue.ToString('o') }.GetNewClosure()
                     }
                     break
                 }
-                {$pValue -is [enum] -or $_ -is [type]} {
+                { $pValue -is [enum] -or $_ -is [type] } {
                     @{
                         Name = $pName
                         Expression = { $pValue.ToString() }.GetNewClosure()
                     }
                     break
                 }
-                {$pValue -is [Microsoft.SqlServer.Management.Smo.SimpleObjectCollectionBase]} {
+                { $pValue -is [Microsoft.SqlServer.Management.Smo.SimpleObjectCollectionBase] } {
                     @{
                         Name = $pName
                         Expression = { [string[]]($pValue.Name) }.GetNewClosure()
                     }
                     break
                 }
-                default { $pName}
+                default { $pName }
             }
         }
         return $InputObject | Select-Object -Property $properties
