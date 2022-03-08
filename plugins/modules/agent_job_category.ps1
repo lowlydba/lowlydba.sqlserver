@@ -20,6 +20,9 @@ $spec = @{
         category_type = @{type = 'str'; required = $false; choices = @('LocalJob', 'MultiServerJob', 'None') }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
+    required_together = @(
+        , @('sql_username', 'sql_password')
+    )
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
