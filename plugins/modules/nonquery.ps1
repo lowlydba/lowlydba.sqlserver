@@ -58,5 +58,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Executing nonquery failed.", $_.Exception.Message)
+    $module.FailJson("Executing nonquery failed.", $_)
 }

@@ -29,7 +29,7 @@
     - assert:
         that:
           - result.data.Enabled is false
-          - result is changed
           - result.data.ComputerName != None
           - result.data.SqlInstance != None
           - "'default' in result.data.ResourcePools"
+          - result is changed

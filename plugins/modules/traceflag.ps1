@@ -80,8 +80,8 @@ try {
         }
     }
 
-    $outputHash = ConvertTo-HashTable -Object $output
-    $module.Result.data = $outputHash
+    $resultData = ConvertTo-SerializableObject -InputObject $output
+    $module.Result.data = $resultData
     $module.ExitJson()
 }
 catch {

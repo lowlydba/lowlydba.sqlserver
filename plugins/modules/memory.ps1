@@ -36,10 +36,15 @@ $module.Result.changed = $false
 try {
     if ($checkMode) {
         # Make an equivalent output
-        $output = Test-DbaMaxMemory -SqlInstance $sqlInstance -SqlCredential $sqlCredential -EnableException
-        $output | Add-Member -MemberType NoteProperty -Name "PreviousMaxValue" -Value $output.MaxValue
-        $output = $output | Select-Object -ExcludeProperty "InstanceCount"
-        $output.MaxValue = $max
+        $server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
+        $output = [PSCustomObject]@{
+            ComputerName = $server.ComputerName
+            InstanceName = $server.ServiceName
+            SqlInstance = $server.DomainInstanceName
+            Total = $server.PhysicalMemory
+            MaxValue = $max
+            PreviousMaxValue = $server.Configuration.MaxServerMemory.ConfigValue
+        }
     }
     else {
         # Set max memory
@@ -56,10 +61,10 @@ try {
         $module.Result.changed = $true
     }
 
-    $outputHash = ConvertTo-HashTable -Object $output
-    $module.Result.data = $outputHash
+    $resultData = ConvertTo-SerializableObject -InputObject $output
+    $module.Result.data = $resultData
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Error setting max memory.", $_.Exception.Message)
+    $module.FailJson("Error setting max memory.", $_)
 }
