@@ -213,7 +213,7 @@ jobs:
       - name: Install and cache PowerShell modules
         uses: potatoqualitee/psmodulecache@v4.5
         with:
-          modules-to-cache: dbatools:1.1.74, Pester:4.10.1
+          modules-to-cache: dbatools:1.1.74
           shell: powershell
 
       - uses: Vampire/setup-wsl@v1
