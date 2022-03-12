@@ -13,9 +13,6 @@ $ErrorActionPreference = "Stop"
 $spec = @{
     supports_check_mode = $true
     options = @{
-        sql_instance = @{type = 'str'; required = $true }
-        sql_username = @{type = 'str'; required = $false }
-        sql_password = @{type = 'str'; required = $false; no_log = $true }
         database = @{type = 'str'; required = $true }
         recovery_model = @{type = 'str'; required = $false; choices = @('Full', 'Simple', 'BulkLogged') }
         data_file_path = @{type = 'str'; required = $false }
@@ -27,18 +24,11 @@ $spec = @{
         rcsi = @{type = 'bool'; required = $false; }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
-    required_together = @(
-        , @('sql_username', 'sql_password')
-    )
 }
 
-$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
 $sqlInstance = $module.Params.sql_instance
-$sqlUsername = $module.Params.sql_username
-if ($null -ne $sqlUsername) {
-    [securestring]$secPassword = ConvertTo-SecureString $module.Params.sql_password -AsPlainText -Force
-    [pscredential]$sqlCredential = New-Object System.Management.Automation.PSCredential ($sqlUsername, $secPassword)
-}
+$sqlCredential = Get-SqlCredential -Module $module
 $database = $module.Params.database
 $recoveryModel = $module.Params.recovery_model
 $dataFilePath = $module.Params.data_file_path
