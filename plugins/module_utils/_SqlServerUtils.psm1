@@ -48,7 +48,7 @@ function Get-SqlCredential {
     #>
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [ValidateScript({ $_.GetType().FullName -eq 'Ansible.Basic.AnsibleModule' })]
         $Module
     )
@@ -62,7 +62,7 @@ function Get-SqlCredential {
         }
         return $sqlCredential
     }
-    catch  {
+    catch {
         Write-Error ("Error building Credential for SQL Authentication spec.")
     }
 }
