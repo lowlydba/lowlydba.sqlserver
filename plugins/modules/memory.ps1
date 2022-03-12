@@ -14,19 +14,12 @@ $ErrorActionPreference = "Stop"
 $spec = @{
     supports_check_mode = $true
     options = @{
-        sql_instance = @{type = "str"; required = $true }
-        sql_username = @{type = "str"; required = $false }
-        sql_password = @{type = "str"; required = $false; no_log = $true }
         max = @{type = "int"; required = $false; default = 0 }
     }
-    required_together = @(, @("sql_username", "sql_password"))
 }
-$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
-$SqlUsername = $module.Params.sql_username
-if ($null -ne $SqlUsername) {
-    [securestring]$secPassword = ConvertTo-SecureString $module.Params.sql_password -AsPlainText -Force
-    [pscredential]$sqlCredential = New-Object System.Management.Automation.PSCredential ($SqlUsername, $secPassword)
-}
+
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
+$sqlCredential = Get-SqlCredential -Module $module
 $sqlInstance = $module.Params.sql_instance
 $max = $module.Params.max
 $checkMode = $module.CheckMode

@@ -13,9 +13,6 @@ $ErrorActionPreference = "Stop"
 $spec = @{
     supports_check_mode = $true
     options = @{
-        sql_instance = @{type = 'str'; required = $true }
-        sql_username = @{type = 'str'; required = $false }
-        sql_password = @{type = 'str'; required = $false; no_log = $true }
         backup_location = @{type = 'str'; required = $false }
         cleanup_time = @{type = 'int'; required = $false; }
         output_file_dir = @{type = 'str'; required = $false }
@@ -28,18 +25,11 @@ $spec = @{
         force = @{type = 'bool'; required = $false; default = $false }
         install_parallel = @{type = 'bool'; required = $false; default = $false }
     }
-    required_together = @(
-        , @('sql_username', 'sql_password')
-    )
 }
 
-$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
 $sqlInstance = $module.Params.sql_instance
-$sqlUsername = $module.Params.sql_username
-if ($null -ne $sqlUsername) {
-    [securestring]$secPassword = ConvertTo-SecureString $module.Params.sql_password -AsPlainText -Force
-    [pscredential]$sqlCredential = New-Object System.Management.Automation.PSCredential ($sqlUsername, $secPassword)
-}
+$sqlCredential = Get-SqlCredential -Module $module
 $database = $module.Params.database
 $backupLocation = $module.Params.backup_location
 $outputFileDirectory = $module.Params.output_file_dir

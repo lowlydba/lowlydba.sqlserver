@@ -16,6 +16,56 @@ function Import-ModuleDependency {
         Write-Warning -Message "Unable to import DbaTools >= $MinimumVersion."
     }
 }
+function Get-LowlyDbaSqlServerAuthSpec {
+    <#
+        .SYNOPSIS
+        Output the auth spec used by every module.
+
+        .DESCRIPTION
+        Standardized way to access the common auth spec for modules.
+        Uses the recommended Ansible naming convention.
+    #>
+    @{
+        options = @{
+            sql_instance = @{type = 'str'; required = $true }
+            sql_username = @{type = 'str'; required = $false }
+            sql_password = @{type = 'str'; required = $false; no_log = $true }
+        }
+        required_together = @(
+            , @('sql_username', 'sql_password')
+        )
+    }
+}
+
+function Get-SqlCredential {
+    <#
+        .SYNOPSIS
+        Build a credential object for SQL Authentication.
+
+        .DESCRIPTION
+        Standardized way to build a SQL Credential object that
+        is required for SQL Authentication.
+    #>
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory=$true)]
+        [ValidateScript({ $_.GetType().FullName -eq 'Ansible.Basic.AnsibleModule' })]
+        $Module
+    )
+    try {
+        if ($null -ne $Module.Params.sql_username) {
+            [securestring]$secPassword = ConvertTo-SecureString $Module.Params.sql_password -AsPlainText -Force
+            [pscredential]$sqlCredential = New-Object System.Management.Automation.PSCredential ($Module.Params.sql_username, $secPassword)
+        }
+        else {
+            $sqlCredential = $null
+        }
+        return $sqlCredential
+    }
+    catch  {
+        Write-Error ("Error building Credential for SQL Authentication spec.")
+    }
+}
 
 function ConvertTo-SerializableObject {
     <#
@@ -108,4 +158,5 @@ function ConvertTo-SerializableObject {
     }
 }
 
-Export-ModuleMember -Function @("Import-ModuleDependency", "ConvertTo-SerializableObject")
+$exportMembers = @("Import-ModuleDependency", "Get-SqlCredential", "ConvertTo-SerializableObject", "Get-LowlyDbaSqlServerAuthSpec")
+Export-ModuleMember -Function $exportMembers
