@@ -20,7 +20,7 @@ $spec = @{
         owner_login = @{type = 'str'; required = $false; }
         start_step_id = @{type = 'int'; required = $false; }
         schedule = @{type = 'str'; required = $false; }
-        force = @{type = 'bool'; required = $false; default = $false}
+        force = @{type = 'bool'; required = $false; default = $false }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
 }
@@ -47,7 +47,7 @@ try {
     $output = $existingJob
 
     if ($state -eq "absent") {
-        if ($null -ne $existingJob){
+        if ($null -ne $existingJob) {
             if (-not $checkMode) {
                 $output = Remove-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -Confirm:$false -EnableException
             }
@@ -99,7 +99,7 @@ try {
         else {
             # Compare existing values with passed params, skipping over values not specified
             $existingJob | Add-Member -MemberType NoteProperty -Name 'OwnerLogin' -Value $existingJob.OwnerLoginName
-            $keys = $jobParams.Keys | Where-Object {$_ -ne 'SqlInstance'}
+            $keys = $jobParams.Keys | Where-Object { $_ -ne 'SqlInstance' }
             $compareProperty = ($existingJob.Properties | Where-Object Name -in $keys).Name
             $diff = Compare-Object -ReferenceObject $existingJob -DifferenceObject $jobParams -Property $compareProperty
             # Update job
