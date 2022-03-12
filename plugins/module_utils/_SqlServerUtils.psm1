@@ -123,38 +123,38 @@ function ConvertTo-SerializableObject {
     )
 
     Process {
-        $defaultProperty = $InputObject.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
-        $objectProperty = $InputObject.PSObject.Properties | Where-Object { $_.Name -in $defaultProperty -and $_.Name -notin $ExcludeProperty }
-        $properties = foreach ($p in $objectProperty) {
-            $pName = $p.Name
-            $pValue = $p.Value
+            $defaultProperty = $InputObject.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
+            $objectProperty = $InputObject.PSObject.Properties | Where-Object { $_.Name -in $defaultProperty -or $_.Name -notin $ExcludeProperty}
+            $properties = foreach ($p in $objectProperty) {
+                $pName = $p.Name
+                $pValue = $p.Value
 
-            switch ($p) {
-                { $pValue -is [datetime] } {
-                    @{
-                        Name = $pName
-                        Expression = { $pValue.ToString('o') }.GetNewClosure()
+                switch ($p) {
+                    { $pValue -is [datetime] } {
+                        @{
+                            Name = $pName
+                            Expression = { $pValue.ToString('o') }.GetNewClosure()
+                        }
+                        break
                     }
-                    break
-                }
-                { $pValue -is [enum] -or $pValue -is [type] } {
-                    @{
-                        Name = $pName
-                        Expression = { $pValue.ToString() }.GetNewClosure()
+                    { $pValue -is [enum] -or $pValue -is [type] } {
+                        @{
+                            Name = $pName
+                            Expression = { $pValue.ToString() }.GetNewClosure()
+                        }
+                        break
                     }
-                    break
-                }
-                { $pValue -is [Microsoft.SqlServer.Management.Smo.SimpleObjectCollectionBase] } {
-                    @{
-                        Name = $pName
-                        Expression = { [string[]]($pValue.Name) }.GetNewClosure()
+                    { $pValue -is [Microsoft.SqlServer.Management.Smo.SimpleObjectCollectionBase] } {
+                        @{
+                            Name = $pName
+                            Expression = { [string[]]($pValue.Name) }.GetNewClosure()
+                        }
+                        break
                     }
-                    break
+                    default { $pName }
                 }
-                default { $pName }
             }
-        }
-        return $InputObject | Select-Object -Property $properties
+            return $InputObject | Select-Object -Property $properties
     }
 }
 

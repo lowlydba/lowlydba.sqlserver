@@ -10,7 +10,6 @@ module: agent_job_category
 short_description: Configures a SQL Agent job category.
 description:
   - Creates if it doesn't exist, else does nothing.
-    Should be run in advance of agent_job to ensure all needed categories are present.
 options:
   category:
     description:
