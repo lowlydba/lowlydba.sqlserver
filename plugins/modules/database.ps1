@@ -33,7 +33,7 @@ $database = $module.Params.database
 $recoveryModel = $module.Params.recovery_model
 $dataFilePath = $module.Params.data_file_path
 $logFilePath = $module.Params.log_file_path
-$ownerName = $module.Params.owner
+$owner = $module.Params.owner
 $compatibility = $module.Params.compatibility
 [nullable[bool]]$rcsiEnabled = $module.Params.rcsi
 [nullable[int]]$maxDop = $module.Params.maxdop
@@ -81,7 +81,6 @@ try {
                     SqlInstance = $sqlInstance
                     SqlCredential = $sqlCredential
                     Database = $database
-                    Owner = $OwnerName
                     EnableException = $true
                 }
                 if ($null -ne $dataFilePath) {
@@ -90,8 +89,12 @@ try {
                 if ($null -ne $logFilePath) {
                     $newDbParams.Add("LogFilePath", $logFilePath)
                 }
+                if ($null -ne $owner) {
+                    $newDbParams.Add("Owner", $owner)
+                }
                 $output = New-DbaDatabase @newDbParams
                 $module.Result.changed = $true
+
             }
             catch {
                 $module.FailJson("Creating database [$database] failed.", $_)
@@ -99,15 +102,15 @@ try {
         }
 
         # Set Owner
-        elseif ($null -ne $ownerName) {
+        elseif ($null -ne $owner) {
             try {
-                if ($existingDatabase.Owner -ne $ownerName) {
+                if ($existingDatabase.Owner -ne $owner) {
                     if (-not($checkMode)) {
                         $setDbParams = @{
                             SqlInstance = $sqlInstance
                             SqlCredential = $sqlCredential
                             Database = $database
-                            TargetLogin = $ownerName
+                            TargetLogin = $owner
                             EnableException = $true
                         }
                         $null = Set-DbaDbOwner @setDbParams
@@ -116,6 +119,7 @@ try {
                 # Re-fetch the output since Owner is a read-only property
                 $output = Get-DbaDatabase @getDatabaseHash
                 $module.Result.changed = $true
+
             }
             catch {
                 $module.FailJson("Setting database owner for [$database] failed.", $_)
@@ -235,5 +239,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Configuring database failed.", $_)
+    $module.FailJson("Configuring database failed. Error: $($_.Exception.Message)", $_)
 }

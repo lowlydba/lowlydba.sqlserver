@@ -41,6 +41,7 @@ $installParallel = $module.Params.install_parallel
 $logToTable = $module.Params.log_to_table
 $localFile = $module.Params.local_file
 $force = $module.Params.force
+$checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 try {
@@ -74,16 +75,21 @@ try {
     }
 
     try {
-        $output = Install-DbaMaintenanceSolution @maintenanceSolutionSplat
+        if (-not $checkMode) {
+            $output = Install-DbaMaintenanceSolution @maintenanceSolutionSplat
+        }
         $module.Result.changed = $true
     }
     catch {
         $errMessage = $_.Exception.Message
         if ($errMessage -like "*Maintenance Solution already exists*") {
-            $connection = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
-            $connection = $connection | Select-Object -Property ComputerName, InstanceName, SqlInstance
-            $connection | Add-Member -MemberType NoteProperty -Name "Results" -Value "Success"
-            $output = $connection
+            $server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
+            $output = [PSCustomObject]@{
+                ComputerName = $server.ComputerName
+                InstanceName = $server.ServiceName
+                SqlInstance = $server.DomainInstanceName
+                Results = "Success"
+            }
         }
         else {
             Write-Error -Message $errMessage
