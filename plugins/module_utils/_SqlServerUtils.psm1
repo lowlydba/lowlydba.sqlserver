@@ -116,6 +116,10 @@ function ConvertTo-SerializableObject {
             #>
             'ServerVersion',
             <#
+                Server is redundant.
+            #>
+            'Server',
+            <#
                 Parent is not useful.
             #>
             'Parent'
