@@ -128,7 +128,12 @@ function ConvertTo-SerializableObject {
 
     Process {
         $defaultProperty = $InputObject.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
-        $objectProperty = $InputObject.PSObject.Properties | Where-Object { $_.Name -in $defaultProperty -and $_.Name -notin $ExcludeProperty }
+        if ($defaultProperty) {
+            $objectProperty = $InputObject.PSObject.Properties | Where-Object { $_.Name -in $defaultProperty -and $_.Name -notin $ExcludeProperty }
+        }
+        else {
+            $objectProperty = $InputObject.PSObject.Properties | Where-Object { $_.Name -notin $ExcludeProperty }
+        }
         $properties = foreach ($p in $objectProperty) {
             $pName = $p.Name
             $pValue = $p.Value
@@ -148,7 +153,7 @@ function ConvertTo-SerializableObject {
                     }
                     break
                 }
-                { $pValue -is [Microsoft.SqlServer.Management.Smo.SimpleObjectCollectionBase] } {
+                { $pValue.GetType().Name -like '*Collection' } {
                     @{
                         Name = $pName
                         Expression = { [string[]]($pValue.Name) }.GetNewClosure()
