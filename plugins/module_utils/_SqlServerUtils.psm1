@@ -128,7 +128,7 @@ function ConvertTo-SerializableObject {
 
     Process {
         $defaultProperty = $InputObject.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
-        $objectProperty = $InputObject.PSObject.Properties | Where-Object { $_.Name -in $defaultProperty -or $_.Name -notin $ExcludeProperty }
+        $objectProperty = $InputObject.PSObject.Properties | Where-Object { $_.Name -in $defaultProperty -and $_.Name -notin $ExcludeProperty }
         $properties = foreach ($p in $objectProperty) {
             $pName = $p.Name
             $pValue = $p.Value

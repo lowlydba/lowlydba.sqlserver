@@ -3,7 +3,7 @@
   vars:
     ansible_connection: "{{ pwsh_ansible_connection }}"
     ansible_shell_type: "{{ pwsh_ansible_shell_type }}"
-    database_name: sqlserver_integration_db
+    database_name: "sqlserver_integration_db"
     maxdop: 1
     secondary_maxdop: 0
     owner_name: sa
@@ -15,12 +15,11 @@
       sql_instance: "{{ sqlserver_instance }}"
       sql_username: "{{ sqlserver_username }}"
       sql_password: "{{ sqlserver_password }}"
+      database: "{{ database_name }}"
   tags: ["database"]
   block:
-
     - name: Ensure a database exists
       lowlydba.sqlserver.database:
-        database: "{{ database_name }}"
         maxdop: "{{ maxdop }}"
         secondary_maxdop: "{{ secondary_maxdop }}"
         rcsi: true
