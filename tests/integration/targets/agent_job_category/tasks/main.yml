@@ -18,6 +18,7 @@
       register: result
     - assert:
         that:
+          - result.data != None
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
@@ -31,6 +32,7 @@
       register: result
     - assert:
         that:
+          - result.data != None
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
@@ -47,6 +49,7 @@
       check_mode: true
     - assert:
         that:
+          - result.data != None
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
@@ -61,6 +64,7 @@
       register: result
     - assert:
         that:
+          - result.data != None
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
@@ -74,6 +78,7 @@
       register: result
     - assert:
         that:
+          - result.data != None
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
@@ -82,3 +87,8 @@
           - result.data.CategoryType == "LocalJob"
           - result.data.JobCount == 0
           - result is changed
+
+  always:
+    - name: Remove job category
+      lowlydba.sqlserver.agent_job_category:
+        state: absent

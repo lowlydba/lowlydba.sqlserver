@@ -34,9 +34,9 @@ options:
         Only used if database is being created.
     type: str
     required: false
-  owner_name:
+  owner:
     description:
-      - Database owner login
+      - Database owner login.
     type: str
     required: false
   maxdop:

@@ -13,9 +13,6 @@ $ErrorActionPreference = "Stop"
 $spec = @{
     supports_check_mode = $true
     options = @{
-        sql_instance = @{type = 'str'; required = $true }
-        sql_username = @{type = 'str'; required = $false }
-        sql_password = @{type = 'str'; required = $false; no_log = $true }
         backup_location = @{type = 'str'; required = $false }
         cleanup_time = @{type = 'int'; required = $false; }
         output_file_dir = @{type = 'str'; required = $false }
@@ -28,18 +25,11 @@ $spec = @{
         force = @{type = 'bool'; required = $false; default = $false }
         install_parallel = @{type = 'bool'; required = $false; default = $false }
     }
-    required_together = @(
-        , @('sql_username', 'sql_password')
-    )
 }
 
-$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
 $sqlInstance = $module.Params.sql_instance
-$sqlUsername = $module.Params.sql_username
-if ($null -ne $sqlUsername) {
-    [securestring]$secPassword = ConvertTo-SecureString $module.Params.sql_password -AsPlainText -Force
-    [pscredential]$sqlCredential = New-Object System.Management.Automation.PSCredential ($sqlUsername, $secPassword)
-}
+$sqlCredential = Get-SqlCredential -Module $module
 $database = $module.Params.database
 $backupLocation = $module.Params.backup_location
 $outputFileDirectory = $module.Params.output_file_dir
@@ -51,6 +41,7 @@ $installParallel = $module.Params.install_parallel
 $logToTable = $module.Params.log_to_table
 $localFile = $module.Params.local_file
 $force = $module.Params.force
+$checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 try {
@@ -84,26 +75,31 @@ try {
     }
 
     try {
-        $output = Install-DbaMaintenanceSolution @maintenanceSolutionSplat
+        if (-not $checkMode) {
+            $output = Install-DbaMaintenanceSolution @maintenanceSolutionSplat
+        }
         $module.Result.changed = $true
     }
     catch {
         $errMessage = $_.Exception.Message
         if ($errMessage -like "*Maintenance Solution already exists*") {
-            $connection = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
-            $connection = $connection | Select-Object -Property ComputerName, InstanceName, SqlInstance
-            $connection | Add-Member -MemberType NoteProperty -Name "Results" -Value "Success"
-            $output = $connection
+            $server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
+            $output = [PSCustomObject]@{
+                ComputerName = $server.ComputerName
+                InstanceName = $server.ServiceName
+                SqlInstance = $server.DomainInstanceName
+                Results = "Success"
+            }
         }
         else {
             Write-Error -Message $errMessage
         }
     }
 
-    $outputHash = ConvertTo-HashTable -Object $output
-    $module.Result.data = $outputHash
+    $resultData = ConvertTo-SerializableObject -InputObject $output
+    $module.Result.data = $resultData
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Installing Maintenance Solution failed.", $_.Exception.Message)
+    $module.FailJson("Installing Maintenance Solution failed.", $_)
 }

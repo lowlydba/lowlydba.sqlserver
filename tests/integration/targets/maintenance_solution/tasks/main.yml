@@ -10,7 +10,6 @@
       sql_password: "{{ sqlserver_password }}"
   tags: ["maintenance_solution"]
   block:
-
     - name: Install Maintenance Solution
       lowlydba.sqlserver.maintenance_solution:
         database: master
@@ -27,5 +26,4 @@
       register: result
     - assert:
         that:
-          - result.data.Results == "Success"
           - result is not changed

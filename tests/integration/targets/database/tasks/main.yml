@@ -1,7 +1,7 @@
 ---
 - name: Var block
   vars:
-    database_name: sqlserver_integration_db
+    database_name: "sqlserver_integration_db"
     maxdop: 1
     secondary_maxdop: 0
     owner_name: sa
@@ -13,25 +13,22 @@
       sql_instance: "{{ sqlserver_instance }}"
       sql_username: "{{ sqlserver_username }}"
       sql_password: "{{ sqlserver_password }}"
+      database: "{{ database_name }}"
   tags: ["database"]
   block:
-
     - name: Ensure a database exists
       lowlydba.sqlserver.database:
-        database: "{{ database_name }}"
         maxdop: "{{ maxdop }}"
         secondary_maxdop: "{{ secondary_maxdop }}"
         rcsi: true
-        owner_name: "{{ owner_name }}"
         recovery_model: "{{ recovery_model }}"
         compatibility: "{{ compatibility_low }}"
       register: result
     - assert:
         that:
           - result.data.Name == "{{ database_name }}"
-          - result.data.SecondaryMaxDop == {{ secondary_maxdop }}
           - result.data.RCSI is true
-          - result.data.Owner == "{{ owner_name }}"
+          - result.data.Owner == "{{ sqlserver_username }}"
           - result.data.RecoveryModel == "{{ recovery_model }}"
           - result.data.MaxDop == {{ maxdop }}
           - result.data.Compatibility == "{{ compatibility_low }}"
@@ -40,11 +37,15 @@
       lowlydba.sqlserver.database:
         database: "{{ database_name }}"
         compatibility: "{{ compatibility_high }}"
+        owner: "{{ owner_name }}"
+        secondary_maxdop: "{{ secondary_maxdop }}"
       register: result
     - assert:
         that:
           - result is changed
-          - result.data.Compatibility == "{{ compatibility_high }}"
+          - result.data.Compatibility =="{{ compatibility_high }}"
+          - result.data.Owner == "{{ owner_name }}"
+          - result.data.SecondaryMaxDop == {{ secondary_maxdop }}
 
     - name: Change a database in checkmode
       lowlydba.sqlserver.database:
@@ -83,4 +84,10 @@
     - assert:
         that:
           - result is changed
-          - result.data.Name == "sqlserver_integration_db"
+          - result.data.Name == "{{ database_name }}"
+
+  always:
+    - name: Drop a database
+      lowlydba.sqlserver.database:
+        database: "{{ database_name }}"
+        state: absent

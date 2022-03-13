@@ -1,0 +1,77 @@
+---
+- name: Var block
+  vars:
+    ansible_connection: "{{ pwsh_ansible_connection }}"
+    ansible_shell_type: "{{ pwsh_ansible_shell_type }}"
+    category_name: "Integration Tests"
+    job_name: "Integration Job"
+    description: "This test is not a test."
+    status: "enabled"
+    start_step_id: 1
+  module_defaults:
+    lowlydba.sqlserver.agent_job:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      category: "{{ category_name }}"
+      job: "{{ job_name }}"
+      description: "{{ description }}"
+      force: true
+      status: "{{ status }}"
+  tags: ["agent_job"]
+  block:
+    - name: Create agent job
+      lowlydba.sqlserver.agent_job:
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.Category == "{{ category_name }}"
+          - result.data.IsEnabled is true
+          - result.data.Name == "{{ job_name }}"
+          - result.data.OwnerLoginName == "{{ sqlserver_username }}"
+          - result.data.HasSchedule is false
+
+    - name: Remove agent job
+      lowlydba.sqlserver.agent_job:
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Status == "Dropped"
+
+    - name: Create new agent job
+      lowlydba.sqlserver.agent_job:
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.Category == "{{ category_name }}"
+          - result.data.IsEnabled is true
+          - result.data.OwnerLoginName == "{{ sqlserver_username }}"
+          - result.data.HasSchedule is false
+          - result is changed
+
+    - name: Change agent job
+      lowlydba.sqlserver.agent_job:
+        owner_login: "sa"
+        status: "disabled"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.Category == "{{ category_name }}"
+          - result.data.Enabled is false
+          - result.data.Name == "{{ job_name }}"
+          - result.data.OwnerLoginName == "sa"
+          - result.data.HasSchedule is false
+          - result is changed
+
+  always:
+    - name: Cleanup  agent job
+      lowlydba.sqlserver.agent_job:
+        state: "absent"
