@@ -7,7 +7,7 @@ function Import-ModuleDependency {
     [CmdletBinding()]
     param(
         [System.Version]
-        $MinimumVersion = "1.1.74"
+        $MinimumVersion = "1.1.79"
     )
     try {
         Import-Module -Name "DbaTools" -MinimumVersion $MinimumVersion -DisableNameChecking
