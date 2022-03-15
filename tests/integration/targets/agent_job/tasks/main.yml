@@ -27,7 +27,7 @@
         that:
           - result.data != None
           - result.data.Category == "{{ category_name }}"
-          - result.data.IsEnabled is true
+          - result.data.Enabled is true
           - result.data.Name == "{{ job_name }}"
           - result.data.OwnerLoginName == "{{ sqlserver_username }}"
           - result.data.HasSchedule is false
@@ -51,7 +51,7 @@
         that:
           - result.data != None
           - result.data.Category == "{{ category_name }}"
-          - result.data.IsEnabled is true
+          - result.data.Enabled is true
           - result.data.OwnerLoginName == "{{ sqlserver_username }}"
           - result.data.HasSchedule is false
           - result is changed
