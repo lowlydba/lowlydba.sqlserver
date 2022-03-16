@@ -38,7 +38,7 @@ $schedule = $module.Params.schedule
 [nullable[int]]$startStepId = $module.Params.start_step_id
 $force = $module.Params.force
 $state = $module.Params.state
-$checkMode = $module.Params.check_mode
+$checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 # Configure Agent job
@@ -93,7 +93,6 @@ try {
                 $output = New-DbaAgentJob @jobParams
             }
             $module.Result.changed = $true
-            $module.Result.test = 1
         }
         # Job exists
         else {
@@ -134,10 +133,9 @@ try {
             }
         }
     }
-    if ($output) {
-        $resultData = ConvertTo-SerializableObject -InputObject $output
-        $module.Result.data = $resultData
-    }
+
+    $resultData = ConvertTo-SerializableObject -InputObject $output
+    $module.Result.data = $resultData
     $module.ExitJson()
 }
 catch {

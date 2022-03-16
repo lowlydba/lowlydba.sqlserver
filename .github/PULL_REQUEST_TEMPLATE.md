@@ -17,4 +17,5 @@
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 - [ ] I have read/followed the [**CONTRIBUTING**](https://github.com/LowlyDBA/lowlydba.sqlserver/blob/main/.github/CONTRIBUTING.md) document.
 - [ ] I have read/followed the [PR Quick Start Guide](https://github.com/ansible/community-docs/blob/main/create_pr_quick_start_guide.rst)  # TODO: update with link to published doc
-- [ ] I have added tests to cover my changes.
+- [ ] I have added tests to cover my changes or they are N/A.
+- [ ] New module options/parameters include a [`version_added` property](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_documenting.html#documentation-fields).
