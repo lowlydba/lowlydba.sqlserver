@@ -13,110 +13,121 @@ $ErrorActionPreference = "Stop"
 #TOD: Refactor these defaults / required values
 $spec = @{
   supports_check_mode = $true
-  options             = @{
-    job_name           = @{type = 'str'; required = $true }
-    step_id            = @{type = 'int'; required = $true }
-    step_name          = @{type = 'str'; required = $true }
-    database_name      = @{type = 'str'; required = $true }
-    subsystem          = @{type = 'str'; required = $true; choices = @('ActiveScripting', 'AnalysisCommand', 'AnalysisQuery', 'CmdExec', 'Distribution', 'LogReader', 'Merge', 'PowerShell', 'QueueReader', 'Snapshot', 'Ssis', 'TransactSql') }
-    command            = @{type = 'str'; required = $true }
-    on_success_action  = @{type = 'str'; required = $true; choices = @('QuitWithSuccess', 'QuitWithfailure', 'GoToNextStep', 'GoToStep') }
-    on_success_step_id = @{type = 'int'; required = $false; default = 0 }
-    on_fail_action     = @{type = 'str'; required = $true ; choices = @('QuitWithSuccess', 'QuitWithfailure', 'GoToNextStep', 'GoToStep') }
-    on_fail_step_id    = @{type = 'int'; required = $false; default = 0 }
-    retry_attempts     = @{type = 'int'; required = $false; default = 0 }
-    retry_interval     = @{type = 'int'; required = $false; default = 0 }
+  options = @{
+    job = @{type = 'str'; required = $true }
+    step_id = @{type = 'int'; required = $true }
+    step_name = @{type = 'str'; required = $true }
+    database = @{type = 'str'; required = $true }
+    subsystem = @{type = 'str'; required = $false; choices = @('CmdExec', 'Distribution', 'LogReader', 'Merge', 'PowerShell', 'QueueReader', 'Snapshot', 'Ssis', 'TransactSql') }
+    command = @{type = 'str'; required = $false }
+    on_success_action = @{type = 'str'; required = $false; choices = @('QuitWithSuccess', 'QuitWithfailure', 'GoToNextStep', 'GoToStep') }
+    on_success_step_id = @{type = 'int'; required = $false }
+    on_fail_action = @{type = 'str'; required = $false; choices = @('QuitWithSuccess', 'QuitWithfailure', 'GoToNextStep', 'GoToStep') }
+    on_fail_step_id = @{type = 'int'; required = $false }
+    retry_attempts = @{type = 'int'; required = $false }
+    retry_interval = @{type = 'int'; required = $false }
   }
-  required_together   = @(
+  required_together = @(
     , @('retry_attempts', 'retry_interval')
   )
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
 $sqlInstance = $module.Params.sql_instance
-$JobName = $module.Params.job_name
-[int]$StepId = $module.Params.step_id
-$StepName = $module.Params.step_name
-$DatabaseName = $module.Params.database_name
-$Subsystem = $module.Params.subsystem
-$Command = $module.Params.command
-$OnSuccessAction = $module.Params.on_success_action
-[int]$OnSuccessStepId = $module.Params.on_success_step_id
-$OnFailAction = $module.Params.on_fail_action
-[int]$OnFailStepId = $module.Params.on_fail_step_id
-[int]$RetryAttempts = $module.Params.retry_attempts
-[int]$RetryInterval = $module.Params.retry_interval
+$sqlCredential = Get-SqlCredential -Module $module
+$job = $module.Params.job
+[int]$stepId = $module.Params.step_id
+$stepName = $module.Params.step_name
+$database = $module.Params.database
+$subsystem = $module.Params.subsystem
+$command = $module.Params.command
+$onSuccessAction = $module.Params.on_success_action
+[nullable[int]]$onSuccessStepId = $module.Params.on_success_step_id
+$onFailAction = $module.Params.on_fail_action
+[nullable[int]]$onFailStepId = $module.Params.on_fail_step_id
+[nullable[int]]$retryAttempts = $module.Params.retry_attempts
+[nullable[int]]$retryInterval = $module.Params.retry_interval
 $module.Result.changed = $false
 
-$jobStepParams = @{
-  SqlInstance     = $SqlInstance
-  Job             = $JobName
-  Database        = $DatabaseName
-  Subsystem       = $Subsystem
-  Command         = $Command
-  OnSuccessAction = $OnSuccessAction
-  OnSuccessStepId = $OnSuccessStepId
-  OnFailAction    = $OnFailAction
-  OnFailStepId    = $OnFailStepId
-  RetryAttempts   = $RetryAttempts
-  RetryInterval   = $RetryInterval
+$existingJobStepParams = @{
+  SqlInstance = $SqlInstance
+  SqlCredential = $sqlCredential
+  Job = $job
+  StepName = $stepName
+  StepId = $stepId
+  Database = $database
   EnableException = $true
 }
 
+if ($null -ne $command) {
+  $existingJobStepParams.Add("Command", $command)
+}
+
+if ($null -ne $subsystem) {
+  $existingJobStepParams.Add("SubSystem", $subsystem)
+}
+
+if ($null -ne $onSuccessStepId) {
+  $existingJobStepParams.Add("OnSuccessStepId", $onSuccessStepId)
+}
+
+if ($null -ne $onSuccessAction) {
+  $existingJobStepParams.Add("OnSuccessAction", $onSuccessAction)
+}
+
+if ($null -ne $onFailStepId) {
+  $existingJobStepParams.Add("OnFailStepId", $onFailStepId)
+}
+
+if ($null -ne $onFailAction) {
+  $existingJobStepParams.Add("OnFailAction", $onFailAction)
+}
+
+if ($null -ne $retryAttempts) {
+  $existingJobStepParams.Add("RetryAttempts", $RetryAttempts)
+}
+
+if ($null -ne $retryInterval) {
+  $existingJobStepParams.Add("RetryInterval", $retryInterval)
+}
+
 # Configure Agent job step
-try
-{
+try {
   $existingJobSteps = Get-DbaAgentJobStep -SqlInstance $SqlInstance -Job $JobName
+  $existingJobStep = $existingJobSteps | Select-Object -First $StepId | Select-Object -Last 1
+
   # No existing job step
-  if ($null -eq $existingJobSteps) {
-    $jobStepParams.Add("StepName", $StepName)
+  if ($null -eq $existingJobStep) {
     $output = New-DbaAgentJobStep @jobStepParams
     $module.Result.changed = $true
   }
   # Update existing
-  else
-  {
-    $stepArrayIndex = $StepId - 1 # Powershell uses 0 based array indexing, Agent uses 1 based
-    $jobStep = $existingJobSteps[$stepArrayIndex]
-
-    # No changes
-    # TODO: Use Compare-Object here instead
-    if ($jobStep.Name -eq $StepName -and `
-      $jobStep.DatabaseName -eq $DatabaseName -and `
-      $jobStep.Command -eq $Command -and `
-      $jobStep.Subsystem -eq $Subsystem -and `
-      $jobStep.OnSuccessAction -eq $OnSuccessAction -and `
-      ($jobStep.OnSuccessStepId -in ($null, 0) -or $jobStep.OnSuccessStepId -eq $OnSuccessStepId) -and `
-      $jobStep.OnFailAction -eq $OnFailAction -and `
-      ($jobStep.OnFailStepId -in ($null, 0) -or $jobStep.OnFailStepId -eq $OnFailStepId) -and `
-      $jobStep.RetryAttempts -eq $RetryAttempts -and `
-      $jobStep.RetryInterval -eq $RetryInterval)
-    {
-      
+  else {
+    # Validate step name isn't taken already - must be unique within a job
+    if ($existingJobSteps | Where-Object { $_.Name -eq $StepName -and $_.ID -ne $StepId }) {
+      $module.FailJson("There is already a step named '$StepName' for this job.")
     }
-    # Update the step
-    elseif ($null -ne $jobStep)
-    {
-      # If the new step name already exists as a different step than the one being modified,
-      # it needs to be removed since step names must be unique within a job.
-      if ($StepName -ne $jobStep.Name) {
-        if ($existingJobSteps | Where-Object {$_.Name -eq $StepName -and $_.ID -ne $StepId}) {
-          Remove-DbaAgentJobStep -SqlInstance $SqlInstance -Job $JobName -StepName $StepName -EnableException -WhatIf:$($module.CheckMode) | Out-Null
-        }
-      }
 
-      # Reference by old name in case new name differs
-      $jobStepParams.Add("StepName", $jobStep.Name)
-      $jobStepParams.Add("NewName", $StepName)
+    # Compare existing values with passed params, skipping over values not specified
+    $keys = $existingJobStepParams.Keys | Where-Object { $_ -ne 'SqlInstance' }
+    $compareProperty = ($existingJob.Properties | Where-Object Name -in $keys).Name
+    $diff = Compare-Object -ReferenceObject $existingJobStep -DifferenceObject $jobStepParams -Property $compareProperty
+
+    # Update the step
+    if ($diff) {
+      # Reference by old name in case new name differs for step id
+      $existingJobStepParams.StepName = $existingJobStep.Name
+      $existingJobStepParams.Add("NewName", $StepName)
 
       $output = Set-DbaAgentJobStep @jobStepParams
       $module.Result.changed = $true
     }
   }
 
+  $resultData = ConvertTo-SerializableObject -InputObject $output
+  $module.Result.data = $resultData
   $module.ExitJson()
 }
-catch
-{
-  $module.FailJson("Error modifying SQL Agent job step.", $_)
+catch {
+  $module.FailJson("Error configuring SQL Agent job step.", $_)
 }
