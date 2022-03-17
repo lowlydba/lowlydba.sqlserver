@@ -99,7 +99,7 @@ options:
     required: false
   state:
     description:
-      - Whether or not the job category should be C(present) or C(absent).
+      - Whether or not the job schedule should be C(present) or C(absent).
     required: false
     type: str
     default: 'present'
