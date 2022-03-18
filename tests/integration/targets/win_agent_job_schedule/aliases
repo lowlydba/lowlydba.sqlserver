@@ -1,0 +1,4 @@
+windows/all
+context/target
+setup/once/setup_win_sqlserver
+needs/target/agent_job_schedule
