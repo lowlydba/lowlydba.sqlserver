@@ -22,7 +22,7 @@ on:
 env:
   NAMESPACE: lowlydba
   COLLECTION_NAME: sqlserver
-  DBATOOLS_VERSION: "1.1.74"
+  DBATOOLS_VERSION: "1.1.80"
 
 jobs:
   ###
@@ -98,7 +98,7 @@ jobs:
       - name: Install and cache PowerShell modules
         uses: potatoqualitee/psmodulecache@v4.5
         with:
-          modules-to-cache: dbatools:1.1.74
+          modules-to-cache: dbatools
           shell: powershell
 
       - uses: Vampire/setup-wsl@v1
