@@ -1,8 +1,6 @@
 ---
 - name: Var block
   vars:
-    ansible_connection: "{{ pwsh_ansible_connection }}"
-    ansible_shell_type: "{{ pwsh_ansible_shell_type }}"
     max_memory_over_9000: 99999
   module_defaults:
     lowlydba.sqlserver.memory:
