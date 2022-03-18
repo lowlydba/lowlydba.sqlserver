@@ -18,7 +18,9 @@
 
 | Module | Description |
 | ------ | ----------- |
+| [agent_job](plugins/modules/agent_job.ps1) | Configures a SQL Agent job. |
 | [agent_job_category](plugins/modules/agent_job_category.ps1) | Configures a SQL Agent job category. |
+| [agent_job_schedule](plugins/modules/agent_job_schedule.ps1) | Configures a SQL Agent job schedule. |
 | [database](plugins/modules/database.ps1) | Creates and configures a database. |
 | [maintenance_solution](plugins/modules/memory.ps1) | Install the latest version of the Ola Hallengren's Maintenance Solution, or install from a local cached version. |
 | [memory](plugins/modules/memory.ps1) | Sets the maximum memory for a SQL Server instance. |
@@ -77,7 +79,7 @@ To learn how to maintain / become a maintainer of this collection, refer to the 
 
 ## External requirements
 
-- PowerShell module: [DbaTools][dbatools] >= 1.1.74
+- PowerShell module: [DbaTools][dbatools] >= 1.1.80
 
 ## Using this collection
 

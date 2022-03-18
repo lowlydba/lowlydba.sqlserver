@@ -13,25 +13,15 @@ $ErrorActionPreference = "Stop"
 $spec = @{
     supports_check_mode = $true
     options = @{
-        sql_instance = @{type = 'str'; required = $true }
-        sql_username = @{type = "str"; required = $false }
-        sql_password = @{type = "str"; required = $false; no_log = $true }
         enabled = @{type = 'bool'; required = $false; default = $true }
         classifier_function = @{type = 'str'; required = $false }
     }
-    required_together = @(
-        , @('sql_username', 'sql_password')
-    )
 }
 
 # Get Csharp utility module
-$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
 $sqlInstance = $module.Params.sql_instance
-$sqlUsername = $module.Params.sql_username
-if ($null -ne $SqlUsername) {
-    [securestring]$secPassword = ConvertTo-SecureString $module.Params.sql_password -AsPlainText -Force
-    [pscredential]$sqlCredential = New-Object System.Management.Automation.PSCredential ($SqlUsername, $secPassword)
-}
+$sqlCredential = Get-SqlCredential -Module $module
 $enabled = $module.Params.enabled
 $classifierFunction = $module.Params.classifier_function
 $checkMode = $module.CheckMode
@@ -69,10 +59,10 @@ try {
         $module.Result.changed = $true
     }
 
-    $outputHash = ConvertTo-HashTable -Object $output
-    $module.Result.data = $outputHash
+    $resultData = ConvertTo-SerializableObject -InputObject $output
+    $module.Result.data = $resultData
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Setting resource governor failed.", $_.Exception.Message)
+    $module.FailJson("Setting resource governor failed.", $_)
 }

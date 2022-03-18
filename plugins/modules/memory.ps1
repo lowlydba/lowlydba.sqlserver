@@ -14,19 +14,12 @@ $ErrorActionPreference = "Stop"
 $spec = @{
     supports_check_mode = $true
     options = @{
-        sql_instance = @{type = "str"; required = $true }
-        sql_username = @{type = "str"; required = $false }
-        sql_password = @{type = "str"; required = $false; no_log = $true }
         max = @{type = "int"; required = $false; default = 0 }
     }
-    required_together = @(, @("sql_username", "sql_password"))
 }
-$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
-$SqlUsername = $module.Params.sql_username
-if ($null -ne $SqlUsername) {
-    [securestring]$secPassword = ConvertTo-SecureString $module.Params.sql_password -AsPlainText -Force
-    [pscredential]$sqlCredential = New-Object System.Management.Automation.PSCredential ($SqlUsername, $secPassword)
-}
+
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
+$sqlCredential = Get-SqlCredential -Module $module
 $sqlInstance = $module.Params.sql_instance
 $max = $module.Params.max
 $checkMode = $module.CheckMode
@@ -36,10 +29,15 @@ $module.Result.changed = $false
 try {
     if ($checkMode) {
         # Make an equivalent output
-        $output = Test-DbaMaxMemory -SqlInstance $sqlInstance -SqlCredential $sqlCredential -EnableException
-        $output | Add-Member -MemberType NoteProperty -Name "PreviousMaxValue" -Value $output.MaxValue
-        $output = $output | Select-Object -ExcludeProperty "InstanceCount"
-        $output.MaxValue = $max
+        $server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
+        $output = [PSCustomObject]@{
+            ComputerName = $server.ComputerName
+            InstanceName = $server.ServiceName
+            SqlInstance = $server.DomainInstanceName
+            Total = $server.PhysicalMemory
+            MaxValue = $max
+            PreviousMaxValue = $server.Configuration.MaxServerMemory.ConfigValue
+        }
     }
     else {
         # Set max memory
@@ -56,10 +54,10 @@ try {
         $module.Result.changed = $true
     }
 
-    $outputHash = ConvertTo-HashTable -Object $output
-    $module.Result.data = $outputHash
+    $resultData = ConvertTo-SerializableObject -InputObject $output
+    $module.Result.data = $resultData
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Error setting max memory.", $_.Exception.Message)
+    $module.FailJson("Error setting max memory.", $_)
 }

@@ -3,6 +3,7 @@
   vars:
     ansible_connection: "{{ pwsh_ansible_connection }}"
     ansible_shell_type: "{{ pwsh_ansible_shell_type }}"
+    max_memory_over_9000: 99999
   module_defaults:
     lowlydba.sqlserver.memory:
       sql_instance: "{{ sqlserver_instance }}"
@@ -13,19 +14,18 @@
 
     - name: Set max memory
       lowlydba.sqlserver.memory:
-        max: 99999
+        max: "{{ max_memory_over_9000 }}"
       register: result
     - assert:
         that:
-          - result.data.Total is defined
           - result.data.Total != None
           - result.data.PreviousMaxValue is defined
           - result.data.PreviousMaxValue != None
-          - result.data.MaxValue == 99999
+          - result.data.MaxValue == {{ max_memory_over_9000 }}
 
     - name: Don't change max memory
       lowlydba.sqlserver.memory:
-        max: 99999
+        max: "{{ max_memory_over_9000 }}"
       register: result
     - assert:
         that:
@@ -37,26 +37,32 @@
       register: result
     - assert:
         that:
-          - result.data.PreviousMaxValue == 99999
-          - result.data.Total > result.data.MaxValue
+          - result.data.PreviousMaxValue == {{ max_memory_over_9000 }}
+          - result.data.MaxValue != {{ max_memory_over_9000 }}
+          - result.data.Total  > result.data.MaxValue
           - result is changed
 
     - name: Set max memory in checkmode
       lowlydba.sqlserver.memory:
-        max: 99999
+        max: "{{ max_memory_over_9000 }}"
       check_mode: true
       register: result
     - assert:
         that:
-          - result.data.MaxValue == 99999
+          - result.data.MaxValue == {{ max_memory_over_9000 }}
           - result is changed
 
     - name: Verify unchanged checkmode max memory
       lowlydba.sqlserver.memory:
-        max: 99999
+        max: "{{ max_memory_over_9000 }}"
       register: result
     - assert:
         that:
-          - result.data.PreviousMaxValue != 99999
-          - result.data.MaxValue == 99999
+          - result.data.PreviousMaxValue != {{ max_memory_over_9000 }}
+          - result.data.MaxValue == {{ max_memory_over_9000 }}
           - result is changed
+
+  always:
+    - name: Dynamically set max memory
+      lowlydba.sqlserver.memory:
+        max: 0

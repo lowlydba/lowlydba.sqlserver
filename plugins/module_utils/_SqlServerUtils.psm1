@@ -7,7 +7,7 @@ function Import-ModuleDependency {
     [CmdletBinding()]
     param(
         [System.Version]
-        $MinimumVersion = "1.1.74"
+        $MinimumVersion = "1.1.80"
     )
     try {
         Import-Module -Name "DbaTools" -MinimumVersion $MinimumVersion -DisableNameChecking
@@ -16,35 +16,156 @@ function Import-ModuleDependency {
         Write-Warning -Message "Unable to import DbaTools >= $MinimumVersion."
     }
 }
-
-function ConvertTo-HashTable {
+function Get-LowlyDbaSqlServerAuthSpec {
     <#
         .SYNOPSIS
-        Centralized way to convert DBATools' returned objects into hash tables.
+        Output the auth spec used by every module.
+
+        .DESCRIPTION
+        Standardized way to access the common auth spec for modules.
+        Uses the recommended Ansible naming convention.
     #>
-    [CmdletBinding()]
-    param(
-        [PSCustomObject]
-        $Object
-    )
-    try {
-        $outputHash = @{}
-        [string[]] $defaultDisplayProperty = $Object.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
-        $objectProperty = ($Object | Select-Object -Property $defaultDisplayProperty).PSObject.Properties
-        foreach ($property in $objectProperty) {
-            $propertyName = $property.Name
-            switch -Wildcard ($property.TypeNameOfValue) {
-                "Microsoft.*Collection" { $outputHash[$propertyName] = [string[]]$Object.$propertyName.Name; break }
-                "Microsoft.SqlServer.Management.Smo*" { $outputHash[$propertyName] = $Object.$propertyName.ToString(); break }
-                "SqlCollaborative.DbaTools.Parameter.DbaInstanceParameter" { $outputHash[$propertyName] = $Object.$propertyName.FullName; break }
-                default { $outputHash[$propertyName] = $Object.$propertyName }
-            }
+    @{
+        options = @{
+            sql_instance = @{type = 'str'; required = $true }
+            sql_username = @{type = 'str'; required = $false }
+            sql_password = @{type = 'str'; required = $false; no_log = $true }
         }
-        return $outputHash
-    }
-    catch {
-        Write-Error -Message "Unable to convert object to hash table: $($_.Exception.Message)" -TargetObject $Object
+        required_together = @(
+            , @('sql_username', 'sql_password')
+        )
     }
 }
 
-Export-ModuleMember -Function @("Import-ModuleDependency", "ConvertTo-HashTable")
+function Get-SqlCredential {
+    <#
+        .SYNOPSIS
+        Build a credential object for SQL Authentication.
+
+        .DESCRIPTION
+        Standardized way to build a SQL Credential object that
+        is required for SQL Authentication.
+    #>
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [ValidateScript({ $_.GetType().FullName -eq 'Ansible.Basic.AnsibleModule' })]
+        $Module
+    )
+    try {
+        if ($null -ne $Module.Params.sql_username) {
+            [securestring]$secPassword = ConvertTo-SecureString $Module.Params.sql_password -AsPlainText -Force
+            [pscredential]$sqlCredential = New-Object System.Management.Automation.PSCredential ($Module.Params.sql_username, $secPassword)
+        }
+        else {
+            $sqlCredential = $null
+        }
+        return $sqlCredential
+    }
+    catch {
+        Write-Error ("Error building Credential for SQL Authentication spec.")
+    }
+}
+
+function ConvertTo-SerializableObject {
+    <#
+        .SYNOPSIS
+        Transforms some members of a DbaTools result objects to be more serialization-friendly and prevent infinite recursion.
+
+        .DESCRIPTION
+        Stringifies version properties so we don't get serialized [System.Version] objects which aren't very useful.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+        [Object]
+        $InputObject,
+        [Parameter()]
+        [string[]]
+        $ExcludeProperty = @(
+            <#
+                Returning a list of properties as a property is redundant.
+            #>
+            'Properties',
+            <#
+                Urn is not useful.
+            #>
+            'Urn',
+            <#
+                ExecutionManager can contain a login password in plain text.
+            #>
+            'ExecutionManager',
+            <#
+                UserData is not useful.
+            #>
+            'UserData',
+            <#
+                ParentCollection is redundant.
+            #>
+            'ParentCollection',
+            <#
+                DatabaseEngineEdition is not useful.
+            #>
+            'DatabaseEngineEdition',
+            <#
+                DatabaseEngineType is not useful.
+            #>
+            'DatabaseEngineType',
+            <#
+                ServerVersion is not useful.
+            #>
+            'ServerVersion',
+            <#
+                Server is redundant.
+            #>
+            'Server',
+            <#
+                Parent is not useful.
+            #>
+            'Parent'
+        )
+    )
+
+    Process {
+        $defaultProperty = $InputObject.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
+        if ($defaultProperty) {
+            $objectProperty = $InputObject.PSObject.Properties | Where-Object { $_.Name -in $defaultProperty -and $_.Name -notin $ExcludeProperty }
+        }
+        else {
+            $objectProperty = $InputObject.PSObject.Properties | Where-Object { $_.Name -notin $ExcludeProperty }
+        }
+        $properties = foreach ($p in $objectProperty) {
+            $pName = $p.Name
+            $pValue = $p.Value
+
+            switch ($p) {
+                { $pValue -is [datetime] } {
+                    @{
+                        Name = $pName
+                        Expression = { $pValue.ToString('o') }.GetNewClosure()
+                    }
+                    break
+                }
+                { $pValue -is [enum] -or $pValue -is [type] } {
+                    @{
+                        Name = $pName
+                        Expression = { $pValue.ToString() }.GetNewClosure()
+                    }
+                    break
+                }
+                { $pValue.GetType().Name -like '*Collection' } {
+                    @{
+                        Name = $pName
+                        Expression = { [string[]]($pValue.Name) }.GetNewClosure()
+                    }
+                    break
+                }
+                default { $pName }
+            }
+        }
+        return $InputObject | Select-Object -Property $properties
+    }
+}
+
+$exportMembers = @("Import-ModuleDependency", "Get-SqlCredential", "ConvertTo-SerializableObject", "Get-LowlyDbaSqlServerAuthSpec")
+Export-ModuleMember -Function $exportMembers

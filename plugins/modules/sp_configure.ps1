@@ -15,23 +15,14 @@ Import-ModuleDependency
 $spec = @{
     supports_check_mode = $true
     options = @{
-        sql_instance = @{type = 'str'; required = $true }
-        sql_username = @{type = "str"; required = $false }
-        sql_password = @{type = "str"; required = $false; no_log = $true }
         name = @{type = 'str'; required = $true }
         value = @{type = 'int'; required = $true }
     }
-    required_together = @(
-        , @('sql_username', 'sql_password')
-    )
 }
-$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
+
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
 $sqlInstance = $module.Params.sql_instance
-$sqlUsername = $module.Params.sql_username
-if ($null -ne $SqlUsername) {
-    [securestring]$secPassword = ConvertTo-SecureString $module.Params.sql_password -AsPlainText -Force
-    [pscredential]$sqlCredential = New-Object System.Management.Automation.PSCredential ($SqlUsername, $secPassword)
-}
+$sqlCredential = Get-SqlCredential -Module $module
 $name = $module.Params.name
 $value = $module.Params.value
 $checkMode = $module.CheckMode
@@ -59,11 +50,11 @@ try {
         $module.Result.changed = $true
     }
 
-    $outputHash = ConvertTo-HashTable -Object $output
-    $module.Result.data = $outputHash
+    $resultData = ConvertTo-SerializableObject -InputObject $output
+    $module.Result.data = $resultData
     $module.ExitJson()
 }
 
 catch {
-    $module.FailJson("sp_configure change failed.", $_.Exception.Message)
+    $module.FailJson("sp_configure change failed.", $_)
 }
