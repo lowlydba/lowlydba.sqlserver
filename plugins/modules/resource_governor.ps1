@@ -11,7 +11,9 @@
 # In some cases, an array gets serialized as an object with a Count and Value property where the value is the actual array.
 # See: https://stackoverflow.com/a/48858780/3905079
 # This only affects Windows PowerShell.
-Remove-TypeData System.Array
+if ($PSVersionTable.PSVersion -lt '6.0') {
+    Remove-TypeData System.Array
+}
 
 Import-ModuleDependency
 $ErrorActionPreference = "Stop"
