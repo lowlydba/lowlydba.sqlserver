@@ -7,6 +7,12 @@
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
 
+# We need to remove this type data so that arrays don't get serialized weirdly.
+# In some cases, an array gets serialized as an object with a Count and Value property where the value is the actual array.
+# See: https://stackoverflow.com/a/48858780/3905079
+# This only affects Windows PowerShell.
+Remove-TypeData System.Array
+
 Import-ModuleDependency
 $ErrorActionPreference = "Stop"
 
