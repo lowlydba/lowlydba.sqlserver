@@ -140,7 +140,7 @@ jobs:
       - name: Generate coverage report
         run: |
           pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
-          ansible-test coverage xml -v --requirements --group-by command --group-by version
+          ansible-test coverage xml -v --requirements
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
       - uses: codecov/codecov-action@v2
