@@ -32,7 +32,7 @@ jobs:
 
   integration:
     runs-on: ${{ matrix.os }}
-    name: I (Ⓐ${{ matrix.ansible }}+${{ matrix.os }})
+    name: I (Ⓐ${{ matrix.ansible }}+${{ matrix.os }}|grp${{ matrix.group }})
     strategy:
       fail-fast: false
       matrix:
@@ -43,8 +43,10 @@ jobs:
           - stable-2.11
           - stable-2.12
           - devel
-        python:
-          - 3.8
+        group: # windows/group/#/
+          - '1'
+          - '2'
+          - '3'
 
     defaults:
       run:
@@ -138,7 +140,7 @@ jobs:
       - name: Run integration test
         run: |
           pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
-          ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements
+          ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements windows/group/${{ matrix.group }}/
 
       # ansible-test support producing code coverage data
       - name: Generate coverage report
