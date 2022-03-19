@@ -17,17 +17,18 @@ on:
   # Run CI once per day (at 06:00 UTC)
   # This ensures that even if there haven't been commits that we are still testing against latest version of ansible-test for each ansible-base version
   schedule:
-    - cron: "0 6 * * *"
+    - cron: '0 6 * * *'
 
 env:
   NAMESPACE: lowlydba
   COLLECTION_NAME: sqlserver
 
 jobs:
-  ###
-  # Sanity tests (REQUIRED)
-  #
-  # https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
+
+###
+# Sanity tests (REQUIRED)
+#
+# https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
 
   sanity:
     name: Sanity (Ⓐ${{ matrix.ansible }})
@@ -36,13 +37,14 @@ jobs:
         ansible:
           # It's important that Sanity is tested against all stable-X.Y branches
           # Testing against `devel` may fail as new tests are added.
-          # - stable-2.9
+        # - stable-2.9
           - stable-2.10
           - stable-2.11
           - stable-2.12
           - devel
     runs-on: ubuntu-latest
     steps:
+
       # ansible-test requires the collection to be in a directory in the form
       # .../ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/
 
@@ -79,13 +81,13 @@ jobs:
         with:
           fail_ci_if_error: false
 
-  ###
-  # Unit tests (OPTIONAL)
-  #
-  # https://docs.ansible.com/ansible/latest/dev_guide/testing_units.html
-  #
-  # Skipping - Unit tests for Powershell/Windows modules not supported currently:
-  # https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general_windows.html#windows-unit-testing
+###
+# Unit tests (OPTIONAL)
+#
+# https://docs.ansible.com/ansible/latest/dev_guide/testing_units.html
+#
+# Skipping - Unit tests for Powershell/Windows modules not supported currently:
+# https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general_windows.html#windows-unit-testing
   # units:
   #   runs-on: ubuntu-latest
   #   name: Units (Ⓐ${{ matrix.ansible }})
@@ -136,14 +138,15 @@ jobs:
   #       with:
   #         fail_ci_if_error: false
 
-  ###
-  # Integration tests (RECOMMENDED)
-  #
-  # https://docs.ansible.com/ansible/latest/dev_guide/testing_integration.html
+###
+# Integration tests (RECOMMENDED)
+#
+# https://docs.ansible.com/ansible/latest/dev_guide/testing_integration.html
 
-  # If the application you are testing is available as a docker container and you want to test
-  # multiple versions see the following for an example:
-  # https://github.com/ansible-collections/community.zabbix/tree/master/.github/workflows
+
+# If the application you are testing is available as a docker container and you want to test
+# multiple versions see the following for an example:
+# https://github.com/ansible-collections/community.zabbix/tree/master/.github/workflows
 
   integration:
     runs-on: ubuntu-latest
@@ -154,24 +157,24 @@ jobs:
         ports:
           - 1433:1433
         env:
-          ACCEPT_EULA: "Y"
+          ACCEPT_EULA: 'Y'
           SA_PASSWORD: L0wlydb4
     strategy:
       fail-fast: false
       matrix:
         ansible:
-          # - stable-2.9
+        # - stable-2.9
           - stable-2.10
           - stable-2.11
           - stable-2.12
           - devel
         python:
-          #- 2.6
-          #- 2.7
-          #- 3.5
-          #- 3.6
-          #- 3.7
-          - 3.8
+        #- 2.6
+        #- 2.7
+        #- 3.5
+        #- 3.6
+        #- 3.7
+         - 3.8
         #- 3.9
         exclude:
           # Because ansible-test doesn't support python3.9 for Ansible 2.9
@@ -203,7 +206,7 @@ jobs:
 
       # Run the integration tests
       - name: Run integration test
-        run: ansible-test integration -vvv --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker --docker-network="${{ job.services.sqlserver.network }}" --coverage
+        run: ansible-test integration -v --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker --docker-network="${{ job.services.sqlserver.network }}" --coverage
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       # ansible-test support producing code coverage date
