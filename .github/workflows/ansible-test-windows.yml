@@ -30,16 +30,14 @@ jobs:
   #
   # https://docs.ansible.com/ansible/latest/dev_guide/testing_integration.html
 
-  # If the application you are testing is available as a docker container and you want to test
-  # multiple versions see the following for an example:
-  # https://github.com/ansible-collections/community.zabbix/tree/master/.github/workflows
-
   integration:
-    runs-on: windows-2019
-    name: I (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    name: I (Ⓐ${{ matrix.ansible }}+${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
+        os:
+          - windows-2019
         ansible:
           - stable-2.10
           - stable-2.11
