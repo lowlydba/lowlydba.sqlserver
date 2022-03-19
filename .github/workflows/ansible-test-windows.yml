@@ -74,6 +74,10 @@ jobs:
           install: sqlengine
           sa-password: L0wlydb4
 
+      - name: Add a hosts entry
+        shell: cmd
+        run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
+
       - name: Install and cache PowerShell modules
         uses: potatoqualitee/psmodulecache@v4.5
         with:
@@ -127,7 +131,7 @@ jobs:
         shell: bash
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration
         run: |
-          cp integration_config.windows_ci.yml integration_config.yml
+          cp integration_config.sample.yml integration_config.yml
           cp inventory.winrm.ci inventory.winrm
 
       # Run the integration tests
