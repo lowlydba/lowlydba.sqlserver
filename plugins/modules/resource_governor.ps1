@@ -11,7 +11,7 @@
 # In some cases, an array gets serialized as an object with a Count and Value property where the value is the actual array.
 # See: https://stackoverflow.com/a/48858780/3905079
 # This only affects Windows PowerShell.
-Remove-TypeData System.Array -ErrorAction SilentlyContinue
+Remove-TypeData -TypeName System.Array -ErrorAction SilentlyContinue
 
 Import-ModuleDependency
 $ErrorActionPreference = "Stop"
