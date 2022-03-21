@@ -49,6 +49,7 @@ $onFailAction = $module.Params.on_fail_action
 [int]$retryAttempts = $module.Params.retry_attempts
 [nullable[int]]$retryInterval = $module.Params.retry_interval
 $state = $module.Params.state
+$checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 $jobStepParams = @{
@@ -71,8 +72,6 @@ if ($null -ne $command) {
     $jobStepParams.Add("Command", $command)
 }
 
-#TODO: Checkmode
-
 # Configure Agent job step
 try {
     $existingJobSteps = Get-DbaAgentJobStep -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Job $job
@@ -87,21 +86,25 @@ try {
             EnableException = $true
             Confirm = $false
         }
-        Remove-DbaAgentJobStep @removeStepSplat
+        if (-not $checkMode) {
+            $output = Remove-DbaAgentJobStep @removeStepSplat
+        }
         $module.Result.changed = $true
     }
     elseif ($state -eq "present") {
         # No existing job step
         if ($null -eq $existingJobStep) {
             $jobStepParams.Add("StepId", $stepId)
-            $output = New-DbaAgentJobStep @jobStepParams
+            if (-not $checkMode) {
+                $output = New-DbaAgentJobStep @jobStepParams
+            }
             $module.Result.changed = $true
         }
         # Update existing
         else {
             # Validate step name isn't taken already - must be unique within a job
-            if ($existingJobSteps | Where-Object { $_.Name -eq $StepName -and $_.ID -ne $stepId }) {
-                $module.FailJson("There is already a step named '$StepName' for this job.")
+            if ($existingJobStep.Name -eq $StepName -and $existingJobStep.ID -ne $stepId) {
+                $module.FailJson("There is already a step named '$StepName' for this job with an ID of $($existingJobStep.ID).")
             }
 
             # Compare existing values with passed params, skipping over values not specified
@@ -115,7 +118,9 @@ try {
                 $jobStepParams.StepName = $existingJobStep.Name
                 $jobStepParams.Add("NewName", $StepName)
 
-                $output = Set-DbaAgentJobStep @jobStepParams
+                if (-not $checkMode) {
+                    $output = Set-DbaAgentJobStep @jobStepParams
+                }
                 $module.Result.changed = $true
             }
         }
