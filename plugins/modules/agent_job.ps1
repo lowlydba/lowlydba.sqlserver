@@ -146,5 +146,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Error configuring SQL Agent job.", $_)
+    $module.FailJson("Error configuring SQL Agent job: $($_.Exception.Message)")
 }
