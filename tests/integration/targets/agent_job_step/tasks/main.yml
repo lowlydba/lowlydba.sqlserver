@@ -1,8 +1,6 @@
 ---
 - name: Var block
   vars:
-    ansible_connection: "{{ pwsh_ansible_connection }}"
-    ansible_shell_type: "{{ pwsh_ansible_shell_type }}"
     category_name: "Integration Tests"
     job_name: "Ansible Integration Job Step Test"
     job_step1: "One, you're like a dream come true"
