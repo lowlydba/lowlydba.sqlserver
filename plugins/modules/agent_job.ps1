@@ -140,8 +140,8 @@ try {
     }
 
     if ($output) {
-        $resultData = ConvertTo-SerializableObject -InputObject $output
-        $module.Result.data = $resultData
+        # $resultData = ConvertTo-SerializableObject -InputObject $output
+        #  $module.Result.data = $resultData
     }
     $module.ExitJson()
 }
