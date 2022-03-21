@@ -41,8 +41,19 @@
           - result.data.ID == 1
           - result.data.DatabaseName == "master"
           - result.data.State == "Existing"
+          - result is changed
 
-    - name: Create agent job step two
+    - name: Create agent job step two in checkmode
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "{{ job_step2 }}"
+        step_id: 2
+      check_mode: true
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Verify create agent job step two in checkmode works
       lowlydba.sqlserver.agent_job_step:
         step_name: "{{ job_step2 }}"
         step_id: 2
@@ -54,6 +65,7 @@
           - result.data.ID == 2
           - result.data.DatabaseName == "master"
           - result.data.State == "Existing"
+          - result is changed
 
     - name: Create agent job step three
       lowlydba.sqlserver.agent_job_step:
@@ -68,15 +80,6 @@
           - result.data.DatabaseName == "master"
           - result.data.State == "Existing"
 
-    - name: Remove agent job step
-      lowlydba.sqlserver.agent_job_step:
-        step_name: "{{ job_step1 }}"
-        state: "absent"
-      register: result
-    - assert:
-        that:
-          - result is changed
-
     - name: Create duplicate agent job step
       lowlydba.sqlserver.agent_job_step:
         step_name: "{{ job_step3 }}"
@@ -86,6 +89,59 @@
     - assert:
         that:
           - result is not changed
+
+    - name: Change agent job step in checkmode
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "{{ job_step3 }}"
+        step_id: 3
+        database: "model"
+      check_mode: true
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Verify change agent job step in checkmode works
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "{{ job_step3 }}"
+        step_id: 3
+        database: "model"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.Name == "{{ job_step3 }}"
+          - result.data.ID == 3
+          - result.data.DatabaseName == "model"
+          - result.data.State == "Existing"
+
+    - name: Remove agent job step
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "{{ job_step1 }}"
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Remove agent job step in checkmode
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "{{ job_step2 }}"
+        state: "absent"
+      check_mode: true
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Verify remove agent job step in checkmode works
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "{{ job_step2 }}"
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          - result is changed
 
   always:
     - name: Cleanup agent job
