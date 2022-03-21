@@ -56,7 +56,7 @@ try {
     }
     elseif ($state -eq "present") {
         $jobParams = @{
-            SqlInstance = $SqlInstance
+            SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential
             Job = $job
             Force = $force
@@ -90,7 +90,12 @@ try {
         # Create new job
         if ($null -eq $existingJob) {
             if (-not $checkMode) {
-                $output = New-DbaAgentJob @jobParams
+                try {
+                    $output = New-DbaAgentJob @jobParams
+                }
+                catch {
+                    $module.FailJson("Failed creating new agent job: $($_.Exception.Message)", $_)
+                }
             }
             $module.Result.changed = $true
         }

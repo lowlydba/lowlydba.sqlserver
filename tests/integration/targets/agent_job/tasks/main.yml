@@ -18,10 +18,6 @@
       status: "{{ status }}"
   tags: ["agent_job"]
   block:
-    - name: Initialize SQL Agent backend hack
-      lowlydba.sqlserver.agent_job:
-        state: "absent"
-
     - name: Create agent job
       lowlydba.sqlserver.agent_job:
       register: result
