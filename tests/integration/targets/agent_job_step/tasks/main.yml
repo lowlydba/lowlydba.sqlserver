@@ -1,0 +1,97 @@
+---
+- name: Var block
+  vars:
+    ansible_connection: "{{ pwsh_ansible_connection }}"
+    ansible_shell_type: "{{ pwsh_ansible_shell_type }}"
+    category_name: "Integration Tests"
+    job_name: "Ansible Integration Job Step Test"
+    job_step1: "One, you're like a dream come true"
+    job_step2: "Two, just wanna be with you"
+    job_step3: "Three, girl, it's plain to see"
+  module_defaults:
+    lowlydba.sqlserver.agent_job:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+    lowlydba.sqlserver.agent_job_step:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      job: "{{ job_name }}"
+  tags: ["agent_job_step"]
+  block:
+    - name: Create agent job
+      lowlydba.sqlserver.agent_job:
+        job: "{{ job_name }}"
+        force: true
+      register: result
+    - assert:
+        that:
+          - result.data.Name == "{{ job_name }}"
+
+    - name: Create agent job step one
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "{{ job_step1 }}"
+        step_id: 1
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.Name == "{{ job_step1 }}"
+          - result.data.ID == 1
+          - result.data.DatabaseName == "master"
+          - result.data.State == "Existing"
+
+    - name: Create agent job step two
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "{{ job_step2 }}"
+        step_id: 2
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.Name == "{{ job_step2 }}"
+          - result.data.ID == 2
+          - result.data.DatabaseName == "master"
+          - result.data.State == "Existing"
+
+    - name: Create agent job step three
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "{{ job_step3 }}"
+        step_id: 3
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.Name == "{{ job_step3 }}"
+          - result.data.ID == 3
+          - result.data.DatabaseName == "master"
+          - result.data.State == "Existing"
+
+    - name: Remove agent job step
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "{{ job_step1 }}"
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Create duplicate agent job step
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "{{ job_step3 }}"
+        step_id: 4
+      register: result
+      failed_when: result is not failed
+    - assert:
+        that:
+          - result is not changed
+
+  always:
+    - name: Cleanup agent job
+      lowlydba.sqlserver.agent_job:
+        job: "{{ job_name }}"
+        state: "absent"
+      register: result
+    - assert:
+        that: result.data.Status == "Dropped"
