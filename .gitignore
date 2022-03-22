@@ -1,5 +1,5 @@
 /tests/output/
-tests/integration/inventory
+tests/integration/inventory.winrm
 /tests/integration/integration_config.yml
 /changelogs/.plugin-cache.yaml
 

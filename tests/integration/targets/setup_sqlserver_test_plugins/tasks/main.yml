@@ -1,0 +1,6 @@
+---
+- name: Set the connection and shell
+  when: ansible_os_family | default('Windows') != 'Windows'
+  set_fact:
+    ansible_connection: "{{ pwsh_ansible_connection }}"
+    ansible_shell_type: "{{ pwsh_ansible_shell_type }}"

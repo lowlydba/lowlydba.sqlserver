@@ -20,6 +20,14 @@ $spec = @{
 
 # Get Csharp utility module
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
+
+# We need to remove this type data so that arrays don't get serialized weirdly.
+# In some cases, an array gets serialized as an object with a Count and Value property where the value is the actual array.
+# See: https://stackoverflow.com/a/48858780/3905079
+# This only affects Windows PowerShell.
+# This has to come after the AnsibleModule is created, otherwise it will break the sanity tests.
+Remove-TypeData -TypeName System.Array -ErrorAction SilentlyContinue
+
 $sqlInstance = $module.Params.sql_instance
 $sqlCredential = Get-SqlCredential -Module $module
 $enabled = $module.Params.enabled
