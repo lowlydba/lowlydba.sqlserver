@@ -140,8 +140,21 @@ try {
     }
 
     if ($output) {
-        # $resultData = ConvertTo-SerializableObject -InputObject $output
-        #  $module.Result.data = $resultData
+        $ExcludeProperty = @(
+            'Properties',
+            'Urn',
+            'ExecutionManager',
+            'UserData',
+            'ParentCollection',
+            'DatabaseEngineEdition',
+            'DatabaseEngineType',
+            'ServerVersion',
+            'Server',
+            'Parent',
+            'CurrentRunStatus',
+            'LastRunOutcome')
+        $resultData = ConvertTo-SerializableObject -InputObject $output -ExcludeProperty $ExcludeProperty
+        $module.Result.data = $resultData
     }
     $module.ExitJson()
 }
