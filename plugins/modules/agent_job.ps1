@@ -141,7 +141,7 @@ try {
     }
 
     if ($output) {
-        $resultData = ConvertTo-SerializableObject -InputObject $output -ExcludeProperty $ExcludeProperty
+        $resultData = ConvertTo-SerializableObject -InputObject $output
         $module.Result.data = $resultData
     }
     $module.ExitJson()
