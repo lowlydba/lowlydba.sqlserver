@@ -91,7 +91,8 @@ try {
         if ($null -eq $existingJob) {
             if (-not $checkMode) {
                 try {
-                    $output = New-DbaAgentJob @jobParams
+                    $null = New-DbaAgentJob @jobParams
+                    $output = Get-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -EnableException
                 }
                 catch {
                     $module.FailJson("Failed creating new agent job: $($_.Exception.Message)", $_)
@@ -140,19 +141,6 @@ try {
     }
 
     if ($output) {
-        $ExcludeProperty = @(
-            'Properties',
-            'Urn',
-            'ExecutionManager',
-            'UserData',
-            'ParentCollection',
-            'DatabaseEngineEdition',
-            'DatabaseEngineType',
-            'ServerVersion',
-            'Server',
-            'Parent',
-            'CurrentRunStatus',
-            'LastRunOutcome')
         $resultData = ConvertTo-SerializableObject -InputObject $output -ExcludeProperty $ExcludeProperty
         $module.Result.data = $resultData
     }
