@@ -56,7 +56,7 @@ try {
     }
     elseif ($state -eq "present") {
         $jobParams = @{
-            SqlInstance = $SqlInstance
+            SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential
             Job = $job
             Force = $force
@@ -90,7 +90,14 @@ try {
         # Create new job
         if ($null -eq $existingJob) {
             if (-not $checkMode) {
-                $output = New-DbaAgentJob @jobParams
+                try {
+                    $null = New-DbaAgentJob @jobParams
+                    # Explicitly fetch the new job to make sure results don't suffer from SMO / Agent stale data bugs
+                    $output = Get-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -EnableException
+                }
+                catch {
+                    $module.FailJson("Failed creating new agent job: $($_.Exception.Message)", $_)
+                }
             }
             $module.Result.changed = $true
         }
@@ -134,10 +141,12 @@ try {
         }
     }
 
-    $resultData = ConvertTo-SerializableObject -InputObject $output
-    $module.Result.data = $resultData
+    if ($output) {
+        $resultData = ConvertTo-SerializableObject -InputObject $output
+        $module.Result.data = $resultData
+    }
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Error configuring SQL Agent job.", $_)
+    $module.FailJson("Error configuring SQL Agent job: $($_.Exception.Message)", $_)
 }

@@ -1,8 +1,6 @@
 ---
 - name: Var block
   vars:
-    ansible_connection: "{{ pwsh_ansible_connection }}"
-    ansible_shell_type: "{{ pwsh_ansible_shell_type }}"
     category_name: "Integration Tests"
     job_name: "Integration Job"
     description: "This test is not a test."
@@ -20,6 +18,15 @@
       status: "{{ status }}"
   tags: ["agent_job"]
   block:
+    # SQL Agent / SMO has delays on returning new data sometimes, and is worse on CI runners -
+    # so explicitly pre-create the category to make sure we get timely & accurate results later
+    - name: Prep agent job category
+      lowlydba.sqlserver.agent_job_category:
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+        category: "{{ category_name }}"
+
     - name: Create agent job
       lowlydba.sqlserver.agent_job:
       register: result

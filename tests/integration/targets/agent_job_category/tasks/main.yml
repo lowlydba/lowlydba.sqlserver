@@ -1,8 +1,6 @@
 ---
 - name: Var block
   vars:
-    ansible_connection: "{{ pwsh_ansible_connection }}"
-    ansible_shell_type: "{{ pwsh_ansible_shell_type }}"
     category_name: "Integration Tests"
   module_defaults:
     lowlydba.sqlserver.agent_job_category:
@@ -12,7 +10,6 @@
       category: "{{ category_name }}"
   tags: ["agent_job_category"]
   block:
-
     - name: Create job category
       lowlydba.sqlserver.agent_job_category:
       register: result

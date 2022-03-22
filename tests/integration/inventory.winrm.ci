@@ -1,0 +1,8 @@
+[windows]
+runner ansible_host=127.0.0.1 ansible_user=admin ansible_password=pass123@
+
+[windows:vars]
+ansible_connection=psrp
+ansible_port=5986
+ansible_psrp_auth=basic
+ansible_psrp_cert_validation=ignore

@@ -1,8 +1,6 @@
 ---
 - name: Var block
   vars:
-    ansible_connection: "{{ pwsh_ansible_connection }}"
-    ansible_shell_type: "{{ pwsh_ansible_shell_type }}"
   module_defaults:
     lowlydba.sqlserver.sp_configure:
       sql_instance: "{{ sqlserver_instance }}"

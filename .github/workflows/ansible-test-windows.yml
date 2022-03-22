@@ -1,0 +1,154 @@
+# README FIRST
+# 1. replace "NAMESPACE" and "COLLECTION_NAME" with the correct name in the env section (e.g. with 'community' and 'mycollection')
+# 2. If you don't have unit tests remove that section
+# 3. If your collection depends on other collections ensure they are installed, see "Install collection dependencies"
+# If you need help please ask in #ansible-community on the Libera.chat IRC network
+
+name: CI (Windows)
+on:
+  # Manual triggers
+  workflow_dispatch:
+  # Run CI against all pushes (direct commits, also merged PRs), Pull Requests
+  push:
+    branches:
+      - main
+      - stable-*
+  pull_request:
+  # Run CI once per day (at 06:00 UTC)
+  # This ensures that even if there haven't been commits that we are still testing against latest version of ansible-test for each ansible-base version
+  schedule:
+    - cron: "0 6 * * *"
+
+env:
+  NAMESPACE: lowlydba
+  COLLECTION_NAME: sqlserver
+  DBATOOLS_VERSION: "1.1.80"
+
+jobs:
+  ###
+  # Integration tests (RECOMMENDED)
+  #
+  # https://docs.ansible.com/ansible/latest/dev_guide/testing_integration.html
+
+  integration:
+    runs-on: ${{ matrix.os }}
+    name: I (Ⓐ${{ matrix.ansible }}+${{ matrix.os }}|grp${{ matrix.group }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-2019
+        ansible:
+          - stable-2.10
+          - stable-2.11
+          - stable-2.12
+          - devel
+        group: # windows/group/#/
+          - '1'
+          - '2'
+          #- '3'
+
+    defaults:
+      run:
+        shell: wsl-bash {0}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
+
+      - name: Create an admin user
+        shell: cmd
+        run: |
+          net user admin pass123@ /add /y
+          net localgroup Administrators admin /add
+
+      - name: Set up the runner for PowerShell remoting
+        shell: powershell
+        run: |
+          $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1'))
+          & $sb -Verbose -ForceNewSSLCert 4>&1
+
+      - name: Install a SQL Server
+        uses: potatoqualitee/mssqlsuite@v1
+        with:
+          install: sqlengine
+          sa-password: L0wlydb4
+
+      - name: Add a hosts entry
+        shell: cmd
+        run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
+
+      - name: Install and cache PowerShell modules
+        uses: potatoqualitee/psmodulecache@v4.5
+        with:
+          modules-to-cache: dbatools
+          shell: powershell
+
+      - uses: Vampire/setup-wsl@v1
+        with:
+          distribution: Debian
+          additional-packages: |
+            git
+            python3
+            python3-pip
+            openssh-client
+
+      - name: Get Linux workspace path
+        shell: pwsh
+        run: |
+          # $ws = & wslpath --% -u -a "${{ github.workspace }}""
+          # seems wslpath is not available on server 2019
+
+          function ConvertTo-LinuxPathCrappy {
+              [CmdletBinding()]
+              param(
+                  [Parameter(Mandatory)]
+                  [ValidateNotNullOrEmpty()]
+                  [string]
+                  $LiteralPath
+              )
+
+              End {
+                  $resolved = Resolve-Path -LiteralPath $LiteralPath
+                  $drive = ($resolved | Split-Path -Qualifier).TrimEnd(':').ToLower()
+                  $rooted = ($resolved | Split-Path -NoQualifier).Replace('\', '/').TrimStart('/')
+
+                  '/mnt/{0}/{1}' -f $drive, $rooted
+              }
+          }
+          $ws = ConvertTo-LinuxPathCrappy -LiteralPath "${{ github.workspace }}"
+          Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$ws"
+
+      - name: Install ansible-base (${{ matrix.ansible }})
+        run: |
+          python3 -m pip install --upgrade pip setuptools pypsrp --disable-pip-version-check
+          python3 -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
+
+      - name: Install collection dependencies
+        run: ansible-galaxy collection install ansible.windows -p "${{ env.GHWS }}"
+
+      - name: Set integration test options
+        shell: bash
+        working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration
+        run: |
+          cp integration_config.sample.yml integration_config.yml
+          cp inventory.winrm.ci inventory.winrm
+
+      # Run the integration tests
+      - name: Run integration test
+        run: |
+          pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
+          ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements windows/group/${{ matrix.group }}/
+
+      # ansible-test support producing code coverage data
+      - name: Generate coverage report
+        run: |
+          pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
+          ansible-test coverage xml -v --requirements
+
+      # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
+      - uses: codecov/codecov-action@v2
+        with:
+          fail_ci_if_error: false

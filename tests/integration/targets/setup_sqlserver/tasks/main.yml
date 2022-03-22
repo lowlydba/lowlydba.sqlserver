@@ -1,8 +1,6 @@
 ---
 - name: Install Powershell modules
+  when: not sqlserver_windows
   ansible.builtin.command: >
-    pwsh -Command "
-      if (-not(Get-Module -FullyQualifiedName @{ModuleName='dbatools';ModuleVersion='{{ dbatools_min_version }}'} -ListAvailable)) {
-        Install-Module dbatools -MinimumVersion {{ dbatools_min_version }} -Force
-      }"
-  no_log: true
+    pwsh -Command "{{ dbatools_install_cmd }}"
+  no_log: '{{ ansible_verbosity | int < 3 }}'

@@ -1,0 +1,5 @@
+windows/all
+windows/group/1
+context/target
+setup/once/setup_win_sqlserver
+needs/target/agent_job_category
