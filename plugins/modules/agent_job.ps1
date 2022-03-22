@@ -91,8 +91,8 @@ try {
         if ($null -eq $existingJob) {
             if (-not $checkMode) {
                 try {
-                    # Explicitly fetch the new job to make sure results don't suffer from SMO / Agent stale data bugs
                     $null = New-DbaAgentJob @jobParams
+                    # Explicitly fetch the new job to make sure results don't suffer from SMO / Agent stale data bugs
                     $output = Get-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -EnableException
                 }
                 catch {
