@@ -1,2 +1,10 @@
 fixes:
    - "/ansible_collections/lowlydba/sqlserver/::"
+
+coverage:
+  status:
+    project:
+      default:
+        # basic
+        target: auto
+        threshold: 5%

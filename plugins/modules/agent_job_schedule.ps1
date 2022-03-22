@@ -51,6 +51,7 @@ $endDate = $module.Params.end_date
 $startTime = $module.Params.start_time
 $endTime = $module.Params.end_time
 $state = $module.Params.state
+$checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 $scheduleParams = @{
