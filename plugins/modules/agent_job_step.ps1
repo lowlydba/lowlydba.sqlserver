@@ -18,11 +18,14 @@ $spec = @{
         step_id = @{type = 'int'; required = $false }
         step_name = @{type = 'str'; required = $true }
         database = @{type = 'str'; required = $false; default = 'master' }
-        subsystem = @{type = 'str'; required = $false; default = 'TransactSql'; choices = @('CmdExec', 'Distribution', 'LogReader', 'Merge', 'PowerShell', 'QueueReader', 'Snapshot', 'Ssis', 'TransactSql') }
+        subsystem = @{type = 'str'; required = $false; default = 'TransactSql'; 
+            choices = @('CmdExec', 'Distribution', 'LogReader', 'Merge', 'PowerShell', 'QueueReader', 'Snapshot', 'Ssis', 'TransactSql') }
         command = @{type = 'str'; required = $false }
-        on_success_action = @{type = 'str'; required = $false; default = 'QuitWithSuccess'; choices = @('QuitWithSuccess', 'QuitWithFailure', 'GoToNextStep', 'GoToStep') }
+        on_success_action = @{type = 'str'; required = $false; default = 'QuitWithSuccess'; 
+            choices = @('QuitWithSuccess', 'QuitWithFailure', 'GoToNextStep', 'GoToStep') }
         on_success_step_id = @{type = 'int'; required = $false; default = 0 }
-        on_fail_action = @{type = 'str'; required = $false; default = 'QuitWithFailure'; choices = @('QuitWithSuccess', 'QuitWithFailure', 'GoToNextStep', 'GoToStep') }
+        on_fail_action = @{type = 'str'; required = $false; default = 'QuitWithFailure'; 
+            choices = @('QuitWithSuccess', 'QuitWithFailure', 'GoToNextStep', 'GoToStep') }
         on_fail_step_id = @{type = 'int'; required = $false; default = 0 }
         retry_attempts = @{type = 'int'; required = $false; default = 0 }
         retry_interval = @{type = 'int'; required = $false; default = 0 }
