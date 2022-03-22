@@ -1,5 +1,5 @@
 windows/all
-windows/group/3
+windows/group/2
 context/target
 setup/once/setup_win_sqlserver
 needs/target/traceflag
