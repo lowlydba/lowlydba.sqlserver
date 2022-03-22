@@ -7,11 +7,6 @@
     status: "enabled"
     start_step_id: 1
   module_defaults:
-    lowlydba.sqlserver.agent_job_category:
-      sql_instance: "{{ sqlserver_instance }}"
-      sql_username: "{{ sqlserver_username }}"
-      sql_password: "{{ sqlserver_password }}"
-      category: "{{ category_name }}"
     lowlydba.sqlserver.agent_job:
       sql_instance: "{{ sqlserver_instance }}"
       sql_username: "{{ sqlserver_username }}"
@@ -24,10 +19,13 @@
   tags: ["agent_job"]
   block:
     # SQL Agent / SMO has delays on returning new data sometimes, and is worse on CI runners -
-    # so explicitly pre-create the category to make sure we get timely results later on
+    # so explicitly pre-create the category to make sure we get timely & accurate results later
     - name: Prep agent job category
       lowlydba.sqlserver.agent_job_category:
-      register: result
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+        category: "{{ category_name }}"
 
     - name: Create agent job
       lowlydba.sqlserver.agent_job:

@@ -91,6 +91,7 @@ try {
         if ($null -eq $existingJob) {
             if (-not $checkMode) {
                 try {
+                    # Explicitly fetch the new job to make sure results don't suffer from SMO / Agent stale data bugs
                     $null = New-DbaAgentJob @jobParams
                     $output = Get-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -EnableException
                 }
@@ -147,5 +148,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Error configuring SQL Agent job: $($_.Exception.Message)")
+    $module.FailJson("Error configuring SQL Agent job: $($_.Exception.Message)", $_)
 }
