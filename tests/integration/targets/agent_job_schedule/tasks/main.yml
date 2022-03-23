@@ -46,8 +46,8 @@
     - assert:
         that:
           - result.data.ScheduleUid != None
-          - result.data.ActiveStartDate == "{{ start_date_result }}"
-          - result.data.ActiveEndDate == "{{ end_date_result }}"
+          - result.data.ActiveStartDate == "2020-05-25T00:00:00.0000000"
+          - result.data.ActiveEndDate == "2020-05-25T00:00:00.0000000"
           - result.data.JobCount == 1
           - result.data.IsEnabled is true
           - result.data.Name == "{{ forced_schedule_name }}"
