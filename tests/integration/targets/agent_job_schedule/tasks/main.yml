@@ -64,11 +64,21 @@
     - assert:
         that:
           - result.data.ScheduleUid != None
-          - result.data.ActiveStartDate == "2021-05-25T00:00:00"
-          - result.data.ActiveEndDate == "2021-05-25T00:00:00"
+          - result.data.ActiveStartDate == "2021-05-25T00:00:00.0000000"
+          - result.data.ActiveEndDate == "2021-05-25T00:00:00.0000000"
           - result.data.JobCount == 1
           - result.data.IsEnabled is false
           - result.data.Name == "{{ forced_schedule_name }}"
+          - result is changed
+
+    - name: Remove job schedule
+      lowlydba.sqlserver.agent_job_schedule:
+        schedule: "{{ forced_schedule_name }}"
+        force: true
+        state: absent
+      register: result
+    - assert:
+        that:
           - result is changed
 
     - name: Create job schedule in checkmode
@@ -82,12 +92,6 @@
       check_mode: true
     - assert:
         that:
-          - result.data.ScheduleUid != None
-          - result.data.ActiveStartDate == "2021-05-26T00:00:00"
-          - result.data.ActiveEndDate == "2021-05-26T00:00:00"
-          - result.data.JobCount == 1
-          - result.data.IsEnabled is false
-          - result.data.Name == "{{ forced_schedule_name }}"
           - result is changed
 
     - name: Verify unchanged in checkmode
@@ -101,20 +105,11 @@
     - assert:
         that:
           - result.data.ScheduleUid != None
-          - result.data.ActiveStartDate == "2021-05-26T00:00:00"
-          - result.data.ActiveEndDate == "2021-05-26T00:00:00"
+          - result.data.ActiveStartDate == "2021-05-26T00:00:00.0000000"
+          - result.data.ActiveEndDate == "2021-05-26T00:00:00.0000000"
           - result.data.JobCount == 1
           - result.data.IsEnabled is false
           - result.data.Name == "{{ forced_schedule_name }}"
-          - result is changed
-
-    - name: Remove schedule
-      lowlydba.sqlserver.agent_job_schedule:
-        schedule: "{{ forced_schedule_name }}"
-        state: absent
-      register: result
-    - assert:
-        that:
           - result is changed
 
   # Cleanup
