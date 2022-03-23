@@ -53,7 +53,6 @@
           - result.data.Name == "{{ forced_schedule_name }}"
           - result is changed
 
-    
     - name: Change job schedule
       lowlydba.sqlserver.agent_job_schedule:
         schedule: "{{ forced_schedule_name }}"
@@ -125,7 +124,7 @@
           schedule: "{{ forced_schedule_name }}"
           force: true
           state: absent
-      
+
       - name: Pre-create agent job
         lowlydba.sqlserver.agent_job:
           force: true
