@@ -55,7 +55,7 @@ $checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 $scheduleParams = @{
-    SqlInstance = $SqlInstance
+    SqlInstance = $sqlInstance
     SqlCredential = $sqlCredential
     Force = $force
     Schedule = $schedule
@@ -100,15 +100,16 @@ if ($null -ne $frequencyRecurrenceFactor) {
 }
 
 try {
-    $existingSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $schedule -EnableException
+    $existingSchedule = Get-DbaAgentSchedule -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Schedule $schedule -EnableException
     if ($state -eq "present") {
         # Update schedule
         if ($null -ne $existingSchedule) {
             if (-not $checkMode) {
                 $output = Set-DbaAgentSchedule @scheduleParams
                 # Check if schedule was actually changed
-                $modifiedSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $ScheduleName -EnableException
-                $scheduleDiff = Compare-Object -ReferenceObject $existingSchedule -DifferenceObject $modifiedSchedule
+                $modifiedSchedule = Get-DbaAgentSchedule -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Schedule $schedule -EnableException
+                $compareProperty = $existingSchedule.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
+                $scheduleDiff = Compare-Object -ReferenceObject $existingSchedule -DifferenceObject $modifiedSchedule -Property $compareProperty
                 if ($null -ne $scheduleDiff) {
                     $module.Result.changed = $true
                 }
@@ -146,8 +147,11 @@ try {
             $module.Result.changed = $true
         }
     }
-    $resultData = ConvertTo-SerializableObject -InputObject $output
-    $module.Result.data = $resultData
+
+    if ($null -ne $output) {
+        $resultData = ConvertTo-SerializableObject -InputObject $output
+        $module.Result.data = $resultData
+    }
     $module.ExitJson()
 }
 catch {
