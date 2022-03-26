@@ -44,7 +44,16 @@ $options = @{
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
 
-[System.Collections.ArrayList]$compareProperty = @('MaximumCpuPercentage', 'MinimumCpuPercentage', 'CapCpuPercentage', 'MinimumMemoryPercentage', 'MaximumMemoryPercentage', 'MinimumIOPSPerVolume', 'MaximumIOPSPerVolume')
+[System.Collections.ArrayList]$compareProperty = @(
+    'MaximumCpuPercentage',
+    'MinimumCpuPercentage',
+    'CapCpuPercentage',
+    'MinimumMemoryPercentage',
+    'MaximumMemoryPercentage',
+    'MinimumIOPSPerVolume',
+    'MaximumIOPSPerVolume'
+)
+
 $optionsToRemove = @()
 foreach ($item in $options.GetEnumerator() ) {
     if ($null -eq $item.Value) {
