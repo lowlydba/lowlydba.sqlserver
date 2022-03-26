@@ -139,6 +139,13 @@ function ConvertTo-SerializableObject {
             $pValue = $p.Value
 
             switch ($p) {
+                { $null -eq $pValue } {
+                    @{
+                        Name = $pName
+                        Expression = { $null }.GetNewClosure()
+                    }
+                    break
+                }
                 { $pValue -is [datetime] } {
                     @{
                         Name = $pName
