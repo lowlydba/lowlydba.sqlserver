@@ -1,0 +1,85 @@
+name: Collection Docs
+concurrency:
+  group: docs-${{ github.head_ref }}
+  cancel-in-progress: true
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, closed]
+
+jobs:
+  validate-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    name: Validate Ansible Docs
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install Ansible
+        run: pip install https://github.com/ansible/ansible/archive/devel.tar.gz --disable-pip-version-check
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: ansible_collections/lowlydba/sqlserver
+
+      - name: Initialize the build environment
+        id: init
+        uses: ansible-community/github-docs-build/actions/ansible-docs-build-init@main
+        with:
+          collections: lowlydba.sqlserver
+          lenient: false
+          fail-on-error: true
+
+      - name: Build
+        id: build
+        uses: ansible-community/github-docs-build/actions/ansible-docs-build-html@main
+        with:
+          artifact-upload: false
+
+  build-docs:
+    permissions:
+      contents: read
+    name: Build Ansible Docs
+    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-pr.yml@main
+    with:
+      ansible-ref: devel  # TODO: consider milestone
+      init-lenient: true
+      init-fail-on-error: false
+
+  comment:
+    permissions:
+      pull-requests: write
+    runs-on: ubuntu-latest
+    needs: [build-docs]
+    name: PR comments
+    steps:
+      - name: PR comment
+        uses: ansible-community/github-docs-build/actions/ansible-docs-build-comment@main
+        with:
+          body-includes: '## Docs Build'
+          reactions: heart
+          action: ${{ needs.build-docs.outputs.changed != 'true' && 'remove' || '' }}
+          on-closed-action: remove
+          on-merged-body: |
+            ## Docs Build 📝
+
+            Thank you for contribution!✨
+
+            This PR has been merged and the docs are now incorporated into `main`.
+          body: |
+            ## Docs Build 📝
+
+            Thank you for contribution!✨
+
+            The docsite for **this PR** is  available for download as an artifact from this run:
+            ${{ needs.build-docs.outputs.artifact-url }}
+
+            File changes:
+
+            ${{ needs.build-docs.outputs.diff-files-rendered }}
+
+            ${{ needs.build-docs.outputs.diff-rendered }}
