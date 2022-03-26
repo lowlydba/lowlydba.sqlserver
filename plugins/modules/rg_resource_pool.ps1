@@ -57,11 +57,26 @@ foreach ($item in $optionsToRemove) {
 }
 
 try {
-    $existingResourcePool = Get-DbaRgResourcePool -SqlInstance $options.SqlInstance -SqlCredential $options.SqlCredential -Type $options.Type | Where-Object Name -eq $options.ResourcePool
+    $getPoolParams = @{
+        SqlInstance = $options.SqlInstance
+        SqlCredential = $options.SqlCredential
+        Type = $options.Type
+        EnableException = $true
+    }
+    $existingResourcePool = Get-DbaRgResourcePool @getPoolParams | Where-Object Name -eq $options.ResourcePool
 
     if ($state -eq "absent") {
         if ($null -ne $existingResourcePool) {
-            $output = Remove-DbaRgResourcePool -SqlInstance $options.SqlInstance -SqlCredential $options.SqlCredential -Type $options.Type -ResourcePool $options.ResourcePool -EnableException -WhatIf:$checkMode
+            $removePoolParams = @{
+                SqlInstance = $options.SqlInstance
+                SqlCredential = $options.SqlCredential
+                Type = $options.Type
+                ResourcePool = $options.ResourcePool
+                WhatIf = $checkMode
+                EnableException = $true
+                Confirm = $false
+            }
+            $output = Remove-DbaRgResourcePool @removePoolParams
             $module.Result.changed = $true
         }
     }
