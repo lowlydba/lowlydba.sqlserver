@@ -10,7 +10,6 @@
 Import-ModuleDependency
 $ErrorActionPreference = "Stop"
 
-# Get Csharp utility module
 $spec = @{
     supports_check_mode = $true
     options = @{
@@ -30,7 +29,9 @@ $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlS
 $sqlInstance = $module.Params.sql_instance
 $sqlCredential = Get-SqlCredential -Module $module
 $login = $module.Params.login
-[securestring]$secPassword = ConvertTo-SecureString $Module.Params.password -AsPlainText -Force
+if ($null -ne $module.Params.password) {
+    $secPassword = ConvertTo-SecureString -String $module.Params.password -AsPlainText -Force
+}
 [nullable[bool]]$disabled = $module.Params.disabled
 $defaultDatabase = $module.Params.default_database
 $language = $module.Params.language
@@ -51,7 +52,7 @@ try {
         EnableException = $true
     }
     $existingLogin = Get-DbaLogin @getLoginSplat
-    $output = $existingLogin
+    #$output = $existingLogin
 
     if ($state -eq "absent") {
         if ($null -ne $existingLogin) {
@@ -70,36 +71,37 @@ try {
         }
     }
     elseif ($state -eq "present") {
+        $setLoginSplat = @{
+            SqlInstance = $sqlInstance
+            SqlCredential = $sqlCredential
+            Login = $login
+            EnableException = $true
+            Confirm = $false
+        }
+        if ($null -ne $defaultDatabase) {
+            $setLoginSplat.add("DefaultDatabase", $defaultDatabase)
+        }
+        if ($null -ne $disabled) {
+            $setLoginSplat.add("Disabled", $disabled)
+        }
+        if ($null -ne $language) {
+            $setLoginSplat.add("Language", $language)
+        }
+        if ($null -ne $secPassword) {
+            $setLoginSplat.add("SecurePassword", $secPassword)
+        }
+        if ($null -ne $passwordExpirationEnforced) {
+            $setLoginSplat.add("PasswordExpirationEnabled", $passwordExpirationEnabled)
+        }
+        if ($null -ne $passwordPolicyEnforced) {
+            $setLoginSplat.add("PasswordPolicyEnforced", $passwordPolicyEnforced)
+        }
+        if ($null -ne $passwordMustChange) {
+            $setLoginSplat.add("PasswordMustChange", $passwordMustChange)
+        }
+
         # Login already exists
         if ($null -ne $existingLogin) {
-            $setLoginSplat = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                Login = $login
-                EnableException = $true
-            }
-            if ($null -ne $defaultDatabase) {
-                $setLoginSplat.add("DefaultDatabase", $defaultDatabase)
-            }
-            if ($null -ne $disabled) {
-                $setLoginSplat.add("Disabled", $disabled)
-            }
-            if ($null -ne $language) {
-                $setLoginSplat.add("Language", $language)
-            }
-            if ($null -ne $secPassword) {
-                $setLoginSplat.add("Password", $secPassword)
-            }
-            if ($null -ne $passwordExpirationEnforced) {
-                $setLoginSplat.add("PasswordExpirationEnabled", $passwordExpirationEnabled)
-            }
-            if ($null -ne $passwordPolicyEnforced) {
-                $setLoginSplat.add("PasswordPolicyEnforced", $passwordPolicyEnforced)
-            }
-            if ($null -ne $passwordMustChange) {
-                $setLoginSplat.add("PasswordMustChange", $passwordMustChange)
-            }
-
             # Compare existing values with passed params, skipping over values not specified
             $keys = $setLoginSplat.Keys | Where-Object { $_ -ne 'SqlInstance' }
             $compareProperty = ($existingLogin.Properties | Where-Object Name -in $keys).Name
@@ -122,10 +124,12 @@ try {
         }
     }
 
-    $resultData = ConvertTo-SerializableObject -InputObject $output
-    $module.Result.data = $resultData
+    if ($null -ne $output) {
+        $resultData = ConvertTo-SerializableObject -InputObject $output
+        $module.Result.data = $resultData
+    }
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Setting login failed.", $_)
+    $module.FailJson("Configuring login failed: $($_.Exception.Message)", $_)
 }
