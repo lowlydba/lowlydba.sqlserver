@@ -1,0 +1,76 @@
+---
+- name: Var block
+  vars:
+    resource_pool: "rpTheWaterIsFine"
+    type: "Internal"
+    max_cpu_perc: 99
+    min_cpu_perc: 90
+    max_iops_per_vol: 10000
+    min_iops_per_vol: 1
+    max_mem_perc: 99
+    min_mem_perc: 42
+  module_defaults:
+    lowlydba.sqlserver.rg_resource_pool:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      resource_pool: "{{ resource_pool }}"
+      type: "{{ type }}"
+      max_cpu_perc: "{{ max_cpu_perc }}"
+      min_cpu_perc: "{{ min_cpu_perc }}"
+      max_iops_per_vol: "{{ max_iops_per_vol }}"
+      min_iops_per_vol: "{{ min_iops_per_vol }}"
+      max_mem_perc: "{{ max_mem_perc }}"
+      min_mem_perc: "{{ min_mem_perc }}"
+  tags: ["rg_resource_pool"]
+  block:
+    - name: Create resource pool
+      lowlydba.sqlserver.rg_resource_pool:
+        state: "present"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.SqlInstance != None
+          - result.data.MaximumCpuPercentage == {{ max_cpu_perc }}
+          - result.data.MinimumCpuPercentage == {{ min_cpu_perc }}
+          - result.data.MaximumIopsPerVolume == {{ max_iops_per_vol }}
+          - result.data.MinimumIopsPerVolume == {{ min_iops_per_vol }}
+          - result.data.MaximumMemoryPercentage == {{ max_mem_perc }}
+          - result.data.MinimumMemoryPercentage == {{ min_mem_perc }}
+          - result.data.Name == "{{ resource_pool }}"
+
+    - name: Modify resource pool
+      lowlydba.sqlserver.rg_resource_pool:
+        min_cpu_perc: 1
+        state: "present"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.SqlInstance != None
+          - result.data.MinimumCpuPercentage == 1
+
+    - name: Drop resource pool in checkmode
+      lowlydba.sqlserver.rg_resource_pool:
+        state: "absent"
+      register: result
+      check_mode: true
+    - assert:
+        that:
+          - result is changed
+
+    - name: Drop resource pool
+      lowlydba.sqlserver.rg_resource_pool:
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+  always:
+    - name: Drop resource pool
+      lowlydba.sqlserver.rg_resource_pool:
+        state: "absent"
