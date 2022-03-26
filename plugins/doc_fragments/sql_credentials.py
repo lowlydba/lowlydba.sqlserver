@@ -16,6 +16,7 @@ class ModuleDocFragment(object):
 options:
   sql_instance:
     description:
+      - DELETE ME
       - The SQL Server instance to modify.
     type: str
     required: true
