@@ -34,7 +34,8 @@ jobs:
         with:
           collections: lowlydba.sqlserver
           lenient: false
-          fail-on-error: true
+          # fail-on-error: true
+          # ^ this is broken at the moment: https://github.com/ansible-community/antsibull/pull/409
 
       - name: DEBUG
         run: cat "${{ steps.init.outputs.build-script }}"
