@@ -36,6 +36,9 @@ jobs:
           lenient: false
           fail-on-error: true
 
+      - name: DEBUG
+        run: cat "${{ steps.init.outputs.build-script }}"
+
       - name: Build
         id: build
         uses: ansible-community/github-docs-build/actions/ansible-docs-build-html@main
