@@ -12,6 +12,8 @@ jobs:
     permissions:
       contents: read
     name: Validate Ansible Docs
+    env:
+      ANSIBLE_COLLECTIONS_PATHS: ${{ github.workspace }}
     if: github.event.action != 'closed'
     steps:
       - name: Set up Python
