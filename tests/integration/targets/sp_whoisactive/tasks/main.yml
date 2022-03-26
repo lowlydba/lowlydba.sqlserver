@@ -10,7 +10,6 @@
       database: "{{ target_database }}"
   tags: ["sp_whoisactive"]
   block:
-
     - name: Install sp_whoisactive
       lowlydba.sqlserver.sp_whoisactive:
       register: result
@@ -44,10 +43,4 @@
       check_mode: true
     - assert:
         that:
-          - result.data.SqlInstance != None
-          - result.data.ComputerName != None
-          - result.data.InstanceName != None
-          - result.data.Database == "{{ target_database }}"
-          - result.data.Version == "n/a in check mode"
-          - result.data.Status == 'Updated'
           - result is changed

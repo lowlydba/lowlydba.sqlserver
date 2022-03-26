@@ -9,7 +9,6 @@
       sql_password: "{{ sqlserver_password }}"
   tags: ["memory"]
   block:
-
     - name: Set max memory
       lowlydba.sqlserver.memory:
         max: "{{ max_memory_over_9000 }}"
@@ -47,7 +46,6 @@
       register: result
     - assert:
         that:
-          - result.data.MaxValue == {{ max_memory_over_9000 }}
           - result is changed
 
     - name: Verify unchanged checkmode max memory

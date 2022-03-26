@@ -53,6 +53,7 @@ try {
         Solution = $solution
         InstallJobs = $installJobs
         InstallParallel = $installParallel
+        WhatIf = $checkMode
         Force = $force
         Confirm = $false
         EnableException = $true
@@ -75,9 +76,7 @@ try {
     }
 
     try {
-        if (-not $checkMode) {
-            $output = Install-DbaMaintenanceSolution @maintenanceSolutionSplat
-        }
+        $output = Install-DbaMaintenanceSolution @maintenanceSolutionSplat
         $module.Result.changed = $true
     }
     catch {
@@ -96,8 +95,10 @@ try {
         }
     }
 
-    $resultData = ConvertTo-SerializableObject -InputObject $output
-    $module.Result.data = $resultData
+    if ($null -ne $output) {
+        $resultData = ConvertTo-SerializableObject -InputObject $output
+        $module.Result.data = $resultData
+    }
     $module.ExitJson()
 }
 catch {

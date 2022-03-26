@@ -56,7 +56,6 @@
     - assert:
         that:
           - result is changed
-          - result.data.RCSI is false
 
     - name: Verify database unchanged from checkmode
       lowlydba.sqlserver.database:

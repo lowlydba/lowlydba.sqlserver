@@ -44,31 +44,27 @@ try {
         }
     }
     else {
-        if ($checkMode) {
-            $output = $rg
-            $output.ClassifierFunction = $classifierFunction
-            $output.Enabled = $enabled
+        $rgHash = @{
+            SqlInstance = $sqlInstance
+            SqlCredential = $sqlCredential
+            ClassifierFunction = $classifierFunction
+            WhatIf = $checkMode
+            EnableException = $true
+            Confirm = $false
+        }
+        if ($enabled) {
+            $output = Set-DbaResourceGovernor @rgHash -Enabled
         }
         else {
-            $rgHash = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                ClassifierFunction = $classifierFunction
-                EnableException = $true
-                Confirm = $false
-            }
-            if ($enabled) {
-                $output = Set-DbaResourceGovernor @rgHash -Enabled
-            }
-            else {
-                $output = Set-DbaResourceGovernor @rgHash -Disabled
-            }
+            $output = Set-DbaResourceGovernor @rgHash -Disabled
         }
         $module.Result.changed = $true
     }
 
-    $resultData = ConvertTo-SerializableObject -InputObject $output
-    $module.Result.data = $resultData
+    if ($null -ne $output) {
+        $resultData = ConvertTo-SerializableObject -InputObject $output
+        $module.Result.data = $resultData
+    }
     $module.ExitJson()
 }
 catch {

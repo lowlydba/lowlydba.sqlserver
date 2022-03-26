@@ -90,18 +90,19 @@ try {
         }
     }
     elseif ($state -eq "present") {
+        $options.Add("WhatIf", $checkMode)
         if ($null -ne $existingResourcePool) {
             # Check for value parity
             $diff = Compare-Object -ReferenceObject $options -DifferenceObject $existingResourcePool -Property $compareProperty
             if ($null -ne $diff) {
                 # Set to new values
-                $output = Set-DbaRgResourcePool @options -WhatIf:$checkMode -EnableException
+                $output = Set-DbaRgResourcePool @options -EnableException
                 $module.Result.changed = $true
             }
         }
         else {
             # Create a resource pool
-            $output = New-DbaRgResourcePool @options -WhatIf:$checkMode -EnableException
+            $output = New-DbaRgResourcePool @options -EnableException
             $module.Result.changed = $true
         }
     }

@@ -21,7 +21,7 @@ options:
       - Password for the login, if SQL Authentication login.
     type: str
     required: false
-  disabled:
+  disable:
     description:
       - Whether or not to disable the login.
     type: bool

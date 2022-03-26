@@ -15,7 +15,7 @@ $spec = @{
     options = @{
         login = @{type = 'str'; required = $true }
         password = @{type = 'str'; required = $false; no_log = $true }
-        disabled = @{type = 'bool'; required = $false }
+        disable = @{type = 'bool'; required = $false }
         default_database = @{type = 'str'; required = $false }
         language = @{type = 'str'; required = $false }
         password_must_change = @{type = 'bool'; required = $false }
@@ -32,7 +32,7 @@ $login = $module.Params.login
 if ($null -ne $module.Params.password) {
     $secPassword = ConvertTo-SecureString -String $module.Params.password -AsPlainText -Force
 }
-[nullable[bool]]$disabled = $module.Params.disabled
+[nullable[bool]]$disable = $module.Params.disabled
 $defaultDatabase = $module.Params.default_database
 $language = $module.Params.language
 [nullable[bool]]$passwordMustChange = $module.Params.password_must_change
@@ -81,7 +81,7 @@ try {
             $setLoginSplat.add("DefaultDatabase", $defaultDatabase)
         }
         if ($null -ne $disabled) {
-            $setLoginSplat.add("Disabled", $disabled)
+            $setLoginSplat.add("Disable", $disable)
         }
         if ($null -ne $language) {
             $setLoginSplat.add("Language", $language)

@@ -6,7 +6,7 @@
     password_expiration_enabled: true
     password_policy_enforced: false
     password_must_change: false
-    disabled: false
+    disable: false
     default_database: "master"
     language: "us_english"
   module_defaults:
@@ -19,7 +19,7 @@
       password_expiration_enabled: "{{ password_expiration_enabled }}"
       password_policy_enforced: "{{ password_policy_enforced }}"
       password_must_change: "{{ password_must_change }}"
-      disabled: "{{ disabled }}"
+      disable: "{{ disable }}"
       default_database: "{{ default_database }}"
       language: "{{ language }}"
       state: present

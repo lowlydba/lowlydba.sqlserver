@@ -27,35 +27,24 @@ $module.Result.changed = $false
 
 # Set max memory for SQL Instance
 try {
-    if ($checkMode) {
-        # Make an equivalent output
-        $server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
-        $output = [PSCustomObject]@{
-            ComputerName = $server.ComputerName
-            InstanceName = $server.ServiceName
-            SqlInstance = $server.DomainInstanceName
-            Total = $server.PhysicalMemory
-            MaxValue = $max
-            PreviousMaxValue = $server.Configuration.MaxServerMemory.ConfigValue
-        }
+    # Set max memory
+    $setMemorySplat = @{
+        SqlInstance = $sqlInstance
+        SqlCredential = $sqlCredential
+        Max = $max
+        WhatIf = $checkMode
+        EnableException = $true
     }
-    else {
-        # Set max memory
-        $setMemorySplat = @{
-            SqlInstance = $sqlInstance
-            SqlCredential = $sqlCredential
-            Max = $max
-            EnableException = $true
-        }
-        $output = Set-DbaMaxMemory @setMemorySplat
-    }
+    $output = Set-DbaMaxMemory @setMemorySplat
 
     if ($output.PreviousMaxValue -ne $max) {
         $module.Result.changed = $true
     }
 
-    $resultData = ConvertTo-SerializableObject -InputObject $output
-    $module.Result.data = $resultData
+    if ($null -ne $output) {
+        $resultData = ConvertTo-SerializableObject -InputObject $output
+        $module.Result.data = $resultData
+    }
     $module.ExitJson()
 }
 catch {
