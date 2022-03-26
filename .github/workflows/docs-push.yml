@@ -19,4 +19,5 @@ jobs:
     with:
       ansible-ref: devel  # TODO: consider milestone
       init-lenient: false
-      init-fail-on-error: true
+      # init-fail-on-error: true
+      # ^ this is broken at the moment: https://github.com/ansible-community/antsibull/pull/409
