@@ -55,17 +55,16 @@ try {
 
     if ($state -eq "absent") {
         if ($null -ne $existingLogin) {
-            if (-not $checkMode) {
-                $removeLoginSplat = @{
-                    SqlInstance = $sqlInstance
-                    SqlCredential = $sqlCredential
-                    Login = $login
-                    EnableException = $true
-                    Confirm = $false
-                    Force = $true
-                }
-                $output = Remove-DbaLogin @removeLoginSplat
+            $removeLoginSplat = @{
+                SqlInstance = $sqlInstance
+                SqlCredential = $sqlCredential
+                Login = $login
+                WhatIf = $checkMode
+                EnableException = $true
+                Confirm = $false
+                Force = $true
             }
+            $output = Remove-DbaLogin @removeLoginSplat
             $module.Result.changed = $true
         }
     }
@@ -74,6 +73,7 @@ try {
             SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential
             Login = $login
+            WhatIf = $checkMode
             EnableException = $true
             Confirm = $false
         }
@@ -108,17 +108,13 @@ try {
 
             # Login needs to be modified
             if ($diff) {
-                if (-not $checkMode) {
-                    $output = Set-DbaLogin @setLoginSplat
-                }
+                $output = Set-DbaLogin @setLoginSplat
                 $module.result.changed = $true
             }
         }
         # New login
         else {
-            if (-not $checkMode) {
-                $output = New-DbaLogin @setLoginSplat
-            }
+            $output = New-DbaLogin @setLoginSplat
             $module.result.changed = $true
         }
     }
