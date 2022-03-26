@@ -52,7 +52,7 @@ try {
         EnableException = $true
     }
     $existingLogin = Get-DbaLogin @getLoginSplat
-    #$output = $existingLogin
+    $output = $existingLogin
 
     if ($state -eq "absent") {
         if ($null -ne $existingLogin) {
