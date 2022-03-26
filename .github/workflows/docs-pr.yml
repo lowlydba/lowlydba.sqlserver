@@ -39,9 +39,6 @@ jobs:
           # fail-on-error: true
           # ^ this is broken at the moment: https://github.com/ansible-community/antsibull/pull/409
 
-      - name: DEBUG
-        run: cat "${{ steps.init.outputs.build-script }}"
-
       - name: Build
         id: build
         uses: ansible-community/github-docs-build/actions/ansible-docs-build-html@main
