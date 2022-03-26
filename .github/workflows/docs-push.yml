@@ -4,8 +4,9 @@ concurrency:
   cancel-in-progress: true
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
+    # DISABLE BRANCH TARGETING FOR TESTING
   schedule:
     - cron: '0 13 * * *'
 
