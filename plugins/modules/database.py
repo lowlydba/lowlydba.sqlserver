@@ -80,3 +80,10 @@ EXAMPLES = r'''
     sql_instance: sql-01.myco.io
     database_name: LowlyDB
 '''
+
+RETURN = r'''
+data:
+  description: Modified output from the C(New-DbaDatabase), C(Set-DbaDatabase), or C(Remove-DbaDatabase) function.
+  returned: success, but not in check_mode.
+  type: dict
+'''

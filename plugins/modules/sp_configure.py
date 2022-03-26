@@ -40,7 +40,7 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Raw output from the Set-DbaSpConfigure function.
-  returned: success
+  description: Output from the C(Set-DbaSpConfigure) function.
+  returned: success, but not in check_mode.
   type: dict
 '''

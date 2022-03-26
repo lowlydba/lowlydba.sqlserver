@@ -72,7 +72,7 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Raw output from the C(New-DbaLogin) or C(Set-DbaLogin) function.
-  returned: success
+  description: Output from the C(New-DbaLogin), C(Set-DbaLogin), or C(Remove-DbaLogin) function.
+  returned: success, but not in check_mode.
   type: dict
 '''

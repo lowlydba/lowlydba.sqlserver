@@ -77,7 +77,7 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Raw output from the C(Set-DbaRgResourcePool), C(New-DbaRgResourcePool), or C(Remove-DbaRgResourcePool) function.
-  returned: success
+  description: Output from the C(Set-DbaRgResourcePool), C(New-DbaRgResourcePool), or C(Remove-DbaRgResourcePool) function.
+  returned: success, but not in check_mode.
   type: dict
 '''

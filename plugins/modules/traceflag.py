@@ -41,6 +41,6 @@ EXAMPLES = r'''
 RETURN = r'''
 data:
   description: Output from the C(Enable-DbaTraceFlag) or C(Disable-DbaTraceFlag) function.
-  returned: success
+  returned: success, but not in check_mode.
   type: dict
 '''
