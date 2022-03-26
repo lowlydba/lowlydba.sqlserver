@@ -12,6 +12,7 @@ jobs:
     permissions:
       contents: read
     name: Validate Ansible Docs
+    if: github.event.action != 'closed'
     steps:
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -24,6 +25,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
+          ref: refs/pull/${{ github.event.number }}/merge
           path: ansible_collections/lowlydba/sqlserver
 
       - name: Initialize the build environment
