@@ -1,5 +1,6 @@
 # lowlydba.sqlserver Collection for Ansible
 
+![GPL v3](https://img.shields.io/github/license/lowlydba/lowlydba.sqlserver)
 [![CI](https://github.com/lowlydba/lowlydba.sqlserver/actions/workflows/ansible-test.yml/badge.svg)](https://github.com/lowlydba/lowlydba.sqlserver/actions/workflows/ansible-test.yml)
 [![CI (Windows)](https://github.com/lowlydba/lowlydba.sqlserver/actions/workflows/ansible-test-windows.yml/badge.svg)](https://github.com/lowlydba/lowlydba.sqlserver/actions/workflows/ansible-test-windows.yml)
 [![codecov](https://codecov.io/gh/lowlydba/lowlydba.sqlserver/branch/main/graph/badge.svg?token=3TW3VBCn9N)](https://codecov.io/gh/lowlydba/lowlydba.sqlserver)
