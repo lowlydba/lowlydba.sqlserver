@@ -5,7 +5,6 @@
     job_name: "Integration Job"
     description: "This test is not a test."
     status: "enabled"
-    start_step_id: 1
   module_defaults:
     lowlydba.sqlserver.agent_job:
       sql_instance: "{{ sqlserver_instance }}"
@@ -38,6 +37,37 @@
           - result.data.Name == "{{ job_name }}"
           - result.data.OwnerLoginName == "{{ sqlserver_username }}"
           - result.data.HasSchedule is false
+
+    - name: Create agent job step one
+      lowlydba.sqlserver.agent_job_step:
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+        job: "{{ job_name }}"
+        step_name: "Step 1"
+        step_id: 1
+
+    - name: Create agent job step two
+      lowlydba.sqlserver.agent_job_step:
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+        job: "{{ job_name }}"
+        step_name: "Step 2"
+        step_id: 2
+
+    - name: Set start job step id
+      lowlydba.sqlserver.agent_job:
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+        job: "{{ job_name }}"
+        start_step_id: 2
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result is changed
 
     - name: Remove agent job
       lowlydba.sqlserver.agent_job:
@@ -78,7 +108,19 @@
           - result.data.HasSchedule is false
           - result is changed
 
+    - name: Change agent job
+      lowlydba.sqlserver.agent_job:
+        status: "enabled"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.Category == "{{ category_name }}"
+          - result.data.Enabled is true
+          - result.data.Name == "{{ job_name }}"
+          - result is changed
+
   always:
-    - name: Cleanup  agent job
+    - name: Cleanup agent job
       lowlydba.sqlserver.agent_job:
         state: "absent"

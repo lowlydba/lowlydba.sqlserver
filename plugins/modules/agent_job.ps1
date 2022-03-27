@@ -107,23 +107,6 @@ try {
             $diff = Compare-Object -ReferenceObject $existingJob -DifferenceObject $jobParams -Property $compareProperty
             # Update job
             if ($null -ne $diff -or $existingJob.IsEnabled -ne $enabled) {
-                # Only one schedule / job supported currently - remove any others
-                if ($existingJob.JobSchedules.Count -gt 1 -or $existingJob.JobSchedules.Name -contains $schedule) {
-                    foreach ($sched in $existingJob.JobSchedules | Where-Object Name -ne $schedule ) {
-                        $removeScheduleSplat = @{
-                            SqlInstance = $sqlInstance
-                            SqlCredential = $sqlCredential
-                            Schedule = $schedule
-                            WhatIf = $checkMode
-                            EnableException = $true
-                            Force = $true
-                            Confirm = $false
-                        }
-                        $null = Remove-DbaAgentSchedule @removeScheduleSplat
-                        $module.Result.changed = $true
-                    }
-                }
-
                 # Update the job
                 # Enabled is special flag only used in Set-DbaAgentJob
                 if ($status -eq "enabled") {
