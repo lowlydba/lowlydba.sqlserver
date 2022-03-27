@@ -115,10 +115,9 @@ try {
                         EnableException = $true
                     }
                     $null = Set-DbaDbOwner @setDbParams
+                    $output = Get-DbaDatabase @getDatabaseSplat
+                    $module.Result.changed = $true
                 }
-                $output = Get-DbaDatabase @getDatabaseSplat
-                $module.Result.changed = $true
-
             }
             catch {
                 $module.FailJson("Setting database owner for [$database] failed.", $_)
