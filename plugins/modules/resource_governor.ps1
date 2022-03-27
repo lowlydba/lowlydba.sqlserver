@@ -38,12 +38,9 @@ $module.Result.changed = $false
 try {
     $rg = Get-DbaResourceGovernor -SqlInstance $sqlInstance -SqlCredential $sqlCredential
     $rgClassifierFunction = $rg.ClassifierFunction.Name
-    if ($rg.Enabled -eq $enabled) {
-        if (($rgClassifierFunction -eq $classifierFunction) -or ($null -eq $rgClassifierFunction -and $classifierFunction -eq "NULL")) {
-            $output = $rg
-        }
-    }
-    else {
+
+    if (($rg.Enabled -ne $enabled) -or ($rgClassifierFunction -ne $classifierFunction) `
+            -or ($null -ne $rgClassifierFunction -and $classifierFunction -eq "NULL")) {
         $rgHash = @{
             SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential

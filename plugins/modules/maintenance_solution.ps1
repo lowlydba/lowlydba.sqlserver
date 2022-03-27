@@ -62,7 +62,7 @@ try {
         $maintenanceSolutionSplat.LocalFile = $localFile
     }
     if ($null -ne $backupLocation) {
-        $maintenanceSolutionSplat.Branch = $backupLocation
+        $maintenanceSolutionSplat.BackupLocation = $backupLocation
     }
     if ($null -ne $outputFileDirectory) {
         $maintenanceSolutionSplat.OutputFileDirectory = $outputFileDirectory

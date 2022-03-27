@@ -3,7 +3,7 @@
   vars:
     database_name: "sqlserver_integration_db"
     maxdop: 1
-    secondary_maxdop: 0
+    secondary_maxdop: 4
     owner_name: sa
     recovery_model: Simple
     compatibility_low: Version140
@@ -23,6 +23,7 @@
         rcsi: true
         recovery_model: "{{ recovery_model }}"
         compatibility: "{{ compatibility_low }}"
+        owner: "{{ sqlserver_username }}"
       register: result
     - assert:
         that:
@@ -35,7 +36,6 @@
 
     - name: Change a database
       lowlydba.sqlserver.database:
-        database: "{{ database_name }}"
         compatibility: "{{ compatibility_high }}"
         owner: "{{ owner_name }}"
         secondary_maxdop: "{{ secondary_maxdop }}"

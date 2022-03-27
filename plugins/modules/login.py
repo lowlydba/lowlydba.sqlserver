@@ -35,7 +35,7 @@ options:
     required: false
   language:
     description:
-      - Default language for the login.
+      - Default language for the login. Only used when creating a new login, not when modifying an existing one.
     type: str
     required: false
   password_must_change:

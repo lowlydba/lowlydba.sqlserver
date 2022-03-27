@@ -116,7 +116,6 @@ try {
                     }
                     $null = Set-DbaDbOwner @setDbParams
                 }
-                # Re-fetch the output since Owner is a read-only property
                 $output = Get-DbaDatabase @getDatabaseSplat
                 $module.Result.changed = $true
 

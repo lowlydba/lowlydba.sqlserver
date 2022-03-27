@@ -7,6 +7,9 @@
     start_time: "000000"
     frequency_type: "Daily"
     frequency_interval: "Everyday"
+    frequency_subday_type: "Hours"
+    frequency_subday_interval: 5
+    frequency_relative_interval: "First"
     end_date: "30200525"
     end_time: "000929"
     start_date_result: "3020-05-25T00:00:00"
@@ -27,6 +30,9 @@
       end_time: "{{ end_time }}"
       frequency_type: "{{ frequency_type }}"
       frequency_interval: "{{ frequency_interval }}"
+      frequency_subday_type: "{{ frequency_subday_type }}"
+      frequency_subday_interval: "{{ frequency_subday_interval }}"
+      frequency_relative_interval: "{{ frequency_relative_interval }}"
       job: "{{ job_name }}"
   tags: ["agent_job_schedule"]
   block:
@@ -83,6 +89,16 @@
     - assert:
         that:
           - result is changed
+
+    - name: Remove non-existent job schedule
+      lowlydba.sqlserver.agent_job_schedule:
+        schedule: "{{ forced_schedule_name }}"
+        force: true
+        state: absent
+      register: result
+    - assert:
+        that:
+          - result is not changed
 
     - name: Create job schedule in checkmode
       lowlydba.sqlserver.agent_job_schedule:
