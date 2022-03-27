@@ -7,10 +7,9 @@
       sql_instance: "{{ sqlserver_instance }}"
       sql_username: "{{ sqlserver_username }}"
       sql_password: "{{ sqlserver_password }}"
-      trace_flag:  "{{ trace_flag }}"
+      trace_flag: "{{ trace_flag }}"
   tags: ["traceflag"]
   block:
-
     - name: Set a traceflag
       lowlydba.sqlserver.traceflag:
         enabled: true
@@ -72,9 +71,6 @@
       check_mode: true
     - assert:
         that:
-          - result.data.SqlInstance != None
-          - result.data.InstanceName != None
-          - result.data.TraceFlag ==  {{ trace_flag }}
           - result is changed
 
     - name: Verify unchanged in checkmode

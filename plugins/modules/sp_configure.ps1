@@ -28,30 +28,26 @@ $value = $module.Params.value
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
 
-# Make instance level system configuration change for a given configuration.
 try {
-    $output = Get-DbaSpConfigure -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Name $name -EnableException
-    $output | Add-Member -MemberType NoteProperty -Name "PreviousValue" -Value $output.ConfiguredValue
-    $output = $output | Select-Object -Property ComputerName, InstanceName, SqlInstance, PreviousValue
-    $output | Add-Member -MemberType NoteProperty -Name "ConfigName" -Value $name
-    $output | Add-Member -MemberType NoteProperty -Name "NewValue" -Value $value
+    $existingConfig = Get-DbaSpConfigure -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Name $name -EnableException
 
-    if ($output.PreviousValue -ne $output.NewValue) {
-        if ($checkMode -eq $false) {
-            $setSpConfigureSplat = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                Name = $name
-                Value = $value
-                EnableException = $true
-            }
-            $output = Set-DbaSpConfigure @setSpConfigureSplat
+    if ($existingConfig.ConfiguredValue -ne $value) {
+        $setSpConfigureSplat = @{
+            SqlInstance = $sqlInstance
+            SqlCredential = $sqlCredential
+            Name = $name
+            Value = $value
+            WhatIf = $checkMode
+            EnableException = $true
         }
+        $output = Set-DbaSpConfigure @setSpConfigureSplat
         $module.Result.changed = $true
     }
 
-    $resultData = ConvertTo-SerializableObject -InputObject $output
-    $module.Result.data = $resultData
+    if ($null -ne $output) {
+        $resultData = ConvertTo-SerializableObject -InputObject $output
+        $module.Result.data = $resultData
+    }
     $module.ExitJson()
 }
 

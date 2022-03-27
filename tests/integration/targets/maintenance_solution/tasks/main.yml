@@ -1,11 +1,13 @@
 ---
 - name: Var block
-  vars:
   module_defaults:
     lowlydba.sqlserver.maintenance_solution:
       sql_instance: "{{ sqlserver_instance }}"
       sql_username: "{{ sqlserver_username }}"
       sql_password: "{{ sqlserver_password }}"
+      backup_location: "C:\\backup"
+      cleanup_time: 24
+      output_file_dir: "C:\\logs"
   tags: ["maintenance_solution"]
   block:
     - name: Install Maintenance Solution

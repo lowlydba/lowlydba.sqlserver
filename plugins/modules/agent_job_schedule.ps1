@@ -55,10 +55,11 @@ $checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 $scheduleParams = @{
-    SqlInstance = $sqlInstance
+    SqlInstance = $SqlInstance
     SqlCredential = $sqlCredential
     Force = $force
     Schedule = $schedule
+    WhatIf = $checkMode
     EnableException = $true
 }
 
@@ -100,19 +101,16 @@ if ($null -ne $frequencyRecurrenceFactor) {
 }
 
 try {
-    $existingSchedule = Get-DbaAgentSchedule -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Schedule $schedule -EnableException
+    $existingSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $schedule -EnableException
     if ($state -eq "present") {
         # Update schedule
         if ($null -ne $existingSchedule) {
-            if (-not $checkMode) {
-                $output = Set-DbaAgentSchedule @scheduleParams
-                # Check if schedule was actually changed
-                $modifiedSchedule = Get-DbaAgentSchedule -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Schedule $schedule -EnableException
-                $compareProperty = $existingSchedule.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
-                $scheduleDiff = Compare-Object -ReferenceObject $existingSchedule -DifferenceObject $modifiedSchedule -Property $compareProperty
-                if ($null -ne $scheduleDiff) {
-                    $module.Result.changed = $true
-                }
+            $output = Set-DbaAgentSchedule @scheduleParams
+            # Check if schedule was actually changed
+            $modifiedSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $ScheduleName -EnableException
+            $scheduleDiff = Compare-Object -ReferenceObject $existingSchedule -DifferenceObject $modifiedSchedule
+            if ($null -ne $scheduleDiff) {
+                $module.Result.changed = $true
             }
             # Assume updated for checkmode
             else {
@@ -121,9 +119,7 @@ try {
         }
         # Create schedule
         else {
-            if (-not $checkMode) {
-                $output = New-DbaAgentSchedule @scheduleParams
-            }
+            $output = New-DbaAgentSchedule @scheduleParams
             $module.Result.changed = $true
         }
     }
@@ -134,20 +130,18 @@ try {
         }
         # Remove schedule
         else {
-            if (-not $checkMode) {
-                $removeScheduleSplat = @{
-                    SqlInstance = $sqlInstance
-                    SqlCredential = $sqlCredential
-                    Schedule = $schedule
-                    Confirm = $false
-                    Force = $true
-                }
-                $output = Remove-DbaAgentSchedule @removeScheduleSplat
+            $removeScheduleSplat = @{
+                SqlInstance = $sqlInstance
+                SqlCredential = $sqlCredential
+                Schedule = $schedule
+                WhatIf = $checkMode
+                Confirm = $false
+                Force = $true
             }
+            $output = Remove-DbaAgentSchedule @removeScheduleSplat
             $module.Result.changed = $true
         }
     }
-
     if ($null -ne $output) {
         $resultData = ConvertTo-SerializableObject -InputObject $output
         $module.Result.data = $resultData

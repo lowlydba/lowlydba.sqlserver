@@ -1,6 +1,5 @@
 ---
 - name: Var block
-  vars:
   module_defaults:
     lowlydba.sqlserver.sp_configure:
       sql_instance: "{{ sqlserver_instance }}"
@@ -8,10 +7,9 @@
       sql_password: "{{ sqlserver_password }}"
   tags: ["sp_configure"]
   block:
-
     - name: Configure
       lowlydba.sqlserver.sp_configure:
-        name: 'show advanced options'
+        name: "show advanced options"
         value: 1
       register: result
     - assert:
@@ -24,19 +22,17 @@
 
     - name: Configure in checkmode
       lowlydba.sqlserver.sp_configure:
-        name: 'show advanced options'
+        name: "show advanced options"
         value: 0
       register: result
       check_mode: true
     - assert:
         that:
-          - result.data.PreviousValue == 1
-          - result.data.NewValue == 0
           - result is changed
 
     - name: Verify unchanged configuration
       lowlydba.sqlserver.sp_configure:
-        name: 'show advanced options'
+        name: "show advanced options"
         value: 0
       register: result
     - assert:
@@ -47,11 +43,15 @@
 
     - name: Unchanged configuration
       lowlydba.sqlserver.sp_configure:
-        name: 'show advanced options'
+        name: "show advanced options"
         value: 0
       register: result
     - assert:
         that:
-          - result.data.PreviousValue == 0
-          - result.data.NewValue == 0
           - result is not changed
+
+  always:
+    - name: Reset Option
+      lowlydba.sqlserver.sp_configure:
+        name: "show advanced options"
+        value: 0

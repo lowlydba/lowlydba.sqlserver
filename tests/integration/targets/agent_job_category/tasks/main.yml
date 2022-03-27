@@ -29,14 +29,6 @@
       register: result
     - assert:
         that:
-          - result.data != None
-          - result.data.ComputerName != None
-          - result.data.InstanceName != None
-          - result.data.SqlInstance != None
-          - result.data.Name == "{{ category_name }}"
-          - result.data.ID != None
-          - result.data.CategoryType == "LocalJob"
-          - result.data.JobCount == 0
           - result is not changed
 
     - name: Remove job category in check mode
@@ -46,13 +38,6 @@
       check_mode: true
     - assert:
         that:
-          - result.data != None
-          - result.data.ComputerName != None
-          - result.data.InstanceName != None
-          - result.data.SqlInstance != None
-          - result.data.Name == "{{ category_name }}"
-          - result.data.Status == "Dropped"
-          - result.data.IsRemoved is true
           - result is changed
 
     - name: Remove job category
@@ -61,13 +46,6 @@
       register: result
     - assert:
         that:
-          - result.data != None
-          - result.data.ComputerName != None
-          - result.data.InstanceName != None
-          - result.data.SqlInstance != None
-          - result.data.Name == "{{ category_name }}"
-          - result.data.Status == "Dropped"
-          - result.data.IsRemoved is true
           - result is changed
 
     - name: Create new job category

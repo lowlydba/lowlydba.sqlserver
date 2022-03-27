@@ -21,11 +21,13 @@ options:
       - Password for the login, if SQL Authentication login.
     type: str
     required: false
-  disabled:
+  status:
     description:
-      - Whether or not to disable the login.
-    type: bool
+      - Whether the login is C(enabled) or C(disabled).
+    type: str
     required: false
+    default: 'enabled'
+    choices: ['enabled', 'disabled']
   default_database:
     description:
       - Default database for the login.
@@ -33,7 +35,7 @@ options:
     required: false
   language:
     description:
-      - Default language for the login.
+      - Default language for the login. Only used when creating a new login, not when modifying an existing one.
     type: str
     required: false
   password_must_change:
@@ -72,7 +74,7 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Raw output from the C(New-DbaLogin) or C(Set-DbaLogin) function.
-  returned: success
+  description: Output from the C(New-DbaLogin), C(Set-DbaLogin), or C(Remove-DbaLogin) function.
+  returned: success, but not in check_mode.
   type: dict
 '''

@@ -38,54 +38,30 @@ try {
     if ($null -ne $categoryType) {
         $agentJobCategorySplat.Add("CategoryType", $categoryType)
     }
-    $output = Get-DbaAgentJobCategory @agentJobCategorySplat
-    $server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
+    $existingCategory = Get-DbaAgentJobCategory @agentJobCategorySplat
 
+    $agentJobCategorySplat.Add("WhatIf", $checkMode)
     if ($state -eq "present") {
         # Create new job category
-        if ($null -eq $output) {
-            if (-not $checkMode) {
-                $output = New-DbaAgentJobCategory @agentJobCategorySplat
-            }
-            # Output for check mode
-            else {
-                $output = [PSCustomObject]@{
-                    ComputerName = $server.ComputerName
-                    InstanceName = $server.ServiceName
-                    SqlInstance = $server.DomainInstanceName
-                    Name = $category
-                    ID = "n/a in check mode"
-                    CategoryType = $categoryType
-                    JobCount = 0
-                }
-            }
+        if ($null -eq $existingCategory) {
+            $output = New-DbaAgentJobCategory @agentJobCategorySplat
             $module.Result.changed = $true
         }
     }
     elseif ($state -eq "absent") {
-        if ($output) {
-            if (-not $checkMode) {
-                $agentJobCategorySplat.Add("Confirm", $false)
-                $output = Remove-DbaAgentJobCategory @agentJobCategorySplat
-            }
-            # Output for check mode
-            else {
-                $output = [PSCustomObject]@{
-                    ComputerName = $server.ComputerName
-                    InstanceName = $server.ServiceName
-                    SqlInstance = $server.DomainInstanceName
-                    Name = $category
-                    Status = "Dropped"
-                    IsRemoved = $true
-                }
-            }
+        if ($null -ne $existingCategory) {
+            $agentJobCategorySplat.Add("Confirm", $false)
+            $output = Remove-DbaAgentJobCategory @agentJobCategorySplat
             $module.Result.changed = $true
         }
     }
-    $resultData = ConvertTo-SerializableObject -InputObject $output
-    $module.Result.data = $resultData
+
+    if ($null -ne $output) {
+        $resultData = ConvertTo-SerializableObject -InputObject $output
+        $module.Result.data = $resultData
+    }
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Error modifying SQL Agent job category.", $_)
+    $module.FailJson("Error configuring SQL Agent job category.", $_)
 }

@@ -48,9 +48,7 @@ try {
 
     if ($state -eq "absent") {
         if ($null -ne $existingJob) {
-            if (-not $checkMode) {
-                $output = Remove-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -Confirm:$false -EnableException
-            }
+            $output = Remove-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -Confirm:$false -WhatIf:$checkMode -EnableException
             $module.Result.changed = $true
         }
     }
@@ -59,6 +57,7 @@ try {
             SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential
             Job = $job
+            WhatIf = $checkMode
             Force = $force
             EnableException = $true
         }
@@ -89,15 +88,13 @@ try {
 
         # Create new job
         if ($null -eq $existingJob) {
-            if (-not $checkMode) {
-                try {
-                    $null = New-DbaAgentJob @jobParams
-                    # Explicitly fetch the new job to make sure results don't suffer from SMO / Agent stale data bugs
-                    $output = Get-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -EnableException
-                }
-                catch {
-                    $module.FailJson("Failed creating new agent job: $($_.Exception.Message)", $_)
-                }
+            try {
+                $null = New-DbaAgentJob @jobParams
+                # Explicitly fetch the new job to make sure results don't suffer from SMO / Agent stale data bugs
+                $output = Get-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -EnableException
+            }
+            catch {
+                $module.FailJson("Failed creating new agent job: $($_.Exception.Message)", $_)
             }
             $module.Result.changed = $true
         }
@@ -110,32 +107,12 @@ try {
             $diff = Compare-Object -ReferenceObject $existingJob -DifferenceObject $jobParams -Property $compareProperty
             # Update job
             if ($null -ne $diff -or $existingJob.IsEnabled -ne $enabled) {
-                # Only one schedule / job supported currently - remove any others
-                if ($existingJob.JobSchedules.Count -gt 1 -or $existingJob.JobSchedules.Name -contains $schedule) {
-                    foreach ($sched in $existingJob.JobSchedules | Where-Object Name -ne $schedule ) {
-                        if (-not $checkMode) {
-                            $removeScheduleSplat = @{
-                                SqlInstance = $sqlInstance
-                                SqlCredential = $sqlCredential
-                                Schedule = $schedule
-                                EnableException = $true
-                                Force = $true
-                                Confirm = $false
-                            }
-                            $null = Remove-DbaAgentSchedule @removeScheduleSplat
-                        }
-                        $module.Result.changed = $true
-                    }
-                }
-
                 # Update the job
-                if (-not $checkMode) {
-                    # Enabled is special flag only used in Set-DbaAgentJob
-                    if ($status -eq "enabled") {
-                        $jobParams.Add("Enabled", $true)
-                    }
-                    $output = Set-DbaAgentJob @jobParams
+                # Enabled is special flag only used in Set-DbaAgentJob
+                if ($status -eq "enabled") {
+                    $jobParams.Add("Enabled", $true)
                 }
+                $output = Set-DbaAgentJob @jobParams
                 $module.Result.changed = $true
             }
         }

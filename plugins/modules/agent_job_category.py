@@ -47,6 +47,6 @@ EXAMPLES = r'''
 RETURN = r'''
 data:
   description: Output from the C(New-DbaAgentJobCategory) or C(Remove-DbaAgentJobCategory) function.
-  returned: success
+  returned: success, but not in check_mode.
   type: dict
 '''

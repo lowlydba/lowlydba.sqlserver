@@ -71,6 +71,7 @@ $jobStepParams = @{
     OnFailStepId = $onFailStepId
     RetryAttempts = $retryAttempts
     RetryInterval = $retryInterval
+    WhatIf = $checkMode
     EnableException = $true
 }
 
@@ -89,21 +90,18 @@ try {
             SqlCredential = $sqlCredential
             Job = $job
             StepName = $stepName
+            WhatIf = $checkMode
             EnableException = $true
             Confirm = $false
         }
-        if (-not $checkMode) {
-            $output = Remove-DbaAgentJobStep @removeStepSplat
-        }
+        $output = Remove-DbaAgentJobStep @removeStepSplat
         $module.Result.changed = $true
     }
     elseif ($state -eq "present") {
         # No existing job step
         if ($null -eq $existingJobStep) {
             $jobStepParams.Add("StepId", $stepId)
-            if (-not $checkMode) {
-                $output = New-DbaAgentJobStep @jobStepParams
-            }
+            $output = New-DbaAgentJobStep @jobStepParams
             $module.Result.changed = $true
         }
         # Update existing
@@ -124,9 +122,7 @@ try {
                 $jobStepParams.StepName = $existingJobStep.Name
                 $jobStepParams.Add("NewName", $StepName)
 
-                if (-not $checkMode) {
-                    $output = Set-DbaAgentJobStep @jobStepParams
-                }
+                $output = Set-DbaAgentJobStep @jobStepParams
                 $module.Result.changed = $true
             }
         }

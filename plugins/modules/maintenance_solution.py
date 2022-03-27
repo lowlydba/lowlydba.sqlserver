@@ -92,7 +92,7 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Raw output from the Install-MaintenanceSolution function.
-  returned: success
+  description: Output from the C(Install-MaintenanceSolution) function.
+  returned: success, but not in check_mode.
   type: dict
 '''

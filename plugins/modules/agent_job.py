@@ -78,6 +78,6 @@ EXAMPLES = r'''
 RETURN = r'''
 data:
   description: Output from the C(New-DbaAgentJob), C(Set-DbaAgentJob), or C(Remove-DbaAgentJob) function.
-  returned: success
+  returned: success, but not in check_mode.
   type: dict
 '''

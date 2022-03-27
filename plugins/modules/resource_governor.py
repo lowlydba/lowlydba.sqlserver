@@ -39,7 +39,7 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Raw output from the Set-DbaResourceGovernor function.
-  returned: success
+  description: Output from the C(Set-DbaResourceGovernor) function.
+  returned: success, but not in check_mode.
   type: dict
 '''

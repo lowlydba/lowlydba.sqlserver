@@ -15,7 +15,7 @@ $spec = @{
     options = @{
         login = @{type = 'str'; required = $true }
         password = @{type = 'str'; required = $false; no_log = $true }
-        disabled = @{type = 'bool'; required = $false }
+        status = @{type = 'str'; required = $false; default = 'enabled'; choices = @('enabled', 'disabled') }
         default_database = @{type = 'str'; required = $false }
         language = @{type = 'str'; required = $false }
         password_must_change = @{type = 'bool'; required = $false }
@@ -32,7 +32,7 @@ $login = $module.Params.login
 if ($null -ne $module.Params.password) {
     $secPassword = ConvertTo-SecureString -String $module.Params.password -AsPlainText -Force
 }
-[nullable[bool]]$disabled = $module.Params.disabled
+$status = $module.Params.status
 $defaultDatabase = $module.Params.default_database
 $language = $module.Params.language
 [nullable[bool]]$passwordMustChange = $module.Params.password_must_change
@@ -80,23 +80,15 @@ try {
         if ($null -ne $defaultDatabase) {
             $setLoginSplat.add("DefaultDatabase", $defaultDatabase)
         }
-        if ($null -ne $disabled) {
-            $setLoginSplat.add("Disabled", $disabled)
-        }
-        if ($null -ne $language) {
-            $setLoginSplat.add("Language", $language)
-        }
-        if ($null -ne $secPassword) {
-            $setLoginSplat.add("SecurePassword", $secPassword)
-        }
+
         if ($null -ne $passwordExpirationEnforced) {
             $setLoginSplat.add("PasswordExpirationEnabled", $passwordExpirationEnabled)
         }
         if ($null -ne $passwordPolicyEnforced) {
             $setLoginSplat.add("PasswordPolicyEnforced", $passwordPolicyEnforced)
         }
-        if ($null -ne $passwordMustChange) {
-            $setLoginSplat.add("PasswordMustChange", $passwordMustChange)
+        if ($null -ne $secPassword) {
+            $setLoginSplat.add("SecurePassword", $secPassword)
         }
 
         # Login already exists
@@ -108,15 +100,40 @@ try {
 
             # Login needs to be modified
             if ($diff) {
+                # Can hopefully be removed after https://github.com/dataplat/dbatools/pull/8259
+                if ($null -ne $passwordMustChange) {
+                    $setLoginSplat.add("MustChange", $passwordMustChange)
+                }
+                if ($status -eq "disabled") {
+                    $setLoginSplat.add("Disable", $true)
+                }
+                else {
+                    $setLoginSplat.add("Enable", $true)
+                }
                 $output = Set-DbaLogin @setLoginSplat
                 $module.result.changed = $true
             }
         }
         # New login
         else {
+            if ($null -ne $language) {
+                $setLoginSplat.add("Language", $language)
+            }
+            if ($null -ne $passwordMustChange) {
+                $setLoginSplat.add("PasswordMustChange", $passwordMustChange)
+            }
+            if ($status -eq "disabled") {
+                $setLoginSplat.add("Disabled", $true)
+            }
             $output = New-DbaLogin @setLoginSplat
             $module.result.changed = $true
         }
+        # If not in check mode, add extra fields we can change to default display set
+        if ($null -ne $output) {
+            $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("DefaultDatabase")
+            $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("Language")
+        }
+
     }
 
     if ($null -ne $output) {
@@ -126,5 +143,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Configuring login failed: $($_.Exception.Message)", $_)
+    $module.FailJson("Configuring login failed: $($_.Exception.Message) ; $setLoginSplat", $_)
 }

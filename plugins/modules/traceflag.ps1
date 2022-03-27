@@ -36,45 +36,33 @@ try {
         EnableException = $true
     }
     $existingFlag = Get-DbaTraceFlag @traceFlagSplat
-    $server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
-
-    if ($checkMode) {
-        $output = [PSCustomObject]@{
-            InstanceName = $server.ServiceName
-            SqlInstance = $server.DomainInstanceName
-            TraceFlag = $traceFlag
-        }
-    }
 
     if ($enabled -eq $true) {
-        if ($existingFlag.TraceFlag -notcontains $traceFlag) {
-            $module.Result.changed = $true
-        }
         if (-not $checkMode) {
             $enabled = Enable-DbaTraceFlag @traceFlagSplat
             $output = $enabled | Select-Object -Property InstanceName, SqlInstance, TraceFlag
         }
-        else {
-            $output = $server | Select-Object -Property InstanceName, SqlInstance
-            $output | Add-Member -MemberType NoteProperty -Name "TraceFlag" -Value $traceFlag
+        if ($existingFlag.TraceFlag -notcontains $traceFlag) {
+            $module.Result.changed = $true
         }
     }
     elseif ($enabled -eq $false) {
-        if ($existingFlag.TraceFlag -contains $traceFlag) {
-            $module.Result.changed = $true
-        }
+
         if (-not $checkMode) {
             $disabled = Disable-DbaTraceFlag @traceFlagSplat
             $output = $disabled | Select-Object -Property InstanceName, SqlInstance, TraceFlag
         }
-        else {
+        if ($existingFlag.TraceFlag -contains $traceFlag) {
+            $module.Result.changed = $true
         }
     }
 
-    $resultData = ConvertTo-SerializableObject -InputObject $output
-    $module.Result.data = $resultData
+    if ($null -ne $output) {
+        $resultData = ConvertTo-SerializableObject -InputObject $output
+        $module.Result.data = $resultData
+    }
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Changing trace flag failed.", $_)
+    $module.FailJson("Configuring trace flag failed: $($_.Exception.Message)", $_)
 }

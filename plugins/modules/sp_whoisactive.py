@@ -41,3 +41,10 @@ EXAMPLES = r'''
     sql_instance: sql-01.myco.io
     database_name: lowlydba
 '''
+
+RETURN = r'''
+data:
+  description: Output from the C(Install-DbaWhoIsActive) function.
+  returned: success, but not in check_mode.
+  type: dict
+'''

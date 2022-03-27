@@ -45,7 +45,7 @@ try {
     # Get database status
     try {
         $server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
-        $getDatabaseHash = @{
+        $getDatabaseSplat = @{
             SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential
             Database = $database
@@ -53,34 +53,37 @@ try {
             ExcludeSystem = $true
             EnableException = $true
         }
-        $output = Get-DbaDatabase @getDatabaseHash
+        $existingDatabase = Get-DbaDatabase @getDatabaseSplat
+        $output = $existingDatabase
     }
     catch {
         $module.FailJson("Error checking database status.", $_.Exception.Message)
     }
 
     if ($state -eq "absent") {
-        if ($null -ne $output) {
-            $dropHash = @{
+        if ($null -ne $existingDatabase) {
+            $dropSplat = @{
                 SqlInstance = $sqlInstance
                 SqlCredential = $sqlCredential
                 Database = $database
+                WhatIf = $checkMode
                 EnableException = $true
                 Confirm = $false
             }
-            Remove-DbaDatabase @dropHash
+            Remove-DbaDatabase @dropSplat
             $module.Result.changed = $true
         }
         $module.ExitJson()
     }
     elseif ($state -eq "present") {
         # Create database
-        if ($null -eq $output) {
+        if ($null -eq $existingDatabase) {
             try {
                 $newDbParams = @{
                     SqlInstance = $sqlInstance
                     SqlCredential = $sqlCredential
                     Database = $database
+                    WhatIf = $checkMode
                     EnableException = $true
                 }
                 if ($null -ne $dataFilePath) {
@@ -94,53 +97,64 @@ try {
                 }
                 $output = New-DbaDatabase @newDbParams
                 $module.Result.changed = $true
-
             }
             catch {
                 $module.FailJson("Creating database [$database] failed.", $_)
             }
         }
-
         # Set Owner
         elseif ($null -ne $owner) {
             try {
                 if ($existingDatabase.Owner -ne $owner) {
-                    if (-not($checkMode)) {
-                        $setDbParams = @{
-                            SqlInstance = $sqlInstance
-                            SqlCredential = $sqlCredential
-                            Database = $database
-                            TargetLogin = $owner
-                            EnableException = $true
-                        }
-                        $null = Set-DbaDbOwner @setDbParams
+                    $setDbParams = @{
+                        SqlInstance = $sqlInstance
+                        SqlCredential = $sqlCredential
+                        Database = $database
+                        TargetLogin = $owner
+                        WhatIf = $checkMode
+                        EnableException = $true
                     }
+                    $null = Set-DbaDbOwner @setDbParams
+                    $output = Get-DbaDatabase @getDatabaseSplat
+                    $module.Result.changed = $true
                 }
-                # Re-fetch the output since Owner is a read-only property
-                $output = Get-DbaDatabase @getDatabaseHash
-                $module.Result.changed = $true
-
             }
             catch {
                 $module.FailJson("Setting database owner for [$database] failed.", $_)
             }
         }
 
+        # Add non-standard fields to output
+        if ($null -ne $output) {
+            # Secondary MaxDop
+            [int]$existingSecondaryMaxDop = $server.Databases[$database].SecondaryMaxDop
+            $output | Add-Member -MemberType NoteProperty -Name "SecondaryMaxDop" -Value $existingSecondaryMaxDop
+            $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("SecondaryMaxDop")
+
+            # MaxDop (exists, but is not in default display)
+            $existingMaxDop = $server.Databases[$database].MaxDop
+            $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("MaxDop")
+
+            # RCSI
+            $existingRCSI = $server.Databases[$database].IsReadCommittedSnapshotOn
+            $output | Add-Member -MemberType NoteProperty -Name "RCSI" -Value $existingRCSI
+            $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("RCSI")
+        }
+
         # Recovery Model
         if ($null -ne $recoveryModel) {
             try {
                 if ($recoveryModel -ne $output.RecoveryModel) {
-                    if (-not($checkMode)) {
-                        $recoveryModelHash = @{
-                            SqlInstance = $sqlInstance
-                            SqlCredential = $sqlCredential
-                            Database = $database
-                            RecoveryModel = $recoveryModel
-                            EnableException = $true
-                            Confirm = $false
-                        }
-                        $null = Set-DbaDbRecoveryModel @recoveryModelHash
+                    $recoveryModelSplat = @{
+                        SqlInstance = $sqlInstance
+                        SqlCredential = $sqlCredential
+                        Database = $database
+                        RecoveryModel = $recoveryModel
+                        WhatIf = $checkMode
+                        EnableException = $true
+                        Confirm = $false
                     }
+                    $null = Set-DbaDbRecoveryModel @recoveryModelSplat
                     $output.RecoveryModel = $recoveryModel
                     $module.Result.changed = $true
                 }
@@ -155,16 +169,15 @@ try {
             try {
                 $existingCompatibility = $output.Compatibility
                 if ($compatibility -ne $existingCompatibility) {
-                    if (-not($checkMode)) {
-                        $compatHash = @{
-                            SqlInstance = $sqlInstance
-                            SqlCredential = $sqlCredential
-                            Database = $database
-                            Compatibility = $compatibility
-                            EnableException = $true
-                        }
-                        $null = Set-DbaDbCompatibility @compatHash
+                    $compatSplat = @{
+                        SqlInstance = $sqlInstance
+                        SqlCredential = $sqlCredential
+                        Database = $database
+                        Compatibility = $compatibility
+                        WhatIf = $checkMode
+                        EnableException = $true
                     }
+                    $null = Set-DbaDbCompatibility @compatSplat
                     $output.Compatibility = $compatibility
                     $module.Result.changed = $true
                 }
@@ -175,16 +188,14 @@ try {
         }
 
         # RCSI
-        $output | Add-Member -MemberType NoteProperty -Name "RCSI" -Value $server.Databases[$database].IsReadCommittedSnapshotOn
-        $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("RCSI")
         if ($null -ne $rcsiEnabled) {
             try {
-                if ($rcsiEnabled -ne $output.RCSI) {
-                    if (-not($checkMode)) {
+                if ($rcsiEnabled -ne $existingRCSI) {
+                    if (-not $checkMode) {
                         $server.Databases[$database].IsReadCommittedSnapshotOn = $rcsiEnabled
                         $server.Databases[$database].Alter()
+                        $output.RCSI = $rcsiEnabled
                     }
-                    $output.RCSI = $rcsiEnabled
                     $module.Result.changed = $true
                 }
             }
@@ -197,15 +208,12 @@ try {
         ## Database Scoped MaxDop
         if ($null -ne $MaxDop) {
             try {
-                $existingMaxDop = $server.Databases[$database].MaxDop
-                $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("MaxDop")
-                $output.MaxDop = $existingMaxDop
                 if ($MaxDop -ne $existingMaxDop) {
-                    if (-not($checkMode)) {
+                    if (-not $checkMode) {
                         $server.Databases[$database].MaxDop = $maxDop
                         $server.Databases[$database].Alter()
+                        $output.MaxDop = $MaxDOP
                     }
-                    $output.MaxDop = $MaxDOP
                     $module.Result.changed = $true
                 }
             }
@@ -215,17 +223,14 @@ try {
         }
 
         ## Secondary Mode MaxDop
-        [int]$existingSecondaryMaxDop = $server.Databases[$database].SecondaryMaxDop
-        $output | Add-Member -MemberType NoteProperty -Name "SecondaryMaxDop" -Value $existingSecondaryMaxDop
-        $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("SecondaryMaxDop")
         if ($null -ne $secondaryMaxDOP) {
             try {
-                if ($secondaryMaxDop -ne $output.SecondaryMaxDop) {
-                    if (-not($CheckMode)) {
+                if ($secondaryMaxDop -ne $existingSecondaryMaxDop) {
+                    if (-not $checkMode) {
                         $server.Databases[$database].MaxDopForSecondary = $secondaryMaxDOP
                         $server.Databases[$database].Alter()
+                        $output.SecondaryMaxDop = $secondaryMaxDop
                     }
-                    $output.SecondaryMaxDop = $secondaryMaxDop
                     $module.Result.changed = $true
                 }
             }
@@ -234,10 +239,13 @@ try {
             }
         }
     }
-    $resultData = ConvertTo-SerializableObject -InputObject $output
-    $module.Result.data = $resultData
+
+    if ($null -ne $output) {
+        $resultData = ConvertTo-SerializableObject -InputObject $output
+        $module.Result.data = $resultData
+    }
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Configuring database failed. Error: $($_.Exception.Message)", $_)
+    $module.FailJson("Configuring database failed: $($_.Exception.Message)", $_)
 }
