@@ -2,7 +2,7 @@
 - name: Var block
   vars:
     login_name: "PhillipJFry"
-    plain_password: "PopSecret"
+    plain_password: "P0pS3cret!23$%"
     password_expiration_enabled: true
     password_policy_enforced: false
     password_must_change: false
