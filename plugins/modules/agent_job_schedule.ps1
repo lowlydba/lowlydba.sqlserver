@@ -130,15 +130,7 @@ try {
         }
         # Remove schedule
         else {
-            $removeScheduleSplat = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                Schedule = $schedule
-                WhatIf = $checkMode
-                Confirm = $false
-                Force = $true
-            }
-            $output = Remove-DbaAgentSchedule @removeScheduleSplat
+            $output = $existingSchedule | Remove-DbaAgentSchedule -WhatIf:$checkMode -Confirm:$false -Force
             $module.Result.changed = $true
         }
     }

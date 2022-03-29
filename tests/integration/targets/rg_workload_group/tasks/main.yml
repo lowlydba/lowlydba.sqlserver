@@ -1,0 +1,102 @@
+---
+- name: Var block
+  vars:
+    workload_group: "rgReports"
+    resource_pool: "rpReports"
+    resource_pool_type: "Internal"
+    max_dop: 2
+    request_max_cpu_time: 10
+    request_max_mem_grant_perc: 50
+    request_mem_grant_timeout_sec: 420
+    importance: "Medium"
+  module_defaults:
+    lowlydba.sqlserver.rg_workload_group:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      workload_group: "{{ workload_group }}"
+      resource_pool: "{{ resource_pool }}"
+      resource_pool_type: "{{ resource_pool_type }}"
+      request_max_cpu_time: "{{ request_max_cpu_time }}"
+      request_max_mem_grant_perc: "{{ request_max_mem_grant_perc }}"
+      request_mem_grant_timeout_sec: "{{ request_mem_grant_timeout_sec }}"
+      importance: "{{ importance }}"
+      max_dop: "{{ max_dop }}"
+    lowlydba.sqlserver.rg_resource_pool:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      resource_pool: "{{ resource_pool }}"
+      type: "{{ resource_pool_type }}"
+  tags: ["rg_workload_group"]
+  block:
+    - name: Create resource pool
+      lowlydba.sqlserver.rg_resource_pool:
+        state: "present"
+
+    - name: Create workload group
+      lowlydba.sqlserver.rg_workload_group:
+        state: "present"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.SqlInstance != None
+          - result.data.Importance ==  "{{ importance }}"
+          - result.data.Name == "{{ workload_group }}"
+          - result.data.MaximumDegreeOfParallelism == {{ max_dop }}
+          - result.data.RequestMaximumCpuTimeInSeconds == {{ request_max_cpu_time }}
+          - result.data.RequestMemoryGrantTimeoutInSeconds == {{ request_mem_grant_timeout_sec }}
+          - result.data.GroupMaximumRequests == 0
+          - result.data.RequestMaximumMemoryGrantPercentage == {{ request_max_mem_grant_perc }}
+
+    - name: Modify workload group
+      lowlydba.sqlserver.rg_workload_group:
+        group_max_requests: 4
+        state: "present"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.SqlInstance != None
+          - result.data.MaximumDegreeOfParallelism == {{ max_dop }}
+          - result.data.Importance ==  "{{ importance }}"
+          - result.data.Name == "{{ workload_group }}"
+          - result.data.RequestMaximumCpuTimeInSeconds == {{ request_max_cpu_time }}
+          - result.data.RequestMemoryGrantTimeoutInSeconds == {{ request_mem_grant_timeout_sec }}
+          - result.data.GroupMaximumRequests == 4
+          - result.data.RequestMaximumMemoryGrantPercentage == {{ request_max_mem_grant_perc }}
+
+    - name: Drop workload group in checkmode
+      lowlydba.sqlserver.rg_workload_group:
+        state: "absent"
+      register: result
+      check_mode: true
+    - assert:
+        that:
+          - result is changed
+
+    - name: Drop workload group
+      lowlydba.sqlserver.rg_workload_group:
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.SqlInstance != None
+          - result.data.Name == "{{ workload_group }}"
+          - result.data.Status == "Dropped"
+          - result is changed
+
+  always:
+    - name: Drop workload group
+      lowlydba.sqlserver.rg_workload_group:
+        state: "absent"
+
+    - name: Drop resource pool
+      lowlydba.sqlserver.rg_resource_pool:
+        resource_pool: "{{ resource_pool }}"
+        state: "absent"

@@ -54,16 +54,10 @@ options:
       - Enforces password expiration policy. Requires PasswordPolicyEnforced to be enabled.
     type: bool
     required: false
-  state:
-    description:
-      - Whether or not the login should be C(present) or C(absent).
-    required: false
-    type: str
-    default: 'present'
-    choices: ['present', 'absent']
 author: "John McCall (@lowlydba)"
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.state
 '''
 
 EXAMPLES = r'''

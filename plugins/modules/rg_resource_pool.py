@@ -21,6 +21,7 @@ options:
       - Specify the type of resource pool.
     type: str
     required: false
+    default: 'Internal'
     choices: ['Internal', 'External']
   max_cpu_perc:
     description:
@@ -57,22 +58,18 @@ options:
       - Minimum IOPS/volume able to be used by queries in this resource pool.
     type: int
     required: false
-  state:
-    description:
-      - Whether or not the resource pool should be C(present) or C(absent).
-    required: false
-    type: str
-    default: 'present'
-    choices: ['present', 'absent']
 author: "John McCall (@lowlydba)"
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.state
 '''
 
 EXAMPLES = r'''
 - name: Create rg resource pool
   lowlydba.sqlserver.rg_resource_pool:
     sql_instance: sql-01.myco.io
+    resource_pool: "rpLittle"
+    max_cpu_perc: 5
 '''
 
 RETURN = r'''

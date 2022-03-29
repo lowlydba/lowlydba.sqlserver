@@ -14,7 +14,7 @@ $spec = @{
     supports_check_mode = $true
     options = @{
         resource_pool = @{type = 'str'; required = $true }
-        type = @{type = 'str'; required = $false; choices = @('Internal', 'External') }
+        type = @{type = 'str'; required = $false; default = 'Internal'; choices = @('Internal', 'External') }
         max_cpu_perc = @{type = 'int'; required = $false; }
         min_cpu_perc = @{type = 'int'; required = $false; }
         cap_cpu_perc = @{type = 'int'; required = $false; }
