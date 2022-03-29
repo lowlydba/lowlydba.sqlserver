@@ -73,6 +73,8 @@ EXAMPLES = r'''
 - name: Create rg resource pool
   lowlydba.sqlserver.rg_resource_pool:
     sql_instance: sql-01.myco.io
+    resource_pool: "rpLittle"
+    max_cpu_perc: 5
 '''
 
 RETURN = r'''
