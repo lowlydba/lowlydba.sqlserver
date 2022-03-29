@@ -69,6 +69,11 @@ EXAMPLES = r'''
 - name: Create rg workload group
   lowlydba.sqlserver.rg_workload_group:
     sql_instance: sql-01.myco.io
+    workload_group: rgMyGroup
+    resource_pool: rpMyPool
+    resource_pool_type: Internal
+    max_dop: 2
+    state: present
 '''
 
 RETURN = r'''
