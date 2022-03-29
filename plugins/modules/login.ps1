@@ -90,6 +90,9 @@ try {
         if ($null -ne $secPassword) {
             $setLoginSplat.add("SecurePassword", $secPassword)
         }
+        if ($null -ne $passwordMustChange) {
+            $setLoginSplat.add("PasswordMustChange", $passwordMustChange)
+        }
 
         # Login already exists
         if ($null -ne $existingLogin) {
@@ -100,10 +103,6 @@ try {
 
             # Login needs to be modified
             if ($diff) {
-                # Can hopefully be removed after https://github.com/dataplat/dbatools/pull/8259
-                if ($null -ne $passwordMustChange) {
-                    $setLoginSplat.add("MustChange", $passwordMustChange)
-                }
                 if ($status -eq "disabled") {
                     $setLoginSplat.add("Disable", $true)
                 }
@@ -118,9 +117,6 @@ try {
         else {
             if ($null -ne $language) {
                 $setLoginSplat.add("Language", $language)
-            }
-            if ($null -ne $passwordMustChange) {
-                $setLoginSplat.add("PasswordMustChange", $passwordMustChange)
             }
             if ($status -eq "disabled") {
                 $setLoginSplat.add("Disabled", $true)
