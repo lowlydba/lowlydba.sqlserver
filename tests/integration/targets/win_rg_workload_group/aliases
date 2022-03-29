@@ -2,4 +2,4 @@ windows/all
 windows/group/2
 context/target
 setup/once/setup_win_sqlserver
-needs/target/rg_resource_pool
+needs/target/rg_workload_group
