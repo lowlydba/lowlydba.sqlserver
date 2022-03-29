@@ -60,18 +60,12 @@ options:
       - Whether or not to enable Read Committed Snapshot Isolation.
     required: false
     type: bool
-  state:
-    description:
-      - Whether or not the database should be C(present) or C(absent).
-    required: false
-    type: str
-    default: 'present'
-    choices: ['present', 'absent']
 author: "John McCall (@lowlydba)"
 notes:
   - Check mode is supported.
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.state
 '''
 
 EXAMPLES = r'''

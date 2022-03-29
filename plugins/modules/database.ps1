@@ -62,15 +62,7 @@ try {
 
     if ($state -eq "absent") {
         if ($null -ne $existingDatabase) {
-            $dropSplat = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                Database = $database
-                WhatIf = $checkMode
-                EnableException = $true
-                Confirm = $false
-            }
-            Remove-DbaDatabase @dropSplat
+            $existingDatabase | Remove-DbaDatabase -WhatIf:$checkMode -EnableException -Confirm:$false
             $module.Result.changed = $true
         }
         $module.ExitJson()

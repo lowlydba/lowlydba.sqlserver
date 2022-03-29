@@ -48,7 +48,7 @@ try {
 
     if ($state -eq "absent") {
         if ($null -ne $existingJob) {
-            $output = Remove-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -Confirm:$false -WhatIf:$checkMode -EnableException
+            $output = $existingJob | Remove-DbaAgentJob -Confirm:$false -WhatIf:$checkMode -EnableException
             $module.Result.changed = $true
         }
     }

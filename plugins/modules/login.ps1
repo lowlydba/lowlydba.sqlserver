@@ -55,16 +55,7 @@ try {
 
     if ($state -eq "absent") {
         if ($null -ne $existingLogin) {
-            $removeLoginSplat = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                Login = $login
-                WhatIf = $checkMode
-                EnableException = $true
-                Confirm = $false
-                Force = $true
-            }
-            $output = Remove-DbaLogin @removeLoginSplat
+            $output = $existingLogin | Remove-DbaLogin -WhatIf:$checkMode -EnableException -Force -Confirm:$false
             $module.Result.changed = $true
         }
     }

@@ -83,18 +83,12 @@ options:
     required: false
     type: int
     default: 0
-  state:
-    description:
-      - Whether or not the job step should be C(present) or C(absent).
-    required: false
-    type: str
-    default: 'present'
-    choices: ['present', 'absent']
 author: "John McCall (@lowlydba)"
 notes:
   - Check mode is supported.
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.state
 '''
 
 EXAMPLES = r'''

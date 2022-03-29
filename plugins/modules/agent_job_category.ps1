@@ -50,8 +50,7 @@ try {
     }
     elseif ($state -eq "absent") {
         if ($null -ne $existingCategory) {
-            $agentJobCategorySplat.Add("Confirm", $false)
-            $output = Remove-DbaAgentJobCategory @agentJobCategorySplat
+            $output = $existingCategory | Remove-DbaAgentJobCategory -WhatIf:$checkMode -EnableException -Confirm:$false
             $module.Result.changed = $true
         }
     }
