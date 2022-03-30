@@ -2,22 +2,27 @@
 
 namespace: lowlydba
 name: sqlserver
-version: 0.0.0
+version: 0.1.0
 readme: README.md
 authors:
   - John McCall (github.com/lowlydba)
 description: Ansible collection using PowerShell to configure and maintain SQL Server.
 license_file: LICENSE
 tags:
-# tags so people can search for collections https://galaxy.ansible.com/search
-# tags are all lower-case, no spaces, no dashes.
+  # tags so people can search for collections https://galaxy.ansible.com/search
+  # tags are all lower-case, no spaces, no dashes.
   - sqlserver
   - mssql
 repository: https://github.com/LowlyDBA/lowlydba.sqlserver
-#documentation: https://github.com/ansible-collection-migration/community.REPO_NAME/tree/main/docs
+documentation: https://github.com/lowlydba/lowlydba.sqlserver#readme
 homepage: https://github.com/LowlyDBA/lowlydba.sqlserver
 issues: https://github.com/LowlyDBA/lowlydba.sqlserver/issues
 build_ignore:
-# https://docs.ansible.com/ansible/devel/dev_guide/developing_collections.html#ignoring-files-and-folders
+  # https://docs.ansible.com/ansible/devel/dev_guide/developing_collections_distributing.html#ignoring-files-and-folders
   - .gitignore
+  - .gitattributes
   - changelogs/.plugin-cache.yaml
+  - .vscode/
+  - .github/
+  - MAINTAINING.md
+  - REVIEW_CHECKLIST.md
