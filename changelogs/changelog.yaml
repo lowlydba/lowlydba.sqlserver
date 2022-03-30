@@ -4,7 +4,7 @@ releases:
     release_date: '2022-01-29'
   0.1.0:
     changes:
-      release_summary: '| It''s a release!
+      release_summary: '| It''s a release!  First version to publish to Ansible Galaxy.
 
         '
     fragments:
