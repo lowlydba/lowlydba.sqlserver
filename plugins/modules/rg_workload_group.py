@@ -10,6 +10,7 @@ module: rg_workload_group
 short_description: Configures a workload group for use by the Resource Governor.
 description:
      - Creates or modifies a workload group to be used by the Resource Governor. Default values are handled by the Powershell functions themselves.
+version_added: 0.1.0
 options:
   workload_group:
     description:

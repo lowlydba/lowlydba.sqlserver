@@ -10,6 +10,7 @@ module: resource_governor
 short_description: Configures the resource governor on a SQL Server instance.
 description:
      - Enables or disables and optionally sets the classifier function for the resource governor feature.
+version_added: 0.1.0
 options:
   enabled:
     description:

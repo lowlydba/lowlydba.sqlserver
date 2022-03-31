@@ -10,6 +10,7 @@ module: agent_job_step
 short_description: Configures a SQL Agent job step.
 description:
   - Configures a step for an agent job.
+version_added: 0.1.0
 options:
   job:
     description:

@@ -10,6 +10,7 @@ module: memory
 short_description: Sets the maximum memory for a SQL Server instance.
 description:
      - Sets the maximum memory for a SQL Server instance.
+version_added: 0.1.0
 options:
   max:
     description:

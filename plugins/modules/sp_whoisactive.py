@@ -10,6 +10,7 @@ module: sp_whoisactive
 short_description: Install/update sp_whoisactive by Adam Mechanic.
 description:
   - A wrapper for C(Install-DbaWhoIsActive) to fetch the latest version of the script, or install from a local cached version.
+version_added: 0.1.0
 options:
   local_file:
     description:
