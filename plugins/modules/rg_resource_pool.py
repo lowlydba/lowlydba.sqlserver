@@ -10,6 +10,7 @@ module: rg_resource_pool
 short_description: Configures a resource pool for use by the Resource Governor.
 description:
      - Creates or modifies a resource pool to be used by the Resource Governor. Default values are handled by the Powershell functions themselves.
+version_added: 0.1.0
 options:
   resource_pool:
     description:

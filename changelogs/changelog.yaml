@@ -1,4 +1,54 @@
 ancestor: null
 releases:
-  0.0.0:
-    release_date: '2022-01-29'
+  0.1.0:
+    changes:
+      release_summary: It's a release! First version to publish to Ansible Galaxy.
+    fragments:
+      - v0.1.0_summary.yml
+    modules:
+      - description: Configures a SQL Agent job.
+        name: agent_job
+        namespace: ""
+      - description: Configures a SQL Agent job category.
+        name: agent_job_category
+        namespace: ""
+      - description: Configures a SQL Agent job schedule.
+        name: agent_job_schedule
+        namespace: ""
+      - description: Configures a SQL Agent job step.
+        name: agent_job_step
+        namespace: ""
+      - description: Creates and configures a database.
+        name: database
+        namespace: ""
+      - description: Configures a login for the target SQL Server instance.
+        name: login
+        namespace: ""
+      - description: Install/update Maintenance Solution
+        name: maintenance_solution
+        namespace: ""
+      - description: Sets the maximum memory for a SQL Server instance.
+        name: memory
+        namespace: ""
+      - description: Executes a generic nonquery.
+        name: nonquery
+        namespace: ""
+      - description: Configures the resource governor on a SQL Server instance.
+        name: resource_governor
+        namespace: ""
+      - description: Configures a resource pool for use by the Resource Governor.
+        name: rg_resource_pool
+        namespace: ""
+      - description: Configures a workload group for use by the Resource Governor.
+        name: rg_workload_group
+        namespace: ""
+      - description: Make instance level system configuration changes via sp_configure.
+        name: sp_configure
+        namespace: ""
+      - description: Install/update sp_whoisactive by Adam Mechanic.
+        name: sp_whoisactive
+        namespace: ""
+      - description: Enable or disable global trace flags on a SQL  Server instance.
+        name: traceflag
+        namespace: ""
+    release_date: "2022-03-30"

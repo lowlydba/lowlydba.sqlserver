@@ -10,6 +10,7 @@ module: agent_job
 short_description: Configures a SQL Agent job.
 description:
   - Configure a SQL Agent job, including which schedules and category it belongs to.
+version_added: 0.1.0
 options:
   job:
     description:

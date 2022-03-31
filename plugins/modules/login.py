@@ -10,6 +10,7 @@ module: login
 short_description: Configures a login for the target SQL Server instance.
 description:
   - Creates, modifies, or removes a Windows or SQL Authentication login on a SQL Server instance.
+version_added: 0.1.0
 options:
   login:
     description:

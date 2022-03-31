@@ -10,6 +10,7 @@ module: agent_job_schedule
 short_description: Configures a SQL Agent job schedule.
 description:
   - Configures settings for an agent schedule that can be applied to one or more agent jobs.
+version_added: 0.1.0
 options:
   schedule:
     description:

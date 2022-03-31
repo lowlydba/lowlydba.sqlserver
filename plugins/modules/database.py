@@ -10,6 +10,7 @@ module: database
 short_description: Creates and configures a database.
 description:
      - Adds a new database to an existing SQL Server instance.
+version_added: 0.1.0
 options:
   database:
     description:
