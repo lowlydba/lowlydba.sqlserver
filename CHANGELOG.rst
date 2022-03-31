@@ -5,6 +5,14 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.1.1
+======
+
+Release Summary
+---------------
+
+Add database tag for Galaxy
+
 v0.1.0
 ======
 

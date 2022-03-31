@@ -2,7 +2,7 @@
 
 namespace: lowlydba
 name: sqlserver
-version: 0.1.0
+version: 0.1.1
 readme: README.md
 authors:
   - John McCall (github.com/lowlydba)
@@ -13,6 +13,7 @@ tags:
   # tags are all lower-case, no spaces, no dashes.
   - sqlserver
   - mssql
+  - database
 repository: https://github.com/LowlyDBA/lowlydba.sqlserver
 documentation: https://github.com/lowlydba/lowlydba.sqlserver#readme
 homepage: https://github.com/LowlyDBA/lowlydba.sqlserver
