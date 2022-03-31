@@ -11,4 +11,4 @@ v0.1.0
 Release Summary
 ---------------
 
-| It's a release! First version to publish to Ansible Galaxy.
+It's a release! First version to publish to Ansible Galaxy.
