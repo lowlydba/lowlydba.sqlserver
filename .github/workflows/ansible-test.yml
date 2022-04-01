@@ -13,7 +13,14 @@ on:
     branches:
       - main
       - stable-*
+    paths-ignore:
+      - .github/workflows/docs*.yml
+      - .github/workflows/github-release.yml
   pull_request:
+    paths-ignore:
+      - .github/workflows/docs*.yml
+      - .github/workflows/github-release.yml
+
   # Run CI once per day (at 06:00 UTC)
   # This ensures that even if there haven't been commits that we are still testing against latest version of ansible-test for each ansible-base version
   schedule:

@@ -16,7 +16,5 @@ jobs:
     name: Build Ansible Docs
     uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-push.yml@main
     with:
-      ansible-ref: devel  # TODO: consider milestone
       init-lenient: false
-      # init-fail-on-error: true
-      # ^ this is broken at the moment: https://github.com/ansible-community/antsibull/pull/409
+      init-fail-on-error: true

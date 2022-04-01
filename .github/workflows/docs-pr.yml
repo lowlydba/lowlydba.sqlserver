@@ -36,8 +36,7 @@ jobs:
         with:
           collections: lowlydba.sqlserver
           lenient: false
-          # fail-on-error: true
-          # ^ this is broken at the moment: https://github.com/ansible-community/antsibull/pull/409
+          fail-on-error: true
 
       - name: Build
         id: build
@@ -51,7 +50,6 @@ jobs:
     name: Build Ansible Docs
     uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-pr.yml@main
     with:
-      ansible-ref: devel  # TODO: consider milestone
       init-lenient: true
       init-fail-on-error: false
 
