@@ -31,6 +31,8 @@ options:
 author: "John McCall (@lowlydba)"
 notes:
   - Check mode is supported, but the nonquery will not be parsed.
+requirements:
+  - C(DbaTools) module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
 '''

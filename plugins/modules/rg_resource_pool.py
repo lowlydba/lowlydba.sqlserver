@@ -60,6 +60,8 @@ options:
     type: int
     required: false
 author: "John McCall (@lowlydba)"
+requirements:
+  - C(DbaTools) module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
   - lowlydba.sqlserver.state

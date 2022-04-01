@@ -87,6 +87,8 @@ options:
 author: "John McCall (@lowlydba)"
 notes:
   - Check mode is supported.
+requirements:
+  - C(DbaTools) module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
   - lowlydba.sqlserver.state
@@ -95,6 +97,11 @@ extends_documentation_fragment:
 EXAMPLES = r'''
 - name: Create a job step
   lowlydba.sqlserver.agent_job_step:
+    sql_instance: sql-01.myco.io
+    job: MyJob
+    step_name: Step1
+    step_id: 1
+    command: "TRUNCATE TABLE dbo.TestData"
 '''
 
 RETURN = r'''

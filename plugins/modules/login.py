@@ -56,6 +56,8 @@ options:
     type: bool
     required: false
 author: "John McCall (@lowlydba)"
+requirements:
+  - C(DbaTools) module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
   - lowlydba.sqlserver.state
@@ -65,6 +67,8 @@ EXAMPLES = r'''
 - name:
   lowlydba.sqlserver.login:
     sql_instance: sql-01.myco.io
+    login: TheIntern
+    password: ReallyComplexStuff12345!
 '''
 
 RETURN = r'''

@@ -60,6 +60,8 @@ notes:
   - Check mode is supported.
   - On slower hardware, stale job component data may be returned (i.e., a previous or default job category).
     Configuring each component (schedule, step, category, etc.) individually is recommended for this reason.
+requirements:
+  - C(DbaTools) module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
   - lowlydba.sqlserver.state
@@ -68,6 +70,9 @@ extends_documentation_fragment:
 EXAMPLES = r'''
 - name: Create a job schedule
   lowlydba.sqlserver.agent_job:
+    sql_instance: sql-01.myco.io
+    job: MyJob
+    force: true
 '''
 
 RETURN = r'''
