@@ -7,7 +7,6 @@
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
 
-Import-ModuleDependency
 $ErrorActionPreference = "Stop"
 
 $spec = @{
@@ -28,8 +27,7 @@ $spec = @{
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
-$sqlInstance = $module.Params.sql_instance
-$sqlCredential = Get-SqlCredential -Module $module
+$sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $database = $module.Params.database
 $backupLocation = $module.Params.backup_location
 $outputFileDirectory = $module.Params.output_file_dir

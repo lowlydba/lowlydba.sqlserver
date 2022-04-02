@@ -7,7 +7,6 @@
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
 
-Import-ModuleDependency
 $ErrorActionPreference = "Stop"
 
 # Get Csharp utility module
@@ -19,8 +18,7 @@ $spec = @{
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
-$sqlCredential = Get-SqlCredential -Module $module
-$sqlInstance = $module.Params.sql_instance
+$sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $max = $module.Params.max
 $checkMode = $module.CheckMode
 $module.Result.changed = $false

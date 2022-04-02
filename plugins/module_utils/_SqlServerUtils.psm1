@@ -1,21 +1,6 @@
 # Private
-function Import-ModuleDependency {
-    <#
-        .SYNOPSIS
-        Centralized way to import a standard minimum version across all modules in the collection.
-    #>
-    [CmdletBinding()]
-    param(
-        [System.Version]
-        $MinimumVersion = "1.1.83"
-    )
-    try {
-        Import-Module -Name "DbaTools" -MinimumVersion $MinimumVersion -DisableNameChecking
-    }
-    catch {
-        Write-Warning -Message "Unable to import DbaTools >= $MinimumVersion."
-    }
-}
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.83" }
+
 function Get-LowlyDbaSqlServerAuthSpec {
     <#
         .SYNOPSIS
@@ -43,8 +28,7 @@ function Get-SqlCredential {
         Build a credential object for SQL Authentication.
 
         .DESCRIPTION
-        Standardized way to build a SQL Credential object that
-        is required for SQL Authentication.
+        Standardized way to build a SQL Credential object that is required for SQL Authentication.
     #>
     [CmdletBinding()]
     param (
@@ -53,6 +37,7 @@ function Get-SqlCredential {
         $Module
     )
     try {
+        $sqlInstance = $module.Params.sql_instance
         if ($null -ne $Module.Params.sql_username) {
             [securestring]$secPassword = ConvertTo-SecureString $Module.Params.sql_password -AsPlainText -Force
             [pscredential]$sqlCredential = New-Object System.Management.Automation.PSCredential ($Module.Params.sql_username, $secPassword)
@@ -60,7 +45,7 @@ function Get-SqlCredential {
         else {
             $sqlCredential = $null
         }
-        return $sqlCredential
+        return $sqlInstance, $sqlCredential
     }
     catch {
         Write-Error ("Error building Credential for SQL Authentication spec.")
@@ -126,6 +111,17 @@ function ConvertTo-SerializableObject {
         )
     )
 
+    Begin {
+        # We need to remove this type data so that arrays don't get serialized weirdly.
+        # In some cases, an array gets serialized as an object with a Count and Value property where the value is the actual array.
+        # See: https://stackoverflow.com/a/48858780/3905079
+        # This only affects Windows PowerShell.
+        # This has to come after the AnsibleModule is created, otherwise it will break the sanity tests.
+        if (-not $IsLinux) {
+            Remove-TypeData -TypeName System.Array -ErrorAction SilentlyContinue
+        }
+    }
+
     Process {
         $defaultProperty = $InputObject.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
         if ($defaultProperty) {
@@ -174,5 +170,5 @@ function ConvertTo-SerializableObject {
     }
 }
 
-$exportMembers = @("Import-ModuleDependency", "Get-SqlCredential", "ConvertTo-SerializableObject", "Get-LowlyDbaSqlServerAuthSpec")
+$exportMembers = @("Get-SqlCredential", "ConvertTo-SerializableObject", "Get-LowlyDbaSqlServerAuthSpec")
 Export-ModuleMember -Function $exportMembers
