@@ -21,7 +21,7 @@ options:
     description:
       - The name of the job that has the schedule.
       - Schedules and jobs can also be associated via agent_job.
-      - See https://docs.dbatools.io/New-DbaAgentSchedule for more detailed usage.
+      - See U(https://docs.dbatools.io/New-DbaAgentSchedule) for more detailed usage.
     type: str
     required: true
   enabled:
