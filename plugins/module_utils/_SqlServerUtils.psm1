@@ -1,5 +1,4 @@
 # Private
-#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.83" }
 
 function Get-LowlyDbaSqlServerAuthSpec {
     <#
