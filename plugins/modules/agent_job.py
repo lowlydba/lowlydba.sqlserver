@@ -52,7 +52,7 @@ options:
     required: false
   force:
     description:
-      - If this switch is enabled, any job categories will be created if they don't exist already.
+      - If I(force=true), any job categories will be created if they don't exist already.
     type: bool
     default: false
 author: "John McCall (@lowlydba)"
@@ -61,7 +61,7 @@ notes:
   - On slower hardware, stale job component data may be returned (i.e., a previous or default job category).
     Configuring each component (schedule, step, category, etc.) individually is recommended for this reason.
 requirements:
-  - C(DbaTools) module
+  - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
   - lowlydba.sqlserver.state

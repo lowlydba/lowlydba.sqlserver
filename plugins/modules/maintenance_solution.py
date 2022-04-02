@@ -7,7 +7,7 @@
 DOCUMENTATION = r'''
 ---
 module: maintenance_solution
-short_description: Install/update Maintenance Solution
+short_description: Install/update Maintenance Solution by Ola Hallengren.
 description:
   - A wrapper for Install-DbaMaintenanceSolution to fetch the latest version of the Ola Hallengren's Maintenance Solution,
     or install from a local cached version.
@@ -80,7 +80,7 @@ author: "John McCall (@lowlydba)"
 notes:
     - Check mode is not supported.
 requirements:
-  - C(DbaTools) module
+  - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
 '''

@@ -42,7 +42,7 @@ options:
   password_must_change:
     description:
       - Enforces user must change password at next login.
-        When specified will enforce PasswordExpirationEnabled and PasswordPolicyEnforced as they are required for the must change.
+        When specified will enforce C(password_expiration_enabled) and C(password_policy_enforced) as they are required.
     type: bool
     required: false
   password_policy_enforced:
@@ -52,12 +52,12 @@ options:
     required: false
   password_expiration_enabled:
     description:
-      - Enforces password expiration policy. Requires PasswordPolicyEnforced to be enabled.
+      - Enforces password expiration policy. Requires I(password_policy_enforced=true).
     type: bool
     required: false
 author: "John McCall (@lowlydba)"
 requirements:
-  - C(DbaTools) module
+  - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
   - lowlydba.sqlserver.state

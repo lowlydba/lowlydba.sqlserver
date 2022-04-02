@@ -20,7 +20,7 @@ options:
   step_id:
     description:
       - The sequence identification number for the job step. Step identification numbers start at 1 and increment without gaps.
-        Required if state is C(present).
+        Required if I(state=present).
     required: false
     type: int
   step_name:
@@ -88,7 +88,7 @@ author: "John McCall (@lowlydba)"
 notes:
   - Check mode is supported.
 requirements:
-  - C(DbaTools) module
+  - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
   - lowlydba.sqlserver.state

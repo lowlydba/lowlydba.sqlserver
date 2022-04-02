@@ -28,7 +28,7 @@ author: "Sudhir Koduri (@kodurisudhir)"
 notes:
   - Check mode is supported.
 requirements:
-  - C(DbaTools) module
+  - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
 '''
