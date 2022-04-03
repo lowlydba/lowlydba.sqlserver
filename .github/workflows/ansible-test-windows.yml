@@ -70,6 +70,11 @@ jobs:
         with:
           install: sqlengine
           sa-password: L0wlydb4
+      
+      - name: Set SQL Server max memory limit
+        shell: powershell
+        run: |
+          Set-DbaMaxMemory -SqlInstance localhost
 
       - name: Add a hosts entry
         shell: cmd
