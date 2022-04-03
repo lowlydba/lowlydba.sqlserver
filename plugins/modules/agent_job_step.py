@@ -20,7 +20,7 @@ options:
   step_id:
     description:
       - The sequence identification number for the job step. Step identification numbers start at 1 and increment without gaps.
-        Required if state is C(present).
+        Required if I(state=present).
     required: false
     type: int
   step_name:
@@ -87,6 +87,8 @@ options:
 author: "John McCall (@lowlydba)"
 notes:
   - Check mode is supported.
+requirements:
+  - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
   - lowlydba.sqlserver.state
@@ -95,6 +97,11 @@ extends_documentation_fragment:
 EXAMPLES = r'''
 - name: Create a job step
   lowlydba.sqlserver.agent_job_step:
+    sql_instance: sql-01.myco.io
+    job: MyJob
+    step_name: Step1
+    step_id: 1
+    command: "TRUNCATE TABLE dbo.TestData"
 '''
 
 RETURN = r'''

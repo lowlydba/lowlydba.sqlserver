@@ -20,13 +20,14 @@ options:
   category_type:
     description:
       - The type of category. This can be C(LocalJob), C(MultiServerJob) or C(None).
-        If no category is used all categories types will be removed.
     required: false
     type: str
     choices: ['LocalJob', 'MultiServerJob', 'None']
 author: "John McCall (@lowlydba)"
 notes:
   - Check mode is supported.
+requirements:
+  - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
   - lowlydba.sqlserver.state

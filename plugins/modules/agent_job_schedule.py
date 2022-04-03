@@ -21,7 +21,7 @@ options:
     description:
       - The name of the job that has the schedule.
       - Schedules and jobs can also be associated via agent_job.
-      - See https://docs.dbatools.io/New-DbaAgentSchedule for more detailed usage.
+      - See U(https://docs.dbatools.io/New-DbaAgentSchedule) for more detailed usage.
     type: str
     required: true
   enabled:
@@ -33,7 +33,7 @@ options:
     description:
       - The force parameter will ignore some errors in the parameters and assume defaults.
         It will also remove the any present schedules with the same name for the specific job.
-        If force is used the default will be 'Once'.
+        If I(force=true) the default will be 'Once'.
     type: bool
   frequency_type:
     description:
@@ -47,8 +47,8 @@ options:
         Allowed values for frequency_type 'Daily' - EveryDay or a number between 1 and 365.
         Allowed values for frequency_type 'Weekly' - Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Weekdays, Weekend or EveryDay.
         Allowed values for frequency_type 'Monthly' - Numbers 1 to 31 for each day of the month.
-        If "Weekdays", "Weekend" or "EveryDay" is used it over writes any other value that has been passed before.
-        If force is used the default will be 1.
+        If 'Weekdays', 'Weekend' or 'EveryDay' is used it over writes any other value that has been passed before.
+        If I(force=true) the default will be 1.
     type: str
     required: false
   frequency_subday_type:
@@ -64,14 +64,14 @@ options:
     required: false
   frequency_relative_interval:
     description:
-      - A job's occurrence of frequency_interval in each month, if frequency_interval is 32 ('MonthlyRelative').
+      - A job's occurrence of frequency_interval in each month, if I(frequency_interval=32) ('MonthlyRelative').
     type: str
     required: false
     choices: ['Unused', 'First', 'Second', 'Third', 'Fourth', 'Last']
   frequency_recurrence_factor:
     description:
       - The number of weeks or months between the scheduled execution of a job.
-        Used only if frequency_type is 'Weekly', 'Monthly' or 'MonthlyRelative'.
+        Required if I(frequency_type='Weekly'), I(frequency_type='Monthly') or I(frequency_type='MonthlyRelative').
     type: int
     required: false
   start_date:
@@ -83,24 +83,26 @@ options:
   end_date:
     description:
       - The date on which execution of a job can stop.
-        If force is used the end date will be '9999-12-31'
+        If I(force=true) the end date will be '9999-12-31'
     type: str
     required: false
   start_time:
     description:
       - The time on any day to begin execution of a job. Format HHMMSS / 24 hour clock.
-      - If force is used the start time will be '00:00:00'
+      - If I(force=true) the start time will be '00:00:00'
     type: str
     required: false
   end_time:
     description:
       - The time on any day to end execution of a job. Format HHMMSS / 24 hour clock.
-        If force is used the start time will be '23:59:59'
+        If (force=true) the start time will be '23:59:59'
     type: str
     required: false
 author: "John McCall (@lowlydba)"
 notes:
   - Check mode is supported.
+requirements:
+  - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
   - lowlydba.sqlserver.state
