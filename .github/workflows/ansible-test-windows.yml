@@ -81,6 +81,11 @@ jobs:
           modules-to-cache: dbatools
           shell: powershell
 
+      - name: Set SQL Server max memory limit
+        shell: powershell
+        run: |
+          Set-DbaMaxMemory -SqlInstance localhost
+
       - uses: Vampire/setup-wsl@v1
         with:
           distribution: Debian

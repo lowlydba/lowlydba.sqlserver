@@ -6,8 +6,8 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.83" }
 
-Import-ModuleDependency
 $ErrorActionPreference = "Stop"
 
 $spec = @{
@@ -28,9 +28,10 @@ $spec = @{
 
 # Get Csharp utility module
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
+$sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $options = @{
-    SqlInstance = $module.Params.sql_instance
-    SqlCredential = Get-SqlCredential -Module $module
+    SqlInstance = $sqlInstance
+    SqlCredential = $sqlCredential
     WorkloadGroup = $module.Params.workload_group
     ResourcePool = $module.Params.resource_pool
     ResourcePoolType = $module.Params.resource_pool_type

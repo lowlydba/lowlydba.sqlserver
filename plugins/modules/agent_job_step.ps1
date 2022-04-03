@@ -6,8 +6,8 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.83" }
 
-Import-ModuleDependency
 $ErrorActionPreference = "Stop"
 
 #TOD: Refactor these defaults / required values
@@ -40,8 +40,7 @@ $spec = @{
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
-$sqlInstance = $module.Params.sql_instance
-$sqlCredential = Get-SqlCredential -Module $module
+$sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $job = $module.Params.job
 $stepId = $module.Params.step_id
 $stepName = $module.Params.step_name
