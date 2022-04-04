@@ -58,3 +58,18 @@ releases:
     fragments:
     - v0.1.1_summary.yml
     release_date: '2022-03-31'
+  0.2.0:
+    changes:
+      minor_changes:
+      - Add DbaTools module requirement to documentation and fix missing examples.
+        (https://github.com/lowlydba/lowlydba.sqlserver/pull/47)
+      - Utilize PowerShell Requires for dbatools min version needs instead of custom
+        function. Consolidate/standardize credential setup and serialization. (https://github.com/lowlydba/lowlydba.sqlserver/pull/48)
+    fragments:
+    - 47-improve-module-documentation.yml
+    - 48-cleanup-utils.yml
+    modules:
+    - description: Returns basic information for a SQL Server instance.
+      name: instance_info
+      namespace: ''
+    release_date: '2022-04-04'

@@ -5,6 +5,20 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.2.0
+======
+
+Minor Changes
+-------------
+
+- Add DbaTools module requirement to documentation and fix missing examples. (https://github.com/lowlydba/lowlydba.sqlserver/pull/47)
+- Utilize PowerShell Requires for dbatools min version needs instead of custom function. Consolidate/standardize credential setup and serialization. (https://github.com/lowlydba/lowlydba.sqlserver/pull/48)
+
+New Modules
+-----------
+
+- instance_info - Returns basic information for a SQL Server instance.
+
 v0.1.1
 ======
 
