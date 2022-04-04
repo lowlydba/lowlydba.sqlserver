@@ -8,6 +8,11 @@ lowlydba.sqlserver Release Notes
 v0.2.0
 ======
 
+Release Summary
+---------------
+
+Code cleanup, testing improvements, new _info module!
+
 Minor Changes
 -------------
 
