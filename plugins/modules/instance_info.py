@@ -26,7 +26,7 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from TODO
+  description: Instance level properties of the SQL Server instance.
   returned: always
   type: dict
 '''
