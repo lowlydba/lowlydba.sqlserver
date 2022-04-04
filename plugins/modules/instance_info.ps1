@@ -31,7 +31,17 @@ try {
 
     if ($null -ne $output) {
         # Add additional fields
-        $extraProperties = @("BuildNumber", "Language", "VersionMajor", "VersionMinor", "VersionString", "Collation", "ProductLevel", "IsClustered", "LoginMode")
+        $extraProperties = @(
+            "BuildNumber"
+            "Language"
+            "VersionMajor"
+            "VersionMinor"
+            "VersionString"
+            "Collation"
+            "ProductLevel"
+            "IsClustered"
+            "LoginMode"
+        )
         foreach ($prop in $extraProperties) {
             $value = (Get-DbaInstanceProperty @getSplat -InstanceProperty $prop).Value
             $output | Add-Member -MemberType NoteProperty -Name $prop -Value $value
