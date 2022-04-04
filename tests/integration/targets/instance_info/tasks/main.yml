@@ -1,0 +1,26 @@
+---
+- name: Var block
+  module_defaults:
+    lowlydba.sqlserver.instance_info:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+  tags: ["instance_info"]
+  block:
+    - name: Get instance info
+      lowlydba.sqlserver.instance_info:
+      register: result
+    - assert:
+        that:
+          - result.data.SqlInstance != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.BuildNumber != None
+          - result.data.Language != None
+          - result.data.VersionMajor != None
+          - result.data.VersionMinor != None
+          - result.data.VersionString != None
+          - result.data.Collation != None
+          - result.data.ProductLevel != None
+          - result.data.IsClustered != None
+          - result.data.LoginMode != None
