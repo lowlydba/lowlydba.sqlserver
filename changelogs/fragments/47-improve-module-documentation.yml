@@ -1,3 +1,0 @@
-minor_changes:
-- Add DbaTools module requirement to documentation and fix missing examples.
-  (https://github.com/lowlydba/lowlydba.sqlserver/pull/47)
