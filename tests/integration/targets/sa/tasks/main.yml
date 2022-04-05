@@ -31,9 +31,12 @@
 
     - name: Disable in checkmode
       lowlydba.sqlserver.sa:
-        new_name: "UpDawg"
+        new_name: UpDawg
         password: "WhatsUpDawg?"
-        status: "disabled"
+        status: disabled
+        password_expiration_enabled: true
+        password_must_change: true
+        password_policy_enforced: true
       check_mode: true
       register: result
     - assert:
