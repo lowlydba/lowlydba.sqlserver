@@ -79,7 +79,7 @@ try {
         if ($null -ne $secPassword) {
             $setLoginSplat.add("SecurePassword", $secPassword)
         }
-        if ($null -ne $passwordMustChange) {
+        if ($true -eq $passwordMustChange) {
             $setLoginSplat.add("PasswordMustChange", $passwordMustChange)
         }
 
