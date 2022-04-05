@@ -1,0 +1,2 @@
+minor_change:
+  - Fix logic to properly pass password_must_change to function in the login module.
