@@ -70,7 +70,6 @@ try {
         if ($null -ne $defaultDatabase) {
             $setLoginSplat.add("DefaultDatabase", $defaultDatabase)
         }
-
         if ($null -ne $passwordExpirationEnforced) {
             $setLoginSplat.add("PasswordExpirationEnabled", $passwordExpirationEnabled)
         }
