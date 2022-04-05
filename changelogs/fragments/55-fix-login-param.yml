@@ -1,2 +1,2 @@
 minor_changes:
-  - Fix logic to properly pass password_must_change to function in the login module.
+  - Fix logic to properly pass password policy options to function in the login module.
