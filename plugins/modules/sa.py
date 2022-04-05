@@ -63,3 +63,10 @@ EXAMPLES = r'''
     sql_instance: sql-01.myco.io
     new_name: 'notthesayourelookingfor'
 '''
+
+RETURN = r'''
+data:
+  description: Output from the C(Set-DbaLogin) function.
+  returned: success, but not in check_mode.
+  type: dict
+'''
