@@ -29,45 +29,57 @@ if ($null -ne $module.Params.password) {
 }
 $status = $module.Params.status
 [nullable[bool]]$passwordMustChange = $module.Params.password_must_change
-[nullable[bool]]$passwordExpirationEnabled = $module.Params.password_expiration_enforced
+[nullable[bool]]$passwordExpirationEnabled = $module.Params.password_expiration_enabled
 [nullable[bool]]$passwordPolicyEnforced = $module.Params.password_policy_enforced
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 try {
-    $sa = Get-DbaLogin -SqlInstance $SqlInstance -SqlCredential $sqlCredential | Where-Object ID -eq 1
+    $sa = Get-DbaLogin -SqlInstance $SqlInstance -SqlCredential $sqlCredential -EnableException | Where-Object ID -eq 1
 
     $setLoginSplat = @{ }
 
     if ($newName) {
         $setLoginSplat.Add("NewName", $newName)
     }
-    if ($null -ne $passwordExpirationEnforced) {
-        $setLoginSplat.add("PasswordExpirationEnabled", $passwordExpirationEnabled)
+    if ($null -ne $passwordExpirationEnabled) {
+        if ($sa.PasswordExpirationEnabled -ne $passwordExpirationEnabled) {
+            $changed = $true
+        }
+        if ($passwordExpirationEnabled -eq $true) {
+            $setLoginSplat.add("PasswordExpirationEnabled", $true)
+        }
     }
     if ($null -ne $passwordPolicyEnforced) {
-        $setLoginSplat.add("PasswordPolicyEnforced", $passwordPolicyEnforced)
+        if ($sa.PasswordPolicyEnforced -ne $passwordPolicyEnforced) {
+            $changed = $true
+        }
+        if ($passwordPolicyEnforced -eq $true) {
+            $setLoginSplat.add("PasswordPolicyEnforced", $true)
+        }
+    }
+    if ($true -eq $passwordMustChange) {
+        if ($sa.PasswordMustChange -ne $passwordMustChange) {
+            $changed = $true
+        }
+        if ($passwordMustChange -eq $true) {
+            $setLoginSplat.add("PasswordMustChange", $true)
+        }
     }
     if ($null -ne $secPassword) {
         $setLoginSplat.add("SecurePassword", $secPassword)
-    }
-    if ($true -eq $passwordMustChange) {
-        $setLoginSplat.add("PasswordMustChange", $passwordMustChange)
     }
     if ($status -eq "disabled") {
         $disabled = $true
         $setLoginSplat.add("Disable", $true)
     }
     else {
+        $disabled = $false
         $setLoginSplat.add("Enable", $true)
     }
 
     # Check for changes
-    $keys = $setLoginSplat.Keys | Where-Object { $_ -ne 'SqlInstance' }
-    $compareProperty = ($sa.Properties | Where-Object Name -in $keys).Name
-    $diff = Compare-Object -ReferenceObject $sa -DifferenceObject $setLoginSplat -Property $compareProperty
-
-    if (($null -ne $diff) -or ($sa.IsDisabled -ne $disabled)) {
+    if (($changed -eq $true) -or ($disabled -ne $sa.IsDisabled) -or ($secPassword) -or ($sa.Login -ne $newName)) {
         $output = $sa | Set-DbaLogin @setLoginSplat -WhatIf:$checkMode -EnableException
         $module.Result.changed = $true
     }
@@ -76,7 +88,6 @@ try {
     }
 
     if ($null -ne $output) {
-        $module.Result.test = $true
         $resultData = ConvertTo-SerializableObject -InputObject $output
         $module.Result.data = $resultData
     }
