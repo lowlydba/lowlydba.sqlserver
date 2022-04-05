@@ -16,7 +16,6 @@
   block:
     - name: Disable sa
       lowlydba.sqlserver.sa:
-        new_name: "{{ login_name }}"
         password: "{{ plain_password }}"
         password_expiration_enabled: "{{ password_expiration_enabled }}"
         password_policy_enforced: "{{ password_policy_enforced }}"
@@ -58,3 +57,7 @@
           - result.data.IsLocked is false
           - result.data.LoginName | default(result.data.Name) == "{{ login_name }}"
           - result is changed
+  always:
+    - name: Enable sa
+      lowlydba.sqlserver.sa:
+        status: "enabled"
