@@ -3,7 +3,7 @@
   vars:
     login_name: "PhillipJFry"
     plain_password: "P0pS3cret!23$%"
-    password_expiration_enabled: true
+    password_expiration_enabled: false
     password_policy_enforced: false
     password_must_change: false
     status: "disabled"
@@ -18,8 +18,9 @@
       login: "{{ login_name }}"
       password: "{{ plain_password }}"
       password_expiration_enabled: "{{ password_expiration_enabled }}"
-      status: "{{ status }}"
       password_must_change: "{{ password_must_change }}"
+      status: "{{ status }}"
+
       language: "{{ language }}"
       state: present
   tags: ["sqlserver.login"]

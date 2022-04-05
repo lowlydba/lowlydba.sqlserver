@@ -39,8 +39,11 @@ try {
 
     $setLoginSplat = @{ }
 
-    if ($newName) {
+    if ($null -ne $newName) {
         $setLoginSplat.Add("NewName", $newName)
+        if ($sa.Name -ne $newName) {
+            $changed = $true
+        }
     }
     if ($null -ne $passwordExpirationEnabled) {
         if ($sa.PasswordExpirationEnabled -ne $passwordExpirationEnabled) {
@@ -79,7 +82,7 @@ try {
     }
 
     # Check for changes
-    if (($changed -eq $true) -or ($disabled -ne $sa.IsDisabled) -or ($secPassword) -or ($sa.Login -ne $newName)) {
+    if (($changed -eq $true) -or ($disabled -ne $sa.IsDisabled) -or ($secPassword)) {
         $output = $sa | Set-DbaLogin @setLoginSplat -WhatIf:$checkMode -EnableException
         $module.Result.changed = $true
     }
