@@ -27,6 +27,7 @@
           - result.data.SqlInstance != None
           - result.data.IsDisabled is false
           - result.data.IsLocked is false
+          - result.data.Name == "sa"
           - result.data.MustChangePassword is false
 
     - name: Disable in checkmode
@@ -56,6 +57,7 @@
           - result.data.MustChangePassword is false
           - result.data.IsDisabled is false
           - result.data.IsLocked is false
+          - result.data.Name == "sa"
           - result is not changed
   # Cleanup
   always:
