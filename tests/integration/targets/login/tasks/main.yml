@@ -44,6 +44,7 @@
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
           - result.data.IsDisabled is false
+          - result.data.Name == "{{ login_name }}"
           - result.data.DefaultDatabase == "model"
 
     - name: Drop login

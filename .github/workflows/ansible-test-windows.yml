@@ -23,7 +23,7 @@ on:
 env:
   NAMESPACE: lowlydba
   COLLECTION_NAME: sqlserver
-  DBATOOLS_VERSION: "1.1.83"
+  DBATOOLS_VERSION: "1.1.87"
 
 jobs:
   ###
