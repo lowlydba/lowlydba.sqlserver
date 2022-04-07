@@ -14,13 +14,23 @@ $ErrorActionPreference = "Stop"
 $spec = @{
     supports_check_mode = $true
     options = @{
+        sql_instance = @{type = 'str'; required = $true }
+        username = @{type = 'str'; required = $false }
+        password = @{type = 'str'; required = $false; no_log = $true }
         enabled = @{type = 'bool'; required = $false; default = $true }
         force = @{type = 'bool'; required = $false; default = $false }
     }
+    required_together = @(
+        , @('sql_username', 'sql_password')
+    )
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
-$sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
+$sqlInstance = $module.Params.sql_instance
+if ($null -ne $Module.Params.username) {
+    [securestring]$secPassword = ConvertTo-SecureString $Module.Params.password -AsPlainText -Force
+    [pscredential]$credential = New-Object System.Management.Automation.PSCredential ($Module.Params.username, $secPassword)
+}
 $enabled = $module.Params.enabled
 $force = $module.Params.force
 $checkMode = $module.CheckMode
@@ -31,11 +41,13 @@ try {
     if ($existingHadr.IsHadrEnabled -ne $enabled) {
         $setHadr = @{
             SqlInstance = $sqlInstance
-            SqlCredential = $sqlCredential
             WhatIf = $checkMode
             Force = $force
             Confirm = $false
             EnableException = $true
+        }
+        if ($null -ne $credential) {
+            $setHadr.Add("Credential", $credential)
         }
         if ($enabled -eq $false) {
             $output = Disable-DbaAgHadr @setHadr

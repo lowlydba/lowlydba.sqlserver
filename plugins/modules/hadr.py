@@ -12,6 +12,21 @@ description:
      - Enable or disable the High Availability Disaster Recovery (HADR) feature.
 version_added: 0.4.0
 options:
+  sql_instance:
+    description:
+      - The SQL Server instance to modify.
+    type: str
+    required: true
+  username:
+    description:
+      - Username for alternative credential to authenticate with Windows.
+    type: str
+    required: false
+  password:
+    description:
+      - Password for alternative credential to authenticate with Windows.
+    type: str
+    required: false
   enabled:
     description:
       - Flag to enable or disable the feature.
@@ -29,8 +44,6 @@ notes:
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
-extends_documentation_fragment:
-  - lowlydba.sqlserver.sql_credentials
 '''
 
 EXAMPLES = r'''
