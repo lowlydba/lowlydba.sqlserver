@@ -5,6 +5,7 @@
       sql_instance: "{{ sqlserver_instance }}"
       sql_username: "{{ sqlserver_username }}"
       sql_password: "{{ sqlserver_password }}"
+      force: true
   tags: ["hadr"]
   block:
     - name: Enable hadr
