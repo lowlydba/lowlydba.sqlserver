@@ -37,6 +37,7 @@ $module.Result.changed = $false
 
 try {
     $existingHadr = Get-DbaAgHadr -SqlInstance $sqlInstance -SqlCredential $sqlCredential -EnableException
+    $output = $existingHadr
     if ($existingHadr.IsHadrEnabled -ne $enabled) {
         $setHadr = @{
             SqlInstance = $sqlInstance
