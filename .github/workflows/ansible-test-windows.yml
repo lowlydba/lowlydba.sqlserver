@@ -93,6 +93,11 @@ jobs:
         run: |
           Set-DbaMaxMemory -SqlInstance localhost
 
+      - name: Set permissions for 'hadr' module
+        shell: powershell
+        run: |
+          Add-LocalGroupMember -Group "Administrators" -Member "NT AUTHORITY\ANONYMOUS LOGON"
+
       - uses: Vampire/setup-wsl@v1
         with:
           distribution: Debian
