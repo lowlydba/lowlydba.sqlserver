@@ -36,11 +36,11 @@ $checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 try {
-    $existingHadr = Get-DbaAgHadr -SqlInstance $sqlInstance -SqlCredential $sqlCredential -EnableException
+    $server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
+    $existingHadr = $server | Get-DbaAgHadr -EnableException
     $output = $existingHadr
     if ($existingHadr.IsHadrEnabled -ne $enabled) {
         $setHadr = @{
-            SqlInstance = $sqlInstance
             Credential = $credential
             WhatIf = $checkMode
             Force = $force
@@ -48,10 +48,10 @@ try {
             EnableException = $true
         }
         if ($enabled -eq $false) {
-            $output = Disable-DbaAgHadr @setHadr
+            $output = $server | Disable-DbaAgHadr @setHadr
         }
         else {
-            $output = Enable-DbaAgHadr @setHadr
+            $output = $server | Enable-DbaAgHadr @setHadr
         }
         $module.Result.changed = $true
     }
