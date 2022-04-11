@@ -54,12 +54,12 @@ jobs:
       # .../ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/
 
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           # it is just required to run that once as "ansible-test sanity" in the docker image
           # will run on all python versions it supports.
@@ -82,7 +82,7 @@ jobs:
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
-      - uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@v3
         with:
           fail_ci_if_error: false
 
@@ -126,12 +126,12 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           # it is just required to run that once as "ansible-test integration" in the docker image
           # will run on all python versions it supports.
@@ -158,6 +158,6 @@ jobs:
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v3
         with:
           fail_ci_if_error: false
