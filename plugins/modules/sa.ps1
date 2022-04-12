@@ -15,7 +15,7 @@ $spec = @{
     options = @{
         new_name = @{type = 'str'; required = $false; }
         password = @{type = 'str'; required = $false; no_log = $true }
-        status = @{type = 'str'; required = $false; default = 'enabled'; choices = @('enabled', 'disabled') }
+        enabled = @{type = 'bool'; required = $false; default = $true }
         password_must_change = @{type = 'bool'; required = $false }
         password_policy_enforced = @{type = 'bool'; required = $false }
         password_expiration_enabled = @{type = 'bool'; required = $false }
@@ -27,7 +27,7 @@ $newName = $module.Params.new_name
 if ($null -ne $module.Params.password) {
     $secPassword = ConvertTo-SecureString -String $module.Params.password -AsPlainText -Force
 }
-$status = $module.Params.status
+$enabled = $module.Params.enabled
 [nullable[bool]]$passwordMustChange = $module.Params.password_must_change
 [nullable[bool]]$passwordExpirationEnabled = $module.Params.password_expiration_enabled
 [nullable[bool]]$passwordPolicyEnforced = $module.Params.password_policy_enforced
@@ -72,7 +72,7 @@ try {
     if ($null -ne $secPassword) {
         $setLoginSplat.add("SecurePassword", $secPassword)
     }
-    if ($status -eq "disabled") {
+    if ($enabled -eq $false) {
         $disabled = $true
         $setLoginSplat.add("Disable", $true)
     }

@@ -4,7 +4,7 @@
     password_expiration_enabled: false
     password_policy_enforced: false
     password_must_change: false
-    status: "enabled"
+    enabled: true
   module_defaults:
     lowlydba.sqlserver.sa:
       sql_instance: "{{ sqlserver_instance }}"
@@ -17,7 +17,7 @@
         password_expiration_enabled: "{{ password_expiration_enabled }}"
         password_policy_enforced: "{{ password_policy_enforced }}"
         password_must_change: "{{ password_must_change }}"
-        status: "{{ status }}"
+        enabled: "{{ enabled }}"
       register: result
     - assert:
         that:
@@ -34,7 +34,7 @@
       lowlydba.sqlserver.sa:
         new_name: UpDawg
         password: "WhatsUpDawg?"
-        status: disabled
+        enabled: false
         password_expiration_enabled: true
         password_must_change: true
         password_policy_enforced: true
@@ -46,7 +46,7 @@
 
     - name: Verify checkmode works
       lowlydba.sqlserver.sa:
-        status: "{{ status }}"
+        enabled: "{{ enabled }}"
       register: result
     - assert:
         that:
@@ -63,4 +63,4 @@
   always:
     - name: Enable sa
       lowlydba.sqlserver.sa:
-        status: "enabled"
+        enabled: true

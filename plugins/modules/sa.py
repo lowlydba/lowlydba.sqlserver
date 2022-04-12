@@ -21,13 +21,13 @@ options:
       - The new name to rename the sa login to.
     type: str
     required: false
-  status:
+  enabled:
     description:
-      - Whether the login is C(enabled) or C(disabled).
-    type: str
+      - Whether the login is enabled or disabled.
+    type: bool
     required: false
-    default: 'enabled'
-    choices: ['enabled', 'disabled']
+    default: true
+    version_added: '0.4.0'
   password_must_change:
     description:
       - Enforces user must change password at next login.

@@ -4,7 +4,7 @@
     category_name: "Integration Tests"
     job_name: "Integration Job"
     description: "This test is not a test."
-    status: "enabled"
+    enabled: true
   module_defaults:
     lowlydba.sqlserver.agent_job:
       sql_instance: "{{ sqlserver_instance }}"
@@ -14,7 +14,7 @@
       job: "{{ job_name }}"
       description: "{{ description }}"
       force: true
-      status: "{{ status }}"
+      enabled: "{{ enabled }}"
   tags: ["agent_job"]
   block:
     # SQL Agent / SMO has delays on returning new data sometimes, and is worse on CI runners -
@@ -96,7 +96,7 @@
     - name: Change agent job
       lowlydba.sqlserver.agent_job:
         owner_login: "sa"
-        status: "disabled"
+        enabled: false
       register: result
     - assert:
         that:
@@ -110,7 +110,7 @@
 
     - name: Change agent job
       lowlydba.sqlserver.agent_job:
-        status: "enabled"
+        enabled: true
       register: result
     - assert:
         that:

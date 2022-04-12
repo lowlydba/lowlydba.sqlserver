@@ -114,7 +114,7 @@ EXAMPLES = r'''
     sql_instance: sql-01.myco.io
     schedule: Daily
     force: true
-    status: Enabled
+    enabled: true
     start_date: 2020-05-25  # May 25, 2020
     end_date: 2099-05-25    # May 25, 2099
     start_time: 010500      # 01:05:00 AM
