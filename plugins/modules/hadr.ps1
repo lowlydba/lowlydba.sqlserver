@@ -53,6 +53,8 @@ try {
         else {
             $output = $server | Enable-DbaAgHadr @setHadr
         }
+        # TRy manual restart?
+        $server | Restart-DbaService -EnableException
         $module.Result.changed = $true
     }
 
