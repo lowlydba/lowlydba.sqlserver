@@ -27,13 +27,12 @@ options:
       - Category for the target SQL Agent job. Must already exist.
     type: str
     required: false
-  status:
+  enabled:
     description:
-      - Whether the SQL Agent job should be C(enabled) or C(disabled).
-    type: str
+      - Whether the SQL Agent job should be enabled or disabled.
+    type: bool
     required: false
-    default: 'enabled'
-    choices: ['enabled', 'disabled']
+    default: true
   owner_login:
     description:
       - The owning login for the database. Will default to the current user if

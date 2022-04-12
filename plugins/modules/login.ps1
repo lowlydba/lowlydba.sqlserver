@@ -15,7 +15,7 @@ $spec = @{
     options = @{
         login = @{type = 'str'; required = $true }
         password = @{type = 'str'; required = $false; no_log = $true }
-        status = @{type = 'str'; required = $false; default = 'enabled'; choices = @('enabled', 'disabled') }
+        enabled = @{type = 'bool'; required = $false; default = $true }
         default_database = @{type = 'str'; required = $false }
         language = @{type = 'str'; required = $false }
         password_must_change = @{type = 'bool'; required = $false }
@@ -31,7 +31,7 @@ $login = $module.Params.login
 if ($null -ne $module.Params.password) {
     $secPassword = ConvertTo-SecureString -String $module.Params.password -AsPlainText -Force
 }
-$status = $module.Params.status
+$enabled = $module.Params.enabled
 $defaultDatabase = $module.Params.default_database
 $language = $module.Params.language
 [nullable[bool]]$passwordMustChange = $module.Params.password_must_change
@@ -100,7 +100,7 @@ try {
 
         # Login already exists
         if ($null -ne $existingLogin) {
-            if ($status -eq "disabled") {
+            if ($enabled -eq $false) {
                 $disabled = $true
                 $setLoginSplat.add("Disable", $true)
             }
@@ -119,7 +119,7 @@ try {
             if ($null -ne $language) {
                 $setLoginSplat.add("Language", $language)
             }
-            if ($status -eq "disabled") {
+            if ($enabled -eq $false) {
                 $setLoginSplat.add("Disabled", $true)
             }
             $output = New-DbaLogin @setLoginSplat

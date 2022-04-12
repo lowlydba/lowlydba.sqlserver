@@ -22,13 +22,12 @@ options:
       - Password for the login, if SQL Authentication login.
     type: str
     required: false
-  status:
+  enabled:
     description:
-      - Whether the login is C(enabled) or C(disabled).
-    type: str
+      - Whether the login is enabled or disabled.
+    type: bool
     required: false
-    default: 'enabled'
-    choices: ['enabled', 'disabled']
+    default: true
   default_database:
     description:
       - Default database for the login.
