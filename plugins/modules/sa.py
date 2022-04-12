@@ -27,6 +27,7 @@ options:
     type: bool
     required: false
     default: true
+    version_added: '0.4.0'
   password_must_change:
     description:
       - Enforces user must change password at next login.

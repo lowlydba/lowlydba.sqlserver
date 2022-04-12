@@ -28,6 +28,7 @@ options:
     type: bool
     required: false
     default: true
+    version_added: '0.4.0'
   default_database:
     description:
       - Default database for the login.
