@@ -54,7 +54,7 @@ try {
         }
 
         if ($force -eq $true) {
-            Restart-DbaService -EnableException
+            $null = Restart-DbaService -InstanceName $server.InstanceName -EnableException
         }
         $module.Result.changed = $true
     }
