@@ -43,7 +43,6 @@ try {
         $setHadr = @{
             Credential = $credential
             WhatIf = $checkMode
-            Force = $force
             Confirm = $false
             EnableException = $true
         }
@@ -53,11 +52,11 @@ try {
         else {
             $output = $server | Enable-DbaAgHadr @setHadr
         }
-        # TRy manual restart?
-        $x = Restart-DbaService -EnableException
+
+        if ($force -eq $true) {
+            Restart-DbaService -EnableException
+        }
         $module.Result.changed = $true
-        $module.Result.RestartStatus = $x.Status
-        $module.Result.RestartState = $x.State
     }
 
     if ($null -ne $output) {

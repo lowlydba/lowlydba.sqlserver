@@ -17,7 +17,7 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
-          #- result.data.IsHadrEnabled is true
+          - result.data.IsHadrEnabled is true
 
     - name: Disable hadr
       lowlydba.sqlserver.hadr:
@@ -28,32 +28,8 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
-          #- result.data.IsHadrEnabled is false
-          #- result is changed
-
-    - name: Enable hadr
-      lowlydba.sqlserver.hadr:
-        enabled: true
-      register: result
-    - assert:
-        that:
-          - result.data.ComputerName != None
-          - result.data.InstanceName != None
-          - result.data.SqlInstance != None
-          #- result.data.IsHadrEnabled is false
-          #- result is changed
-
-    - name: Disable hadr
-      lowlydba.sqlserver.hadr:
-        enabled: false
-      register: result
-    - assert:
-        that:
-          - result.data.ComputerName != None
-          - result.data.InstanceName != None
-          - result.data.SqlInstance != None
-          #- result.data.IsHadrEnabled is false
-          #- result is changed
+          - result.data.IsHadrEnabled is false
+          - result is changed
 
     - name: Checkmode enable hadr
       lowlydba.sqlserver.hadr:
