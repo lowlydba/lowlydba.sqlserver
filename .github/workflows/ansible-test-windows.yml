@@ -72,6 +72,11 @@ jobs:
           $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1'))
           & $sb -Verbose -ForceNewSSLCert 4>&1
 
+      - name: Enable winrm
+        shell: powershell
+        run: |
+          winrm quickconfig -force
+
       - name: Install a SQL Server
         uses: potatoqualitee/mssqlsuite@v1
         with:
@@ -147,7 +152,7 @@ jobs:
       - name: Run integration test
         run: |
           pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
-          ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements windows/group/${{ matrix.group }}/
+          ansible-test windows-integration win_hadr -v --color --retry-on-error --continue-on-error --diff --coverage --requirements windows/group/${{ matrix.group }}/
 
       # ansible-test support producing code coverage data
       - name: Generate coverage report

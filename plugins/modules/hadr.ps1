@@ -54,8 +54,10 @@ try {
             $output = $server | Enable-DbaAgHadr @setHadr
         }
         # TRy manual restart?
-        $server | Restart-DbaService -EnableException
+        $x = $server | Restart-DbaService -EnableException
         $module.Result.changed = $true
+        $module.Result.RestartStatus = $x.Status
+        $module.Result.RestartState = $x.State
     }
 
     if ($null -ne $output) {
