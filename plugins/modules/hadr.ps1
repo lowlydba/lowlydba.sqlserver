@@ -54,9 +54,6 @@ try {
             $output = $server | Enable-DbaAgHadr @setHadr
         }
 
-        # if ($force -eq $true) {
-        #     $null = Restart-DbaService -InstanceName $server.InstanceName -EnableException
-        # }
         $module.Result.changed = $true
     }
 
