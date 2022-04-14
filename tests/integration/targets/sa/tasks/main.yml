@@ -1,0 +1,66 @@
+---
+- name: Var block
+  vars:
+    password_expiration_enabled: false
+    password_policy_enforced: false
+    password_must_change: false
+    enabled: true
+  module_defaults:
+    lowlydba.sqlserver.sa:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+  tags: ["sqlserver.login"]
+  block:
+    - name: Configure sa
+      lowlydba.sqlserver.sa:
+        password_expiration_enabled: "{{ password_expiration_enabled }}"
+        password_policy_enforced: "{{ password_policy_enforced }}"
+        password_must_change: "{{ password_must_change }}"
+        enabled: "{{ enabled }}"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.IsDisabled is false
+          - result.data.IsLocked is false
+          - result.data.Name == "sa"
+          - result.data.MustChangePassword is false
+
+    - name: Disable in checkmode
+      lowlydba.sqlserver.sa:
+        new_name: UpDawg
+        password: "WhatsUpDawg?"
+        enabled: false
+        password_expiration_enabled: true
+        password_must_change: true
+        password_policy_enforced: true
+      check_mode: true
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Verify checkmode works
+      lowlydba.sqlserver.sa:
+        enabled: "{{ enabled }}"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.MustChangePassword is false
+          - result.data.IsDisabled is false
+          - result.data.IsLocked is false
+          - result.data.Name == "sa"
+          - result is not changed
+  # Cleanup
+  always:
+    - name: Enable sa
+      lowlydba.sqlserver.sa:
+        enabled: true

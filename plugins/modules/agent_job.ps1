@@ -6,7 +6,7 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
-#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.83" }
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.87" }
 
 $ErrorActionPreference = "Stop"
 
@@ -16,7 +16,7 @@ $spec = @{
         job = @{type = 'str'; required = $true }
         description = @{type = 'str'; required = $false; }
         category = @{type = 'str'; required = $false; }
-        status = @{type = 'str'; required = $false; default = 'enabled'; choices = @('enabled', 'disabled') }
+        enabled = @{type = 'bool'; required = $false; default = $true }
         owner_login = @{type = 'str'; required = $false; }
         start_step_id = @{type = 'int'; required = $false; }
         schedule = @{type = 'str'; required = $false; }
@@ -29,8 +29,7 @@ $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlS
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $job = $module.Params.job
 $description = $module.Params.description
-$status = $module.Params.status
-[bool]$enabled = if ($status -eq "enabled") { $true } else { $false }
+$enabled = $module.Params.enabled
 $ownerLogin = $module.Params.owner_login
 $category = $module.Params.category
 $schedule = $module.Params.schedule
@@ -61,7 +60,7 @@ try {
             EnableException = $true
         }
 
-        if ($status -eq "disabled") {
+        if ($enabled -eq $false) {
             $jobParams.add("Disabled", $true)
         }
 
@@ -108,7 +107,7 @@ try {
             if ($null -ne $diff -or $existingJob.IsEnabled -ne $enabled) {
                 # Update the job
                 # Enabled is special flag only used in Set-DbaAgentJob
-                if ($status -eq "enabled") {
+                if ($enabled -eq $true) {
                     $jobParams.Add("Enabled", $true)
                 }
                 $output = Set-DbaAgentJob @jobParams

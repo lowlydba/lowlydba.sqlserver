@@ -3,10 +3,10 @@
   vars:
     login_name: "PhillipJFry"
     plain_password: "P0pS3cret!23$%"
-    password_expiration_enabled: true
+    password_expiration_enabled: false
     password_policy_enforced: false
     password_must_change: false
-    status: "disabled"
+    enabled: false
     default_database: "master"
     language: "us_english"
   module_defaults:
@@ -18,8 +18,8 @@
       login: "{{ login_name }}"
       password: "{{ plain_password }}"
       password_expiration_enabled: "{{ password_expiration_enabled }}"
-      status: "{{ status }}"
       password_must_change: "{{ password_must_change }}"
+      enabled: "{{ enabled }}"
       language: "{{ language }}"
       state: present
   tags: ["sqlserver.login"]
@@ -35,7 +35,7 @@
     - name: Modify login
       lowlydba.sqlserver.login:
         default_database: "model"
-        status: "enabled"
+        enabled: true
       register: result
     - assert:
         that:
@@ -44,6 +44,7 @@
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
           - result.data.IsDisabled is false
+          - result.data.Name == "{{ login_name }}"
           - result.data.DefaultDatabase == "model"
 
     - name: Drop login
@@ -62,6 +63,10 @@
 
     - name: Create login in checkmode
       lowlydba.sqlserver.login:
+        password_policy_enforced: true
+        password_expiration_enabled: true
+        password_must_change: true
+        enabled: false
       register: result
       check_mode: true
     - assert:
@@ -70,7 +75,7 @@
 
     - name: Verify checkmode works
       lowlydba.sqlserver.login:
-        status: "disabled"
+        enabled: false
       register: result
     - assert:
         that:

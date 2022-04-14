@@ -6,20 +6,19 @@
 
 DOCUMENTATION = r'''
 ---
-module: login
-short_description: Configures a login for the target SQL Server instance.
+module: sa
+short_description: Configure the 'sa' login for security best practices.
 description:
-  - Creates, modifies, or removes a Windows or SQL Authentication login on a SQL Server instance.
-version_added: 0.1.0
+  - Rename, disable, and reset the password for the 'sa' login on a SQL Server instance per best practices.
 options:
-  login:
-    description:
-      - Name of the login to configure.
-    type: str
-    required: true
   password:
     description:
-      - Password for the login, if SQL Authentication login.
+      - Password for the login.
+    type: str
+    required: false
+  new_name:
+    description:
+      - The new name to rename the sa login to.
     type: str
     required: false
   enabled:
@@ -29,16 +28,6 @@ options:
     required: false
     default: true
     version_added: '0.4.0'
-  default_database:
-    description:
-      - Default database for the login.
-    type: str
-    required: false
-  language:
-    description:
-      - Default language for the login. Only used when creating a new login, not when modifying an existing one.
-    type: str
-    required: false
   password_must_change:
     description:
       - Enforces user must change password at next login.
@@ -55,25 +44,29 @@ options:
       - Enforces password expiration policy. Requires I(password_policy_enforced=true).
     type: bool
     required: false
+version_added: 0.3.0
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
-  - lowlydba.sqlserver.state
 '''
 
 EXAMPLES = r'''
-- name:
-  lowlydba.sqlserver.login:
+- name: Disable sa login
+  lowlydba.sqlserver.sa:
     sql_instance: sql-01.myco.io
-    login: TheIntern
-    password: ReallyComplexStuff12345!
+    disable: true
+
+- name: Rename sa login
+  lowlydba.sqlserver.sa:
+    sql_instance: sql-01.myco.io
+    new_name: 'notthesayourelookingfor'
 '''
 
 RETURN = r'''
 data:
-  description: Output from the C(New-DbaLogin), C(Set-DbaLogin), or C(Remove-DbaLogin) function.
+  description: Output from the C(Set-DbaLogin) function.
   returned: success, but not in check_mode.
   type: dict
 '''

@@ -4,73 +4,87 @@ releases:
     changes:
       release_summary: It's a release! First version to publish to Ansible Galaxy.
     fragments:
-      - v0.1.0_summary.yml
+    - v0.1.0_summary.yml
     modules:
-      - description: Configures a SQL Agent job.
-        name: agent_job
-        namespace: ""
-      - description: Configures a SQL Agent job category.
-        name: agent_job_category
-        namespace: ""
-      - description: Configures a SQL Agent job schedule.
-        name: agent_job_schedule
-        namespace: ""
-      - description: Configures a SQL Agent job step.
-        name: agent_job_step
-        namespace: ""
-      - description: Creates and configures a database.
-        name: database
-        namespace: ""
-      - description: Configures a login for the target SQL Server instance.
-        name: login
-        namespace: ""
-      - description: Install/update Maintenance Solution
-        name: maintenance_solution
-        namespace: ""
-      - description: Sets the maximum memory for a SQL Server instance.
-        name: memory
-        namespace: ""
-      - description: Executes a generic nonquery.
-        name: nonquery
-        namespace: ""
-      - description: Configures the resource governor on a SQL Server instance.
-        name: resource_governor
-        namespace: ""
-      - description: Configures a resource pool for use by the Resource Governor.
-        name: rg_resource_pool
-        namespace: ""
-      - description: Configures a workload group for use by the Resource Governor.
-        name: rg_workload_group
-        namespace: ""
-      - description: Make instance level system configuration changes via sp_configure.
-        name: sp_configure
-        namespace: ""
-      - description: Install/update sp_whoisactive by Adam Mechanic.
-        name: sp_whoisactive
-        namespace: ""
-      - description: Enable or disable global trace flags on a SQL  Server instance.
-        name: traceflag
-        namespace: ""
-    release_date: "2022-03-30"
+    - description: Configures a SQL Agent job.
+      name: agent_job
+      namespace: ''
+    - description: Configures a SQL Agent job category.
+      name: agent_job_category
+      namespace: ''
+    - description: Configures a SQL Agent job schedule.
+      name: agent_job_schedule
+      namespace: ''
+    - description: Configures a SQL Agent job step.
+      name: agent_job_step
+      namespace: ''
+    - description: Creates and configures a database.
+      name: database
+      namespace: ''
+    - description: Configures a login for the target SQL Server instance.
+      name: login
+      namespace: ''
+    - description: Install/update Maintenance Solution
+      name: maintenance_solution
+      namespace: ''
+    - description: Sets the maximum memory for a SQL Server instance.
+      name: memory
+      namespace: ''
+    - description: Executes a generic nonquery.
+      name: nonquery
+      namespace: ''
+    - description: Configures the resource governor on a SQL Server instance.
+      name: resource_governor
+      namespace: ''
+    - description: Configures a resource pool for use by the Resource Governor.
+      name: rg_resource_pool
+      namespace: ''
+    - description: Configures a workload group for use by the Resource Governor.
+      name: rg_workload_group
+      namespace: ''
+    - description: Make instance level system configuration changes via sp_configure.
+      name: sp_configure
+      namespace: ''
+    - description: Install/update sp_whoisactive by Adam Mechanic.
+      name: sp_whoisactive
+      namespace: ''
+    - description: Enable or disable global trace flags on a SQL  Server instance.
+      name: traceflag
+      namespace: ''
+    release_date: '2022-03-30'
   0.1.1:
     changes:
       release_summary: Add database tag for Galaxy
     fragments:
-      - v0.1.1_summary.yml
-    release_date: "2022-03-31"
+    - v0.1.1_summary.yml
+    release_date: '2022-03-31'
   0.2.0:
     changes:
-      release_summary: Code cleanup, testing improvements, new _info module!
       minor_changes:
-        - Add DbaTools module requirement to documentation and fix missing examples.
-          (https://github.com/lowlydba/lowlydba.sqlserver/pull/47)
-        - Utilize PowerShell Requires for dbatools min version needs instead of custom
-          function. Consolidate/standardize credential setup and serialization. (https://github.com/lowlydba/lowlydba.sqlserver/pull/48)
+      - Add DbaTools module requirement to documentation and fix missing examples.
+        (https://github.com/lowlydba/lowlydba.sqlserver/pull/47)
+      - Utilize PowerShell Requires for dbatools min version needs instead of custom
+        function. Consolidate/standardize credential setup and serialization. (https://github.com/lowlydba/lowlydba.sqlserver/pull/48)
+      release_summary: Code cleanup, testing improvements, new _info module!
     fragments:
-      - 47-improve-module-documentation.yml
-      - 48-cleanup-utils.yml
+    - 47-improve-module-documentation.yml
+    - 48-cleanup-utils.yml
     modules:
-      - description: Returns basic information for a SQL Server instance.
-        name: instance_info
-        namespace: ""
-    release_date: "2022-04-04"
+    - description: Returns basic information for a SQL Server instance.
+      name: instance_info
+      namespace: ''
+    release_date: '2022-04-04'
+  0.3.0:
+    changes:
+      minor_changes:
+      - Fix logic to properly pass password policy options to function in the login
+        module.
+      release_summary: New sa module and fixes for login related modules.
+    fragments:
+    - 55-fix-login-param.yml
+    - v0.3.0-release-summary.yml
+    modules:
+    - description: Configure the 'sa' login for security best practices.
+      name: sa
+      namespace: ''
+    release_date: '2022-04-05'
