@@ -12,4 +12,3 @@ coverage:
       default:
         # basic
         target: 90%
-
