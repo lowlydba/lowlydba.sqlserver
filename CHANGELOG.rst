@@ -5,6 +5,24 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.3.0
+======
+
+Release Summary
+---------------
+
+New sa module and fixes for login related modules.
+
+Minor Changes
+-------------
+
+- Fix logic to properly pass password policy options to function in the login module.
+
+New Modules
+-----------
+
+- sa - Configure the 'sa' login for security best practices.
+
 v0.2.0
 ======
 

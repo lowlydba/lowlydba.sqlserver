@@ -35,6 +35,7 @@
 | [resource_governor](plugins/modules/resource_governor.ps1) | Configures the resource governor. |
 | [rg_resource_pool](plugins/modules/rg_resource_pool.ps1) | Configures a resource pool for use by the resource governor. |
 | [rg_workload_group](plugins/modules/rg_workload_group.ps1) | Configures a workload group for use by the resource governor. |
+| [sa](plugins/modules/sa.ps1) | Configure the 'sa' login for security best practices. |
 | [sp_configure](plugins/modules/sp_configure.ps1) | Make instance level system configuration changes via sp_configure. |
 | [sp_whoisactive](plugins/modules/sp_whoisactive.ps1) | Install/update sp_whoisactive by Adam Mechanic. |
 | [trace_flag](plugins/modules/traceflag.ps1) | Enable or disable global trace flags. |
@@ -89,7 +90,7 @@ To learn how to maintain / become a maintainer of this collection, refer to the 
 
 ## External requirements
 
-- PowerShell module: [DbaTools][dbatools] >= 1.1.83
+- PowerShell module: [DbaTools][dbatools] >= 1.1.87
 
 ## Using this collection
 

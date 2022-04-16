@@ -6,7 +6,7 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
-#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.83" }
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.87" }
 
 $ErrorActionPreference = "Stop"
 
@@ -15,7 +15,7 @@ $spec = @{
     options = @{
         login = @{type = 'str'; required = $true }
         password = @{type = 'str'; required = $false; no_log = $true }
-        status = @{type = 'str'; required = $false; default = 'enabled'; choices = @('enabled', 'disabled') }
+        enabled = @{type = 'bool'; required = $false; default = $true }
         default_database = @{type = 'str'; required = $false }
         language = @{type = 'str'; required = $false }
         password_must_change = @{type = 'bool'; required = $false }
@@ -31,11 +31,11 @@ $login = $module.Params.login
 if ($null -ne $module.Params.password) {
     $secPassword = ConvertTo-SecureString -String $module.Params.password -AsPlainText -Force
 }
-$status = $module.Params.status
+$enabled = $module.Params.enabled
 $defaultDatabase = $module.Params.default_database
 $language = $module.Params.language
 [nullable[bool]]$passwordMustChange = $module.Params.password_must_change
-[nullable[bool]]$passwordExpirationEnabled = $module.Params.password_expiration_enforced
+[nullable[bool]]$passwordExpirationEnabled = $module.Params.password_expiration_enabled
 [nullable[bool]]$passwordPolicyEnforced = $module.Params.password_policy_enforced
 $state = $module.Params.state
 $checkMode = $module.CheckMode
@@ -70,35 +70,46 @@ try {
         if ($null -ne $defaultDatabase) {
             $setLoginSplat.add("DefaultDatabase", $defaultDatabase)
         }
-
-        if ($null -ne $passwordExpirationEnforced) {
-            $setLoginSplat.add("PasswordExpirationEnabled", $passwordExpirationEnabled)
+        if ($null -ne $passwordExpirationEnabled) {
+            if ($sa.PasswordExpirationEnabled -ne $passwordExpirationEnabled) {
+                $changed = $true
+            }
+            if ($passwordExpirationEnabled -eq $true) {
+                $setLoginSplat.add("PasswordExpirationEnabled", $true)
+            }
         }
         if ($null -ne $passwordPolicyEnforced) {
-            $setLoginSplat.add("PasswordPolicyEnforced", $passwordPolicyEnforced)
+            if ($sa.PasswordPolicyEnforced -ne $passwordPolicyEnforced) {
+                $changed = $true
+            }
+            if ($passwordPolicyEnforced -eq $true) {
+                $setLoginSplat.add("PasswordPolicyEnforced", $true)
+            }
+        }
+        if ($true -eq $passwordMustChange) {
+            if ($sa.PasswordMustChange -ne $passwordMustChange) {
+                $changed = $true
+            }
+            if ($passwordMustChange -eq $true) {
+                $setLoginSplat.add("PasswordMustChange", $true)
+            }
         }
         if ($null -ne $secPassword) {
             $setLoginSplat.add("SecurePassword", $secPassword)
         }
-        if ($null -ne $passwordMustChange) {
-            $setLoginSplat.add("PasswordMustChange", $passwordMustChange)
-        }
 
         # Login already exists
         if ($null -ne $existingLogin) {
-            # Compare existing values with passed params, skipping over values not specified
-            $keys = $setLoginSplat.Keys | Where-Object { $_ -ne 'SqlInstance' }
-            $compareProperty = ($existingLogin.Properties | Where-Object Name -in $keys).Name
-            $diff = Compare-Object -ReferenceObject $existingLogin -DifferenceObject $setLoginSplat -Property $compareProperty
-
+            if ($enabled -eq $false) {
+                $disabled = $true
+                $setLoginSplat.add("Disable", $true)
+            }
+            else {
+                $disabled = $false
+                $setLoginSplat.add("Enable", $true)
+            }
             # Login needs to be modified
-            if ($diff) {
-                if ($status -eq "disabled") {
-                    $setLoginSplat.add("Disable", $true)
-                }
-                else {
-                    $setLoginSplat.add("Enable", $true)
-                }
+            if (($changed -eq $true) -or ($disabled -ne $sa.IsDisabled) -or ($secPassword)) {
                 $output = Set-DbaLogin @setLoginSplat
                 $module.result.changed = $true
             }
@@ -108,7 +119,7 @@ try {
             if ($null -ne $language) {
                 $setLoginSplat.add("Language", $language)
             }
-            if ($status -eq "disabled") {
+            if ($enabled -eq $false) {
                 $setLoginSplat.add("Disabled", $true)
             }
             $output = New-DbaLogin @setLoginSplat
