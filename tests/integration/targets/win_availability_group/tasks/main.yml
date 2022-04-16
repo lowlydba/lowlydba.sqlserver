@@ -1,0 +1,27 @@
+---
+- name: Var block
+  module_defaults:
+    lowlydba.sqlserver.availability_group:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      ag_name: "IntAG1"
+      cluster_type: "None"
+  tags: ["hadr"]
+  block:
+    - name: Enable hadr
+      lowlydba.sqlserver.hadr:
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+        enabled: true
+        force: true
+
+    - name: Create availability group
+      lowlydba.sqlserver.availability_group:
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
