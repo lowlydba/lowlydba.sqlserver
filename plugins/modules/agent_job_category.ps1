@@ -42,9 +42,7 @@ try {
     if ($state -eq "present") {
         # Create new job category
         if ($null -eq $existingCategory) {
-            # Sometimes results are delayed and come back null, so manually re-fetch for better consistency
-            $null = New-DbaAgentJobCategory @agentJobCategorySplat -WhatIf:$checkMode
-            $output = Get-DbaAgentJobCategory @agentJobCategorySplat
+            $output = New-DbaAgentJobCategory @agentJobCategorySplat -WhatIf:$checkMode
             $module.Result.changed = $true
         }
     }
