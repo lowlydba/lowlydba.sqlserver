@@ -98,7 +98,7 @@ try {
     if ($state -eq "present") {
         $agSplat = @{
             Primary = $sqlInstance
-            SqlCredential = $sqlCredential
+            PrimarySqlCredential = $sqlCredential
             Name = $agName
             SeedingMode = $seedingMode
             FailoverMode = $failoverMode
