@@ -89,7 +89,7 @@ $automatedBackupPreference = $module.Params.automated_backup_preference
 $clusterType = $module.Params.cluster_type
 $state = $module.Params.state
 [nullable[bool]]$allowNullBackup = $module.Params.allow_null_backup
-$checkMode = $checkMode
+$checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 try {
@@ -196,10 +196,10 @@ try {
     elseif ($state -eq $absent) {
         if ($null -ne $existingAG) {
             if ($all_ags -eq $true) {
-                $output = $existingAG | Remove-DbaAvailabilityGroup -AllAvailabilityGroups
+                $output = $existingAG | Remove-DbaAvailabilityGroup -WhatIf:$checkMode -AllAvailabilityGroups -EnableException
             }
             else {
-                $output = $existingAG | Remove-DbaAvailabilityGroup
+                $output = $existingAG | Remove-DbaAvailabilityGroup -WhatIf:$checkMode -EnableException
             }
             $module.Result.changed = $true
         }
