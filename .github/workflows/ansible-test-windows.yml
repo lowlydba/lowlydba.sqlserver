@@ -98,6 +98,11 @@ jobs:
         run: |
           Set-DbaMaxMemory -SqlInstance localhost
 
+      - name: Add builtin logins
+        shell: powershell
+        run: |
+          New-DbaLogin -SqlInstance localhost -Login "NT AUTHORITY\NETWORK SERVICE"; Add-DbaServerRoleMember -SqlInstance localhost -ServerRole sysadmin -Login "NT AUTHORITY\NETWORK SERVICE"
+
       - uses: Vampire/setup-wsl@v1
         with:
           distribution: Debian
