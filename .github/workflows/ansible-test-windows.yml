@@ -98,11 +98,6 @@ jobs:
         run: |
           Set-DbaMaxMemory -SqlInstance localhost
 
-      - name: Add SQL Server admin logins
-        shell: powershell
-        run: |
-          New-DbaLogin -SqlInstance localhost -Login "BUILTIN\Administrators"
-
       - uses: Vampire/setup-wsl@v1
         with:
           distribution: Debian
