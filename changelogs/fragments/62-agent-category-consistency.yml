@@ -1,3 +1,0 @@
-bugfixes:
-  - Manually re-fetch the category after creating to improve consistency with sometimes out of date SMO results.
-    (https://github.com/lowlydba/lowlydba.sqlserver/pull/62)
