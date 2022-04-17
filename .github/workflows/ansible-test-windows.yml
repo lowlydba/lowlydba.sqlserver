@@ -101,7 +101,7 @@ jobs:
       - name: Add builtin logins
         shell: powershell
         run: |
-          New-DbaLogin -SqlInstance localhost -Login "NT AUTHORITY\NETWORK SERVICE"; Add-DbaServerRoleMember -SqlInstance localhost -ServerRole sysadmin -Login "NT AUTHORITY\NETWORK SERVICE" -Confirm:$false
+          New-DbaLogin -SqlInstance localhost -Login "NT AUTHORITY\NETWORKSERVICE"; Add-DbaServerRoleMember -SqlInstance localhost -ServerRole sysadmin -Login "NT AUTHORITY\NETWORKSERVICE" -Confirm:$false
 
       - uses: Vampire/setup-wsl@v1
         with:
