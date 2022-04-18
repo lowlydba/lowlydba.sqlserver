@@ -98,6 +98,11 @@ jobs:
         run: |
           Set-DbaMaxMemory -SqlInstance localhost
 
+      - name: Set SQL Server service account
+        shell: powershell
+        run: |
+          Update-DbaServiceAccount -Computer localhost -ServiceName MSSQLSERVER -Username "LOCALSYSTEM"
+
       - name: Add builtin logins
         shell: powershell
         run: |
