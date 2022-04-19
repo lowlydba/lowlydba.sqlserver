@@ -127,9 +127,7 @@ try {
         if ($databaseHealthTrigger -eq $true) {
             $agSplat.Add("DatabaseHealthTrigger", $databaseHealthTrigger)
         }
-        if ($isDistributedAg -eq $true) {
-            $agSplat.Add("IsDistributedAg", $isDistributedAg)
-        }
+
         if ($null -ne $healthCheckTimeout) {
             $agSplat.Add("HealthCheckTimeout", $healthCheckTimeout)
         }
@@ -162,11 +160,13 @@ try {
                     $null = Backup-DbaDatabase $backupSplat
                 }
             }
-            $output = New-DbaAvailabilityGroup @agSplat
+            # $output = New-DbaAvailabilityGroup @agSplat
+            $output = 1
             $module.Result.changed = $true
         }
         # Configure existing AG
         else {
+            #TODO Compare all the properties here
             if ($existingAG.AutomatedBackupPreference -ne $automatedBackupPreference) {
                 $setAgSplat = @{
                     AutomatedBackupPreference = $automatedBackupPreference
@@ -192,6 +192,9 @@ try {
                 }
                 if ($null -ne $healthCheckTimeout) {
                     $setAgSplat.Add("HealthCheckTimeout", $healthCheckTimeout)
+                }
+                if ($isDistributedAg -eq $true) {
+                    $agSplat.Add("IsDistributedAvailabilityGroup", $isDistributedAg)
                 }
                 $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat
                 $module.Result.changed = $true
