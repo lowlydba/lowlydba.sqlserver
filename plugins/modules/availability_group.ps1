@@ -153,6 +153,7 @@ try {
                         FilePath = "NUL"
                         Type = "Full"
                         EnableException = $true
+                        Confirm = $false
                         WhatIf = $checkMode
                     }
                     $null = Backup-DbaDatabase $backupSplat
@@ -168,6 +169,7 @@ try {
                     AutomatedBackupPreference = $automatedBackupPreference
                     ClusterType = $clusterType
                     EnableException = $true
+                    Confirm = $false
                     WhatIf = $checkMode
                 }
                 if ($all_ags -eq $true) {
@@ -195,11 +197,16 @@ try {
     }
     elseif ($state -eq $absent) {
         if ($null -ne $existingAG) {
+            $removeAgSplat = @{
+                Confirm = $false
+                EnableException = $true
+                WhatIf = $checkMode
+            }
             if ($all_ags -eq $true) {
-                $output = $existingAG | Remove-DbaAvailabilityGroup -WhatIf:$checkMode -AllAvailabilityGroups -EnableException
+                $output = $existingAG | Remove-DbaAvailabilityGroup @removeAgSplat -AllAvailabilityGroups
             }
             else {
-                $output = $existingAG | Remove-DbaAvailabilityGroup -WhatIf:$checkMode -EnableException
+                $output = $existingAG | Remove-DbaAvailabilityGroup @removeAgSplat
             }
             $module.Result.changed = $true
         }
