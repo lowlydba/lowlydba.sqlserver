@@ -14,6 +14,9 @@ $spec = @{
     supports_check_mode = $true
     options = @{
         sql_instance_secondary = @{type = "str"; required = $false }
+        #TODO secondary credential
+        #TODO use_last_backup
+        #TODO force
         database_name = @{type = "str"; required = $false }
         ag_name = @{type = "str"; required = $true }
         all_ags = @{type = "bool"; required = $false; }
@@ -116,10 +119,10 @@ try {
             $agSplat.Add("AllAvailabilityGroups", $all_ags)
         }
         if ($dtcSupportEnabled -eq $true) {
-            $agSplat.Add("DtcSupportEnabled", $dtcSupportEnabled)
+            $agSplat.Add("DtcSupport", $dtcSupportEnabled)
         }
         if ($basicAvailabilityGroup -eq $true) {
-            $agSplat.Add("BasicAvailabilityGroup", $basicAvailabilityGroup)
+            $agSplat.Add("Basic", $basicAvailabilityGroup)
         }
         if ($databaseHealthTrigger -eq $true) {
             $agSplat.Add("DatabaseHealthTrigger", $databaseHealthTrigger)

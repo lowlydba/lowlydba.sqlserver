@@ -7,6 +7,7 @@
       sql_password: "{{ sqlserver_password }}"
       ag_name: "IntAG1"
       cluster_type: "None"
+      failover_mode: "Manual"
   tags: ["hadr"]
   block:
     - name: Enable hadr

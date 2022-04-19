@@ -103,11 +103,6 @@ jobs:
         run: |
           Update-DbaServiceAccount -Computer localhost -ServiceName MSSQLSERVER -Username "LOCALSYSTEM"
 
-      - name: Add builtin logins
-        shell: powershell
-        run: |
-          New-DbaLogin -SqlInstance localhost -Login "NT AUTHORITY\NETWORKSERVICE"; Add-DbaServerRoleMember -SqlInstance localhost -ServerRole sysadmin -Login "NT AUTHORITY\NETWORKSERVICE" -Confirm:$false
-
       - uses: Vampire/setup-wsl@v1
         with:
           distribution: Debian
