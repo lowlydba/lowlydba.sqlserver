@@ -160,8 +160,8 @@ try {
                     $null = Backup-DbaDatabase $backupSplat
                 }
             }
-            # $output = New-DbaAvailabilityGroup @agSplat
-            $output = 1
+            $module.Result.output = $agSplat
+            $output = New-DbaAvailabilityGroup @agSplat
             $module.Result.changed = $true
         }
         # Configure existing AG
