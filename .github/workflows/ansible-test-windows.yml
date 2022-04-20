@@ -78,7 +78,7 @@ jobs:
           winrm quickconfig -force
 
       - name: Install a SQL Server
-        uses: potatoqualitee/mssqlsuite@v1
+        uses: potatoqualitee/mssqlsuite@v1.2
         with:
           install: sqlengine
           sa-password: L0wlydb4
@@ -98,10 +98,10 @@ jobs:
         run: |
           Set-DbaMaxMemory -SqlInstance localhost
 
-      - name: Set SQL Server service account
-        shell: powershell
-        run: |
-          Update-DbaServiceAccount -Computer localhost -ServiceName MSSQLSERVER -Username "LOCALSYSTEM"
+      # - name: Set SQL Server service account
+      #   shell: powershell
+      #   run: |
+      #     Update-DbaServiceAccount -Computer localhost -ServiceName MSSQLSERVER -Username "LOCALSYSTEM"
 
       - uses: Vampire/setup-wsl@v1
         with:
