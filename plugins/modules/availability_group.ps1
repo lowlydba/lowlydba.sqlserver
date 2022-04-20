@@ -103,15 +103,16 @@ try {
             Primary = $sqlInstance
             PrimarySqlCredential = $sqlCredential
             Name = $agName
-            SeedingMode = $seedingMode
-            FailoverMode = $failoverMode
-            AvailabilityMode = $availabilityMode
-            AutomatedBackupPreference = $automatedBackupPreference
-            ClusterType = $clusterType
-            WhatIf = $checkMode
+            #SeedingMode = $seedingMode
+            #FailoverMode = $failoverMode
+            #AvailabilityMode = $availabilityMode
+            #AutomatedBackupPreference = $automatedBackupPreference
+            #ClusterType = $clusterType
+            #WhatIf = $checkMode
             EnableException = $true
             Confirm = $false
         }
+        <#
         if ($null -ne $sharedPath -and $seedingMode -eq "Manual") {
             $agSplat.Add("SharedPath", $sharedPath)
         }
@@ -127,7 +128,6 @@ try {
         if ($databaseHealthTrigger -eq $true) {
             $agSplat.Add("DatabaseHealthTrigger", $databaseHealthTrigger)
         }
-
         if ($null -ne $healthCheckTimeout) {
             $agSplat.Add("HealthCheckTimeout", $healthCheckTimeout)
         }
@@ -140,6 +140,7 @@ try {
         if ($null -ne $secondary) {
             $agSplat.Add("Secondary", $secondary)
         }
+        #>
 
         # Create the AG with initial replica(s)
         if ($null -eq $existingAG) {
