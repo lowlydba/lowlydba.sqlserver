@@ -124,3 +124,11 @@
     - name: Cleanup agent job
       lowlydba.sqlserver.agent_job:
         state: "absent"
+
+    - name: Cleanup agent job category
+      lowlydba.sqlserver.agent_job_category:
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+        category: "{{ category_name }}"
+        state: absent

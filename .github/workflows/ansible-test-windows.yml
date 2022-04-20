@@ -20,6 +20,11 @@ on:
   schedule:
     - cron: "0 6 * * *"
 
+# Cancel existing runs on new commits to a branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   NAMESPACE: lowlydba
   COLLECTION_NAME: sqlserver
@@ -76,6 +81,11 @@ jobs:
         shell: powershell
         run: |
           winrm quickconfig -force
+          
+      - name: Why is MongoDB running? Disable it.
+        shell: powershell
+        run: |
+          Get-Service -Name MongoDB | Where-Object Status -eq 'Running' | Stop-Service -Force
 
       - name: Install a SQL Server
         uses: potatoqualitee/mssqlsuite@v1.2
