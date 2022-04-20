@@ -217,11 +217,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $e = $_.Exception
-    $msg = $e.Message
-    while ($e.InnerException) {
-        $e = $e.InnerException
-        $msg += "`n" + $e.Message
-    }
-    $module.FailJson("Configuring Availability Group failed: $msg", $_)
+    $module.FailJson("Configuring Availability Group failed: $($_.Exception.InnerException.Message)", $_)
 }
