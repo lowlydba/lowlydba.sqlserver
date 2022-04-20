@@ -160,7 +160,7 @@ try {
                 }
             }
             $module.Result.output = $agSplat
-            New-DbaAvailabilityGroup @agSplat -Verbose
+            $output = New-DbaAvailabilityGroup @agSplat
             $module.Result.changed = $true
         }
         # Configure existing AG
