@@ -114,6 +114,7 @@ try {
             AutomatedBackupPreference = $automatedBackupPreference
             ClusterType = $clusterType
             WhatIf = $checkMode
+            Force = $true
         }
         if ($null -ne $sharedPath -and $seedingMode -eq "Manual") {
             $agSplat.Add("SharedPath", $sharedPath)
