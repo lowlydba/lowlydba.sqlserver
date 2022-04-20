@@ -101,7 +101,7 @@ $checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 try {
-    $server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential -EnableException
+    $server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
     $existingAG = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName -EnableException
 
     if ($state -eq "present") {
