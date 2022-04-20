@@ -156,7 +156,8 @@ try {
                     $null = Backup-DbaDatabase $backupSplat
                 }
             }
-            $output = New-DbaAvailabilityGroup @agSplat
+            $module.Result.output = $agSplat
+            New-DbaAvailabilityGroup @agSplat -Verbose
             $module.Result.changed = $true
         }
         # Configure existing AG
@@ -220,5 +221,6 @@ try {
     $module.ExitJson()
 }
 catch {
+    $module.ExitJson()
     $module.FailJson("Configuring Availability Group failed: $($_.Exception.Message)", $_)
 }
