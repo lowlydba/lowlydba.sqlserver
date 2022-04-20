@@ -22,10 +22,8 @@
     - name: Create availability group
       lowlydba.sqlserver.availability_group:
       register: result
-
-    - debug: var=result.stdout_lines
-    # - assert:
-    #     that:
-    #       - result.data.ComputerName != None
-    #       - result.data.InstanceName != None
-    #       - result.data.SqlInstance != None
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
