@@ -95,6 +95,9 @@ $state = $module.Params.state
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
 
+# Default all confirms to not prompt
+$PSDefaultParameterValues = @{ '*:Confirm' = $false }
+
 try {
     $existingAG = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName -EnableException
 
