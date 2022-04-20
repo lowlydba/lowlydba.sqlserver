@@ -96,7 +96,7 @@ $checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 # Default all confirms to not prompt
-$PSDefaultParameterValues = @{ '*:Confirm' = $false }
+$PSDefaultParameterValues = @{ "*:EnableException" = $true; '*:Confirm' = $false }
 
 try {
     $existingAG = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName -EnableException
@@ -112,8 +112,6 @@ try {
             AutomatedBackupPreference = $automatedBackupPreference
             ClusterType = $clusterType
             WhatIf = $checkMode
-            EnableException = $true
-            Confirm = $false
         }
         if ($null -ne $sharedPath -and $seedingMode -eq "Manual") {
             $agSplat.Add("SharedPath", $sharedPath)
@@ -152,8 +150,6 @@ try {
                         Database = $database
                         FilePath = "NUL"
                         Type = "Full"
-                        EnableException = $true
-                        Confirm = $false
                         WhatIf = $checkMode
                     }
                     $null = Backup-DbaDatabase $backupSplat
@@ -170,8 +166,6 @@ try {
                 $setAgSplat = @{
                     AutomatedBackupPreference = $automatedBackupPreference
                     ClusterType = $clusterType
-                    EnableException = $true
-                    Confirm = $false
                     WhatIf = $checkMode
                 }
                 if ($all_ags -eq $true) {
@@ -203,8 +197,6 @@ try {
     elseif ($state -eq $absent) {
         if ($null -ne $existingAG) {
             $removeAgSplat = @{
-                Confirm = $false
-                EnableException = $true
                 WhatIf = $checkMode
             }
             if ($all_ags -eq $true) {
@@ -224,6 +216,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.ExitJson()
     $module.FailJson("Configuring Availability Group failed: $($_.Exception.Message)", $_)
 }
