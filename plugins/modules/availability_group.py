@@ -29,7 +29,7 @@ options:
     required: true
   all_ags:
     description:
-      - Apply changes to all availability groups on the instance.
+      - Apply changes to all availability groups on the instance. Only used for configuring existing availability groups.
     type: bool
     required: false
   shared_path:

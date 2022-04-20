@@ -103,21 +103,17 @@ try {
             Primary = $sqlInstance
             PrimarySqlCredential = $sqlCredential
             Name = $agName
-            #SeedingMode = $seedingMode
-            #FailoverMode = $failoverMode
-            #AvailabilityMode = $availabilityMode
-            #AutomatedBackupPreference = $automatedBackupPreference
-            #ClusterType = $clusterType
-            #WhatIf = $checkMode
+            SeedingMode = $seedingMode
+            FailoverMode = $failoverMode
+            AvailabilityMode = $availabilityMode
+            AutomatedBackupPreference = $automatedBackupPreference
+            ClusterType = $clusterType
+            WhatIf = $checkMode
             EnableException = $true
             Confirm = $false
         }
-        <#
         if ($null -ne $sharedPath -and $seedingMode -eq "Manual") {
             $agSplat.Add("SharedPath", $sharedPath)
-        }
-        if ($all_ags -eq $true) {
-            $agSplat.Add("AllAvailabilityGroups", $all_ags)
         }
         if ($dtcSupportEnabled -eq $true) {
             $agSplat.Add("DtcSupport", $dtcSupportEnabled)
@@ -140,12 +136,11 @@ try {
         if ($null -ne $secondary) {
             $agSplat.Add("Secondary", $secondary)
         }
-        #>
 
         # Create the AG with initial replica(s)
         if ($null -eq $existingAG) {
             # Full backup requirement for new AG via automatic seeding
-            if ($seedingMode -eq "automatic") {
+            if ($seedingMode -eq "automatic" -and $null -ne $database) {
                 $dbBackup = Get-DbaLastBackup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Database $database -EnableException
                 if ($null -eq $dbBackup.LastFullBackup -and $allowNullBackup -eq $true) {
                     $backupSplat = @{
@@ -162,7 +157,7 @@ try {
                 }
             }
             $module.Result.output = $agSplat
-            $output = New-DbaAvailabilityGroup @agSplat
+            New-DbaAvailabilityGroup @agSplat -Verbose
             $module.Result.changed = $true
         }
         # Configure existing AG

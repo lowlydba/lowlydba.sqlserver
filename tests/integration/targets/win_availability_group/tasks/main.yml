@@ -8,6 +8,7 @@
       ag_name: "IntAG1"
       cluster_type: "None"
       failover_mode: "Manual"
+
   tags: ["hadr"]
   block:
     - name: Enable hadr
@@ -21,8 +22,10 @@
     - name: Create availability group
       lowlydba.sqlserver.availability_group:
       register: result
-    - assert:
-        that:
-          - result.data.ComputerName != None
-          - result.data.InstanceName != None
-          - result.data.SqlInstance != None
+
+    - debug: var=result.stdout_lines
+    # - assert:
+    #     that:
+    #       - result.data.ComputerName != None
+    #       - result.data.InstanceName != None
+    #       - result.data.SqlInstance != None
