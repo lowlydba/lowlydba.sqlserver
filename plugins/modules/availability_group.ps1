@@ -72,7 +72,12 @@ $spec = @{
     }
 }
 
+# Setup var
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
+$ProgressPreference = "SilentlyContinue"
+$PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false }
+
+# Var
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $secondary = $module.Params.sql_instance_secondary
 $agName = $module.Params.ag_name
@@ -94,9 +99,6 @@ $state = $module.Params.state
 [nullable[bool]]$allowNullBackup = $module.Params.allow_null_backup
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
-
-# Default all confirms to not prompt
-$PSDefaultParameterValues = @{ "*:EnableException" = $true; '*:Confirm' = $false }
 
 try {
     $existingAG = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName -EnableException
@@ -155,7 +157,6 @@ try {
                     $null = Backup-DbaDatabase $backupSplat
                 }
             }
-            $module.Result.output = $agSplat
             $output = New-DbaAvailabilityGroup @agSplat
             $module.Result.changed = $true
         }
