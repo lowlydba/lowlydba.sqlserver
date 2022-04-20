@@ -101,12 +101,13 @@ $checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 try {
+    $server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential -EnableException
     $existingAG = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName -EnableException
 
     if ($state -eq "present") {
         $agSplat = @{
-            Primary = $sqlInstance
-            PrimarySqlCredential = $sqlCredential
+            #Primary = $sqlInstance
+            # PrimarySqlCredential = $sqlCredential
             Name = $agName
             SeedingMode = $seedingMode
             FailoverMode = $failoverMode
@@ -158,7 +159,7 @@ try {
                     $null = Backup-DbaDatabase $backupSplat
                 }
             }
-            $output = New-DbaAvailabilityGroup @agSplat
+            $output = $server | New-DbaAvailabilityGroup @agSplat
             $module.Result.changed = $true
         }
         # Configure existing AG
