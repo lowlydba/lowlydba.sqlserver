@@ -111,7 +111,7 @@ jobs:
       - name: Adjust SQL Server service account
         shell: powershell
         run: |
-          Update-DbaServiceAccount -Computer localhost -ServiceName MSSQLSERVER -Username "NT SERVICE\MSSQLSERVER" -Confirm:$false
+          Update-DbaServiceAccount -Computer localhost -ServiceName MSSQLSERVER -Username "NT SERVICE\MSSQLSERVER" -SecurePassword (ConvertTo-SecureString 'duhduhduh' -AsPlainText -Force)
 
       - uses: Vampire/setup-wsl@v1.2.0
         with:
