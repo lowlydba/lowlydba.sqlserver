@@ -111,14 +111,9 @@ jobs:
       - name: Adjust SQL Server service account
         shell: powershell
         run: |
-          Update-DbaServiceAccount -ServiceName MSSQLSERVER -User "NT SERVICE\MSSQLSERVER" -Confirm:$false
+          Update-DbaServiceAccount -Computer localhost -ServiceName MSSQLSERVER -Username "NT SERVICE\MSSQLSERVER" -Confirm:$false
 
-      # - name: Set SQL Server service account
-      #   shell: powershell
-      #   run: |
-      #     Update-DbaServiceAccount -Computer localhost -ServiceName MSSQLSERVER -Username "LOCALSYSTEM"
-
-      - uses: Vampire/setup-wsl@v1
+      - uses: Vampire/setup-wsl@v1.2.0
         with:
           distribution: Debian
           additional-packages: |
