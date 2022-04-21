@@ -108,12 +108,7 @@ jobs:
         run: |
           Set-DbaMaxMemory -SqlInstance localhost
 
-      # - name: Set SQL Server service account
-      #   shell: powershell
-      #   run: |
-      #     Update-DbaServiceAccount -Computer localhost -ServiceName MSSQLSERVER -Username "LOCALSYSTEM"
-
-      - uses: Vampire/setup-wsl@v1
+      - uses: Vampire/setup-wsl@v1.2.0
         with:
           distribution: Debian
           additional-packages: |
