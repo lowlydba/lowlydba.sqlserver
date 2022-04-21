@@ -103,7 +103,7 @@ jobs:
         run: |
           Set-DbaMaxMemory -SqlInstance localhost
 
-      - uses: Vampire/setup-wsl@v1
+      - uses: Vampire/setup-wsl@v1.2.0
         with:
           distribution: Debian
           additional-packages: |
