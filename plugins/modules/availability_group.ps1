@@ -159,7 +159,7 @@ try {
                     $null = Backup-DbaDatabase $backupSplat
                 }
             }
-            $output = $server | New-DbaAvailabilityGroup @agSplat
+            $output = $server | New-DbaAvailabilityGroup -Name "IntAG1" -Confirm:$false #@agSplat
             $module.Result.changed = $true
         }
         # Configure existing AG
