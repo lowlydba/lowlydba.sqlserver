@@ -39,11 +39,10 @@ try {
     }
     $existingCategory = Get-DbaAgentJobCategory @agentJobCategorySplat
 
-    $agentJobCategorySplat.Add("WhatIf", $checkMode)
     if ($state -eq "present") {
         # Create new job category
         if ($null -eq $existingCategory) {
-            $output = New-DbaAgentJobCategory @agentJobCategorySplat
+            $output = New-DbaAgentJobCategory @agentJobCategorySplat -WhatIf:$checkMode
             $module.Result.changed = $true
         }
     }
