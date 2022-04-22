@@ -14,9 +14,8 @@ $spec = @{
     supports_check_mode = $true
     options = @{
         sql_instance_secondary = @{type = "str"; required = $false }
-        #TODO secondary credential
-        #TODO use_last_backup
-        #TODO force
+        sql_username_secondary = @{type = 'str'; required = $false }
+        sql_password_secondary = @{type = 'str'; required = $false; no_log = $true }
         database_name = @{type = "str"; required = $false }
         ag_name = @{type = "str"; required = $true }
         all_ags = @{type = "bool"; required = $false; }
@@ -25,6 +24,7 @@ $spec = @{
         basic_availability_group = @{type = "bool"; required = $false; }
         database_health_trigger = @{type = "bool"; required = $false; }
         is_distributed_ag = @{type = "bool"; required = $false; }
+        use_last_backup = @{type = "bool"; required = $false; }
         healthcheck_timeout = @{type = "int"; required = $false; }
         availability_mode = @{
             type = "str";
@@ -68,23 +68,31 @@ $spec = @{
             choices = @("Wsfc", "External", "None")
         }
         allow_null_backup = @{type = "bool"; required = $false }
+        force = @{type = "bool"; required = $false }
         state = @{type = "str"; required = $false; default = "present"; choices = @("present", "absent") }
     }
+    required_together = @(
+            , @('sql_username_secondary', 'sql_password_secondary')
+        )
 }
 
 # Setup var
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
 $ProgressPreference = "SilentlyContinue"
-$PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false }
 
 # Var
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $secondary = $module.Params.sql_instance_secondary
+if ($null -ne $Module.Params.sql_username_secondary) {
+    [securestring]$secondarySecPassword = ConvertTo-SecureString $Module.Params.sql_password_secondary -AsPlainText -Force
+    [pscredential]$secondarySqlCredential = New-Object System.Management.Automation.PSCredential ($Module.Params.sql_username_secondary, $secondarySecPassword)
+}
 $agName = $module.Params.ag_name
 [nullable[bool]]$all_ags = $module.Params.all_ags
 $database = $module.Params.database_name
 $seedingMode = $module.Params.seeding_mode
 $sharedPath = $module.Params.shared_path
+$useLastBackup = $module.Params.use_last_backup
 [nullable[bool]]$dtcSupportEnabled = $module.Params.dtc_support_enabled
 [nullable[bool]]$basicAvailabilityGroup = $module.Params.basic_availability_group
 [nullable[bool]]$databaseHealthTrigger = $module.Params.database_health_trigger
@@ -95,10 +103,13 @@ $failureConditionLevel = $module.Params.failure_condition_level
 $failoverMode = $module.Params.failover_mode
 $automatedBackupPreference = $module.Params.automated_backup_preference
 $clusterType = $module.Params.cluster_type
+$force = $module.Params.force
 $state = $module.Params.state
 [nullable[bool]]$allowNullBackup = $module.Params.allow_null_backup
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
+
+$PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 try {
     #$server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
@@ -114,11 +125,12 @@ try {
             AvailabilityMode = $availabilityMode
             AutomatedBackupPreference = $automatedBackupPreference
             ClusterType = $clusterType
-            WhatIf = $checkMode
-            Force = $true
         }
         if ($null -ne $sharedPath -and $seedingMode -eq "Manual") {
             $agSplat.Add("SharedPath", $sharedPath)
+        }
+        if ($useLastBackup -eq $true) {
+            $agSplat.Add("UseLastBackup", $useLastBackup)
         }
         if ($dtcSupportEnabled -eq $true) {
             $agSplat.Add("DtcSupport", $dtcSupportEnabled)
@@ -141,6 +153,12 @@ try {
         if ($null -ne $secondary) {
             $agSplat.Add("Secondary", $secondary)
         }
+        if ($null -ne $secondarySqlCredential) {
+            $agSplat.Add("SecondarySqlCredential", $secondarySqlCredential)
+        }
+        if ($force -eq $true) {
+            $agSplat.Add("Force", $force)
+        }
 
         # Create the AG with initial replica(s)
         if ($null -eq $existingAG) {
@@ -154,7 +172,6 @@ try {
                         Database = $database
                         FilePath = "NUL"
                         Type = "Full"
-                        WhatIf = $checkMode
                     }
                     $null = Backup-DbaDatabase $backupSplat
                 }
@@ -169,7 +186,6 @@ try {
                 $setAgSplat = @{
                     AutomatedBackupPreference = $automatedBackupPreference
                     ClusterType = $clusterType
-                    WhatIf = $checkMode
                 }
                 if ($all_ags -eq $true) {
                     $agSplat.Add("AllAvailabilityGroups", $all_ags)
@@ -199,14 +215,11 @@ try {
     }
     elseif ($state -eq $absent) {
         if ($null -ne $existingAG) {
-            $removeAgSplat = @{
-                WhatIf = $checkMode
-            }
             if ($all_ags -eq $true) {
-                $output = $existingAG | Remove-DbaAvailabilityGroup @removeAgSplat -AllAvailabilityGroups
+                $output = $existingAG | Remove-DbaAvailabilityGroup -AllAvailabilityGroups
             }
             else {
-                $output = $existingAG | Remove-DbaAvailabilityGroup @removeAgSplat
+                $output = $existingAG | Remove-DbaAvailabilityGroup
             }
             $module.Result.changed = $true
         }

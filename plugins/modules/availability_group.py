@@ -17,6 +17,16 @@ options:
       - The secondary SQL Server instance for the new Availability Group.
     type: str
     required: false
+  sql_username_secondary:
+    description:
+      - Username for SQL Authentication for the secondary replica.
+    type: str
+    required: false
+  sql_password_secondary:
+    description:
+      - Password for SQL Authentication for the secondary replica.
+    type: str
+    required: false
   database_name:
     description:
       - Name of the database to create the Availability Group for.
@@ -112,6 +122,15 @@ options:
       - Allow taking a full backup to C(NULL) if one doesn't exist and I(seeding_mode=automatic).
     type: bool
     required: false
+  force:
+    description:
+      - Drop and recreate the database on remote servers using fresh backup.
+    type: bool
+    default: false
+  use_last_backup:
+    description:
+      - Use the last full and log backup of database. A log backup must be the last backup.
+    type: bool
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
@@ -124,8 +143,6 @@ EXAMPLES = r'''
 - name: Create Availability Group
   lowlydba.sqlserver.availability_group:
     sql_instance_primary: sql-01.myco.io
-    sql_instance_secondary: sql-02.myco.io
-    database_name: MyDatabase
     ag_name: AG_MyDatabase
 '''
 

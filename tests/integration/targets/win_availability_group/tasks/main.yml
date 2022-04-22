@@ -8,8 +8,10 @@
       ag_name: "IntAG1"
       cluster_type: "None"
       failover_mode: "Manual"
-
-  tags: ["hadr"]
+      dtc_support_enabled: false
+      availability_mode: "AsynchronousCommit"
+      seeding_mode: "Manual"
+  tags: ["availability_group"]
   block:
     - name: Enable hadr
       lowlydba.sqlserver.hadr:
@@ -27,3 +29,32 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
+          - result is changed
+
+    - name: Drop availability group in check mode
+      lowlydba.sqlserver.availability_group:
+        state: absent
+      check_mode: true
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result is changed
+
+    - name: Drop availability group
+      lowlydba.sqlserver.availability_group:
+        state: absent
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result is changed
+
+  always:
+    - name: Drop availability group
+      lowlydba.sqlserver.availability_group:
+        state: absent
