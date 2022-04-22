@@ -126,7 +126,6 @@ options:
     description:
       - Drop and recreate the database on remote servers using fresh backup.
     type: bool
-    default: false
   use_last_backup:
     description:
       - Use the last full and log backup of database. A log backup must be the last backup.
