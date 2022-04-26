@@ -29,6 +29,10 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
+          - result.data.AvailabilityGroup == "{{ ag_name }}"
+          - result.data.ClusterType == "{{ cluster_type }}"
+          - result.data.DtcSupportEnabled == "{{ dtc_support_enabled }}"
+          - result.data.AvailabilityGroupReplicas != None
           - result is changed
 
     - name: Drop availability group in check mode

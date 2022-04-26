@@ -214,10 +214,10 @@ try {
     elseif ($state -eq "absent") {
         if ($null -ne $existingAG) {
             if ($all_ags -eq $true) {
-                $output = $existingAG | Remove-DbaAvailabilityGroup -AllAvailabilityGroups
+                $existingAG | Remove-DbaAvailabilityGroup -AllAvailabilityGroups
             }
             else {
-                $output = $existingAG | Remove-DbaAvailabilityGroup
+                $existingAG | Remove-DbaAvailabilityGroup
             }
             $module.Result.changed = $true
         }
