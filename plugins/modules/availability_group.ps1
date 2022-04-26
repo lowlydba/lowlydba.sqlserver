@@ -72,8 +72,8 @@ $spec = @{
         state = @{type = "str"; required = $false; default = "present"; choices = @("present", "absent") }
     }
     required_together = @(
-            , @('sql_username_secondary', 'sql_password_secondary')
-        )
+        , @('sql_username_secondary', 'sql_password_secondary')
+    )
 }
 
 # Setup var
