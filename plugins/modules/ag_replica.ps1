@@ -112,7 +112,9 @@ try {
 		END
 		GO"
         $addReplicaQuery2 = "ALTER AVAILABILITY GROUP [$($object.AvailabilityGroup)]
-		ADD REPLICA ON N'$ReplicaNameShort' WITH (ENDPOINT_URL = N'TCP://$($object.Replica):5022', FAILOVER_MODE = $($object.FailoverMode), AVAILABILITY_MODE = $AvailabilityModeTSQL, BACKUP_PRIORITY = $($object.BackupPriority), SEEDING_MODE = $($object.SeedingMode), SECONDARY_ROLE(ALLOW_CONNECTIONS = $ConnectionModeInSecondaryRoleTSQL));"
+		ADD REPLICA ON N'$ReplicaNameShort' WITH (ENDPOINT_URL = N'TCP://$($object.Replica):5022',
+            FAILOVER_MODE = $($object.FailoverMode), AVAILABILITY_MODE = $AvailabilityModeTSQL, BACKUP_PRIORITY = $($object.BackupPriority),
+            SEEDING_MODE = $($object.SeedingMode), SECONDARY_ROLE(ALLOW_CONNECTIONS = $ConnectionModeInSecondaryRoleTSQL));"
         $addReplicaQuery3 = "ALTER AVAILABILITY GROUP [$($object.AvailabilityGroup)] JOIN;
 		GO
 		ALTER AVAILABILITY GROUP [$($object.AvailabilityGroup)] GRANT CREATE ANY DATABASE;
