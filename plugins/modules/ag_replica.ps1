@@ -165,5 +165,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Configuring Availability Group replica failed: $($_.Exception.Message", $_)
+    $module.FailJson("Configuring Availability Group replica failed: $($_.Exception.Message)", $_)
 }
