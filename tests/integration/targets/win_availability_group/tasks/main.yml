@@ -38,7 +38,7 @@
           - result.data.SqlInstance != None
           - result.data.AvailabilityGroup == "{{ ag_name }}"
           - result.data.ClusterType == "{{ cluster_type }}"
-          - result.data.DtcSupportEnabled == "{{ dtc_support_enabled }}"
+          - result.data.DtcSupportEnabled is false
           - result.data.AvailabilityGroupReplicas != None
           - result is changed
 
