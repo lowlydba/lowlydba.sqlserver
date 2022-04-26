@@ -230,5 +230,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Configuring Availability Group failed: $($_.Exception.InnerException.Message)", $_)
+    $module.FailJson("Configuring Availability Group failed: $($_.Exception.Message)", $_)
 }
