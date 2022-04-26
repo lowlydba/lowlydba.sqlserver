@@ -147,7 +147,7 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from the C(New-DbaAvailabilityGroup), C(Set-DbaAvailabilityGroup), or C(Remove-DbaAvailabilityGroup) function.
+  description: Output from the C(New-DbaAvailabilityGroup) or C(Set-DbaAvailabilityGroup) function.
   returned: success, but not in check_mode.
   type: dict
 '''
