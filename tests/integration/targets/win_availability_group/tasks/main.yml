@@ -38,9 +38,6 @@
       register: result
     - assert:
         that:
-          - result.data.ComputerName != None
-          - result.data.InstanceName != None
-          - result.data.SqlInstance != None
           - result is changed
 
     - name: Drop availability group

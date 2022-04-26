@@ -83,32 +83,31 @@ $ProgressPreference = "SilentlyContinue"
 # Var
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $secondary = $module.Params.sql_instance_secondary
-if ($null -ne $Module.Params.sql_username_secondary) {
+if ($null -ne $module.Params.sql_username_secondary) {
     [securestring]$secondarySecPassword = ConvertTo-SecureString $Module.Params.sql_password_secondary -AsPlainText -Force
     [pscredential]$secondarySqlCredential = New-Object System.Management.Automation.PSCredential ($Module.Params.sql_username_secondary, $secondarySecPassword)
 }
 $agName = $module.Params.ag_name
-[nullable[bool]]$all_ags = $module.Params.all_ags
 $database = $module.Params.database_name
 $seedingMode = $module.Params.seeding_mode
 $sharedPath = $module.Params.shared_path
-$useLastBackup = $module.Params.use_last_backup
-[nullable[bool]]$dtcSupportEnabled = $module.Params.dtc_support_enabled
-[nullable[bool]]$basicAvailabilityGroup = $module.Params.basic_availability_group
-[nullable[bool]]$databaseHealthTrigger = $module.Params.database_health_trigger
-[nullable[bool]]$isDistributedAg = $module.Params.is_distributed_ag
 $healthCheckTimeout = $module.Params.healthcheck_timeout
 $availabilityMode = $module.Params.availability_mode
 $failureConditionLevel = $module.Params.failure_condition_level
 $failoverMode = $module.Params.failover_mode
 $automatedBackupPreference = $module.Params.automated_backup_preference
 $clusterType = $module.Params.cluster_type
-$force = $module.Params.force
 $state = $module.Params.state
+[nullable[bool]]$all_ags = $module.Params.all_ags
+[nullable[bool]]$useLastBackup = $module.Params.use_last_backup
+[nullable[bool]]$dtcSupportEnabled = $module.Params.dtc_support_enabled
+[nullable[bool]]$basicAvailabilityGroup = $module.Params.basic_availability_group
+[nullable[bool]]$databaseHealthTrigger = $module.Params.database_health_trigger
+[nullable[bool]]$isDistributedAg = $module.Params.is_distributed_ag
+[nullable[bool]]$force = $module.Params.force
 [nullable[bool]]$allowNullBackup = $module.Params.allow_null_backup
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
-
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 try {
@@ -181,7 +180,6 @@ try {
         }
         # Configure existing AG
         else {
-            #TODO Compare all the properties here
             if ($existingAG.AutomatedBackupPreference -ne $automatedBackupPreference) {
                 $setAgSplat = @{
                     AutomatedBackupPreference = $automatedBackupPreference
@@ -213,7 +211,7 @@ try {
             }
         }
     }
-    elseif ($state -eq $absent) {
+    elseif ($state -eq "absent") {
         if ($null -ne $existingAG) {
             if ($all_ags -eq $true) {
                 $output = $existingAG | Remove-DbaAvailabilityGroup -AllAvailabilityGroups
