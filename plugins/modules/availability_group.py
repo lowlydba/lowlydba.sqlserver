@@ -9,7 +9,7 @@ DOCUMENTATION = r'''
 module: availability_group
 short_description: Configures availability group(s).
 description:
-  - Configures SQL Server Availability Group(s). To add more replicas, use M(lowlydba.sqlserver.ag_replica).
+  - Configures SQL Server Availability Group(s) with up to one replica.
 version_added: 0.4.0
 options:
   sql_instance_secondary:
@@ -98,7 +98,7 @@ options:
   availability_mode:
     description:
       - Whether the replica should be Asynchronous or Synchronous.
-        Only used in creating a new availability group, otherwise use M(lowlydba.sqlserver.ag_replica) to configure existing replicas.
+        Only used in creating a new availability group.
     type: str
     required: false
     default: 'SynchronousCommit'
