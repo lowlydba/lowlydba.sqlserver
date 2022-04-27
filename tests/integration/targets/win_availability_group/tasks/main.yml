@@ -7,6 +7,11 @@
     dtc_support_enabled: false
     availability_mode: "AsynchronousCommit"
     seeding_mode: "Manual"
+    database_health_trigger: true
+    use_last_backup: true
+    healthcheck_timeout: 5
+    basic_availability_group: true
+    force: true
   module_defaults:
     lowlydba.sqlserver.availability_group:
       sql_instance: "{{ sqlserver_instance }}"
@@ -18,6 +23,11 @@
       dtc_support_enabled: "{{ dtc_support_enabled }}"
       availability_mode: "{{ availability_mode }}"
       seeding_mode: "{{ seeding_mode }}"
+      database_health_trigger: "{{ database_health_trigger }}"
+      use_last_backup: "{{ use_last_backup }}"
+      healthcheck_timeout: "{{ healthcheck_timeout }}"
+      basic_availability_group: "{{ basic_availability_group }}"
+      force: "{{ force }}"
   tags: ["availability_group"]
   block:
     - name: Enable hadr
@@ -30,6 +40,21 @@
 
     - name: Create availability group
       lowlydba.sqlserver.availability_group:
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.AvailabilityGroup == "{{ ag_name }}"
+          - result.data.ClusterType == "{{ cluster_type }}"
+          - result.data.DtcSupportEnabled is false
+          - result.data.AvailabilityReplicas != None
+          - result is changed
+
+    - name: Change availability group
+      lowlydba.sqlserver.availability_group:
+        dtc_support_enabled: true
       register: result
     - assert:
         that:
