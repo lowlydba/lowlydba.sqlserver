@@ -9,7 +9,7 @@
     seeding_mode: "Manual"
     database_health_trigger: true
     use_last_backup: true
-    healthcheck_timeout: 5
+    healthcheck_timeout: 15000
     basic_availability_group: false
     force: true
   module_defaults:
