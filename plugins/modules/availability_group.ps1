@@ -180,38 +180,36 @@ try {
         }
         # Configure existing AG
         else {
-            if ($existingAG.AutomatedBackupPreference -ne $automatedBackupPreference) {
-                $setAgSplat = @{
-                    AutomatedBackupPreference = $automatedBackupPreference
-                    ClusterType = $clusterType
-                }
-                if ($all_ags -eq $true) {
-                    $agSplat.Add("AllAvailabilityGroups", $all_ags)
-                }
-                if ($dtcSupportEnabled -eq $true) {
-                    $setAgSplat.Add("DtcSupportEnabled", $dtcSupportEnabled)
-                }
-                if ($basicAvailabilityGroup -eq $true) {
-                    $setAgSplat.Add("BasicAvailabilityGroup", $basicAvailabilityGroup)
-                }
-                if ($databaseHealthTrigger -eq $true) {
-                    $setAgSplat.Add("DatabaseHealthTrigger", $databaseHealthTrigger)
-                }
-                if ($null -ne $failureConditionLevel) {
-                    $setAgSplat.Add("FailureConditionLevel", $failureConditionLevel)
-                }
-                if ($null -ne $healthCheckTimeout) {
-                    $setAgSplat.Add("HealthCheckTimeout", $healthCheckTimeout)
-                }
-                if ($isDistributedAg -eq $true) {
-                    $agSplat.Add("IsDistributedAvailabilityGroup", $isDistributedAg)
-                }
-                $compareProperty = ($existingAG.Properties | Where-Object Name -in $setAgSplat.Keys).Name
-                $agDiff = Compare-Object -ReferenceObject $existingAG -DifferenceObject $setAgSplat -Property $compareProperty
-                if ($null -ne $agDiff) {
-                    $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat
-                    $module.Result.changed = $true
-                }
+            $setAgSplat = @{
+                AutomatedBackupPreference = $automatedBackupPreference
+                ClusterType = $clusterType
+            }
+            if ($all_ags -eq $true) {
+                $agSplat.Add("AllAvailabilityGroups", $all_ags)
+            }
+            if ($dtcSupportEnabled -eq $true) {
+                $setAgSplat.Add("DtcSupportEnabled", $dtcSupportEnabled)
+            }
+            if ($basicAvailabilityGroup -eq $true) {
+                $setAgSplat.Add("BasicAvailabilityGroup", $basicAvailabilityGroup)
+            }
+            if ($databaseHealthTrigger -eq $true) {
+                $setAgSplat.Add("DatabaseHealthTrigger", $databaseHealthTrigger)
+            }
+            if ($null -ne $failureConditionLevel) {
+                $setAgSplat.Add("FailureConditionLevel", $failureConditionLevel)
+            }
+            if ($null -ne $healthCheckTimeout) {
+                $setAgSplat.Add("HealthCheckTimeout", $healthCheckTimeout)
+            }
+            if ($isDistributedAg -eq $true) {
+                $agSplat.Add("IsDistributedAvailabilityGroup", $isDistributedAg)
+            }
+            $compareProperty = ($existingAG.Properties | Where-Object Name -in $setAgSplat.Keys).Name
+            $agDiff = Compare-Object -ReferenceObject $existingAG -DifferenceObject $setAgSplat -Property $compareProperty
+            if ($null -ne $agDiff) {
+                $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat
+                $module.Result.changed = $true
             }
         }
     }
