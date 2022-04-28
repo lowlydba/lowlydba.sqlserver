@@ -88,3 +88,24 @@ releases:
       name: sa
       namespace: ''
     release_date: '2022-04-05'
+  0.4.0:
+    changes:
+      breaking_changes:
+      - All modules should use a bool 'enabled' instead of a string 'status' to control
+        object state.
+      minor_changes:
+      - Test for 'Name' property for sa module after dbatools release 1.1.87 standardizes
+        command outputs. (https://github.com/dataplat/dbatools/releases/tag/v1.1.87)
+      release_summary: Two new AlwaysOn modules and a few consistency fixes!
+    fragments:
+    - 0.4.0-release-summary.yml
+    - 56-test-for-login-name.yml
+    - 60-standardize-enabled-option.yml
+    modules:
+    - description: Configures availability group(s).
+      name: availability_group
+      namespace: ''
+    - description: Enable or disable HADR.
+      name: hadr
+      namespace: ''
+    release_date: '2022-04-27'

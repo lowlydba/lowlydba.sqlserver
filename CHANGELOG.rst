@@ -5,6 +5,30 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.4.0
+======
+
+Release Summary
+---------------
+
+Two new AlwaysOn modules and a few consistency fixes!
+
+Minor Changes
+-------------
+
+- Test for 'Name' property for sa module after dbatools release 1.1.87 standardizes command outputs. (https://github.com/dataplat/dbatools/releases/tag/v1.1.87)
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- All modules should use a bool 'enabled' instead of a string 'status' to control object state.
+
+New Modules
+-----------
+
+- availability_group - Configures availability group(s).
+- hadr - Enable or disable HADR.
+
 v0.3.0
 ======
 

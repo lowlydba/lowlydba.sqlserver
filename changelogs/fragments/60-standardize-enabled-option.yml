@@ -1,2 +1,0 @@
-breaking_changes:
-  - All modules should use a bool 'enabled' instead of a string 'status' to control object state.
