@@ -10,7 +10,7 @@
     database_health_trigger: true
     use_last_backup: true
     healthcheck_timeout: 5
-    basic_availability_group: true
+    basic_availability_group: false
     force: true
   module_defaults:
     lowlydba.sqlserver.availability_group:
