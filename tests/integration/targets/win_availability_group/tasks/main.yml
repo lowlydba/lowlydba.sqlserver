@@ -12,6 +12,7 @@
     healthcheck_timeout: 15000
     basic_availability_group: false
     force: true
+    failure_condition_level: "OnServerDown"
   module_defaults:
     lowlydba.sqlserver.availability_group:
       sql_instance: "{{ sqlserver_instance }}"
@@ -28,6 +29,7 @@
       healthcheck_timeout: "{{ healthcheck_timeout }}"
       basic_availability_group: "{{ basic_availability_group }}"
       force: "{{ force }}"
+      failure_condition_level: "{{ failure_condition_level }}"
   tags: ["availability_group"]
   block:
     - name: Enable hadr
@@ -55,6 +57,8 @@
     - name: Change availability group
       lowlydba.sqlserver.availability_group:
         dtc_support_enabled: true
+        all_ags: true
+        failure_condition_level: "OnServerUnresponsive"
       register: result
     - assert:
         that:
