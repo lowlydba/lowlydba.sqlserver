@@ -77,13 +77,18 @@ jobs:
           $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1'))
           & $sb -Verbose -ForceNewSSLCert 4>&1
 
+      - name: Enable winrm
+        shell: powershell
+        run: |
+          winrm quickconfig -force
+
       - name: Why is MongoDB running? Disable it.
         shell: powershell
         run: |
           Get-Service -Name MongoDB | Where-Object Status -eq 'Running' | Stop-Service -Force
 
       - name: Install a SQL Server
-        uses: potatoqualitee/mssqlsuite@v1
+        uses: potatoqualitee/mssqlsuite@v1.2
         with:
           install: sqlengine
           sa-password: L0wlydb4
@@ -102,6 +107,11 @@ jobs:
         shell: powershell
         run: |
           Set-DbaMaxMemory -SqlInstance localhost
+
+      - name: Adjust SQL Server service account
+        shell: powershell
+        run: |
+          Update-DbaServiceAccount -Computer localhost -ServiceName MSSQLSERVER -Username "NT SERVICE\MSSQLSERVER" -SecurePassword (ConvertTo-SecureString 'duhduhduh' -AsPlainText -Force)
 
       - uses: Vampire/setup-wsl@v1.2.0
         with:

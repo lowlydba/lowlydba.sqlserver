@@ -25,7 +25,9 @@
 | [agent_job_category](plugins/modules/agent_job_category.ps1) | Configures a SQL Agent job category. |
 | [agent_job_schedule](plugins/modules/agent_job_schedule.ps1) | Configures a SQL Agent job schedule. |
 | [agent_job_step](plugins/modules/agent_job_step.ps1) | Configures a SQL Agent job step. |
+| [availability_group](plugins/modules/availability_group.ps1) | Configures an Availability Group. |
 | [database](plugins/modules/database.ps1) | Configures a database. |
+| [hadr](plugins/modules/hadr.ps1) | Configure Hadr for the SQL Server service. Windows only. |
 | [instance_info](plugins/modules/instance_info.ps1) | Returns basic information for a SQL Server instance. |
 | [login](plugins/modules/login.ps1) | Configures a login. |
 | [maintenance_solution](plugins/modules/memory.ps1) | Install/update Ola Hallengren's Maintenance Solution. |

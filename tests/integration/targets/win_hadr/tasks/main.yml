@@ -1,0 +1,53 @@
+---
+- name: Var block
+  module_defaults:
+    lowlydba.sqlserver.hadr:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      force: true
+  tags: ["hadr"]
+  block:
+    - name: Enable hadr
+      lowlydba.sqlserver.hadr:
+        enabled: true
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.IsHadrEnabled is true
+
+    - name: Disable hadr
+      lowlydba.sqlserver.hadr:
+        enabled: false
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.IsHadrEnabled is false
+          - result is changed
+
+    - name: Checkmode enable hadr
+      lowlydba.sqlserver.hadr:
+        enabled: true
+      check_mode: true
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Verify checkmode works
+      lowlydba.sqlserver.hadr:
+        enabled: false
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.IsHadrEnabled is false
+          - result is not changed
