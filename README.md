@@ -19,27 +19,7 @@
 
 ## Modules
 
-| Module | Description |
-| ------ | ----------- |
-| [agent_job](plugins/modules/agent_job.ps1) | Configures a SQL Agent job. |
-| [agent_job_category](plugins/modules/agent_job_category.ps1) | Configures a SQL Agent job category. |
-| [agent_job_schedule](plugins/modules/agent_job_schedule.ps1) | Configures a SQL Agent job schedule. |
-| [agent_job_step](plugins/modules/agent_job_step.ps1) | Configures a SQL Agent job step. |
-| [availability_group](plugins/modules/availability_group.ps1) | Configures an Availability Group. |
-| [database](plugins/modules/database.ps1) | Configures a database. |
-| [hadr](plugins/modules/hadr.ps1) | Configure Hadr for the SQL Server service. Windows only. |
-| [instance_info](plugins/modules/instance_info.ps1) | Returns basic information for a SQL Server instance. |
-| [login](plugins/modules/login.ps1) | Configures a login. |
-| [maintenance_solution](plugins/modules/memory.ps1) | Install/update Ola Hallengren's Maintenance Solution. |
-| [memory](plugins/modules/memory.ps1) | Sets the maximum memory. |
-| [nonquery](plugins/modules/nonquery.ps1) | Executes a generic nonquery. |
-| [resource_governor](plugins/modules/resource_governor.ps1) | Configures the resource governor. |
-| [rg_resource_pool](plugins/modules/rg_resource_pool.ps1) | Configures a resource pool for use by the resource governor. |
-| [rg_workload_group](plugins/modules/rg_workload_group.ps1) | Configures a workload group for use by the resource governor. |
-| [sa](plugins/modules/sa.ps1) | Configure the 'sa' login for security best practices. |
-| [sp_configure](plugins/modules/sp_configure.ps1) | Make instance level system configuration changes via sp_configure. |
-| [sp_whoisactive](plugins/modules/sp_whoisactive.ps1) | Install/update sp_whoisactive by Adam Mechanic. |
-| [trace_flag](plugins/modules/traceflag.ps1) | Enable or disable global trace flags. |
+See the ansible [documentation](https://lowlydba.github.io/lowlydba.sqlserver/branch/main/collections/lowlydba/sqlserver/index.html#plugin-index) for this collection.
 
 ## Code of Conduct
 
