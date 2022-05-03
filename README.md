@@ -19,7 +19,7 @@
 
 ## Modules
 
-See the [plugin section](https://lowlydba.github.io/lowlydba.sqlserver/branch/main/collections/lowlydba/sqlserver/index.html#plugins-in-lowlydba-sqlserver) of the documentation for this collection (https://lowlydba.github.io/lowlydba.sqlserver).
+See the [plugin section](https://lowlydba.github.io/lowlydba.sqlserver/branch/main/collections/lowlydba/sqlserver/index.html#plugins-in-lowlydba-sqlserver) of the documentation for this collection (<https://lowlydba.github.io/lowlydba.sqlserver>).
 
 ## Code of Conduct
 
@@ -59,7 +59,6 @@ To learn how to maintain / become a maintainer of this collection, refer to the 
 
 ### Ansible
 
-- 2.10
 - 2.11
 - 2.12
 - 2.13
