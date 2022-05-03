@@ -23,6 +23,8 @@
       sql_password: "{{ sqlserver_password }}"
       ag_name: "{{ ag_name }}"
       listener_name: "{{ listener_name }}"
+      ip_address: "192.168.6.9"
+      subnet_mask: "255.255.255.0"
   tags: ["ag_listener"]
   block:
     - name: Enable hadr
@@ -35,17 +37,6 @@
 
     - name: Create availability group
       lowlydba.sqlserver.availability_group:
-      register: result
-    - assert:
-        that:
-          - result.data.ComputerName != None
-          - result.data.InstanceName != None
-          - result.data.SqlInstance != None
-          - result.data.AvailabilityGroup == "{{ ag_name }}"
-          - result.data.ClusterType == "{{ cluster_type }}"
-          - result.data.DtcSupportEnabled is false
-          - result.data.AvailabilityReplicas != None
-          - result is changed
 
     - name: Create ag listener
       lowlydba.sqlserver.ag_listener:
