@@ -88,7 +88,7 @@ jobs:
           Get-Service -Name MongoDB | Where-Object Status -eq 'Running' | Stop-Service -Force
 
       - name: Install a SQL Server
-        uses: potatoqualitee/mssqlsuite@v1.2
+        uses: potatoqualitee/mssqlsuite@v1.3
         with:
           install: sqlengine
           sa-password: L0wlydb4
@@ -107,11 +107,6 @@ jobs:
         shell: powershell
         run: |
           Set-DbaMaxMemory -SqlInstance localhost
-
-      - name: Adjust SQL Server service account
-        shell: powershell
-        run: |
-          Update-DbaServiceAccount -Computer localhost -ServiceName MSSQLSERVER -Username "NT SERVICE\MSSQLSERVER" -SecurePassword (ConvertTo-SecureString 'duhduhduh' -AsPlainText -Force)
 
       - uses: Vampire/setup-wsl@v1.2.0
         with:
