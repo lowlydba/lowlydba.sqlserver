@@ -45,7 +45,6 @@ jobs:
         os:
           - windows-2019
         ansible:
-          - stable-2.10
           - stable-2.11
           - stable-2.12
           - stable-2.13
