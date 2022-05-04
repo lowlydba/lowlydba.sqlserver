@@ -69,7 +69,7 @@ try {
         }
     }
     elseif ($state -eq "absent") {
-        if ($null -eq $existingListener) {
+        if ($null -ne $existingListener) {
             $output = Remove-DbaAgListener -AvailabilityGroup $agName -Listener $listenerName
             $module.Result.changed = $true
         }

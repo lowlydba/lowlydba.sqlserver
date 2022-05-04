@@ -7,6 +7,7 @@
     failover_mode: "Manual"
     availability_mode: "AsynchronousCommit"
     force: true
+    port_number: 1433
   module_defaults:
     lowlydba.sqlserver.availability_group:
       sql_instance: "{{ sqlserver_instance }}"
@@ -23,6 +24,7 @@
       sql_password: "{{ sqlserver_password }}"
       ag_name: "{{ ag_name }}"
       listener_name: "{{ listener_name }}"
+      port_number: "{{ port_number }}"
       ip_address: "192.168.6.9"
       subnet_mask: "255.255.255.0"
   tags: ["ag_listener"]
@@ -46,6 +48,9 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
+          - result.data.AvailabilityGroup == "{{ ag_name }}"
+          - result.data.Name == "{{ listener_name }}"
+          - result.data.PortNumber == "{{ port_number }}"
           - result is changed
 
     - name: Drop ag listener in checkmode
