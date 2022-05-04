@@ -1,0 +1,90 @@
+---
+- name: Var block
+  vars:
+    ag_name: "ShhListen"
+    listener_name: "CanYouHear"
+    cluster_type: "None"
+    failover_mode: "Manual"
+    availability_mode: "AsynchronousCommit"
+    force: true
+    port: 1433
+  module_defaults:
+    lowlydba.sqlserver.availability_group:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      ag_name: "{{ ag_name }}"
+      cluster_type: "{{ cluster_type }}"
+      failover_mode: "{{ failover_mode }}"
+      availability_mode: "{{ availability_mode }}"
+      force: "{{ force }}"
+    lowlydba.sqlserver.ag_listener:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      ag_name: "{{ ag_name }}"
+      listener_name: "{{ listener_name }}"
+      port: "{{ port }}"
+      ip_address: "192.168.6.9"
+      subnet_mask: "255.255.255.0"
+  tags: ["ag_listener"]
+  block:
+    - name: Enable hadr
+      lowlydba.sqlserver.hadr:
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+        enabled: true
+        force: true
+
+    - name: Create availability group
+      lowlydba.sqlserver.availability_group:
+
+    - name: Create ag listener
+      lowlydba.sqlserver.ag_listener:
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.AvailabilityGroup == ag_name
+          - result.data.Name == listener_name
+          - result.data.PortNumber == port
+          - result is changed
+
+    - name: Change ag listener port
+      lowlydba.sqlserver.ag_listener:
+        port: 1434
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.AvailabilityGroup == ag_name
+          - result.data.Name == listener_name
+          - result.data.PortNumber == 1434
+          - result is changed
+
+    - name: Drop ag listener in checkmode
+      lowlydba.sqlserver.ag_listener:
+        state: absent
+      check_mode: true
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Drop ag listener
+      lowlydba.sqlserver.ag_listener:
+        state: absent
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+  always:
+    - name: Drop availability group
+      lowlydba.sqlserver.availability_group:
+        state: absent
