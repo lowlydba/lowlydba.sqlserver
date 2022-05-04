@@ -50,7 +50,7 @@
           - result.data.SqlInstance != None
           - result.data.AvailabilityGroup == "{{ ag_name }}"
           - result.data.Name == "{{ listener_name }}"
-          - result.data.PortNumber == "{{ port_number }}"
+          - result.data.PortNumber == "{{ port }}"
           - result is changed
 
     - name: Drop ag listener in checkmode
