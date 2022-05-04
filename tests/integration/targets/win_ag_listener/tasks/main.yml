@@ -48,9 +48,9 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
-          - result.data.AvailabilityGroup == "{{ ag_name }}"
-          - result.data.Name == "{{ listener_name }}"
-          - result.data.PortNumber == {{ port }}
+          - result.data.AvailabilityGroup == ag_name
+          - result.data.Name == listener_name
+          - result.data.PortNumber == port
           - result is changed
 
     - name: Change ag listener port
@@ -62,8 +62,8 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
-          - result.data.AvailabilityGroup == "{{ ag_name }}"
-          - result.data.Name == "{{ listener_name }}"
+          - result.data.AvailabilityGroup == ag_name
+          - result.data.Name == listener_name
           - result.data.PortNumber == 1434
           - result is changed
 
