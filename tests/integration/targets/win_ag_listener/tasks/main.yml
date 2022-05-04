@@ -53,6 +53,20 @@
           - result.data.PortNumber == {{ port }}
           - result is changed
 
+    - name: Change ag listener port
+      lowlydba.sqlserver.ag_listener:
+        port: 1434
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.AvailabilityGroup == "{{ ag_name }}"
+          - result.data.Name == "{{ listener_name }}"
+          - result.data.PortNumber == 1434
+          - result is changed
+
     - name: Drop ag listener in checkmode
       lowlydba.sqlserver.ag_listener:
         state: absent
