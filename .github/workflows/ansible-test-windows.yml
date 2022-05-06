@@ -87,7 +87,7 @@ jobs:
           Get-Service -Name MongoDB | Where-Object Status -eq 'Running' | Stop-Service -Force
 
       - name: Install a SQL Server
-        uses: potatoqualitee/mssqlsuite@v1.3
+        uses: potatoqualitee/mssqlsuite@v1.4
         with:
           install: sqlengine
           sa-password: L0wlydb4
@@ -101,11 +101,6 @@ jobs:
         with:
           modules-to-cache: dbatools
           shell: powershell
-
-      - name: Set SQL Server max memory limit
-        shell: powershell
-        run: |
-          Set-DbaMaxMemory -SqlInstance localhost
 
       - uses: Vampire/setup-wsl@v1.2.0
         with:
