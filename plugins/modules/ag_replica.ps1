@@ -1,0 +1,169 @@
+#!powershell
+# -*- coding: utf-8 -*-
+
+# (c) 2022, John McCall (@lowlydba)
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
+#AnsibleRequires -CSharpUtil Ansible.Basic
+#AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.87" }
+
+$ErrorActionPreference = "Stop"
+
+$spec = @{
+    supports_check_mode = $true
+    options = @{
+        sql_instance_replica = @{type = 'str'; required = $true }
+        sql_username_replica = @{type = 'str'; required = $false }
+        sql_password_replica = @{type = 'str'; required = $false; no_log = $true }
+        ag_name = @{type = 'str'; required = $true }
+        endpoint = @{type = 'str'; required = $false; default = 'hadr_endpoint' }
+        endpoint_url = @{type = 'str'; required = $false }
+        backup_priority = @{type = 'int'; required = $false; default = 50 }
+        failover_mode = @{
+            type = 'str';
+            required = $false;
+            default = 'Manual';
+            choices = @('Manual', 'Automatic')
+        }
+        availability_mode = @{
+            type = 'str';
+            required = $false; default = 'AsynchronousCommit';
+            choices = @('SynchronousCommit', 'AsynchronousCommit')
+        }
+        seeding_mode = @{
+            type = 'str';
+            required = $false;
+            default = 'Automatic';
+            choices = @('Manual', 'Automatic')
+        }
+        connection_mode_in_primary_role = @{
+            type = 'str';
+            required = $false;
+            default = 'AllowAllConnections';
+            choices = @('AllowReadIntentConnectionsOnly', 'AllowAllConnections')
+        }
+        connection_mode_in_secondary_role = @{
+            type = 'str';
+            required = $false;
+            default = 'AllowNoConnections';
+            choices = @('AllowNoConnections', 'AllowReadIntentConnectionsOnly', 'AllowAllConnections')
+        }
+        read_only_routing_connection_url = @{
+            type = 'str';
+            required = $false;
+        }
+        read_only_routing_list = @{
+            type = 'str';
+            required = $false;
+        }
+        cluster_type = @{
+            type = "str";
+            required = $false;
+            default = "Wsfc";
+            choices = @("Wsfc", "External", "None")
+        }
+        configure_xe_session = @{ type = 'bool'; required = $false; default = $false }
+        state = @{type = "str"; required = $false; default = "present"; choices = @("present", "absent") }
+    }
+    required_together = @(
+        , @('sql_username_replica', 'sql_password_replica')
+    )
+}
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
+$sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
+$readOnlyRoutingConnectionUrl = $module.params.read_only_routing_connection_url
+$readOnlyRoutingList = $module.Params.read_only_routing_list
+$failoverMode = $module.Params.failover_mode
+$seedingMode = $module.Params.seeding_mode
+$agName = $module.Params.ag_name
+$clusterType = $module.Params.cluster_type
+$availabilityMode = $module.Params.availability_mode
+$replicaSqlInstance = $module.Params.sql_instance_replica
+$connectionModeInPrimaryRole = $module.Params.connection_mode_in_primary_role
+$connectionModeInSecondaryRole = $module.Params.connection_mode_in_secondary_role
+$configureXESession = $module.Params.configure_xe_session
+$endpoint = $module.Params.endpoint
+$endpointUrl = $module.Params.endpoint_url
+$backupPriority = $module.Params.backup_priority
+#TODO
+if ($null -ne $module.Params.sql_username_replica) {
+    [securestring]$replicaSecPassword = ConvertTo-SecureString $Module.Params.sql_password_replica -AsPlainText -Force
+    [pscredential]$replicaSqlCredential = New-Object System.Management.Automation.PSCredential ($Module.Params.sql_username_replica, $replicaSecPassword)
+}
+if ($null -eq $replicaSqlCredential) {
+    $replicaSqlCredential = $sqlCredential
+}
+$module.Result.changed = $false
+$checkMode = $module.CheckMode
+$PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
+
+try {
+    $primaryReplica = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
+    $existingReplica = Get-DbaAgReplica -SqlInstance $replicaSqlInstance -AvailabilityGroup $agName -Replica $ReplicaNameShort
+
+    $replicaSplat = @{
+        SqlInstance = $replicaSqlInstance
+        SqlCredential = $replicaSqlCredential
+        Endpoint = $endpoint
+        AvailabilityMode = $availabilityMode
+        FailoverMode = $failoverMode
+        BackupPriority = $backupPriority
+        ConnectionModeInPrimaryRole = $connectionModeInPrimaryRole
+        ConnectionModeInSecondaryRole = $connectionModeInSecondaryRole
+        SeedingMode = $seedingMode
+        ClusterType = $clusterType
+    }
+    if ($null -ne $readOnlyRoutingList) {
+        $addReplicaSplat.Add("ReadOnlyRoutingList", $readOnlyRoutingList)
+    }
+    if ($null -ne $readOnlyRoutingConnectionUrl) {
+        $addReplicaSplat.Add("ReadOnlyRoutingConnectionUrl", $readOnlyRoutingConnectionUrl)
+    }
+    if ($null -ne $endpointUrl) {
+        $addReplicaSplat.Add("EndpointUrl", $endpointUrl)
+    }
+    if ($configureXESession -eq $true) {
+        $addReplicaSplat.Add("ConfigureXESession", $true)
+    }
+
+    if ($state -eq "present") {
+        if ($null -eq $existingReplica) {
+            $output = $primaryReplica | Add-DbaAgReplica @replicaSplat
+            $module.Result.changed = $true
+        }
+        else {
+            $compareReplicaProperty = @(
+                'AvailabilityMode'
+                'FailoverMode'
+                'BackupPriority'
+                'ConnectionModeInPrimaryRole'
+                'ConnectionModeInSecondaryRole'
+                'SeedingMode'
+                'ClusterType'
+                'EndPoint'
+            )
+            foreach ($replicaNode in $existingReplica) {
+                $replicaDiff = Compare-Object -ReferenceObject $setReplicaParams -DifferenceObject $replicaNode -Property $compareReplicaProperty
+                if ($replicaDiff -or ($null -ne $endpointUrl -and $endpointUrl -ne $existingReplica.EndPointUrl )) {
+                    $output = $primaryReplica | Set-DbaAgReplica @replicaSplat
+                    $module.Result.changed = $true
+                }
+            }
+        }
+    }
+    elseif ($state -eq "absent") {
+        if ($null -ne $existingReplica) {
+            $output = Remove-DbaAgReplica -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential -AvailabilityGroup $agName
+            $module.Result.changed = $true
+        }
+    }
+    if ($output) {
+        $resultData = ConvertTo-SerializableObject -InputObject $output
+        $module.Result.data = $resultData
+    }
+    $module.ExitJson()
+}
+catch {
+    $module.FailJson("Configuring Availability Group replica failed: $($_.Exception.Message)", $_)
+}
