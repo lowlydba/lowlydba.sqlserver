@@ -106,6 +106,11 @@ options:
       - Configure the AlwaysOn_health extended events session to start automatically as the SSMS wizard would do.
     type: bool
     default: false
+  session_timeout:
+    description:
+      - How many seconds an availability replica waits for a ping response from a connected replica before considering the connection to have failed.
+    type: int
+    required: false
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module

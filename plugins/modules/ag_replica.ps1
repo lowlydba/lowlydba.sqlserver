@@ -64,6 +64,7 @@ $spec = @{
             choices = @("Wsfc", "External", "None")
         }
         configure_xe_session = @{ type = 'bool'; required = $false; default = $false }
+        session_timeout = @{ type = 'int'; required = $false }
         state = @{type = "str"; required = $false; default = "present"; choices = @("present", "absent") }
     }
     required_together = @(
@@ -83,10 +84,11 @@ $replicaSqlInstance = $module.Params.sql_instance_replica
 $connectionModeInPrimaryRole = $module.Params.connection_mode_in_primary_role
 $connectionModeInSecondaryRole = $module.Params.connection_mode_in_secondary_role
 $configureXESession = $module.Params.configure_xe_session
+[nullable[int]]$sessionTimeout = $module.Params.session_timeout
 $endpoint = $module.Params.endpoint
 $endpointUrl = $module.Params.endpoint_url
 $backupPriority = $module.Params.backup_priority
-#TODO
+
 if ($null -ne $module.Params.sql_username_replica) {
     [securestring]$replicaSecPassword = ConvertTo-SecureString $Module.Params.sql_password_replica -AsPlainText -Force
     [pscredential]$replicaSqlCredential = New-Object System.Management.Automation.PSCredential ($Module.Params.sql_username_replica, $replicaSecPassword)
@@ -100,9 +102,10 @@ $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false
 
 try {
     $primaryReplica = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
-    $existingReplica = Get-DbaAgReplica -SqlInstance $replicaSqlInstance -AvailabilityGroup $agName -Replica $ReplicaNameShort
+    $existingReplicas = Get-DbaAgReplica -SqlInstance $replicaSqlInstance -AvailabilityGroup $agName | Where-Object $replicaSqlInstance -lik
+    $existingReplica = $existingReplicas | Where-Object $replicaSqlInstance -like (Replica + "*")
 
-    $replicaSplat = @{
+    $addReplicaSplat = @{
         SqlInstance = $replicaSqlInstance
         SqlCredential = $replicaSqlCredential
         Endpoint = $endpoint
@@ -126,10 +129,13 @@ try {
     if ($configureXESession -eq $true) {
         $addReplicaSplat.Add("ConfigureXESession", $true)
     }
+    if ($null -ne $sessionTimeout) {
+        $addReplicaSplat.Add("SessionTimeout", $sessionTimeout)
+    }
 
     if ($state -eq "present") {
         if ($null -eq $existingReplica) {
-            $output = $primaryReplica | Add-DbaAgReplica @replicaSplat
+            $output = $primaryReplica | Add-DbaAgReplica @addReplicaSplat
             $module.Result.changed = $true
         }
         else {
@@ -141,20 +147,20 @@ try {
                 'ConnectionModeInSecondaryRole'
                 'SeedingMode'
                 'ClusterType'
-                'EndPoint'
+                'SessionTimeout'
             )
-            foreach ($replicaNode in $existingReplica) {
-                $replicaDiff = Compare-Object -ReferenceObject $setReplicaParams -DifferenceObject $replicaNode -Property $compareReplicaProperty
-                if ($replicaDiff -or ($null -ne $endpointUrl -and $endpointUrl -ne $existingReplica.EndPointUrl )) {
-                    $output = $primaryReplica | Set-DbaAgReplica @replicaSplat
-                    $module.Result.changed = $true
-                }
+            $setReplicaSplat = $addReplicaSplat.GetEnumerator() | Where-Object key -in $compareReplicaProperty
+            $replicaDiff = Compare-Object -ReferenceObject $setReplicaSplat -DifferenceObject $existingReplica -Property $compareReplicaProperty
+            if ($replicaDiff -or ($null -ne $endpointUrl -and $endpointUrl -ne $existingReplica.EndPointUrl)) {
+                $output = $existingReplica | Set-DbaAgReplica @setReplicaSplat
+                $module.Result.changed = $true
             }
+
         }
     }
     elseif ($state -eq "absent") {
         if ($null -ne $existingReplica) {
-            $output = Remove-DbaAgReplica -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential -AvailabilityGroup $agName
+            $output = $existingReplica | Remove-DbaAgReplica
             $module.Result.changed = $true
         }
     }
