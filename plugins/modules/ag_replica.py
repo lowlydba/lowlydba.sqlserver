@@ -10,6 +10,7 @@ module: ag_replica
 short_description: Configures an availability group replica.
 description:
      - Configures an availability group replica.
+version_added: 0.5.0
 options:
   sql_instance_replica:
     description:
