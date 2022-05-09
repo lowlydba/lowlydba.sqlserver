@@ -1,12 +1,19 @@
 ---
 - name: Var block
   vars:
-    ag_name: "IntAG2"
+    ag_name: "IntAG3"
     cluster_type: "None"
     failover_mode: "Manual"
     dtc_support_enabled: false
     availability_mode: "AsynchronousCommit"
     seeding_mode: "Manual"
+    database_health_trigger: true
+    use_last_backup: true
+    healthcheck_timeout: 15000
+    basic_availability_group: false
+    force: true
+    failure_condition_level: "OnServerDown"
+    session_timeout: 15
   module_defaults:
     lowlydba.sqlserver.availability_group:
       sql_instance: "{{ sqlserver_instance }}"
@@ -18,7 +25,19 @@
       dtc_support_enabled: "{{ dtc_support_enabled }}"
       availability_mode: "{{ availability_mode }}"
       seeding_mode: "{{ seeding_mode }}"
+      database_health_trigger: "{{ database_health_trigger }}"
+      use_last_backup: "{{ use_last_backup }}"
+      healthcheck_timeout: "{{ healthcheck_timeout }}"
+      basic_availability_group: "{{ basic_availability_group }}"
+      force: "{{ force }}"
+      failure_condition_level: "{{ failure_condition_level }}"
     lowlydba.sqlserver.ag_replica:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      sql_instance_replica: "{{ sqlserver_instance }}"
+      ag_name: "{{ ag_name }}"
+      session_timeout: "{{ session_timeout }}"
 
   tags: ["ag_replica"]
   block:
@@ -32,6 +51,17 @@
 
     - name: Create availability group
       lowlydba.sqlserver.availability_group:
+
+    - name: Remove replica
+      lowlydba.sqlserver.ag_replica:
+        state: absent
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result is changed
 
   always:
     - name: Drop availability group
