@@ -36,6 +36,8 @@
       sql_username: "{{ sqlserver_username }}"
       sql_password: "{{ sqlserver_password }}"
       sql_instance_replica: "{{ sqlserver_instance }}"
+      sql_username_replica: "{{ sqlserver_username }}"
+      sql_password_replica: "{{ sqlserver_password }}"
       ag_name: "{{ ag_name }}"
       session_timeout: "{{ session_timeout }}"
 
