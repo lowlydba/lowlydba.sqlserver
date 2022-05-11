@@ -101,41 +101,40 @@ $checkMode = $module.CheckMode
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 try {
-    $primaryReplica = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
-    $existingReplicas = Get-DbaAgReplica -SqlInstance $replicaSqlInstance -AvailabilityGroup $agName | Where-Object $replicaSqlInstance -lik
-    $existingReplica = $existingReplicas | Where-Object $replicaSqlInstance -like (Replica + "*")
-
-    $addReplicaSplat = @{
-        SqlInstance = $replicaSqlInstance
-        SqlCredential = $replicaSqlCredential
-        Endpoint = $endpoint
-        AvailabilityMode = $availabilityMode
-        FailoverMode = $failoverMode
-        BackupPriority = $backupPriority
-        ConnectionModeInPrimaryRole = $connectionModeInPrimaryRole
-        ConnectionModeInSecondaryRole = $connectionModeInSecondaryRole
-        SeedingMode = $seedingMode
-        ClusterType = $clusterType
-    }
-    if ($null -ne $readOnlyRoutingList) {
-        $addReplicaSplat.Add("ReadOnlyRoutingList", $readOnlyRoutingList)
-    }
-    if ($null -ne $readOnlyRoutingConnectionUrl) {
-        $addReplicaSplat.Add("ReadOnlyRoutingConnectionUrl", $readOnlyRoutingConnectionUrl)
-    }
-    if ($null -ne $endpointUrl) {
-        $addReplicaSplat.Add("EndpointUrl", $endpointUrl)
-    }
-    if ($configureXESession -eq $true) {
-        $addReplicaSplat.Add("ConfigureXESession", $true)
-    }
-    if ($null -ne $sessionTimeout) {
-        $addReplicaSplat.Add("SessionTimeout", $sessionTimeout)
-    }
+    $availabilityGroup = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
+    $existingReplica = $availabilityGroup | Get-DbaAgReplica -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential
 
     if ($state -eq "present") {
+        $addReplicaSplat = @{
+            SqlInstance = $replicaSqlInstance
+            SqlCredential = $replicaSqlCredential
+            Endpoint = $endpoint
+            AvailabilityMode = $availabilityMode
+            FailoverMode = $failoverMode
+            BackupPriority = $backupPriority
+            ConnectionModeInPrimaryRole = $connectionModeInPrimaryRole
+            ConnectionModeInSecondaryRole = $connectionModeInSecondaryRole
+            SeedingMode = $seedingMode
+            ClusterType = $clusterType
+        }
+        if ($null -ne $readOnlyRoutingList) {
+            $addReplicaSplat.Add("ReadOnlyRoutingList", $readOnlyRoutingList)
+        }
+        if ($null -ne $readOnlyRoutingConnectionUrl) {
+            $addReplicaSplat.Add("ReadOnlyRoutingConnectionUrl", $readOnlyRoutingConnectionUrl)
+        }
+        if ($null -ne $endpointUrl) {
+            $addReplicaSplat.Add("EndpointUrl", $endpointUrl)
+        }
+        if ($configureXESession -eq $true) {
+            $addReplicaSplat.Add("ConfigureXESession", $true)
+        }
+        if ($null -ne $sessionTimeout) {
+            $addReplicaSplat.Add("SessionTimeout", $sessionTimeout)
+        }
+
         if ($null -eq $existingReplica) {
-            $output = $primaryReplica | Add-DbaAgReplica @addReplicaSplat
+            $output = $availabilityGroup | Add-DbaAgReplica @addReplicaSplat
             $module.Result.changed = $true
         }
         else {
@@ -155,7 +154,6 @@ try {
                 $output = $existingReplica | Set-DbaAgReplica @setReplicaSplat
                 $module.Result.changed = $true
             }
-
         }
     }
     elseif ($state -eq "absent") {

@@ -54,9 +54,9 @@
     - name: Create availability group
       lowlydba.sqlserver.availability_group:
 
-    - name: Remove replica
+    - name: Set replica
       lowlydba.sqlserver.ag_replica:
-        state: absent
+        configure_xe_session: true
       register: result
     - assert:
         that:
