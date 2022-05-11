@@ -40,6 +40,7 @@
       sql_password_replica: "{{ sqlserver_password }}"
       ag_name: "{{ ag_name }}"
       session_timeout: "{{ session_timeout }}"
+      configure_xe_session: true
 
   tags: ["ag_replica"]
   block:
@@ -56,7 +57,7 @@
 
     - name: Set replica
       lowlydba.sqlserver.ag_replica:
-        configure_xe_session: true
+        session_timeout: 20
       register: result
     - assert:
         that:
