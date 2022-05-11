@@ -84,6 +84,7 @@ $replicaSqlInstance = $module.Params.sql_instance_replica
 $connectionModeInPrimaryRole = $module.Params.connection_mode_in_primary_role
 $connectionModeInSecondaryRole = $module.Params.connection_mode_in_secondary_role
 $configureXESession = $module.Params.configure_xe_session
+$state = $module.Params.state
 [nullable[int]]$sessionTimeout = $module.Params.session_timeout
 $endpoint = $module.Params.endpoint
 $endpointUrl = $module.Params.endpoint_url
@@ -141,6 +142,8 @@ try {
         }
 
         if ($null -eq $existingReplica) {
+            #DEBUG
+            $module.Result.Action = "new"
             $output = $availabilityGroup | Add-DbaAgReplica @addReplicaSplat
             $module.Result.changed = $true
         }
