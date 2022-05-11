@@ -102,7 +102,7 @@ $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false
 
 try {
     $availabilityGroup = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
-    $existingReplica = $availabilityGroup | Get-DbaAgReplica -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential
+    $existingReplica = $availabilityGroup | Get-DbaAgReplica -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential | Get-Unique
 
     if ($state -eq "present") {
         $addReplicaSplat = @{
@@ -145,13 +145,14 @@ try {
                 'ConnectionModeInPrimaryRole'
                 'ConnectionModeInSecondaryRole'
                 'SeedingMode'
-                'ClusterType'
                 'SessionTimeout'
+                'EndpointUrl'
             )
             $setReplicaSplat = @{}
             $addReplicaSplat.GetEnumerator() | Where-Object Key -in $compareReplicaProperty | ForEach-Object { $setReplicaSplat.Add($_.Key, $_.Value) }
-            $replicaDiff = Compare-Object -ReferenceObject $setReplicaSplat -DifferenceObject $existingReplica -Property $setReplicaSplat.Keys
-            if ($replicaDiff -or ($null -ne $endpointUrl -and $endpointUrl -ne $existingReplica.EndPointUrl)) {
+            [string[]]$compareProperty = $setReplicaSplat.Keys
+            $replicaDiff = Compare-Object -ReferenceObject $setReplicaSplat -DifferenceObject $existingReplica -Property $compareProperty
+            if ($replicaDiff) {
                 $output = $existingReplica | Set-DbaAgReplica @setReplicaSplat
                 $module.Result.changed = $true
             }
