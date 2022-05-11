@@ -58,14 +58,14 @@ $spec = @{
             required = $false;
         }
         cluster_type = @{
-            type = "str";
+            type = 'str';
             required = $false;
-            default = "Wsfc";
-            choices = @("Wsfc", "External", "None")
+            default = 'Wsfc';
+            choices = @('Wsfc', 'External', 'None')
         }
         configure_xe_session = @{ type = 'bool'; required = $false; default = $false }
         session_timeout = @{ type = 'int'; required = $false }
-        state = @{type = "str"; required = $false; default = "present"; choices = @("present", "absent") }
+        state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
     required_together = @(
         , @('sql_username_replica', 'sql_password_replica')
@@ -148,8 +148,10 @@ try {
                 'ClusterType'
                 'SessionTimeout'
             )
-            $setReplicaSplat = $addReplicaSplat.GetEnumerator() | Where-Object key -in $compareReplicaProperty
-            $replicaDiff = Compare-Object -ReferenceObject $setReplicaSplat -DifferenceObject $existingReplica -Property $compareReplicaProperty
+            $setReplicaSplat = @{}
+            $addReplicaSplat.GetEnumerator() | Where-Object Key -in $compareReplicaProperty | ForEach-Object { $setReplicaSplat.Add($_.Key, $_.Value) }
+            $compareProperty = $setReplicaSplat.Keys
+            $replicaDiff = Compare-Object -ReferenceObject $setReplicaSplat -DifferenceObject $existingReplica -Property $compareProperty
             if ($replicaDiff -or ($null -ne $endpointUrl -and $endpointUrl -ne $existingReplica.EndPointUrl)) {
                 $output = $existingReplica | Set-DbaAgReplica @setReplicaSplat
                 $module.Result.changed = $true
