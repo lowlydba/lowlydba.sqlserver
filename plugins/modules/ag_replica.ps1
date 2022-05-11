@@ -147,7 +147,7 @@ try {
         else {
             #DEBUG
             $module.Result.Action = "set"
-            
+
             $compareReplicaProperty = @(
                 'AvailabilityMode'
                 'FailoverMode'
