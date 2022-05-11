@@ -15,7 +15,7 @@ tags:
   - mssql
   - database
 repository: https://github.com/LowlyDBA/lowlydba.sqlserver
-documentation: https://github.com/lowlydba/lowlydba.sqlserver#readme
+documentation: https://lowlydba.github.io/lowlydba.sqlserver
 homepage: https://github.com/LowlyDBA/lowlydba.sqlserver
 issues: https://github.com/LowlyDBA/lowlydba.sqlserver/issues
 build_ignore:
