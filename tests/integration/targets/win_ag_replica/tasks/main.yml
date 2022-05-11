@@ -59,9 +59,9 @@
     - name: Set replica
       lowlydba.sqlserver.ag_replica:
         session_timeout: 20
-        endpoint_url: "TCP://{{ ag.SqlInstance }}:5022"
-        read_only_routing_list: "{{ ag.SqlInstance }}"
-        read_only_routing_connection_url: "TCP://{{ ag.SqlInstance }}:1433"
+        endpoint_url: "TCP://{{ ag.data.SqlInstance }}:5022"
+        read_only_routing_list: "{{ ag.data.SqlInstance }}"
+        read_only_routing_connection_url: "TCP://{{ ag.data.SqlInstance }}:1433"
       register: result
     - assert:
         that:
