@@ -150,11 +150,13 @@ try {
             )
             $setReplicaSplat = @{}
             $addReplicaSplat.GetEnumerator() | Where-Object Key -in $compareReplicaProperty | ForEach-Object { $setReplicaSplat.Add($_.Key, $_.Value) }
-            $compareProperty = $setReplicaSplat.Keys
-            $replicaDiff = Compare-Object -ReferenceObject $setReplicaSplat -DifferenceObject $existingReplica -Property $compareProperty
+            $replicaDiff = Compare-Object -ReferenceObject $setReplicaSplat -DifferenceObject $existingReplica -Property $setReplicaSplat.Keys
             if ($replicaDiff -or ($null -ne $endpointUrl -and $endpointUrl -ne $existingReplica.EndPointUrl)) {
                 $output = $existingReplica | Set-DbaAgReplica @setReplicaSplat
                 $module.Result.changed = $true
+            }
+            else {
+                $output = $setReplicaSplat
             }
         }
     }
