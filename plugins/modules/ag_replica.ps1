@@ -104,7 +104,14 @@ try {
     $availabilityGroup = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
     $existingReplica = $availabilityGroup | Get-DbaAgReplica -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential | Get-Unique
 
+    # DEBUG
+    $module.Result.Ag = $availabilityGroup.Name
+    $module.Result.ExistingReplica = $existingReplica.Name
+
     if ($state -eq "present") {
+        # DEBUG
+        $module.Result.State = "present"
+
         $addReplicaSplat = @{
             SqlInstance = $replicaSqlInstance
             SqlCredential = $replicaSqlCredential
@@ -138,6 +145,9 @@ try {
             $module.Result.changed = $true
         }
         else {
+            #DEBUG
+            $module.Result.Action = "set"
+            
             $compareReplicaProperty = @(
                 'AvailabilityMode'
                 'FailoverMode'
@@ -155,9 +165,6 @@ try {
             if ($replicaDiff) {
                 $output = $existingReplica | Set-DbaAgReplica @setReplicaSplat
                 $module.Result.changed = $true
-            }
-            else {
-                $output = $setReplicaSplat
             }
         }
     }
