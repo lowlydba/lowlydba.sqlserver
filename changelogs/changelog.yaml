@@ -94,8 +94,8 @@ releases:
       - All modules should use a bool 'enabled' instead of a string 'status' to control
         object state.
       minor_changes:
-      - Test for 'Name' property for sa module after dbatools release 1.1.87 standardizes
-        command outputs. (https://github.com/dataplat/dbatools/releases/tag/v1.1.87)
+      - Test for 'Name' property for sa module after dbatools release 1.1.95 standardizes
+        command outputs. (https://github.com/dataplat/dbatools/releases/tag/v1.1.95)
       release_summary: Two new AlwaysOn modules and a few consistency fixes!
     fragments:
     - 0.4.0-release-summary.yml

@@ -16,7 +16,7 @@ Two new AlwaysOn modules and a few consistency fixes!
 Minor Changes
 -------------
 
-- Test for 'Name' property for sa module after dbatools release 1.1.87 standardizes command outputs. (https://github.com/dataplat/dbatools/releases/tag/v1.1.87)
+- Test for 'Name' property for sa module after dbatools release 1.1.95 standardizes command outputs. (https://github.com/dataplat/dbatools/releases/tag/v1.1.95)
 
 Breaking Changes / Porting Guide
 --------------------------------
