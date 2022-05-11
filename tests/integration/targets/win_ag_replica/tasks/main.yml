@@ -70,7 +70,7 @@
           - result.data.SqlInstance != None
           - result.data.AvailabilityGroup == ag_name
           - result.data.AvailabilityMode == availability_mode
-          - result.data.SessionTimeoout == 20
+          - result.data.SessionTimeout == 20
           - result.data.FailoverMode == failover_mode
           - result.data.EndpointUrl == "TCP://{{ ag.data.SqlInstance }}:5022"
           - result is changed
