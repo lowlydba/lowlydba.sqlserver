@@ -109,3 +109,20 @@ releases:
       name: hadr
       namespace: ''
     release_date: '2022-04-27'
+  0.5.0:
+    changes:
+      minor_changes:
+      - Remove CI support for Ansible 2.10
+      release_summary: CI and testing improvements, along with the final availability
+        group module ag_replica.
+    fragments:
+    - 70-deprecate-ansible-2.10.yml
+    - release-summary.yml
+    modules:
+    - description: Configures an availability group listener.
+      name: ag_listener
+      namespace: ''
+    - description: Configures an availability group replica.
+      name: ag_replica
+      namespace: ''
+    release_date: '2022-05-11'
