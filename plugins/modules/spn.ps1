@@ -14,15 +14,16 @@ $ErrorActionPreference = "Stop"
 $spec = @{
     supports_check_mode = $true
     options             = @{
-        computer_username   = @{type = 'str'; required = $false}
-        computer_password   = @{type = 'str'; required = $false; no_log = $true;}
-        computer            = @{type = 'str'; required = $true}
-        service_account     = @{type = 'str'; required = $false; }
-        state               = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
+        computer_username   = @{ type = 'str'; required = $false }
+        computer_password   = @{ type = 'str'; required = $false; no_log = $true; }
+        computer            = @{ type = 'str'; required = $true }
+        service_account     = @{ type = 'str'; required = $false; }
+        state               = @{ type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
 
     }
     required_together = @(
         , @('computer_username', 'computer_password')
+    )
 }
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec)
 if ($null -ne $module.Params.computer_username) {
