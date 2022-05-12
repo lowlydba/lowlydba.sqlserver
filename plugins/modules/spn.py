@@ -10,6 +10,7 @@ module: spn
 short_description: Configures SPNs for SQL Server.
 description:
      - Configures SPNs for SQL Server.
+version_added: 0.6.0
 options:
   computer_username:
     description:
