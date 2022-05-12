@@ -5,6 +5,25 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.5.0
+======
+
+Release Summary
+---------------
+
+CI and testing improvements, along with the final availability group module ag_replica.
+
+Minor Changes
+-------------
+
+- Remove CI support for Ansible 2.10
+
+New Modules
+-----------
+
+- ag_listener - Configures an availability group listener.
+- ag_replica - Configures an availability group replica.
+
 v0.4.0
 ======
 
