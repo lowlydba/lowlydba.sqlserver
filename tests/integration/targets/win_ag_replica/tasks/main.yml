@@ -1,0 +1,81 @@
+---
+- name: Var block
+  vars:
+    ag_name: "IntAG3"
+    cluster_type: "None"
+    failover_mode: "Manual"
+    dtc_support_enabled: false
+    availability_mode: "AsynchronousCommit"
+    seeding_mode: "Manual"
+    database_health_trigger: true
+    use_last_backup: true
+    healthcheck_timeout: 15000
+    basic_availability_group: false
+    force: true
+    failure_condition_level: "OnServerDown"
+    session_timeout: 15
+  module_defaults:
+    lowlydba.sqlserver.availability_group:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      ag_name: "{{ ag_name }}"
+      cluster_type: "{{ cluster_type }}"
+      failover_mode: "{{ failover_mode }}"
+      dtc_support_enabled: "{{ dtc_support_enabled }}"
+      availability_mode: "{{ availability_mode }}"
+      seeding_mode: "{{ seeding_mode }}"
+      database_health_trigger: "{{ database_health_trigger }}"
+      use_last_backup: "{{ use_last_backup }}"
+      healthcheck_timeout: "{{ healthcheck_timeout }}"
+      basic_availability_group: "{{ basic_availability_group }}"
+      force: "{{ force }}"
+      failure_condition_level: "{{ failure_condition_level }}"
+    lowlydba.sqlserver.ag_replica:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      sql_instance_replica: "{{ sqlserver_instance }}"
+      sql_username_replica: "{{ sqlserver_username }}"
+      sql_password_replica: "{{ sqlserver_password }}"
+      ag_name: "{{ ag_name }}"
+      session_timeout: "{{ session_timeout }}"
+      configure_xe_session: true
+
+  tags: ["ag_replica"]
+  block:
+    - name: Enable hadr
+      lowlydba.sqlserver.hadr:
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+        enabled: true
+        force: true
+
+    - name: Create availability group
+      lowlydba.sqlserver.availability_group:
+      register: ag
+
+    - name: Set replica
+      lowlydba.sqlserver.ag_replica:
+        session_timeout: 20
+        endpoint_url: "TCP://{{ ag.data.SqlInstance }}:5022"
+        read_only_routing_list: "{{ ag.data.SqlInstance }}"
+        read_only_routing_connection_url: "TCP://{{ ag.data.SqlInstance }}:1433"
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.AvailabilityGroup == ag_name
+          - result.data.AvailabilityMode == availability_mode
+          - result.data.SessionTimeout == 20
+          - result.data.FailoverMode == failover_mode
+          - result.data.EndpointUrl == "TCP://{{ ag.data.SqlInstance }}:5022"
+          - result is changed
+
+  always:
+    - name: Drop availability group
+      lowlydba.sqlserver.availability_group:
+        state: absent
