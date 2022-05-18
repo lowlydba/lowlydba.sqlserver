@@ -34,6 +34,7 @@ $computer = $module.Params.computer
 $serviceAccount = $module.Params.service_account
 $serviceClass = "MSSQLSvc"
 $spn = "$serviceClass\$computer"
+$state = $module.Params.state
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
