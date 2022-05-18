@@ -31,7 +31,7 @@ options:
     description:
       - The account you want the SPN added to. Will be looked up if not provided.
     type: str
-    required: false
+    required: true
 author: "John McCall (@lowlydba)"
 extends_documentation_fragment:
   - lowlydba.sqlserver.state
