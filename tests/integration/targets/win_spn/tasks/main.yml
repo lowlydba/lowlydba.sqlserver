@@ -1,0 +1,38 @@
+---
+- name: Var block
+  vars:
+    service_account: "NT SERVICE\\MSSQLSERVER"
+    property: "msDS-AllowedToDelegateTo"
+  module_defaults:
+    lowlydba.sqlserver.spn:
+      computer: "{{ sqlserver_instance }}"
+      service_account: "{{ service_account }}"
+  tags: ["spn"]
+  block:
+    # Super limited testing below; no AD available on Github runners
+    # and with how simple this module is, its not worth the cost
+    # to implement a robust solution.
+    # - name: Set SPN
+    #   lowlydba.sqlserver.spn:
+    #   register: result
+    # - assert:
+    #     that:
+    #       - result.data.Name != None
+    #       - result.data.ServiceAccount == service_account
+    #       - result.data.Property == property
+    #       - result.data.IsSet is true
+    #       - result.data.Notes == "Successfully added SPN"
+    #       - result is changed
+
+    - name: Remove spn
+      lowlydba.sqlserver.spn:
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          # - result.data.Name != None
+          # - result.data.ServiceAccount == service_account
+          # - result.data.Property == property
+          # - result.data.IsSet is false
+          # - result.data.Notes == "Successfully removed SPN"
+          - result is not changed
