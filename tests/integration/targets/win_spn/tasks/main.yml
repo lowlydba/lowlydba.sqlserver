@@ -9,6 +9,9 @@
       service_account: "{{ service_account }}"
   tags: ["spn"]
   block:
+    # Super limited testing below; no AD available on Github runners
+    # and with how simple this module is, its not worth the cost
+    # to implement a robust solution.
     # - name: Set SPN
     #   lowlydba.sqlserver.spn:
     #   register: result
