@@ -2,7 +2,7 @@
 
 namespace: lowlydba
 name: sqlserver
-version: 0.5.0
+version: 0.6.0
 readme: README.md
 authors:
   - John McCall (github.com/lowlydba)

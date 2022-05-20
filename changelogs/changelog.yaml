@@ -126,3 +126,13 @@ releases:
       name: ag_replica
       namespace: ''
     release_date: '2022-05-11'
+  0.6.0:
+    changes:
+      release_summary: Adding new SPN module
+    fragments:
+    - release-summary-0-6-0.yml
+    modules:
+    - description: Configures SPNs for SQL Server.
+      name: spn
+      namespace: ''
+    release_date: '2022-05-20'

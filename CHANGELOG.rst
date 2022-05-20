@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.6.0
+======
+
+Release Summary
+---------------
+
+Adding new SPN module
+
+New Modules
+-----------
+
+- spn - Configures SPNs for SQL Server.
+
 v0.5.0
 ======
 
