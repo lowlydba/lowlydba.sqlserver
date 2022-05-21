@@ -45,6 +45,15 @@ try {
     $output = Install-DbaMultiTool @multiToolSplat
     $module.Result.changed = $true
 
+    # output is an array for each stored proc,
+    # rollup output into a single result
+    $errorProcs = $output | Where-Object Status -eq "Error"
+    if ($errorProcs) {
+        $output = $errorProcs[0] | Select-Object -ExcludeProperty Name
+    }
+    else {
+        $output = $output[0] | Select-Object -ExcludeProperty Name
+    }
     if ($null -ne $output) {
         $resultData = ConvertTo-SerializableObject -InputObject $output
         $module.Result.data = $resultData
