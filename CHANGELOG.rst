@@ -4,8 +4,9 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
+
 v0.7.0
-=======
+======
 
 Release Summary
 ---------------
