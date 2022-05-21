@@ -1,0 +1,37 @@
+---
+- name: Var block
+  vars:
+    target_database: "master"
+    branch: "development"
+  module_defaults:
+    lowlydba.sqlserver.dba_multitool:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      database: "{{ target_database }}"
+      branch: "{{ branch }}"
+  tags: ["dba_multitool"]
+  block:
+    - name: Install dba_multitool
+      lowlydba.sqlserver.dba_multitool:
+      register: result
+    - assert:
+        that:
+          - result.data.SqlInstance != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.Database == target_database
+          - result.data.Status in ('Installed', 'Updated')
+          - result is changed
+
+    - name: Update dba_multitool
+      lowlydba.sqlserver.dba_multitool:
+      register: result
+    - assert:
+        that:
+          - result.data.SqlInstance != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.Database == target_database
+          - result.data.Status == 'Updated'
+          - result is changed

@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.7.0
+======
+
+Release Summary
+---------------
+
+Add module for DBA Multitool.
+
+New Modules
+-----------
+
+- dba_multitool - Install/update the DBA Multitool suite by John McCAll
+
 v0.6.0
 ======
 
@@ -12,6 +25,11 @@ Release Summary
 ---------------
 
 Adding new SPN module
+
+Minor Changes
+-------------
+
+- Remove CI support for Ansible 2.10
 
 New Modules
 -----------
