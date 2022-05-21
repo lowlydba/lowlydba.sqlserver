@@ -126,3 +126,13 @@ releases:
       name: ag_replica
       namespace: ''
     release_date: '2022-05-11'
+  0.7.0:
+    changes:
+      release_summary: Add module for DBA Multitool.
+    fragments:
+    - release-summary-0-7-0.yml
+    modules:
+    - description: Install/update the DBA Multitool suite by John McCAll
+      name: dba_multitool
+      namespace: ''
+    release_date: '2022-05-21'

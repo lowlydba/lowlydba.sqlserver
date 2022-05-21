@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.7.0
+======
+
+Release Summary
+---------------
+
+Add module for DBA Multitool.
+
+New Modules
+-----------
+
+- dba_multitool - Install/update the DBA Multitool suite by John McCAll
+
 v0.5.0
 ======
 
