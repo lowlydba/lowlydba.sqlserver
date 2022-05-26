@@ -58,7 +58,7 @@
           - result.data.ActiveEndDate == "3020-05-25T00:00:00.0000000"
           - result.data.JobCount == 1
           - result.data.IsEnabled is true
-          - result.data.ScheduleName == {{ forced_schedule_name }}
+          - result.data.ScheduleName == "{{ forced_schedule_name }}"
           - result is changed
 
     - name: Change job schedule & disable
@@ -76,7 +76,7 @@
           - result.data.ActiveEndDate == "3021-05-25T00:00:00.0000000"
           - result.data.JobCount == 1
           - result.data.IsEnabled is false
-          - result.data.ScheduleName == {{ forced_schedule_name }}
+          - result.data.ScheduleName == "{{ forced_schedule_name }}"
           - result is changed
 
     - name: Enable job schedule
@@ -90,7 +90,7 @@
           - result.data.ScheduleUid != None
           - result.data.JobCount == 1
           - result.data.IsEnabled is true
-          - result.data.ScheduleName == {{ forced_schedule_name }}
+          - result.data.ScheduleName == "{{ forced_schedule_name }}"
           - result is changed
 
     - name: Remove job schedule
@@ -141,7 +141,7 @@
           - result.data.ActiveEndDate == "3021-05-26T00:00:00.0000000"
           - result.data.JobCount == 1
           - result.data.IsEnabled is false
-          - result.data.ScheduleName == {{ forced_schedule_name }}
+          - result.data.ScheduleName == "{{ forced_schedule_name }}"
           - result is changed
 
   # Cleanup
