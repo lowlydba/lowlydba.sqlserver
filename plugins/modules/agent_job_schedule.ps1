@@ -65,9 +65,6 @@ $scheduleParams = @{
 if ($enabled -eq $false) {
     $scheduleParams.add("Disabled", $true)
 }
-elseif ($enable -eq $true) {
-    $scheduleParams.Add("Enabled", $true)
-}
 if ($null -ne $job) {
     $scheduleParams.add("Job", $job)
 }
@@ -105,6 +102,9 @@ if ($null -ne $frequencyRecurrenceFactor) {
 try {
     $existingSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $schedule -EnableException
     if ($state -eq "present") {
+        if ($enabled -eq $true) {
+            $scheduleParams.Add("Enabled", $true)
+        }
         # Update schedule
         if ($null -ne $existingSchedule) {
             $output = Set-DbaAgentSchedule @scheduleParams
