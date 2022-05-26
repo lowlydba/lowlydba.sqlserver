@@ -15,7 +15,7 @@ $spec = @{
     options = @{
         schedule = @{type = 'str'; required = $true }
         job = @{type = 'str'; required = $true }
-        enabled = @{type = 'bool'; required = $false; default = $true }
+        enabled = @{type = 'bool'; required = $false }
         force = @{type = 'bool'; required = $false }
         frequency_type = @{type = 'str'; required = $false;
             choices = @('Once', 'OneTime', 'Daily', 'Weekly', 'Monthly', 'MonthlyRelative', 'AgentStart', 'AutoStart', 'IdleComputer', 'OnIdle')
@@ -37,7 +37,7 @@ $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlS
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $schedule = $module.Params.schedule
 $job = $module.Params.job
-$enabled = $module.Params.enabled
+[nullable[bool]]$enabled = $module.Params.enabled
 $force = $module.Params.force
 $frequencyType = $module.Params.frequency_type
 $frequencyInterval = $module.Params.frequency_interval
@@ -102,6 +102,9 @@ if ($null -ne $frequencyRecurrenceFactor) {
 try {
     $existingSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $schedule -EnableException
     if ($state -eq "present") {
+        if ($enabled -eq $true) {
+            $scheduleParams.Add("Enabled", $true)
+        }
         # Update schedule
         if ($null -ne $existingSchedule) {
             $output = Set-DbaAgentSchedule @scheduleParams

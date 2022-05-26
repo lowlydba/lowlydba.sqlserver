@@ -28,7 +28,7 @@ options:
     description:
       - Whether the schedule is enabled or disabled.
     type: bool
-    default: true
+    required: false
   force:
     description:
       - The force parameter will ignore some errors in the parameters and assume defaults.

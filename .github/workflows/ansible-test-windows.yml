@@ -10,10 +10,14 @@ on:
     paths-ignore:
       - .github/workflows/docs*.yml
       - .github/workflows/github-release.yml
+      - changelogs/fragments/*.yml
+      - .vscode/*
   pull_request:
     paths-ignore:
       - .github/workflows/docs*.yml
       - .github/workflows/github-release.yml
+      - changelogs/fragments/*.yml
+      - .vscode/*
 
   # Run CI once per day (at 06:00 UTC)
   # This ensures that even if there haven't been commits that we are still testing against latest version of ansible-test for each ansible-base version
