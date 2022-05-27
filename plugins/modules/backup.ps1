@@ -15,7 +15,7 @@ $spec = @{
     options = @{
         database = @{type = 'str'; required = $true }
         path = @{type = 'str'; required = $false }
-        filepath = @{type = 'str'; required = $false }
+        file_path = @{type = 'str'; required = $false }
         increment_prefix = @{type = 'bool'; required = $false; default = $false }
         replace_in_name = @{type = 'bool'; required = $false; default = $false }
         copy_only = @{type = 'bool'; required = $false; default = $false }
@@ -34,12 +34,17 @@ $spec = @{
         with_format = @{type = 'bool'; required = $false; default = $false }
         initialize = @{type = 'bool'; required = $false; default = $false }
         ignore_file_checks = @{type = 'bool'; required = $false; default = $false }
-        skip_tape_header = @{type = 'bool'; required = $false; default = $false }
-        block_size = @{type = 'int'; required = $false; default = 0 }
+        block_size = @{type = 'str'; required = $false; choices = @('0.5kb', '1kb', '2kb', '4kb', '8kb', '16kb', '32kb', '64kb') }
         buffer_count = @{type = 'int'; required = $false; default = 0 }
         azure_base_url = @{type = 'str'; required = $false }
         azure_credential = @{type = 'str'; required = $false }
     }
+    mutually_exclusive = @(
+        , @('path', 'azure_base_url')
+    )
+    required_together = @(
+        , @('encryption_algorithm', 'encryption_certificate')
+    )
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
@@ -63,7 +68,6 @@ $noRecovery = $module.Params.no_recovery
 $buildPath = $module.Params.build_path
 $withFormat = $module.Params.with_format
 $initialize = $module.Params.initialize
-$skipTapeHeader = $module.Params.skip_tape_header
 $timestampFormat = $module.Params.timestamp_format
 $ignoreFileChecks = $module.Params.ignore_file_checks
 $encryptionAlgorithm = $module.Params.encryption_algorithm
@@ -95,7 +99,6 @@ try {
         BuildPath = $buildPath
         WithFormat = $withFormat
         Initialize = $initialize
-        SkipTapeHeader = $skipTapeHeader
         IgnoreFileChecks = $ignoreFileChecks
     }
     if ($null -ne $path) {
@@ -103,6 +106,9 @@ try {
     }
     if ($null -ne $filePath) {
         $backupSplat.Add("FilePath", $filePath)
+    }
+    if ($null -ne $blockSize) {
+        $backupSplat.Add("BlockSize", $blockSize)
     }
     if ($null -ne $timestampFormat) {
         $backupSplat.Add("TimestampFormat", $timestampFormat)
