@@ -130,6 +130,7 @@ try {
     if ($null -ne $output) {
         $resultData = ConvertTo-SerializableObject -InputObject $output
         $module.Result.data = $resultData
+        $module.Result.changed = $true
     }
     $module.ExitJson()
 }

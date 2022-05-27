@@ -1,0 +1,26 @@
+---
+- name: Var block
+  vars:
+    database_name: "master"
+  module_defaults:
+    lowlydba.sqlserver.backup:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      database: "{{ database_name }}"
+  tags: ["backup"]
+  block:
+    - name: Backup a database
+      lowlydba.sqlserver.backup:
+      register: result
+    - assert:
+        that:
+          - result.data.SqlInstance != None
+          - result.data.Database == "{{ database_name }}"
+          - result.data.Type == "Full"
+          - result.data.TotalSize != None
+          - result.data.DeviceType == "Disk"
+          - result.data.Start != None
+          - result.data.End != None
+          - result.data.Duration != None
+          - result is changed
