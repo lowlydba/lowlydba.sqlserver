@@ -89,7 +89,7 @@ EXAMPLES = r'''
 - name: Install/Update Maintenance Solution
   lowlydba.sqlserver.multitool:
     sql_instance: sql-01.myco.io
-    database_name: main
+    database: main
     replace_existing: true
 '''
 
