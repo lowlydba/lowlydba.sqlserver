@@ -1,0 +1,2 @@
+minor_changes:
+  - Standardize use of 'database' vs 'database_name' in all documentation and options specs. Not a breaking change.
