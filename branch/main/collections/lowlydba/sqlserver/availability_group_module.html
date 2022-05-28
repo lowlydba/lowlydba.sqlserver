@@ -20,7 +20,7 @@
         <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="lowlydba.sqlserver.database module – Creates and configures a database." href="database_module.html" />
+    <link rel="next" title="lowlydba.sqlserver.backup module – Performs a backup operation." href="backup_module.html" />
     <link rel="prev" title="lowlydba.sqlserver.agent_job_step module – Configures a SQL Agent job step." href="agent_job_step_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
 
 
@@ -244,6 +244,15 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-database"></div>
+<div class="ansibleOptionAnchor" id="parameter-database_name"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-database-name"><span id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-database"></span><strong>database</strong></p>
+<a class="ansibleOptionLink" href="#parameter-database" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-aliases">aliases: database_name</span></p>
+<p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Name of the database to create the Availability Group for.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-database_health_trigger"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-database-health-trigger"><strong>database_health_trigger</strong></p>
 <a class="ansibleOptionLink" href="#parameter-database_health_trigger" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -253,13 +262,6 @@ To check whether it is installed, run <code class="code docutils literal notrans
 <li><p><span class="ansible-option-choices-entry">no</span></p></li>
 <li><p><span class="ansible-option-choices-entry">yes</span></p></li>
 </ul>
-</div></td>
-</tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-database_name"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-database-name"><strong>database_name</strong></p>
-<a class="ansibleOptionLink" href="#parameter-database_name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Name of the database to create the Availability Group for.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -471,7 +473,7 @@ To check whether it is installed, run <code class="code docutils literal notrans
 
 <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="agent_job_step_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.agent_job_step module – Configures a SQL Agent job step." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="database_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.database module – Creates and configures a database." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="backup_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.backup module – Performs a backup operation." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
