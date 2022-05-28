@@ -16,7 +16,7 @@ $spec = @{
         sql_instance_secondary = @{type = "str"; required = $false }
         sql_username_secondary = @{type = 'str'; required = $false }
         sql_password_secondary = @{type = 'str'; required = $false; no_log = $true }
-        database_name = @{type = "str"; required = $false }
+        database = @{type = "str"; required = $false; aliases = @('database_name') }
         ag_name = @{type = "str"; required = $true }
         all_ags = @{type = "bool"; required = $false; }
         shared_path = @{type = "str"; required = $false; default = $null }
@@ -88,7 +88,7 @@ if ($null -ne $module.Params.sql_username_secondary) {
     [pscredential]$secondarySqlCredential = New-Object System.Management.Automation.PSCredential ($Module.Params.sql_username_secondary, $secondarySecPassword)
 }
 $agName = $module.Params.ag_name
-$database = $module.Params.database_name
+$database = $module.Params.database
 $seedingMode = $module.Params.seeding_mode
 $sharedPath = $module.Params.shared_path
 $healthCheckTimeout = $module.Params.healthcheck_timeout

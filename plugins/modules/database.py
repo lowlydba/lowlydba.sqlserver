@@ -75,7 +75,7 @@ EXAMPLES = r'''
 - name: Create Database
   lowlydba.sqlserver.database:
     sql_instance: sql-01.myco.io
-    database_name: LowlyDB
+    database: LowlyDB
 '''
 
 RETURN = r'''

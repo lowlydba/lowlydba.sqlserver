@@ -27,11 +27,13 @@ options:
       - Password for SQL Authentication for the secondary replica.
     type: str
     required: false
-  database_name:
+  database:
     description:
       - Name of the database to create the Availability Group for.
     type: str
     required: false
+    aliases:
+      - database_name
   ag_name:
     description:
       - Name of the Availability Group.

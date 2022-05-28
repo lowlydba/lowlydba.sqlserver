@@ -42,7 +42,7 @@ EXAMPLES = r'''
 - name: Install/Update sp_whoisactive
   lowlydba.sqlserver.sp_whoisactive:
     sql_instance: sql-01.myco.io
-    database_name: lowlydba
+    database: lowlydb
 '''
 
 RETURN = r'''

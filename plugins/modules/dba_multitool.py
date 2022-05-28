@@ -48,7 +48,7 @@ EXAMPLES = r'''
 - name: Install DBA MultiTool
   lowlydba.sqlserver.dba_multitool:
     sql_instance: test-server.my.company.com
-    database_name: dba_tools
+    database: dba_tools
 '''
 
 RETURN = r'''
