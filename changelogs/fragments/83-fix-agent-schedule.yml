@@ -1,2 +1,0 @@
-bugfixes:
-  - Fix inability to enable an agent job schedule after it has been disabled.
