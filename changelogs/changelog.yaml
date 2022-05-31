@@ -148,6 +148,7 @@ releases:
     release_date: '2022-05-21'
   0.8.0:
     changes:
+      release_summary: A few small fixes and the new 'backup' module.
       bugfixes:
       - Fix inability to enable an agent job schedule after it has been disabled.
       minor_changes:
