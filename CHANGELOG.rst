@@ -5,6 +5,29 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.8.0
+======
+
+Release Summary
+---------------
+
+A few small fixes and the new 'backup' module.
+
+Minor Changes
+-------------
+
+- Standardize use of 'database' vs 'database_name' in all documentation and options specs. Not a breaking change.
+
+Bugfixes
+--------
+
+- Fix inability to enable an agent job schedule after it has been disabled.
+
+New Modules
+-----------
+
+- backup - Performs a backup operation.
+
 v0.7.0
 ======
 
@@ -25,11 +48,6 @@ Release Summary
 ---------------
 
 Adding new SPN module
-
-Minor Changes
--------------
-
-- Remove CI support for Ansible 2.10
 
 New Modules
 -----------
