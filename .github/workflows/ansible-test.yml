@@ -149,6 +149,11 @@ jobs:
         run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
 
       - name: Install collection dependencies
+        id: collection-dependency
+        run: ansible-galaxy collection install community.general -p .
+
+      - name: Retry install collection dependencies
+        if: steps.collection-dependency.outcome == 'failure'
         run: ansible-galaxy collection install community.general -p .
 
       - name: Set integration test options
