@@ -160,7 +160,6 @@ jobs:
         run: ansible-galaxy collection install ansible.windows -p "${{ env.GHWS }}"
 
       - name: Set integration test options
-        shell: bash
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration
         run: |
           cp integration_config.sample.yml integration_config.yml
