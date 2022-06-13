@@ -93,7 +93,6 @@ try {
         Checksum = $checkSum
         Verify = $verify
         MaxTransferSize = $maxTransferSize
-        BlockSize = $blockSize
         BufferCount = $bufferCount
         NoRecovery = $noRecovery
         BuildPath = $buildPath
