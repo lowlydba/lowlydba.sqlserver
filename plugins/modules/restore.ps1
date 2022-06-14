@@ -101,6 +101,7 @@ try {
         KeepCDC = $keepCDC
         StopBefore = $stopBefore
         NoRecovery = $noRecovery
+        Recover = $recover
         MaxTransferSize = $maxTransferSize
         BufferCount = $bufferCount
     }
