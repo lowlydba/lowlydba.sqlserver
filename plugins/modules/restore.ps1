@@ -76,7 +76,7 @@ $stopMark = $module.Params.stop_mark
 $stopAfterDate = $module.Params.stop_after_date
 $noRecovery = $module.Params.no_recovery
 $maxTransferSize = $module.Params.max_transfer_size
-[nullable[int]]$blockSize = $module.Params.block_size
+$blockSize = $module.Params.block_size
 $bufferCount = $module.Params.buffer_count
 $azureCredential = $modules.Param.azure_credential
 $checkMode = $module.CheckMode
@@ -139,7 +139,7 @@ try {
         $restoreSplat.Add("StopMark", $stopMark)
     }
     if ($null -ne $blockSize) {
-        $restoreSplat.Add("BlockSize", $blockSize)
+        $restoreSplat.Add("BlockSize", ($blockSize / 1))
     }
     if ($null -ne $azureCredential) {
         $restoreSplat.Add("AzureCredential", $azureCredential)
