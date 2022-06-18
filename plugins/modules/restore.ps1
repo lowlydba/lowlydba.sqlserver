@@ -40,7 +40,6 @@ $spec = @{
         stop_mark = @{type = 'str'; required = $false }
         stop_after_date = @{type = 'str'; required = $false }
         no_recovery = @{type = 'bool'; required = $false; default = $false }
-        recover = @{type = 'bool'; required = $false; default = $true }
         max_transfer_size = @{type = 'int'; required = $false; default = 0 }
         block_size = @{type = 'str'; required = $false; choices = @('0.5kb', '1kb', '2kb', '4kb', '8kb', '16kb', '32kb', '64kb') }
         buffer_count = @{type = 'int'; required = $false; default = 0 }
@@ -76,7 +75,6 @@ $stopBefore = $module.Params.stop_before
 $stopMark = $module.Params.stop_mark
 $stopAfterDate = $module.Params.stop_after_date
 $noRecovery = $module.Params.no_recovery
-$recover = $module.Params.recover
 $maxTransferSize = $module.Params.max_transfer_size
 $blockSize = $module.Params.block_size
 $bufferCount = $module.Params.buffer_count
@@ -104,7 +102,6 @@ try {
         KeepCDC = $keepCDC
         StopBefore = $stopBefore
         NoRecovery = $noRecovery
-        Recover = $recover
         MaxTransferSize = $maxTransferSize
         BufferCount = $bufferCount
     }
