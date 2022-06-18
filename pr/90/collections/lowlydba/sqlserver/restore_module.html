@@ -342,6 +342,13 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-path"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-path"><strong>path</strong></p>
+<a class="ansibleOptionLink" href="#parameter-path" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Path to SQL Server backup files. Paths passed in as strings will be scanned using the desired method, default is a recursive folder scan. Accepts multiple paths separated by ‘,’.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-recover"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-recover"><strong>recover</strong></p>
 <a class="ansibleOptionLink" href="#parameter-recover" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -353,7 +360,7 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-replace_db_name_in_file"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-replace-db-name-in-file"><strong>replace_db_name_in_file</strong></p>
 <a class="ansibleOptionLink" href="#parameter-replace_db_name_in_file" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -365,21 +372,21 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-restore_time"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-restore-time"><strong>restore_time</strong></p>
 <a class="ansibleOptionLink" href="#parameter-restore_time" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Specify a DateTime object to which you want the database restored to. Default is to the latest point available in the specified backups.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-restored_database_name_prefix"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-restored-database-name-prefix"><strong>restored_database_name_prefix</strong></p>
 <a class="ansibleOptionLink" href="#parameter-restored_database_name_prefix" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>A string which will be prefixed to the start of the restore Database’s name.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-reuse_source_folder_structure"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-reuse-source-folder-structure"><strong>reuse_source_folder_structure</strong></p>
 <a class="ansibleOptionLink" href="#parameter-reuse_source_folder_structure" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -391,42 +398,42 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_instance"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-sql-instance"><strong>sql_instance</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_instance" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The SQL Server instance to modify.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-sql-password"><strong>sql_password</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Password for SQL Authentication.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-sql-username"><strong>sql_username</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Username for SQL Authentication.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-standby_directory"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-standby-directory"><strong>standby_directory</strong></p>
 <a class="ansibleOptionLink" href="#parameter-standby_directory" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>If a directory is specified the database(s) will be restored into a standby state, with the standby file placed into this directory (which must exist, and be writable by the target Sql Server instance).</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-stop_after_date"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-stop-after-date"><strong>stop_after_date</strong></p>
 <a class="ansibleOptionLink" href="#parameter-stop_after_date" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>By default the restore will stop at the first occurence of StopMark found in the chain, passing a datetime where will cause it to stop the first StopMark atfer that datetime.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-stop_before"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-stop-before"><strong>stop_before</strong></p>
 <a class="ansibleOptionLink" href="#parameter-stop_before" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -438,14 +445,14 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-stop_mark"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-stop-mark"><strong>stop_mark</strong></p>
 <a class="ansibleOptionLink" href="#parameter-stop_mark" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Marked point in the transaction log to stop the restore at.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-use_destination_default_directories"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-use-destination-default-directories"><strong>use_destination_default_directories</strong></p>
 <a class="ansibleOptionLink" href="#parameter-use_destination_default_directories" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -457,7 +464,7 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-verify_only"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-verify-only"><strong>verify_only</strong></p>
 <a class="ansibleOptionLink" href="#parameter-verify_only" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -469,7 +476,7 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-with_replace"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-with-replace"><strong>with_replace</strong></p>
 <a class="ansibleOptionLink" href="#parameter-with_replace" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -481,7 +488,7 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-xp_dirtree"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-xp-dirtree"><strong>xp_dirtree</strong></p>
 <a class="ansibleOptionLink" href="#parameter-xp_dirtree" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
