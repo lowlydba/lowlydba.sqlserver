@@ -21,6 +21,9 @@
         database: "{{ restore_database }}"
         path: "{{ backup_result.data.BackupPath }}"
         replace_db_name_in_file: true
+        block_size: "16kb"
+        destination_file_suffix: "_new"
+        destination_file_prefix: "db_"
       register: result
     - assert:
         that:
