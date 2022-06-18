@@ -40,7 +40,7 @@ $spec = @{
         stop_mark = @{type = 'str'; required = $false }
         stop_after_date = @{type = 'str'; required = $false }
         no_recovery = @{type = 'bool'; required = $false; default = $false }
-        recover = @{type = 'bool'; required = $false; default = $false }
+        recover = @{type = 'bool'; required = $false; default = $true }
         max_transfer_size = @{type = 'int'; required = $false; default = 0 }
         block_size = @{type = 'str'; required = $false; choices = @('0.5kb', '1kb', '2kb', '4kb', '8kb', '16kb', '32kb', '64kb') }
         buffer_count = @{type = 'int'; required = $false; default = 0 }

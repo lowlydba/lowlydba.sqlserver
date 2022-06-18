@@ -181,7 +181,7 @@ options:
       - If set will perform recovery on the indicated database.
     type: bool
     required: false
-    default: false
+    default: true
   max_transfer_size:
     description:
       - Sets the size of the unit of transfer. Values must be a multiple of 64kb.
