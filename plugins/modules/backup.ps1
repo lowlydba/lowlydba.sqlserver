@@ -62,7 +62,7 @@ $compressBackup = $module.Params.compress_backup
 $checkSum = $module.Params.checksum
 $verify = $module.Params.verify
 $maxTransferSize = $module.Params.max_transfer_size
-$blockSize = $module.Params.block_size
+[nullable[int]]$blockSize = $module.Params.block_size
 $bufferCount = $module.Params.buffer_count
 $noRecovery = $module.Params.no_recovery
 $buildPath = $module.Params.build_path
@@ -107,7 +107,7 @@ try {
         $backupSplat.Add("FilePath", $filePath)
     }
     if ($null -ne $blockSize) {
-        $backupSplat.Add("BlockSize", [int]$blockSize)
+        $backupSplat.Add("BlockSize", $blockSize)
     }
     if ($null -ne $timestampFormat) {
         $backupSplat.Add("TimestampFormat", $timestampFormat)
