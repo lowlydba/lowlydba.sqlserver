@@ -3,28 +3,26 @@
   vars:
     database_name: "model"
     restore_database: "model_restore"
-  module_defaults:
-    lowlydba.sqlserver.backup:
-      sql_instance: "{{ sqlserver_instance }}"
-      sql_username: "{{ sqlserver_username }}"
-      sql_password: "{{ sqlserver_password }}"
-      database: "{{ database_name }}"
-    lowlydba.sqlserver.restore:
-      sql_instance: "{{ sqlserver_instance }}"
-      sql_username: "{{ sqlserver_username }}"
-      sql_password: "{{ sqlserver_password }}"
-      database: "{{ restore_database }}"
   tags: ["restore"]
   block:
     - name: Backup a database
       lowlydba.sqlserver.backup:
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+        database: "{{ database_name }}"
       register: backup_result
 
     - name: Restore a database
       lowlydba.sqlserver.restore:
-        path: backup_result.data.BackupPath
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+        database: "{{ restore_database }}"
+        path: "{{ backup_result.data.BackupPath }}"
+        replace_db_name_in_file: true
       register: result
     - assert:
         that:
           - result.data.SqlInstance != None
-          - result.data.Database == "{{ restore_database }}"
+          - result.data.Database == restore_database
