@@ -107,7 +107,7 @@ try {
         $backupSplat.Add("FilePath", $filePath)
     }
     if ($null -ne $blockSize) {
-        $backupSplat.Add("BlockSize", $blockSize)
+        $backupSplat.Add("BlockSize", [int]$blockSize)
     }
     if ($null -ne $timestampFormat) {
         $backupSplat.Add("TimestampFormat", $timestampFormat)

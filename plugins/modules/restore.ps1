@@ -139,7 +139,7 @@ try {
         $restoreSplat.Add("StopMark", $stopMark)
     }
     if ($null -ne $blockSize) {
-        $restoreSplat.Add("BlockSize", $blockSize)
+        $restoreSplat.Add("BlockSize", [int]$blockSize)
     }
     if ($null -ne $azureCredential) {
         $restoreSplat.Add("AzureCredential", $azureCredential)
