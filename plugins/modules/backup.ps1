@@ -93,7 +93,6 @@ try {
         Checksum = $checkSum
         Verify = $verify
         MaxTransferSize = $maxTransferSize
-        BlockSize = $blockSize
         BufferCount = $bufferCount
         NoRecovery = $noRecovery
         BuildPath = $buildPath
@@ -108,7 +107,7 @@ try {
         $backupSplat.Add("FilePath", $filePath)
     }
     if ($null -ne $blockSize) {
-        $backupSplat.Add("BlockSize", $blockSize)
+        $backupSplat.Add("BlockSize", ($blockSize / 1))
     }
     if ($null -ne $timestampFormat) {
         $backupSplat.Add("TimestampFormat", $timestampFormat)

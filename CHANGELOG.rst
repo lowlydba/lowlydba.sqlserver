@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.9.0
+======
+
+Bugfixes
+--------
+
+- backup - Only use blocksize when specified.
+
+New Modules
+-----------
+
+- restore - Performs a restore operation.
+
 v0.8.0
 ======
 
