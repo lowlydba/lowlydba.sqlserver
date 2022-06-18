@@ -148,12 +148,12 @@ releases:
     release_date: '2022-05-21'
   0.8.0:
     changes:
-      release_summary: A few small fixes and the new 'backup' module.
       bugfixes:
       - Fix inability to enable an agent job schedule after it has been disabled.
       minor_changes:
       - Standardize use of 'database' vs 'database_name' in all documentation and
         options specs. Not a breaking change.
+      release_summary: A few small fixes and the new 'backup' module.
     fragments:
     - 83-fix-agent-schedule.yml
     - 84-standardize-database-option.yml
@@ -162,3 +162,14 @@ releases:
       name: backup
       namespace: ''
     release_date: '2022-05-31'
+  0.9.0:
+    changes:
+      bugfixes:
+      - backup - Only use blocksize when specified.
+    fragments:
+    - 90-fix-backup-blocksize.yml
+    modules:
+    - description: Performs a restore operation.
+      name: restore
+      namespace: ''
+    release_date: '2022-06-18'

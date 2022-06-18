@@ -1,2 +1,0 @@
-bugfixes:
-  - backup - Only use blocksize when specified.
