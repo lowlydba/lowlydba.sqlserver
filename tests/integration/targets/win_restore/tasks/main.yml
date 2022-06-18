@@ -22,6 +22,7 @@
 
     - name: Restore a database
       lowlydba.sqlserver.restore:
+        path: backup_result.data.BackupPath
       register: result
     - assert:
         that:

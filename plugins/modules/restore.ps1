@@ -14,6 +14,7 @@ $spec = @{
     supports_check_mode = $true
     options = @{
         database = @{type = 'str'; required = $false }
+        path = @{type = 'str'; required = $true }
         destination_data_directory = @{type = 'str'; required = $false }
         destination_log_directory = @{type = 'str'; required = $false }
         destination_filestream_directory = @{type = 'str'; required = $false }
@@ -50,6 +51,7 @@ $spec = @{
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $database = $module.Params.database
+$path = $module.Params.path
 $destinationDataDirectory = $module.Params.destination_data_directory
 $destinationLogDirectory = $module.Params.destination_log_directory
 $destinationFilestreamDirectory = $module.Params.destination_filestream_directory
@@ -87,6 +89,7 @@ try {
     $restoreSplat = @{
         SqlInstance = $sqlInstance
         SqlCredential = $sqlCredential
+        Path = $path
         WithReplace = $withReplace
         KeepReplication = $keepReplication
         XpDirTree = $xpDirTree

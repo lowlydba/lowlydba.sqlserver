@@ -17,6 +17,13 @@ options:
       - The database to process.
     type: str
     required: false
+  path:
+    description:
+      - Path to SQL Server backup files.
+        Paths passed in as strings will be scanned using the desired method, default is a recursive folder scan.
+        Accepts multiple paths separated by ','.
+    type: str
+    required: true
   destination_data_directory:
     description:
       - Path to restore the SQL Server backups to on the target instance.
