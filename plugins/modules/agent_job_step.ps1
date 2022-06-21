@@ -10,7 +10,6 @@
 
 $ErrorActionPreference = "Stop"
 
-#TOD: Refactor these defaults / required values
 $spec = @{
     supports_check_mode = $true
     options = @{
@@ -59,27 +58,7 @@ $onFailAction = $module.Params.on_fail_action
 $state = $module.Params.state
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
-
-$jobStepParams = @{
-    SqlInstance = $sqlInstance
-    SqlCredential = $sqlCredential
-    Job = $job
-    StepName = $stepName
-    Database = $database
-    SubSystem = $subsystem
-    OnSuccessAction = $onSuccessAction
-    OnSuccessStepId = $onSuccessStepId
-    OnFailAction = $onFailAction
-    OnFailStepId = $onFailStepId
-    RetryAttempts = $retryAttempts
-    RetryInterval = $retryInterval
-    WhatIf = $checkMode
-    EnableException = $true
-}
-
-if ($null -ne $command) {
-    $jobStepParams.Add("Command", $command)
-}
+$PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 # Configure Agent job step
 try {
@@ -88,7 +67,7 @@ try {
 
     if ($state -eq "absent") {
         if ($null -eq $existingJobStep) {
-            # try fetching by id only
+            # try fetching name by id if we only care about removing
             $existingJobStep = $existingJobSteps | Where-Object Id -eq $stepId
             $stepName = $existingJobStep.Name
         }
@@ -98,18 +77,33 @@ try {
                 SqlCredential = $sqlCredential
                 Job = $job
                 StepName = $stepName
-                WhatIf = $checkMode
-                EnableException = $true
-                Confirm = $false
             }
             $output = Remove-DbaAgentJobStep @removeStepSplat
             $module.Result.changed = $true
         }
     }
     elseif ($state -eq "present") {
-        if (!($stepName)) {
+        if (!($stepName) -or !($stepId)) {
             $module.FailJson("Step name must be specified when state=present.")
         }
+        $jobStepParams = @{
+            SqlInstance = $sqlInstance
+            SqlCredential = $sqlCredential
+            Job = $job
+            StepName = $stepName
+            Database = $database
+            SubSystem = $subsystem
+            OnSuccessAction = $onSuccessAction
+            OnSuccessStepId = $onSuccessStepId
+            OnFailAction = $onFailAction
+            OnFailStepId = $onFailStepId
+            RetryAttempts = $retryAttempts
+            RetryInterval = $retryInterval
+        }
+        if ($null -ne $command) {
+            $jobStepParams.Add("Command", $command)
+        }
+
         # No existing job step
         if ($null -eq $existingJobStep) {
             $jobStepParams.Add("StepId", $stepId)
