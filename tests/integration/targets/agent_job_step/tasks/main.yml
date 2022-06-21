@@ -124,7 +124,7 @@
 
     - name: Remove agent job step in checkmode
       lowlydba.sqlserver.agent_job_step:
-        step_name: "{{ job_step2 }}"
+        step_id: 2
         state: "absent"
       check_mode: true
       register: result
@@ -134,7 +134,7 @@
 
     - name: Verify remove agent job step in checkmode works
       lowlydba.sqlserver.agent_job_step:
-        step_name: "{{ job_step2 }}"
+        step_id: 2
         state: "absent"
       register: result
     - assert:

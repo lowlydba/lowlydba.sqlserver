@@ -1,0 +1,3 @@
+bugfixes:
+  - Allow agent job steps to be removed by specifying the step ID only.
+    This is likely needed in cleanup of steps from previous job configurations.

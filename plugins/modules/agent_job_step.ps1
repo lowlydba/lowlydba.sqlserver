@@ -10,13 +10,12 @@
 
 $ErrorActionPreference = "Stop"
 
-#TOD: Refactor these defaults / required values
 $spec = @{
     supports_check_mode = $true
     options = @{
         job = @{type = 'str'; required = $true }
         step_id = @{type = 'int'; required = $false }
-        step_name = @{type = 'str'; required = $true }
+        step_name = @{type = 'str'; required = $false }
         database = @{type = 'str'; required = $false; default = 'master' }
         subsystem = @{type = 'str'; required = $false; default = 'TransactSql';
             choices = @('CmdExec', 'Distribution', 'LogReader', 'Merge', 'PowerShell', 'QueueReader', 'Snapshot', 'Ssis', 'TransactSql')
@@ -37,6 +36,9 @@ $spec = @{
     required_together = @(
         , @('retry_attempts', 'retry_interval')
     )
+    required_one_of = @(
+        , @('step_id', 'step_name')
+    )
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
@@ -56,47 +58,52 @@ $onFailAction = $module.Params.on_fail_action
 $state = $module.Params.state
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
-
-$jobStepParams = @{
-    SqlInstance = $sqlInstance
-    SqlCredential = $sqlCredential
-    Job = $job
-    StepName = $stepName
-    Database = $database
-    SubSystem = $subsystem
-    OnSuccessAction = $onSuccessAction
-    OnSuccessStepId = $onSuccessStepId
-    OnFailAction = $onFailAction
-    OnFailStepId = $onFailStepId
-    RetryAttempts = $retryAttempts
-    RetryInterval = $retryInterval
-    WhatIf = $checkMode
-    EnableException = $true
-}
-
-if ($null -ne $command) {
-    $jobStepParams.Add("Command", $command)
-}
+$PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 # Configure Agent job step
 try {
     $existingJobSteps = Get-DbaAgentJobStep -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Job $job
     $existingJobStep = $existingJobSteps | Where-Object Name -eq $stepName
 
-    if ($state -eq "absent" -and $existingJobStep) {
-        $removeStepSplat = @{
+    if ($state -eq "absent") {
+        if ($null -eq $existingJobStep) {
+            # try fetching name by id if we only care about removing
+            $existingJobStep = $existingJobSteps | Where-Object Id -eq $stepId
+            $stepName = $existingJobStep.Name
+        }
+        if ($existingJobStep) {
+            $removeStepSplat = @{
+                SqlInstance = $sqlInstance
+                SqlCredential = $sqlCredential
+                Job = $job
+                StepName = $stepName
+            }
+            $output = Remove-DbaAgentJobStep @removeStepSplat
+            $module.Result.changed = $true
+        }
+    }
+    elseif ($state -eq "present") {
+        if (!($stepName) -or !($stepId)) {
+            $module.FailJson("Step name must be specified when state=present.")
+        }
+        $jobStepParams = @{
             SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential
             Job = $job
             StepName = $stepName
-            WhatIf = $checkMode
-            EnableException = $true
-            Confirm = $false
+            Database = $database
+            SubSystem = $subsystem
+            OnSuccessAction = $onSuccessAction
+            OnSuccessStepId = $onSuccessStepId
+            OnFailAction = $onFailAction
+            OnFailStepId = $onFailStepId
+            RetryAttempts = $retryAttempts
+            RetryInterval = $retryInterval
         }
-        $output = Remove-DbaAgentJobStep @removeStepSplat
-        $module.Result.changed = $true
-    }
-    elseif ($state -eq "present") {
+        if ($null -ne $command) {
+            $jobStepParams.Add("Command", $command)
+        }
+
         # No existing job step
         if ($null -eq $existingJobStep) {
             $jobStepParams.Add("StepId", $stepId)
