@@ -106,7 +106,7 @@ try {
         }
     }
     elseif ($state -eq "present") {
-        if !($stepName) {
+        if (!($stepName)) {
             $module.FailJson("Step name must be specified when state=present.")
         }
         # No existing job step
