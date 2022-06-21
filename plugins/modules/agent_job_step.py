@@ -25,8 +25,8 @@ options:
     type: int
   step_name:
     description:
-      - The name of the step.
-    required: true
+      - The name of the step. Required if I(state=present).
+    required: false
     type: str
   database:
     description:

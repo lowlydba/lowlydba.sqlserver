@@ -16,7 +16,7 @@ $spec = @{
     options = @{
         job = @{type = 'str'; required = $true }
         step_id = @{type = 'int'; required = $false }
-        step_name = @{type = 'str'; required = $true }
+        step_name = @{type = 'str'; required = $false }
         database = @{type = 'str'; required = $false; default = 'master' }
         subsystem = @{type = 'str'; required = $false; default = 'TransactSql';
             choices = @('CmdExec', 'Distribution', 'LogReader', 'Merge', 'PowerShell', 'QueueReader', 'Snapshot', 'Ssis', 'TransactSql')
@@ -36,6 +36,9 @@ $spec = @{
     }
     required_together = @(
         , @('retry_attempts', 'retry_interval')
+    )
+    required_one_of = @(
+        , @('step_id',  'step_name')
     )
 }
 
@@ -83,20 +86,29 @@ try {
     $existingJobSteps = Get-DbaAgentJobStep -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Job $job
     $existingJobStep = $existingJobSteps | Where-Object Name -eq $stepName
 
-    if ($state -eq "absent" -and $existingJobStep) {
-        $removeStepSplat = @{
-            SqlInstance = $sqlInstance
-            SqlCredential = $sqlCredential
-            Job = $job
-            StepName = $stepName
-            WhatIf = $checkMode
-            EnableException = $true
-            Confirm = $false
+    if ($state -eq "absent") {
+        if ($null -eq $existingJobStep) {
+            # try fetching by id only
+            $existingJobStep = $existingJobSteps | Where-Object Id -eq $stepId
         }
-        $output = Remove-DbaAgentJobStep @removeStepSplat
-        $module.Result.changed = $true
+        if ($existingJobStep) {
+            $removeStepSplat = @{
+                SqlInstance = $sqlInstance
+                SqlCredential = $sqlCredential
+                Job = $job
+                StepName = $stepName
+                WhatIf = $checkMode
+                EnableException = $true
+                Confirm = $false
+            }
+            $output = Remove-DbaAgentJobStep @removeStepSplat
+            $module.Result.changed = $true
+        }
     }
     elseif ($state -eq "present") {
+        if !($stepName) {
+            $module.FailJson("Step name must be specified when state=present.")
+        }
         # No existing job step
         if ($null -eq $existingJobStep) {
             $jobStepParams.Add("StepId", $stepId)
