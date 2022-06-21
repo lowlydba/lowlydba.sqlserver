@@ -90,6 +90,7 @@ try {
         if ($null -eq $existingJobStep) {
             # try fetching by id only
             $existingJobStep = $existingJobSteps | Where-Object Id -eq $stepId
+            $stepName = $existingJobStep.Name
         }
         if ($existingJobStep) {
             $removeStepSplat = @{
