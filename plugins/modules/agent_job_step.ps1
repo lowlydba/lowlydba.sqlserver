@@ -38,7 +38,7 @@ $spec = @{
         , @('retry_attempts', 'retry_interval')
     )
     required_one_of = @(
-        , @('step_id',  'step_name')
+        , @('step_id', 'step_name')
     )
 }
 
