@@ -173,3 +173,13 @@ releases:
       name: restore
       namespace: ''
     release_date: '2022-06-18'
+  0.9.1:
+    changes:
+      bugfixes:
+      - Allow agent job steps to be removed by specifying the step ID only. This is
+        likely needed in cleanup of steps from previous job configurations.
+      release_summary: Bugfix!
+    fragments:
+    - 0-9-1-release_sumary.yml
+    - 95-fix-agent-job-step-removal.yml
+    release_date: '2022-06-21'

@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.9.1
+======
+
+Release Summary
+---------------
+
+Bugfix!
+
+Bugfixes
+--------
+
+- Allow agent job steps to be removed by specifying the step ID only. This is likely needed in cleanup of steps from previous job configurations.
+
 v0.9.0
 ======
 
