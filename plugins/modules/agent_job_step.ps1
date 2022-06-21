@@ -99,6 +99,7 @@ try {
             OnFailStepId = $onFailStepId
             RetryAttempts = $retryAttempts
             RetryInterval = $retryInterval
+            WhatIf = $checkMode
         }
         if ($null -ne $command) {
             $jobStepParams.Add("Command", $command)
@@ -117,18 +118,29 @@ try {
                 $module.FailJson("There is already a step named '$StepName' for this job with an ID of $($existingJobStep.ID).")
             }
 
-            # Compare existing values with passed params, skipping over values not specified
-            $keys = $jobStepParams.Keys | Where-Object { $_ -ne 'SqlInstance' }
-            $compareProperty = ($existingJob.Properties | Where-Object Name -in $keys).Name
-            $diff = Compare-Object -ReferenceObject $existingJobStep -DifferenceObject $jobStepParams -Property $compareProperty
+            # Reference by old name in case new name differs for step id
+            $jobStepParams.StepName = $existingJobStep.Name
+            $jobStepParams.Add("NewName", $StepName)
 
-            # Update the step
-            if ($diff) {
-                # Reference by old name in case new name differs for step id
-                $jobStepParams.StepName = $existingJobStep.Name
-                $jobStepParams.Add("NewName", $StepName)
-
-                $output = Set-DbaAgentJobStep @jobStepParams
+            # Need to serialize to prevent SMO auto refreshing
+            $old = ConvertTo-SerializableObject -InputObject $existingJobStep -UseDefaultProperty $false
+            $output = Set-DbaAgentJobStep @jobStepParams
+            if ($null -ne $output) {
+                $compareProperty = @(
+                    "Name"
+                    "DatabaseName"
+                    "Command"
+                    "Subsystem"
+                    "OnFailAction"
+                    "OnFailActionStep"
+                    "OnSuccessAction"
+                    "OnSuccessActionStep"
+                    "RetryAttempts"
+                    "RetryInterval"
+                )
+                $diff = Compare-Object -ReferenceObject $output -DifferenceObject $old -Property $compareProperty
+            }
+            if ($diff -or $checkMode) {
                 $module.Result.changed = $true
             }
         }
