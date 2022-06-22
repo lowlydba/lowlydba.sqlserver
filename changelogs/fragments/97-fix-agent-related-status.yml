@@ -1,4 +1,0 @@
-bugfixes:
-  - agent_job - Fix incorrectly reported change status when no change occurred.
-  - agent_job_schedule - Fix incorrectly reported change status when no change occurred.
-  - agent_job_step - Fix incorrectly reported change status when no change occurred.
