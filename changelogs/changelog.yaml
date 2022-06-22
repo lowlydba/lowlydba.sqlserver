@@ -196,3 +196,12 @@ releases:
     - 97-fix-agent-related-status.yml
     - 97-release-summary.yml
     release_date: '2022-06-22'
+  0.9.3:
+    changes:
+      bugfixes:
+      - memory - Fix improper changed detection.
+      release_summary: More change detection fixing.
+    fragments:
+    - 100-fix-memory.yml
+    - v0-9-3-release-summary.yml
+    release_date: '2022-06-22'
