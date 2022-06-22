@@ -39,6 +39,14 @@
           - result.data.Total  > result.data.MaxValue
           - result is changed
 
+    - name: No change
+      lowlydba.sqlserver.memory:
+        max: 0
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
     - name: Set max memory in checkmode
       lowlydba.sqlserver.memory:
         max: "{{ max_memory_over_9000 }}"

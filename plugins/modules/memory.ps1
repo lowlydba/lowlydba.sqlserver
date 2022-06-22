@@ -23,6 +23,7 @@ $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $max = $module.Params.max
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
+$PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 # Set max memory for SQL Instance
 try {
@@ -31,12 +32,10 @@ try {
         SqlInstance = $sqlInstance
         SqlCredential = $sqlCredential
         Max = $max
-        WhatIf = $checkMode
-        EnableException = $true
     }
     $output = Set-DbaMaxMemory @setMemorySplat
 
-    if ($output.PreviousMaxValue -ne $max) {
+    if ($output.PreviousMaxValue -ne ($max -or $output.MaxValue)) {
         $module.Result.changed = $true
     }
 
