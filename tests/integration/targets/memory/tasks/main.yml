@@ -37,9 +37,8 @@
           - result.data.PreviousMaxValue == {{ max_memory_over_9000 }}
           - result.data.MaxValue != {{ max_memory_over_9000 }}
           - result.data.Total  > result.data.MaxValue
-          - result is changed
 
-    - name: No change
+    - name: No change with dynamic memory
       lowlydba.sqlserver.memory:
         max: 0
       register: result

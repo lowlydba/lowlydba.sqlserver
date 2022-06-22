@@ -35,7 +35,7 @@ try {
     }
     $output = Set-DbaMaxMemory @setMemorySplat
 
-    if ($output.PreviousMaxValue -ne $output.MaxValue) {
+    if ($output.PreviousMaxValue -ne $output.MaxValue -or $checkMode) {
         $module.Result.changed = $true
     }
 
