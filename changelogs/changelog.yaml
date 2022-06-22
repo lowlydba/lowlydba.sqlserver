@@ -183,3 +183,16 @@ releases:
     - 0-9-1-release_sumary.yml
     - 95-fix-agent-job-step-removal.yml
     release_date: '2022-06-21'
+  0.9.2:
+    changes:
+      bugfixes:
+      - agent_job - Fix incorrectly reported change status when no change occurred.
+      - agent_job_schedule - Fix incorrectly reported change status when no change
+        occurred.
+      - agent_job_step - Fix incorrectly reported change status when no change occurred.
+      release_summary: Bugfixes for agent related modules that incorrectly reported
+        change statuses.
+    fragments:
+    - 97-fix-agent-related-status.yml
+    - 97-release-summary.yml
+    release_date: '2022-06-22'

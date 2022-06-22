@@ -5,6 +5,21 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.9.2
+======
+
+Release Summary
+---------------
+
+Bugfixes for agent related modules that incorrectly reported change statuses.
+
+Bugfixes
+--------
+
+- agent_job - Fix incorrectly reported change status when no change occurred.
+- agent_job_schedule - Fix incorrectly reported change status when no change occurred.
+- agent_job_step - Fix incorrectly reported change status when no change occurred.
+
 v0.9.1
 ======
 

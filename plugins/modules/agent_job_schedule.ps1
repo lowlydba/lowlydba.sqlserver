@@ -52,14 +52,13 @@ $endTime = $module.Params.end_time
 $state = $module.Params.state
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
+$PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 $scheduleParams = @{
     SqlInstance = $SqlInstance
     SqlCredential = $sqlCredential
     Force = $force
     Schedule = $schedule
-    WhatIf = $checkMode
-    EnableException = $true
 }
 
 if ($enabled -eq $false) {
@@ -100,23 +99,40 @@ if ($null -ne $frequencyRecurrenceFactor) {
 }
 
 try {
-    $existingSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $schedule -EnableException
+    $existingSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $schedule
     if ($state -eq "present") {
         if ($enabled -eq $true) {
             $scheduleParams.Add("Enabled", $true)
         }
         # Update schedule
         if ($null -ne $existingSchedule) {
+            # Need to serialize to prevent SMO auto refreshing
+            $old = ConvertTo-SerializableObject -InputObject $existingSchedule -UseDefaultProperty $false
             $output = Set-DbaAgentSchedule @scheduleParams
-            # Check if schedule was actually changed
-            $modifiedSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $ScheduleName -EnableException
-            $scheduleDiff = Compare-Object -ReferenceObject $existingSchedule -DifferenceObject $modifiedSchedule
-            if ($null -ne $scheduleDiff) {
-                $module.Result.changed = $true
-            }
-            # Assume updated for checkmode
-            else {
-                $module.Result.changed = $true
+            if ($null -ne $output) {
+                $compareProperty = @(
+                    "ActiveEndDate"
+                    "ActiveEndTimeOfDay"
+                    "ActiveEndTimeOfDay"
+                    "ActiveStartTimeOfDay"
+                    "Description"
+                    "FrequencyInterval"
+                    "FrequencyRecurrenceFactor"
+                    "FrequencyRelativeIntervals"
+                    "FrequencySubDayInterval"
+                    "FrequencySubDayTypes"
+                    "FrequencyTypes"
+                    "IsEnabled"
+                    "ScheduleName"
+                )
+                $diff = Compare-Object -ReferenceObject $output -DifferenceObject $old -Property $compareProperty
+
+                # # Check if schedule was actually changed
+                # $modifiedSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $ScheduleName -EnableException
+                # $scheduleDiff = Compare-Object -ReferenceObject $existingSchedule -DifferenceObject $modifiedSchedule
+                if ($diff -or $checkMode) {
+                    $module.Result.changed = $true
+                }
             }
         }
         # Create schedule
@@ -132,10 +148,11 @@ try {
         }
         # Remove schedule
         else {
-            $output = $existingSchedule | Remove-DbaAgentSchedule -WhatIf:$checkMode -Confirm:$false -Force
+            $output = $existingSchedule | Remove-DbaAgentSchedule -Force
             $module.Result.changed = $true
         }
     }
+
     if ($null -ne $output) {
         $resultData = ConvertTo-SerializableObject -InputObject $output
         $module.Result.data = $resultData

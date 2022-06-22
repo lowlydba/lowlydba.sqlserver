@@ -69,6 +69,18 @@
           - result.data != None
           - result is changed
 
+    - name: No change
+      lowlydba.sqlserver.agent_job:
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+        job: "{{ job_name }}"
+        start_step_id: 2
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
     - name: Remove agent job
       lowlydba.sqlserver.agent_job:
         state: "absent"

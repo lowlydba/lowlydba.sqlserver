@@ -107,7 +107,8 @@ function ConvertTo-SerializableObject {
                 Parent is not useful.
             #>
             'Parent'
-        )
+        ),
+        [bool]$UseDefaultProperty = $true
     )
 
     Begin {
@@ -123,7 +124,7 @@ function ConvertTo-SerializableObject {
 
     Process {
         $defaultProperty = $InputObject.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
-        if ($defaultProperty) {
+        if ($defaultProperty -and $UseDefaultProperty) {
             $objectProperty = $InputObject.PSObject.Properties | Where-Object { $_.Name -in $defaultProperty -and $_.Name -notin $ExcludeProperty }
         }
         else {
