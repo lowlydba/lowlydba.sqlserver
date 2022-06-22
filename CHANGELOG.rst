@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.9.3
+======
+
+Release Summary
+---------------
+
+More change detection fixing.
+
+Bugfixes
+--------
+
+- memory - Fix improper changed detection.
+
 v0.9.2
 ======
 
