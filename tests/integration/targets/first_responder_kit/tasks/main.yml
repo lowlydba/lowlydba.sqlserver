@@ -1,0 +1,39 @@
+---
+- name: Var block
+  vars:
+    target_database: "master"
+    branch: "main"
+  module_defaults:
+    lowlydba.sqlserver.first_responder_kit:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      database: "{{ target_database }}"
+      branch: "{{ branch }}"
+      only_script: "Install-All-Scripts.sql"
+  tags: ["first_responder_kit"]
+  block:
+    - name: Install first_responder_kit
+      lowlydba.sqlserver.first_responder_kit:
+      register: result
+    - assert:
+        that:
+          - result.data.SqlInstance != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.Database == target_database
+          - result.data.Status in ('Installed', 'Updated')
+          - result is changed
+
+    - name: Uninstall first_responder_kit
+      lowlydba.sqlserver.first_responder_kit:
+        only_script: "Uninstall.sql"
+      register: result
+    - assert:
+        that:
+          - result.data.SqlInstance != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.Database == target_database
+          - result.data.Status in ('Installed', 'Updated')
+          - result is changed
