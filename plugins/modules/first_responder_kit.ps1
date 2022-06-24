@@ -32,7 +32,7 @@ $spec = @{
                 'sp_DatabaseRestore.sql'
                 'sp_ineachdb.sql'
                 'SqlServerVersions.sql'
-                'Uninstall.sql') 
+                'Uninstall.sql')
         }
         database = @{type = 'str'; required = $true }
         force = @{type = 'bool'; required = $false; default = $false }
