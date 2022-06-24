@@ -14,7 +14,7 @@ $spec = @{
     options = @{
         branch = @{type = 'str'; required = $false; choices = @('main', 'dev') }
         local_file = @{type = 'str'; required = $false }
-        only_script = @{type = 'str'; required = $false; choices = @('Install-All-Scripts.sql'
+        only_script = @{type = 'str'; required = $false; default = 'Install-All-Scripts.sql'; choices = @('Install-All-Scripts.sql'
                 'Install-Core-Blitz-No-Query-Store.sql'
                 'Install-Core-Blitz-With-Query-Store.sql'
                 'sp_Blitz.sql'
@@ -68,16 +68,6 @@ if ($onlyScript) {
 try {
     $output = Install-DbaFirstResponderKit @firstResponderKitSplat
     $module.Result.changed = $true
-
-    # output is an array for each stored proc,
-    # rollup output into a single result
-    $errorProcs = $output | Where-Object Status -eq "Error"
-    if ($errorProcs) {
-        $output = $errorProcs[0] | Select-Object -ExcludeProperty Name
-    }
-    else {
-        $output = $output[0] | Select-Object -ExcludeProperty Name
-    }
 
     if ($null -ne $output) {
         $resultData = ConvertTo-SerializableObject -InputObject $output

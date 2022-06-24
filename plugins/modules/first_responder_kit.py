@@ -24,6 +24,7 @@ options:
         This way only part of the First Responder Kit can be installed.
     type: str
     required: false
+    default: 'Install-All-Scripts.sql'
     choices: ['Install-All-Scripts.sql',
               'Install-Core-Blitz-No-Query-Store.sql',
               'Install-Core-Blitz-With-Query-Store.sql',
