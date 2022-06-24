@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lowlydba.sqlserver.hadr module – Enable or disable HADR. &mdash; Ansible collections  documentation</title>
+  <title>lowlydba.sqlserver.first_responder_kit module – Install/update the First Responder Kit scripts. &mdash; Ansible collections  documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/ansible.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/antsibull-minimal.css" type="text/css" />
@@ -21,8 +21,8 @@
         <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="lowlydba.sqlserver.instance_info module – Returns basic information for a SQL Server instance." href="instance_info_module.html" />
-    <link rel="prev" title="lowlydba.sqlserver.first_responder_kit module – Install/update the First Responder Kit scripts." href="first_responder_kit_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+    <link rel="next" title="lowlydba.sqlserver.hadr module – Enable or disable HADR." href="hadr_module.html" />
+    <link rel="prev" title="lowlydba.sqlserver.dba_multitool module – Install/update the DBA Multitool suite by John McCAll" href="dba_multitool_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
 
 
 
@@ -106,7 +106,7 @@
           <li><a href="../../index.html">Collection Index</a> &raquo;</li>
           <li><a href="../index.html">Collections in the Lowlydba Namespace</a> &raquo;</li>
           <li><a href="index.html">Lowlydba.Sqlserver</a> &raquo;</li>
-      <li>lowlydba.sqlserver.hadr module – Enable or disable HADR.</li>
+      <li>lowlydba.sqlserver.first_responder_kit module – Install/update the First Responder Kit scripts.</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -117,8 +117,8 @@
   
            <div itemprop="articleBody">
              
-  <span class="target" id="ansible-collections-lowlydba-sqlserver-hadr-module"></span><section id="lowlydba-sqlserver-hadr-module-enable-or-disable-hadr">
-<h1>lowlydba.sqlserver.hadr module – Enable or disable HADR.<a class="headerlink" href="#lowlydba-sqlserver-hadr-module-enable-or-disable-hadr" title="Permalink to this heading"></a></h1>
+  <span class="target" id="ansible-collections-lowlydba-sqlserver-first-responder-kit-module"></span><section id="lowlydba-sqlserver-first-responder-kit-module-install-update-the-first-responder-kit-scripts">
+<h1>lowlydba.sqlserver.first_responder_kit module – Install/update the First Responder Kit scripts.<a class="headerlink" href="#lowlydba-sqlserver-first-responder-kit-module-install-update-the-first-responder-kit-scripts" title="Permalink to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/lowlydba/sqlserver">lowlydba.sqlserver collection</a> (version 0.9.3).</p>
@@ -126,36 +126,27 @@
 It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">lowlydba.sqlserver</span></code>.</p>
-<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">lowlydba.sqlserver.hadr</span></code>.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">lowlydba.sqlserver.first_responder_kit</span></code>.</p>
 </div>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.4.0: </span>of lowlydba.sqlserver</p>
+<p><span class="versionmodified added">New in version 0.10.0: </span>of lowlydba.sqlserver</p>
 </div>
 <div class="contents local topic" id="contents">
 <ul class="simple">
 <li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
-<li><p><a class="reference internal" href="#requirements" id="id2">Requirements</a></p></li>
-<li><p><a class="reference internal" href="#parameters" id="id3">Parameters</a></p></li>
-<li><p><a class="reference internal" href="#notes" id="id4">Notes</a></p></li>
-<li><p><a class="reference internal" href="#examples" id="id5">Examples</a></p></li>
-<li><p><a class="reference internal" href="#return-values" id="id6">Return Values</a></p></li>
+<li><p><a class="reference internal" href="#parameters" id="id2">Parameters</a></p></li>
+<li><p><a class="reference internal" href="#examples" id="id3">Examples</a></p></li>
+<li><p><a class="reference internal" href="#return-values" id="id4">Return Values</a></p></li>
 </ul>
 </div>
 <section id="synopsis">
 <h2><a class="toc-backref" href="#id1">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this heading"></a></h2>
 <ul class="simple">
-<li><p>Enable or disable the High Availability Disaster Recovery (HADR) feature.</p></li>
-</ul>
-</section>
-<section id="requirements">
-<h2><a class="toc-backref" href="#id2">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
-<p>The below requirements are needed on the host that executes this module.</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://www.powershellgallery.com/packages/dbatools/">dbatools</a> PowerShell module</p></li>
+<li><p>A wrapper for Install-DbaFirstResponderKit to fetch the latest version of the scripts, or install from a local cached version.</p></li>
 </ul>
 </section>
 <section id="parameters">
-<h2><a class="toc-backref" href="#id3">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id2">Parameters</a><a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
 <table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
 <thead>
 <tr class="row-odd"><th class="head"><p>Parameter</p></th>
@@ -164,22 +155,29 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-enabled"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-hadr-module-parameter-enabled"><strong>enabled</strong></p>
-<a class="ansibleOptionLink" href="#parameter-enabled" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+<div class="ansibleOptionAnchor" id="parameter-branch"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-first-responder-kit-module-parameter-branch"><strong>branch</strong></p>
+<a class="ansibleOptionLink" href="#parameter-branch" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Flag to enable or disable the feature.</p>
+<td><div class="ansible-option-cell"><p>Specifies an alternate branch of the First Responder Kit to install.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-choices-entry">no</span></p></li>
-<li><p><span class="ansible-option-default-bold">yes</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">main</span></p></li>
+<li><p><span class="ansible-option-choices-entry">dev</span></p></li>
 </ul>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-force"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-hadr-module-parameter-force"><strong>force</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-database"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-first-responder-kit-module-parameter-database"><strong>database</strong></p>
+<a class="ansibleOptionLink" href="#parameter-database" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Name of the target database.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-force"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-first-responder-kit-module-parameter-force"><strong>force</strong></p>
 <a class="ansibleOptionLink" href="#parameter-force" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Restart SQL Server and SQL Agent services automatically.</p>
+<td><div class="ansible-option-cell"><p>If this switch is enabled, the FRK will be downloaded from the internet even if previously cached.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-default-bold">no</span> <span class="ansible-option-default">← (default)</span></p></li>
@@ -187,65 +185,77 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-hadr-module-parameter-password"><strong>password</strong></p>
-<a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-local_file"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-first-responder-kit-module-parameter-local-file"><strong>local_file</strong></p>
+<a class="ansibleOptionLink" href="#parameter-local_file" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Password for alternative credential to authenticate with Windows.</p>
+<td><div class="ansible-option-cell"><p>Specifies the path to a local file to install FRK from. This should be the zip file as distributed by the maintainers. If this parameter is not specified, the latest version will be downloaded and installed Github.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-only_script"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-first-responder-kit-module-parameter-only-script"><strong>only_script</strong></p>
+<a class="ansibleOptionLink" href="#parameter-only_script" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Specifies the name(s) of the script(s) to run for installation. Wildcards are permitted. This way only part of the First Responder Kit can be installed.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><span class="ansible-option-default-bold">Install-All-Scripts.sql</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Install-Core-Blitz-No-Query-Store.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Install-Core-Blitz-With-Query-Store.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sp_Blitz.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sp_BlitzFirst.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sp_BlitzIndex.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sp_BlitzCache.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sp_BlitzWho.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sp_BlitzQueryStore.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sp_BlitzAnalysis.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sp_BlitzBackups.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sp_BlitzInMemoryOLTP.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sp_BlitzLock.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sp_AllNightLog.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sp_AllNightLog_Setup.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sp_DatabaseRestore.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">sp_ineachdb.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">SqlServerVersions.sql</span></p></li>
+<li><p><span class="ansible-option-choices-entry">Uninstall.sql</span></p></li>
+</ul>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_instance"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-hadr-module-parameter-sql-instance"><strong>sql_instance</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-sql_instance"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-first-responder-kit-module-parameter-sql-instance"><strong>sql_instance</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_instance" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The SQL Server instance to modify.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-hadr-module-parameter-sql-password"><strong>sql_password</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-sql_password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-first-responder-kit-module-parameter-sql-password"><strong>sql_password</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Password for SQL Authentication.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-hadr-module-parameter-sql-username"><strong>sql_username</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-sql_username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-first-responder-kit-module-parameter-sql-username"><strong>sql_username</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Username for SQL Authentication.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-hadr-module-parameter-username"><strong>username</strong></p>
-<a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Username for alternative credential to authenticate with Windows.</p>
-</div></td>
-</tr>
 </tbody>
 </table>
 </section>
-<section id="notes">
-<h2><a class="toc-backref" href="#id4">Notes</a><a class="headerlink" href="#notes" title="Permalink to this heading"></a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<ul class="simple">
-<li><p>Windows only.</p></li>
-</ul>
-</div>
-</section>
 <section id="examples">
-<h2><a class="toc-backref" href="#id5">Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Enable hadr with service restart</span><span class="w"></span>
-<span class="w">  </span><span class="nt">lowlydba.sqlserver.hadr</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span><span class="w"></span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">    </span><span class="nt">force</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<h2><a class="toc-backref" href="#id3">Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install FRK</span><span class="w"></span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.first_responder_kit</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test-server.my.company.com</span><span class="w"></span>
+<span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dba_tools</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
 <section id="return-values">
-<h2><a class="toc-backref" href="#id6">Return Values</a><a class="headerlink" href="#return-values" title="Permalink to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id4">Return Values</a><a class="headerlink" href="#return-values" title="Permalink to this heading"></a></h2>
 <p>Common return values are documented <a class="reference external" href="https://docs.ansible.com/ansible/devel/reference_appendices/common_return_values.html#common-return-values" title="(in Ansible vdevel)"><span class="xref std std-ref">here</span></a>, the following are the fields unique to this module:</p>
 <table class="colwidths-auto ansible-option-table docutils align-default" style="width: 100%">
 <thead>
@@ -255,10 +265,10 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="return-data"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-hadr-module-return-data"><strong>data</strong></p>
+<div class="ansibleOptionAnchor" id="return-data"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-first-responder-kit-module-return-data"><strong>data</strong></p>
 <a class="ansibleOptionLink" href="#return-data" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Output from the <code class="docutils literal notranslate"><span class="pre">Enable-DbaAgHadr</span></code> or <code class="docutils literal notranslate"><span class="pre">Disable-DbaAgHadr</span></code> function.</p>
+<td><div class="ansible-option-cell"><p>Modified output from the <code class="docutils literal notranslate"><span class="pre">Install-DbaFirstResponderKit</span></code> function.</p>
 <p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success, but not in check_mode.</p>
 </div></td>
 </tr>
@@ -285,8 +295,8 @@ To check whether it is installed, run <code class="code docutils literal notrans
           
 
 <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="first_responder_kit_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.first_responder_kit module – Install/update the First Responder Kit scripts." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="instance_info_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.instance_info module – Returns basic information for a SQL Server instance." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dba_multitool_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.dba_multitool module – Install/update the DBA Multitool suite by John McCAll" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="hadr_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.hadr module – Enable or disable HADR." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
