@@ -14,7 +14,26 @@ $spec = @{
     options = @{
         branch = @{type = 'str'; required = $false; choices = @('main', 'dev') }
         local_file = @{type = 'str'; required = $false }
-        only_script = @{type = 'str'; required = $false; choices = @('Install-All-Scripts.sql', 'Install-Core-Blitz-No-Query-Store.sql', 'Install-Core-Blitz-With-Query-Store.sql', 'sp_Blitz.sql', 'sp_BlitzFirst.sql', 'sp_BlitzIndex.sql', 'sp_BlitzCache.sql', 'sp_BlitzWho.sql', 'sp_BlitzQueryStore.sql', 'sp_BlitzAnalysis.sql', 'sp_BlitzBackups.sql', 'sp_BlitzInMemoryOLTP.sql', 'sp_BlitzLock.sql', 'sp_AllNightLog.sql', 'sp_AllNightLog_Setup.sql', 'sp_DatabaseRestore.sql', 'sp_ineachdb.sql', 'SqlServerVersions.sql', 'Uninstall.sql') }
+        only_script = @{type = 'str'; required = $false; choices = @('Install-All-Scripts.sql'
+                'Install-Core-Blitz-No-Query-Store.sql'
+                'Install-Core-Blitz-With-Query-Store.sql'
+                'sp_Blitz.sql'
+                'sp_BlitzFirst.sql'
+                'sp_BlitzIndex.sql'
+                'sp_BlitzCache.sql'
+                'sp_BlitzWho.sql'
+                'sp_BlitzQueryStore.sql'
+                'sp_BlitzAnalysis.sql'
+                'sp_BlitzBackups.sql'
+                'sp_BlitzInMemoryOLTP.sql'
+                'sp_BlitzLock.sql'
+                'sp_AllNightLog.sql'
+                'sp_AllNightLog_Setup.sql'
+                'sp_DatabaseRestore.sql'
+                'sp_ineachdb.sql'
+                'SqlServerVersions.sql'
+                'Uninstall.sql') 
+        }
         database = @{type = 'str'; required = $true }
         force = @{type = 'bool'; required = $false; default = $false }
     }
