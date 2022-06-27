@@ -19,7 +19,7 @@ options:
     required: true
   ip_address:
     description:
-      - Restart SQL Server and SQL Agent services automatically.
+      - IPv4 address.
     type: str
     required: false
 notes:
