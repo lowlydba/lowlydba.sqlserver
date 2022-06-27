@@ -15,13 +15,22 @@ $ErrorActionPreference = "Stop"
 $spec = @{
     supports_check_mode = $true
     options = @{
+        username = @{type = 'str'; required = $false }
+        password = @{type = 'str'; required = $false; no_log = $true }
         port = @{type = 'int'; required = $true }
         ip_address = @{type = 'str'; required = $false }
     }
+    required_together = @(
+        , @('username', 'password')
+    )
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
+if ($null -ne $module.Params.username) {
+    [securestring]$secPassword = ConvertTo-SecureString $Module.Params.password -AsPlainText -Force
+    [pscredential]$credential = New-Object System.Management.Automation.PSCredential ($Module.Params.username, $secPassword)
+}
 $port = $module.Params.port
 $ipAddress = $module.Params.ip_address
 $checkMode = $module.CheckMode
@@ -29,12 +38,12 @@ $module.Result.changed = $false
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 try {
-    $existingPort = Get-DbaTcpPort -SqlInstance $sqlInstance -SqlCredential $sqlCredential
+    $existingPort = Get-DbaTcpPort -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Credential $credential
 
     if ($ipAddress -ne $existingPort.IPAddress -or $port -ne $existingPort.Port) {
         $tcpPortSplat = @{
             SqlInstance = $SqlInstance
-            SqlCredential = $sqlCredential
+            Credential = $credential
             Port = $port
         }
         if ($ipAddress) {
