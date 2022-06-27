@@ -38,18 +38,17 @@ $module.Result.changed = $false
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 try {
-    $existingPort = Get-DbaTcpPort -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Credential $credential
+    $tcpPortSplat = @{
+        SqlInstance = $SqlInstance
+        Credential = $credential
+        Port = $port
+    }
+    if ($ipAddress) {
+        $tcpPortSplat.Add("IPAddress", $ipAddress)
+    }
+    $output = Set-DbaTcpPort @tcpPortSplat
 
-    if ($ipAddress -ne $existingPort.IPAddress -or $port -ne $existingPort.Port) {
-        $tcpPortSplat = @{
-            SqlInstance = $SqlInstance
-            Credential = $credential
-            Port = $port
-        }
-        if ($ipAddress) {
-            $tcpPortSplat.Add("IPAddress", $ipAddress)
-        }
-        $output = Set-DbaTcpPort @tcpPortSplat
+    if ($output.Changes.Count -gt 0 -or $checkMode) {
         $module.Result.changed = $true
     }
 
