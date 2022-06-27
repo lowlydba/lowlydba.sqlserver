@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lowlydba.sqlserver.traceflag module – Enable or disable global trace flags on a SQL Server instance. &mdash; Ansible collections  documentation</title>
+  <title>lowlydba.sqlserver.tcp_port module – Sets the TCP port for the instance. &mdash; Ansible collections  documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/ansible.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/antsibull-minimal.css" type="text/css" />
@@ -21,8 +21,8 @@
         <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Index of all Modules" href="../../index_module.html" />
-    <link rel="prev" title="lowlydba.sqlserver.tcp_port module – Sets the TCP port for the instance." href="tcp_port_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+    <link rel="next" title="lowlydba.sqlserver.traceflag module – Enable or disable global trace flags on a SQL Server instance." href="traceflag_module.html" />
+    <link rel="prev" title="lowlydba.sqlserver.spn module – Configures SPNs for SQL Server." href="spn_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
 
 
 
@@ -106,7 +106,7 @@
           <li><a href="../../index.html">Collection Index</a> &raquo;</li>
           <li><a href="../index.html">Collections in the Lowlydba Namespace</a> &raquo;</li>
           <li><a href="index.html">Lowlydba.Sqlserver</a> &raquo;</li>
-      <li>lowlydba.sqlserver.traceflag module – Enable or disable global trace flags on a SQL  Server instance.</li>
+      <li>lowlydba.sqlserver.tcp_port module – Sets the TCP port for the instance.</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -117,8 +117,8 @@
   
            <div itemprop="articleBody">
              
-  <span class="target" id="ansible-collections-lowlydba-sqlserver-traceflag-module"></span><section id="lowlydba-sqlserver-traceflag-module-enable-or-disable-global-trace-flags-on-a-sql-server-instance">
-<h1>lowlydba.sqlserver.traceflag module – Enable or disable global trace flags on a SQL  Server instance.<a class="headerlink" href="#lowlydba-sqlserver-traceflag-module-enable-or-disable-global-trace-flags-on-a-sql-server-instance" title="Permalink to this heading"></a></h1>
+  <span class="target" id="ansible-collections-lowlydba-sqlserver-tcp-port-module"></span><section id="lowlydba-sqlserver-tcp-port-module-sets-the-tcp-port-for-the-instance">
+<h1>lowlydba.sqlserver.tcp_port module – Sets the TCP port for the instance.<a class="headerlink" href="#lowlydba-sqlserver-tcp-port-module-sets-the-tcp-port-for-the-instance" title="Permalink to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/lowlydba/sqlserver">lowlydba.sqlserver collection</a> (version 0.9.3).</p>
@@ -126,10 +126,10 @@
 It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">lowlydba.sqlserver</span></code>.</p>
-<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">lowlydba.sqlserver.traceflag</span></code>.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">lowlydba.sqlserver.tcp_port</span></code>.</p>
 </div>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 0.1.0: </span>of lowlydba.sqlserver</p>
+<p><span class="versionmodified added">New in version 0.10.0: </span>of lowlydba.sqlserver</p>
 </div>
 <div class="contents local topic" id="contents">
 <ul class="simple">
@@ -144,7 +144,7 @@ To check whether it is installed, run <code class="code docutils literal notrans
 <section id="synopsis">
 <h2><a class="toc-backref" href="#id1">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this heading"></a></h2>
 <ul class="simple">
-<li><p>EnableDisable global trace flag on a SQL Instance. This trace flag takes affect immediatley and does not require SQL Instance restart. This setting does not persist after restart.</p></li>
+<li><p>Sets the TCP port for the instance.</p></li>
 </ul>
 </section>
 <section id="requirements">
@@ -164,43 +164,52 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-enabled"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-traceflag-module-parameter-enabled"><strong>enabled</strong></p>
-<a class="ansibleOptionLink" href="#parameter-enabled" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span> / <span class="ansible-option-required">required</span></p>
+<div class="ansibleOptionAnchor" id="parameter-ip_address"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-ip-address"><strong>ip_address</strong></p>
+<a class="ansibleOptionLink" href="#parameter-ip_address" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Flag to enable or disable the trace flag.</p>
-<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
-<ul class="simple">
-<li><p><span class="ansible-option-choices-entry">no</span></p></li>
-<li><p><span class="ansible-option-choices-entry">yes</span></p></li>
-</ul>
+<td><div class="ansible-option-cell"><p>IPv4 address.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_instance"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-traceflag-module-parameter-sql-instance"><strong>sql_instance</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-password"><strong>password</strong></p>
+<a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Password for alternative credential to authenticate with Windows.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-port"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-port"><strong>port</strong></p>
+<a class="ansibleOptionLink" href="#parameter-port" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Port for SQL Server to listen on.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-sql_instance"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-sql-instance"><strong>sql_instance</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_instance" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The SQL Server instance to modify.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-traceflag-module-parameter-sql-password"><strong>sql_password</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-sql_password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-sql-password"><strong>sql_password</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Password for SQL Authentication.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-traceflag-module-parameter-sql-username"><strong>sql_username</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-sql_username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-sql-username"><strong>sql_username</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Username for SQL Authentication.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-trace_flag"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-traceflag-module-parameter-trace-flag"><strong>trace_flag</strong></p>
-<a class="ansibleOptionLink" href="#parameter-trace_flag" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span> / <span class="ansible-option-required">required</span></p>
+<div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-username"><strong>username</strong></p>
+<a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Trace Flag number.</p>
+<td><div class="ansible-option-cell"><p>Username for alternative credential to authenticate with Windows.</p>
 </div></td>
 </tr>
 </tbody>
@@ -211,17 +220,16 @@ To check whether it is installed, run <code class="code docutils literal notrans
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>Check mode is supported.</p></li>
+<li><p>Windows only.</p></li>
 </ul>
 </div>
 </section>
 <section id="examples">
 <h2><a class="toc-backref" href="#id5">Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Eliminate successful backup information from SQL Error Log</span><span class="w"></span>
-<span class="w">  </span><span class="nt">lowlydba.sqlserver.traceflag</span><span class="p">:</span><span class="w"></span>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set the default port</span><span class="w"></span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.tcp_port</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span><span class="w"></span>
-<span class="w">    </span><span class="nt">trace_flag</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3226</span><span class="w"></span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1433</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -236,10 +244,10 @@ To check whether it is installed, run <code class="code docutils literal notrans
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="return-data"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-traceflag-module-return-data"><strong>data</strong></p>
+<div class="ansibleOptionAnchor" id="return-data"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-return-data"><strong>data</strong></p>
 <a class="ansibleOptionLink" href="#return-data" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Output from the <code class="docutils literal notranslate"><span class="pre">Enable-DbaTraceFlag</span></code> or <code class="docutils literal notranslate"><span class="pre">Disable-DbaTraceFlag</span></code> function.</p>
+<td><div class="ansible-option-cell"><p>Output from the <code class="docutils literal notranslate"><span class="pre">Set-DbaTcpPort</span></code> function.</p>
 <p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success, but not in check_mode.</p>
 </div></td>
 </tr>
@@ -248,7 +256,7 @@ To check whether it is installed, run <code class="code docutils literal notrans
 <section id="authors">
 <h3>Authors<a class="headerlink" href="#authors" title="Permalink to this heading"></a></h3>
 <ul class="simple">
-<li><p>Sudhir Koduri (&#64;kodurisudhir)</p></li>
+<li><p>John McCall (&#64;lowlydba)</p></li>
 </ul>
 </section>
 <section id="collection-links">
@@ -266,8 +274,8 @@ To check whether it is installed, run <code class="code docutils literal notrans
           
 
 <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="tcp_port_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.tcp_port module – Sets the TCP port for the instance." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../../index_module.html" class="btn btn-neutral float-right" title="Index of all Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="spn_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.spn module – Configures SPNs for SQL Server." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="traceflag_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.traceflag module – Enable or disable global trace flags on a SQL Server instance." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
