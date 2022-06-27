@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # (c) 2022, John McCall (@lowlydba)
+# (c) 2021, Sudhir Koduri (@kodurisudhir)
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
@@ -14,28 +15,40 @@ $ErrorActionPreference = "Stop"
 $spec = @{
     supports_check_mode = $true
     options = @{
-        max = @{type = "int"; required = $false; default = 0 }
+        username = @{type = 'str'; required = $false }
+        password = @{type = 'str'; required = $false; no_log = $true }
+        port = @{type = 'int'; required = $true }
+        ip_address = @{type = 'str'; required = $false }
     }
+    required_together = @(
+        , @('username', 'password')
+    )
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
-$max = $module.Params.max
+if ($null -ne $module.Params.username) {
+    [securestring]$secPassword = ConvertTo-SecureString $Module.Params.password -AsPlainText -Force
+    [pscredential]$credential = New-Object System.Management.Automation.PSCredential ($Module.Params.username, $secPassword)
+}
+$port = $module.Params.port
+$ipAddress = $module.Params.ip_address
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
-# Set max memory for SQL Instance
 try {
-    # Set max memory
-    $setMemorySplat = @{
-        SqlInstance = $sqlInstance
-        SqlCredential = $sqlCredential
-        Max = $max
+    $tcpPortSplat = @{
+        SqlInstance = $SqlInstance
+        Credential = $credential
+        Port = $port
     }
-    $output = Set-DbaMaxMemory @setMemorySplat
+    if ($ipAddress) {
+        $tcpPortSplat.Add("IPAddress", $ipAddress)
+    }
+    $output = Set-DbaTcpPort @tcpPortSplat
 
-    if ($output.PreviousMaxValue -ne $output.MaxValue -or $checkMode) {
+    if ($output.Changes.Count -gt 0 -or $checkMode) {
         $module.Result.changed = $true
     }
 
@@ -46,5 +59,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Error setting max memory.", $_)
+    $module.FailJson("Configuring TCP port failed: $($_.Exception.Message)", $_)
 }

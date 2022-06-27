@@ -1,0 +1,49 @@
+---
+- name: Var block
+  module_defaults:
+    lowlydba.sqlserver.tcp_port:
+
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+  tags: ["tcp_port"]
+  block:
+
+    - name: Get instance info
+      lowlydba.sqlserver.instance_info:
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+      register: instance
+
+    - name: Set default
+      lowlydba.sqlserver.tcp_port:
+        sql_instance: "{{ instance.data.SqlInstance }}"
+        port: 1433
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+
+    - name: Checkmode
+      lowlydba.sqlserver.tcp_port:
+        sql_instance: "{{ instance.data.SqlInstance }}"
+        port: 1434
+      check_mode: true
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Verify checkmode works
+      lowlydba.sqlserver.tcp_port:
+        sql_instance: "{{ instance.data.SqlInstance }}"
+        port: 1433
+      register: result
+    - assert:
+        that:
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result is not changed
