@@ -5,7 +5,6 @@
       sql_instance: "{{ sqlserver_instance }}"
       sql_username: "{{ sqlserver_username }}"
       sql_password: "{{ sqlserver_password }}"
-      force: true
   tags: ["tcp_port"]
   block:
     - name: Set default
