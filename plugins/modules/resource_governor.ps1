@@ -31,15 +31,24 @@ try {
     $rg = Get-DbaResourceGovernor -SqlInstance $sqlInstance -SqlCredential $sqlCredential
     $rgClassifierFunction = $rg.ClassifierFunction.Name
 
-    if (($rg.Enabled -ne $enabled) -or ($rgClassifierFunction -ne $classifierFunction) `
-            -or ($null -ne $rgClassifierFunction -and $classifierFunction -eq "NULL")) {
+    if ($rg.Enabled -ne $enabled) {
+        $change = $true
+    }
+    if ($classifierFunction -ne "NULL" -and $rgClassifierFunction -ne $classifierFunction) {
+        $change = $true
+    }
+    if ($classifierFunction -eq "NULL" -and $null -ne $rgClassifierFunction) {
+        $change = $true
+    }
+
+    if ($change) {
         $rgHash = @{
-            SqlInstance = $sqlInstance
-            SqlCredential = $sqlCredential
+            SqlInstance        = $sqlInstance
+            SqlCredential      = $sqlCredential
             ClassifierFunction = $classifierFunction
-            WhatIf = $checkMode
-            EnableException = $true
-            Confirm = $false
+            WhatIf             = $checkMode
+            EnableException    = $true
+            Confirm            = $false
         }
         if ($enabled) {
             $output = Set-DbaResourceGovernor @rgHash -Enabled
