@@ -26,27 +26,35 @@ $enabled = $module.Params.enabled
 $classifierFunction = $module.Params.classifier_function
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
+$PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 try {
     $rg = Get-DbaResourceGovernor -SqlInstance $sqlInstance -SqlCredential $sqlCredential
     $rgClassifierFunction = $rg.ClassifierFunction.Name
 
-    if (($rg.Enabled -ne $enabled) -or ($rgClassifierFunction -ne $classifierFunction) `
-            -or ($null -ne $rgClassifierFunction -and $classifierFunction -eq "NULL")) {
-        $rgHash = @{
+    if ($rg.Enabled -ne $enabled) {
+        $change = $true
+    }
+    if ($classifierFunction -ne "NULL" -and $rgClassifierFunction -ne $classifierFunction) {
+        $change = $true
+    }
+    if ($classifierFunction -eq "NULL" -and $null -ne $rgClassifierFunction) {
+        $change = $true
+    }
+
+    if ($change) {
+        $rgSplat = @{
             SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential
             ClassifierFunction = $classifierFunction
-            WhatIf = $checkMode
-            EnableException = $true
-            Confirm = $false
         }
         if ($enabled) {
-            $output = Set-DbaResourceGovernor @rgHash -Enabled
+            $rgSplat.Add("Enabled", $true)
         }
         else {
-            $output = Set-DbaResourceGovernor @rgHash -Disabled
+            $rgSplat.Add("Disabled", $true)
         }
+        $output = Set-DbaResourceGovernor @rgSplat
         $module.Result.changed = $true
     }
 
