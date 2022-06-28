@@ -5,6 +5,25 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.10.0
+=======
+
+Release Summary
+---------------
+
+The first_responder_kit and tcp_port modules, along with a bump in the required dbatools version.
+
+Minor Changes
+-------------
+
+- Update minimum required DBATools version universally to 1.1.108 to accommodate new tcp module.
+
+New Modules
+-----------
+
+- first_responder_kit - Install/update the First Responder Kit scripts.
+- tcp_port - Sets the TCP port for the instance.
+
 v0.9.3
 ======
 
