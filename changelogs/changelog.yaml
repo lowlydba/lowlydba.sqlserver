@@ -58,6 +58,24 @@ releases:
     fragments:
     - v0.1.1_summary.yml
     release_date: '2022-03-31'
+  0.10.0:
+    changes:
+      minor_changes:
+      - Update minimum required DBATools version universally to 1.1.108 to accommodate
+        new tcp module.
+      release_summary: The first_responder_kit and tcp_port modules, along with a
+        bump in the required dbatools version.
+    fragments:
+    - 105-update-dbatools-version.yml
+    - v0-10-0-release-summary.yml
+    modules:
+    - description: Install/update the First Responder Kit scripts.
+      name: first_responder_kit
+      namespace: ''
+    - description: Sets the TCP port for the instance.
+      name: tcp_port
+      namespace: ''
+    release_date: '2022-06-27'
   0.2.0:
     changes:
       minor_changes:

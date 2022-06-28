@@ -1,2 +1,0 @@
-minor_changes:
-  - Update minimum required DBATools version universally to 1.1.108 to accommodate new tcp module.
