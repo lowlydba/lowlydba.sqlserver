@@ -1,0 +1,2 @@
+bugfixes:
+  - Fix change detection in resource_governor module.
