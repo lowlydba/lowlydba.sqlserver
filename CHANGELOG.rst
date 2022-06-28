@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.10.1
+=======
+
+Release Summary
+---------------
+
+Bug fix for resource_governor.
+
+Bugfixes
+--------
+
+- Fix change detection in resource_governor module.
+
 v0.10.0
 =======
 
