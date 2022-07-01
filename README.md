@@ -70,7 +70,9 @@ To learn how to maintain / become a maintainer of this collection, refer to the 
 
 ## External requirements
 
-- PowerShell module: [DbaTools][dbatools] >= 1.1.108
+- PowerShell modules
+  - [dbatools][dbatools] >= 1.1.108
+  - [dbops][dbops] >= 0.8.0
 
 ## Using this collection
 
@@ -114,3 +116,4 @@ TBD
 
 <!-- Link shortcuts -->
 [dbatools]: https://dbatools.io
+[dbops]: https://github.com/dataplat/dbops
