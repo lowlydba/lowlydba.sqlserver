@@ -7,6 +7,6 @@ dbatools_install_cmd: >
 
 dbops_min_version: 0.8.0
 dbops_install_cmd: >
-  if (-not(Get-Module -FullyQualifiedName @{ModuleName='dbatools';ModuleVersion='{{ dbops_min_version }}'} -ListAvailable)) {
+  if (-not(Get-Module -FullyQualifiedName @{ModuleName='dbops';ModuleVersion='{{ dbops_min_version }}'} -ListAvailable)) {
       Install-Module dbops -MinimumVersion {{ dbops_min_version }} -Force
   }
