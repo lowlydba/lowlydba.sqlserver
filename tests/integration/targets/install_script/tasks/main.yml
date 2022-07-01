@@ -12,16 +12,26 @@
       no_recurse: true
       database: "{{ database_name }}"
       path: "{{ path }}"
+      schema_version_table: "SchemaVersion"
+      output_file: "output.txt"
   tags: ["sqlserver.install_script"]
   block:
+    - name: Install a script in no log mode
+      lowlydba.sqlserver.install_script:
+        no_log_version: true
+      register: result
+    - assert:
+        that:
+          - result.data.Database == "{{ database_name }}"
+          - result.data.Successful == true
+          - result is changed
+
     - name: Install a script in checkmode
       lowlydba.sqlserver.install_script:
       register: result
       check_mode: true
     - assert:
         that:
-          - result.data.Database == "{{ database_name }}"
-          - result.data.Successful == true
           - result is changed
 
     - name: Install a script

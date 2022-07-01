@@ -6,20 +6,78 @@
 
 DOCUMENTATION = r'''
 ---
-module: migrate_database
+module: install_script
 short_description: Runs migration scripts against a database.
 description:
      - Uses DBOps to run C(Dbo-InstallScript) against a target SQL Server database.
+version_added: 0.11.0
 options:
   database:
     description:
       - Name of the target database.
     required: true
+    type: str
   path:
     description:
       - Directory where targeted sql scripts are stored.
     type: str
     required: true
+  schema_version_table:
+    description:
+      - A table that will hold the history of script execution. This table is used to choose what scripts are going to be
+        run during the deployment, preventing the scripts from being execured twice.
+    type: str
+    required: false
+  deployment_method:
+    description:
+      - SingleTransaction - wrap all the deployment scripts into a single transaction and rollback whole deployment on error.
+        TransactionPerScript - wrap each script into a separate transaction; rollback single script deployment in case of error.
+        NoTransaction - deploy as is.
+    type: str
+    required: false
+    default: 'NoTransaction'
+    choices: ['NoTransaction', 'SingleTransaction', 'TransactionPerScript']
+  no_log_version:
+    description:
+      - If set, the deployment will not be tracked in the database. That will also mean that all the scripts
+        and all the builds from the package are going to be deployed regardless of any previous deployment history.
+    type: bool
+    default: false
+    required: false
+  connection_timeout:
+    description:
+      - Database server connection timeout in seconds. Only affects connection attempts. Does not affect execution timeout.
+    type: int
+    default: 30
+    required: false
+  execution_timeout:
+    description:
+      - Script execution timeout. The script will be aborted if the execution takes more than specified number of seconds.
+    type: int
+    default: 0
+    required: false
+  output_file:
+    description:
+      - Log output into specified file.
+    type: str
+    required: false
+  create_database:
+    description:
+      - Will create an empty database if missing.
+    type: bool
+    default: false
+    required: false
+  no_recurse:
+    description:
+      - Only process the first level of the target path.
+    type: bool
+    required: false
+    default: false
+  match:
+    description:
+      -  Runs a regex verification against provided file names using the provided Match string.
+    type: str
+    required: false
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module

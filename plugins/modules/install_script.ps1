@@ -17,9 +17,8 @@ $spec = @{
         deployment_method = @{type = 'str'; required = $false; default = 'NoTransaction'; choices = @('NoTransaction', 'SingleTransaction', 'TransactionPerScript') }
         schema_version_table = @{type = 'str'; required = $false }
         no_log_version = @{type = 'bool'; required = $false; default = $false }
-        connection_timeout = @{type = 'int'; required = $false; default = 0 }
+        connection_timeout = @{type = 'int'; required = $false; default = 30 }
         execution_timeout = @{type = 'int'; required = $false; default = 0 }
-        configuration = @{type = 'str'; required = $false }
         output_file = @{type = 'str'; required = $false }
         create_database = @{type = 'bool'; required = $false; default = $false }
         no_recurse = @{type = 'bool'; required = $false; default = $false }
@@ -32,7 +31,6 @@ $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $database = $module.Params.database
 $schemaVersionTable = $module.Params.schema_version_table
 $path = $module.Params.path
-$configuration = $module.Params.configuration
 $outputFile = $module.Params.output_file
 $match = $module.Params.match
 $connectionTimeout = $module.Params.connection_timeout
@@ -54,12 +52,10 @@ try {
         CreateDatabase = $createDatabase
         NoRecurse = $noRecurse
         Silent = $true
+        Type = "SqlServer"
     }
     if ($schemaVersionTable) {
         $installSplat.Add("SchemaVersionTable", $schemaVersionTable)
-    }
-    if ($configuration) {
-        $installSplat.Add("Configuration", $configuration)
     }
     if ($outputFile) {
         $installSplat.Add("OutputFile", $outputFile)
