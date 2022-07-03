@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.11.0
+=======
+
+Release Summary
+---------------
+
+Adding new dbops module.
+
+New Modules
+-----------
+
+- install_script - Runs migration scripts against a database.
+
 v0.10.1
 =======
 
