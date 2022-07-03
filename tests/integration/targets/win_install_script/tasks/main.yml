@@ -2,6 +2,7 @@
 - name: Var block
   vars:
     path: "{{ role_path }}/files/"
+    dest: "tmp/"
     database_name: "lowlydba-migration-test"
   module_defaults:
     lowlydba.sqlserver.install_script:
@@ -11,15 +12,22 @@
       create_database: true
       no_recurse: true
       database: "{{ database_name }}"
-      path: "{{ path }}"
+      #path: "{{ path }}"
       schema_version_table: "SchemaVersion"
       output_file: "output.txt"
   tags: ["sqlserver.install_script"]
 
   block:
+    - name: Copy migration script(s)
+      ansible.windows.win_copy:
+        src: "{{ path }}"
+        dest: "{{ dest }}"
+      register: script_file
+
     - name: Install a script in no log mode
       lowlydba.sqlserver.install_script:
         no_log_version: true
+        path: "{{ script_file.dest }}"
       register: result
     - assert:
         that:
@@ -29,6 +37,7 @@
 
     - name: Install a script in checkmode
       lowlydba.sqlserver.install_script:
+        path: "{{ script_file.dest }}"
       register: result
       check_mode: true
     - assert:
@@ -37,6 +46,7 @@
 
     - name: Install a script
       lowlydba.sqlserver.install_script:
+        path: "{{ script_file.dest }}"
       register: result
     - assert:
         that:
@@ -46,6 +56,7 @@
 
     - name: Install same script
       lowlydba.sqlserver.install_script:
+        path: "{{ script_file.dest }}"
       register: result
     - assert:
         that:
