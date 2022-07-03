@@ -1,0 +1,61 @@
+---
+- name: Var block
+  vars:
+    path: "{{ role_path }}/files/"
+    database_name: "lowlydba-migration-test"
+  module_defaults:
+    lowlydba.sqlserver.install_script:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      create_database: true
+      no_recurse: true
+      database: "{{ database_name }}"
+      path: "{{ path }}"
+      schema_version_table: "SchemaVersion"
+      output_file: "output.txt"
+  tags: ["sqlserver.install_script"]
+
+  block:
+    - name: Install a script in no log mode
+      lowlydba.sqlserver.install_script:
+        no_log_version: true
+      register: result
+    - assert:
+        that:
+          - result.data.Database == "{{ database_name }}"
+          - result.data.Successful == true
+          - result is changed
+
+    - name: Install a script in checkmode
+      lowlydba.sqlserver.install_script:
+      register: result
+      check_mode: true
+    - assert:
+        that:
+          - result is changed
+
+    - name: Install a script
+      lowlydba.sqlserver.install_script:
+      register: result
+    - assert:
+        that:
+          - result.data.Database == "{{ database_name }}"
+          - result.data.Successful == true
+          - result is changed
+
+    - name: Install same script
+      lowlydba.sqlserver.install_script:
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+  always:
+    - name: Cleanup database
+      lowlydba.sqlserver.database:
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+        database: "{{ database_name }}"
+        state: absent
