@@ -1,7 +1,7 @@
 ---
 - name: Var block
   vars:
-    path: "{{ role_path }}/files/1-select-choice.sql"
+    path: "{{ role_path }}/template/1-select-choice.sql"
     database_name: "lowlydba-migration-test"
   module_defaults:
     lowlydba.sqlserver.install_script:
