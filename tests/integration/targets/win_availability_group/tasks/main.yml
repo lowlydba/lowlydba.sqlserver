@@ -27,7 +27,6 @@
       seeding_mode: "{{ seeding_mode }}"
       database_health_trigger: "{{ database_health_trigger }}"
       database: "{{ database }}"
-      use_last_backup: "{{ use_last_backup }}"
       healthcheck_timeout: "{{ healthcheck_timeout }}"
       basic_availability_group: "{{ basic_availability_group }}"
       force: "{{ force }}"
@@ -43,7 +42,7 @@
         enabled: true
         force: true
 
-    - name: Ensure a database exists
+    - name: Create a database
       lowlydba.sqlserver.database:
         sql_instance: "{{ sqlserver_instance }}"
         sql_username: "{{ sqlserver_username }}"
@@ -101,4 +100,9 @@
   always:
     - name: Drop availability group
       lowlydba.sqlserver.availability_group:
+        state: absent
+
+    - name: Drop database
+      lowlydba.sqlserver.database:
+        database: "{{ database }}"
         state: absent
