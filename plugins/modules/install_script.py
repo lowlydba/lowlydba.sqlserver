@@ -90,7 +90,7 @@ EXAMPLES = '''
 - name: Migrate a database
   migrate_database:
     sql_instance: test-server.my.company.com
-    database_name: AdventureWorks
+    database: AdventureWorks
     path: migrations
 '''
 

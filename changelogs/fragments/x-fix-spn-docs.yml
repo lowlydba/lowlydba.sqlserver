@@ -1,2 +1,3 @@
 bugfixes:
   - Fix incorrect examples in `spn` module documentationb.
+  - Fix incorrect examples in `install_script` module documentation.
