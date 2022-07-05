@@ -42,12 +42,12 @@ extends_documentation_fragment:
 EXAMPLES = r'''
 - name: Add server SPN
   spn:
-    spn: MSSQLSvc\\sql-01.myco.io
+    computer: sql-01.myco.io
     service_account: myco\sql-svc
 
 - name: Add listener SPN on port 1433
   spn:
-    spn: MSSQLSvc\\aglMyDatabase.myco.io:1433
+    computer: aglMyDatabase.myco.io:1433
     service_account: myco\sql-svc
 '''
 
