@@ -172,7 +172,7 @@ try {
                         FilePath = "NUL"
                         Type = "Full"
                     }
-                    $null = Backup-DbaDatabase $backupSplat
+                    $null = Backup-DbaDatabase @backupSplat
                 }
             }
             $output = New-DbaAvailabilityGroup @agSplat
