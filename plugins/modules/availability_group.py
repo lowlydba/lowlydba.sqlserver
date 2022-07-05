@@ -143,7 +143,7 @@ extends_documentation_fragment:
 EXAMPLES = r'''
 - name: Create Availability Group
   lowlydba.sqlserver.availability_group:
-    sql_instance_primary: sql-01.myco.io
+    sql_instance: sql-01.myco.io
     ag_name: AG_MyDatabase
 '''
 

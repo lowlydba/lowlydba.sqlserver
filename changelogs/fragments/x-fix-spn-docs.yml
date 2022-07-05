@@ -1,3 +1,4 @@
 bugfixes:
   - Fix incorrect examples in `spn` module documentationb.
   - Fix incorrect examples in `install_script` module documentation.
+  - Fix incorrect examples in `availability_group` module documentation.
