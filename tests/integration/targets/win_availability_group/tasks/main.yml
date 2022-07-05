@@ -26,12 +26,16 @@
       availability_mode: "{{ availability_mode }}"
       seeding_mode: "{{ seeding_mode }}"
       database_health_trigger: "{{ database_health_trigger }}"
-      database: "{{ database }}"
+      #database: "{{ database }}"
       healthcheck_timeout: "{{ healthcheck_timeout }}"
       basic_availability_group: "{{ basic_availability_group }}"
       force: "{{ force }}"
-      #allow_null_backup: true
+      allow_null_backup: true
       failure_condition_level: "{{ failure_condition_level }}"
+    lowlydba.sqlserver.database:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
   tags: ["availability_group"]
   block:
     - name: Enable hadr
@@ -44,9 +48,6 @@
 
     - name: Create a database
       lowlydba.sqlserver.database:
-        sql_instance: "{{ sqlserver_instance }}"
-        sql_username: "{{ sqlserver_username }}"
-        sql_password: "{{ sqlserver_password }}"
         database: "{{ database }}"
 
     - name: Create availability group
