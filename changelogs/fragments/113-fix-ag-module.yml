@@ -1,2 +1,3 @@
 bugfixes:
   - Fix `availability_group` module so that NUL backups can be properly taken if needed.
+  - Fixed bugs where adding replica did not work properly for several reasons.

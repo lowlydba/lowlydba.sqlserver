@@ -102,8 +102,8 @@ $checkMode = $module.CheckMode
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 try {
-    $availabilityGroup = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
-    $existingReplica = $availabilityGroup | Get-DbaAgReplica -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential | Get-Unique
+    $replicaInstance = Connect-DbaInstance -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential
+    $existingReplica = Get-DbaAgReplica -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential -AvailabilityGroup $agName | Where-Object Name -EQ $replicaInstance.DomainInstanceName
 
     if ($state -eq "present") {
         $addReplicaSplat = @{
@@ -135,6 +135,7 @@ try {
         }
 
         if ($null -eq $existingReplica) {
+            $availabilityGroup = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
             $output = $availabilityGroup | Add-DbaAgReplica @addReplicaSplat
             $module.Result.changed = $true
         }
@@ -153,18 +154,33 @@ try {
             $addReplicaSplat.GetEnumerator() | Where-Object Key -in $compareReplicaProperty | ForEach-Object { $setReplicaSplat.Add($_.Key, $_.Value) }
             [string[]]$compareProperty = $setReplicaSplat.Keys
             $replicaDiff = Compare-Object -ReferenceObject $setReplicaSplat -DifferenceObject $existingReplica -Property $compareProperty
+            $setReplicaSplat.Add("SqlInstance", $sqlInstance)
+            $setReplicaSplat.Add("SqlCredential", $sqlCredential)
+            $setReplicaSplat.Add("Replica", $existingReplica.Name)
+            $setReplicaSplat.Add("AvailabilityGroup", $agName)
             if ($replicaDiff) {
-                $output = $existingReplica | Set-DbaAgReplica @setReplicaSplat
+                $output = Set-DbaAgReplica @setReplicaSplat
                 $module.Result.changed = $true
             }
         }
     }
-    elseif ($state -eq "absent") {
+}
+catch {
+    $module.FailJson("Configuring Availability Group replica failed: $($_.Exception.Message)")
+}
+try {
+    if ($state -eq "absent") {
         if ($null -ne $existingReplica) {
             $output = $existingReplica | Remove-DbaAgReplica
             $module.Result.changed = $true
         }
     }
+}
+catch {
+    $module.FailJson("Removing Availability Group replica failed: $($_.Exception.Message)")
+}
+
+try {
     if ($output) {
         $resultData = ConvertTo-SerializableObject -InputObject $output
         $module.Result.data = $resultData
@@ -172,5 +188,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Configuring Availability Group replica failed: $($_.Exception.Message)", $_)
+    $module.FailJson("Error parsing results - operation likely completed: $($_.Exception.Message)")
 }
