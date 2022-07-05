@@ -103,7 +103,8 @@ $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false
 
 try {
     $replicaInstance = Connect-DbaInstance -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential
-    $existingReplica = Get-DbaAgReplica -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential -AvailabilityGroup $agName | Where-Object Name -EQ $replicaInstance.DomainInstanceName
+    $allReplicas = Get-DbaAgReplica -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential -AvailabilityGroup $agName
+    $existingReplica = $allReplicas | Where-Object Name -eq $replicaInstance.DomainInstanceName
 
     if ($state -eq "present") {
         $addReplicaSplat = @{
