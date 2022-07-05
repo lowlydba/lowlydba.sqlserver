@@ -8,7 +8,7 @@
     availability_mode: "AsynchronousCommit"
     seeding_mode: "Automatic"
     database_health_trigger: true
-    use_last_backup: true
+    use_last_backup: false
     healthcheck_timeout: 15000
     basic_availability_group: false
     force: true
@@ -30,7 +30,7 @@
       healthcheck_timeout: "{{ healthcheck_timeout }}"
       basic_availability_group: "{{ basic_availability_group }}"
       force: "{{ force }}"
-      allow_null_backup: true
+      #allow_null_backup: true
       failure_condition_level: "{{ failure_condition_level }}"
   tags: ["availability_group"]
   block:
