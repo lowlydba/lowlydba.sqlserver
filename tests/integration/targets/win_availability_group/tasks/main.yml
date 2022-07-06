@@ -6,13 +6,14 @@
     failover_mode: "Manual"
     dtc_support_enabled: false
     availability_mode: "AsynchronousCommit"
-    seeding_mode: "Manual"
+    seeding_mode: "Automatic"
     database_health_trigger: true
-    use_last_backup: true
+    use_last_backup: false
     healthcheck_timeout: 15000
     basic_availability_group: false
-    force: true
+    force: false
     failure_condition_level: "OnServerDown"
+    database: "ag-test-db"
   module_defaults:
     lowlydba.sqlserver.availability_group:
       sql_instance: "{{ sqlserver_instance }}"
@@ -25,11 +26,16 @@
       availability_mode: "{{ availability_mode }}"
       seeding_mode: "{{ seeding_mode }}"
       database_health_trigger: "{{ database_health_trigger }}"
-      use_last_backup: "{{ use_last_backup }}"
+      database: "{{ database }}"
       healthcheck_timeout: "{{ healthcheck_timeout }}"
       basic_availability_group: "{{ basic_availability_group }}"
       force: "{{ force }}"
+      allow_null_backup: true
       failure_condition_level: "{{ failure_condition_level }}"
+    lowlydba.sqlserver.database:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
   tags: ["availability_group"]
   block:
     - name: Enable hadr
@@ -39,6 +45,10 @@
         sql_password: "{{ sqlserver_password }}"
         enabled: true
         force: true
+
+    - name: Create a database
+      lowlydba.sqlserver.database:
+        database: "{{ database }}"
 
     - name: Create availability group
       lowlydba.sqlserver.availability_group:
@@ -91,4 +101,9 @@
   always:
     - name: Drop availability group
       lowlydba.sqlserver.availability_group:
+        state: absent
+
+    - name: Drop database
+      lowlydba.sqlserver.database:
+        database: "{{ database }}"
         state: absent

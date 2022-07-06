@@ -111,8 +111,7 @@ $module.Result.changed = $false
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 try {
-    #$server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
-    $existingAG = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName -EnableException
+    $existingAG = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
 
     if ($state -eq "present") {
         $agSplat = @{
@@ -163,7 +162,7 @@ try {
         if ($null -eq $existingAG) {
             # Full backup requirement for new AG via automatic seeding
             if ($seedingMode -eq "automatic" -and $null -ne $database) {
-                $dbBackup = Get-DbaLastBackup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Database $database -EnableException
+                $dbBackup = Get-DbaLastBackup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Database $database
                 if ($null -eq $dbBackup.LastFullBackup -and $allowNullBackup -eq $true) {
                     $backupSplat = @{
                         SqlInstance = $sqlInstance
@@ -172,7 +171,7 @@ try {
                         FilePath = "NUL"
                         Type = "Full"
                     }
-                    $null = Backup-DbaDatabase $backupSplat
+                    $null = Backup-DbaDatabase @backupSplat
                 }
             }
             $output = New-DbaAvailabilityGroup @agSplat
@@ -185,7 +184,7 @@ try {
                 ClusterType = $clusterType
             }
             if ($all_ags -eq $true) {
-                $agSplat.Add("AllAvailabilityGroups", $all_ags)
+                $setAgSplat.Add("AllAvailabilityGroups", $all_ags)
             }
             if ($dtcSupportEnabled -eq $true) {
                 $setAgSplat.Add("DtcSupportEnabled", $dtcSupportEnabled)
@@ -203,7 +202,7 @@ try {
                 $setAgSplat.Add("HealthCheckTimeout", $healthCheckTimeout)
             }
             if ($isDistributedAg -eq $true) {
-                $agSplat.Add("IsDistributedAvailabilityGroup", $isDistributedAg)
+                $setAgSplat.Add("IsDistributedAvailabilityGroup", $isDistributedAg)
             }
             $compareProperty = ($existingAG.Properties | Where-Object Name -in $setAgSplat.Keys).Name
             $agDiff = Compare-Object -ReferenceObject $existingAG -DifferenceObject $setAgSplat -Property $compareProperty
