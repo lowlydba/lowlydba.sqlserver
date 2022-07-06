@@ -5,6 +5,23 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.11.1
+=======
+
+Release Summary
+---------------
+
+Bug fixes for AlwaysOn related modules and fixing errors in some documentation examples.
+
+Bugfixes
+--------
+
+- Fix `availability_group` module so that NUL backups can be properly taken if needed.
+- Fix incorrect examples in `availability_group` module documentation.
+- Fix incorrect examples in `install_script` module documentation.
+- Fix incorrect examples in `spn` module documentationb.
+- Fixed bugs where adding replica did not work properly for several reasons.
+
 v0.11.0
 =======
 
