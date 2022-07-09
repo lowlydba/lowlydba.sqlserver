@@ -1,0 +1,1 @@
+release_summary: Bumping required dbatools version to ensure the `restore` module works on MacOS PowerShell Core (https://github.com/dataplat/dbatools/pull/8435).
