@@ -111,6 +111,13 @@ releases:
     - 113-fix-ag-module.yml
     - x-fix-spn-docs.yml
     release_date: '2022-07-06'
+  0.11.2:
+    changes:
+      release_summary: Bumping required dbatools version to ensure the `restore` module
+        works on MacOS PowerShell Core (https://github.com/dataplat/dbatools/pull/8435).
+    fragments:
+    - 0-11-2-release-summary.yml
+    release_date: '2022-07-09'
   0.2.0:
     changes:
       minor_changes:

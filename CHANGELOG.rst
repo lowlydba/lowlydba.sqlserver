@@ -5,6 +5,14 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v0.11.2
+=======
+
+Release Summary
+---------------
+
+Bumping required dbatools version to ensure the `restore` module works on MacOS PowerShell Core (https://github.com/dataplat/dbatools/pull/8435).
+
 v0.11.1
 =======
 
