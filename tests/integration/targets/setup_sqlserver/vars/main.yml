@@ -1,5 +1,5 @@
 ---
-dbatools_min_version: 1.1.108
+dbatools_min_version: 1.1.112
 dbatools_install_cmd: >
   if (-not(Get-Module -FullyQualifiedName @{ModuleName='dbatools';ModuleVersion='{{ dbatools_min_version }}'} -ListAvailable)) {
       Install-Module dbatools -MinimumVersion {{ dbatools_min_version }} -Force

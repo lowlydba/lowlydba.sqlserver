@@ -71,7 +71,7 @@ To learn how to maintain / become a maintainer of this collection, refer to the 
 ## External requirements
 
 - PowerShell modules
-  - [dbatools][dbatools] >= 1.1.108
+  - [dbatools][dbatools] >= 1.1.112
   - [dbops][dbops] >= 0.8.0
 
 ## Using this collection
