@@ -5,6 +5,14 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v1.0.0
+======
+
+Release Summary
+---------------
+
+Bumping to version 1.0.0 now that this collection is being used in production in at least one place 🎉
+
 v0.11.2
 =======
 
