@@ -30,7 +30,7 @@ $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false
 
 try {
     $rg = Get-DbaResourceGovernor -SqlInstance $sqlInstance -SqlCredential $sqlCredential
-    $rgClassifierFunction = $rg.ClassifierFunction.Name
+    $rgClassifierFunction = $rg.ClassifierFunction
 
     if ($rg.Enabled -ne $enabled) {
         $change = $true
