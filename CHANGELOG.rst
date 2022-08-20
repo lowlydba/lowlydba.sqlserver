@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v1.0.1
+======
+
+Release Summary
+---------------
+
+Minor bug fix.
+
+Bugfixes
+--------
+
+- Fixed bug in how the classifier function name is being assigned to the variable in the resource_governor module.
+
 v1.0.0
 ======
 

@@ -272,3 +272,13 @@ releases:
     fragments:
     - v1-release-summary.yml
     release_date: '2022-08-03'
+  1.0.1:
+    changes:
+      bugfixes:
+      - Fixed bug in how the classifier function name is being assigned to the variable
+        in the resource_governor module.
+      release_summary: Minor bug fix.
+    fragments:
+    - 1-0-1-release_summary.yml
+    - resource_governor.yml
+    release_date: '2022-08-20'
