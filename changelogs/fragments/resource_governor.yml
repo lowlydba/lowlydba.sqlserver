@@ -1,2 +1,0 @@
-bugfixes:
-  - Fixed bug in how the classifier function name is being assigned to the variable in the resource_governor module.
