@@ -7,9 +7,9 @@
 DOCUMENTATION = r'''
 ---
 module: instance_info
-short_description: Returns basic information for a SQL Server instance.
+short_description: Returns basic information for a SQL Server instance
 description:
-  - Returns basic information for a SQL Server instance.
+- Returns basic information for a SQL Server instance.
 version_added: 0.2.0
 author: "John McCall (@lowlydba)"
 requirements:

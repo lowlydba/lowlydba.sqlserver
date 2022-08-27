@@ -7,19 +7,19 @@
 DOCUMENTATION = r'''
 ---
 module: agent_job_category
-short_description: Configures a SQL Agent job category.
+short_description: Configures a SQL Agent job category
 description:
-  - Creates if it doesn't exist, else does nothing.
+- Creates if it doesn't exist, else does nothing.
 version_added: 0.1.0
 options:
   category:
     description:
-      - Name of the category.
+    - Name of the category.
     required: true
     type: str
   category_type:
     description:
-      - The type of category. This can be C(LocalJob), C(MultiServerJob) or C(None).
+    - The type of category.
     required: false
     type: str
     choices: ['LocalJob', 'MultiServerJob', 'None']

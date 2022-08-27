@@ -15,7 +15,7 @@
 - [Using this collection](#using-this-collection)
   - [Installing the Collection from Ansible Galaxy](#installing-the-collection-from-ansible-galaxy)
 - [Release notes](#release-notes)
-- [Roadmap](#roadmap)
+- [Releasing](#releasing)
 
 ## Modules
 
@@ -28,8 +28,6 @@ We follow the [Ansible Code of Conduct](https://docs.ansible.com/ansible/devel/c
 If you encounter abusive behavior, please refer to the [policy violations](https://docs.ansible.com/ansible/devel/community/code_of_conduct.html#policy-violations) section of the Code for information on how to raise a complaint.
 
 ## Communication
-
-We announce releases and important changes through Ansible's [The Bullhorn newsletter](https://github.com/ansible/community/wiki/News#the-bullhorn). Be sure you are [subscribed](https://eepurl.com/gZmiEP).
 
 Join us in the `#ansible` (general use questions and support), `#ansible-community` (community and collection development questions), and other [IRC channels](https://docs.ansible.com/ansible/devel/community/communication.html#irc-channels).
 
@@ -106,13 +104,31 @@ ansible-galaxy collection install lowlydba.sqlserver:==0.1.0
 
 See [Ansible Using collections](https://docs.ansible.com/ansible/devel/user_guide/collections_using.html) for more details.
 
-## Release notes
+## Releasing
+
+### Release notes
 
 See the [changelog](https://github.com/lowlydba/lowlydba.sqlserver/tree/main/CHANGELOG.rst).
 
-## Roadmap
+### Next Release
 
-TBD
+No major release planned currently.
+
+### Schedule
+
+- Minor releases and patches will aim to be released within 2 weeks of being merged into main or when necessary.
+- Non-current minor versions will not generally be patched, since there is little expected breaking of backwards compatibility.
+  - If this does occur, an exception can be made.
+
+### Versioning
+
+This project adheres to [semantic versioning](https://semver.org/) as tracked in `galaxy.yml`.
+
+### Deprecation
+
+- Deprecations are done by version number (not by date).
+- New deprecations can be added during every minor release, under the condition that they do not break backwards compatibility.
+- Deprecations are expected to have a deprecation cycle of at least 2 major versions (i.e. ~1 year). Maintainers can use a longer deprecation cycle if they want to support the old code for that long.
 
 <!-- Link shortcuts -->
 [dbatools]: https://dbatools.io

@@ -7,73 +7,73 @@
 DOCUMENTATION = r'''
 ---
 module: maintenance_solution
-short_description: Install/update Maintenance Solution by Ola Hallengren.
+short_description: Install/update Maintenance Solution by Ola Hallengren
 description:
-  - A wrapper for Install-DbaMaintenanceSolution to fetch the latest version of the Ola Hallengren's Maintenance Solution,
-    or install from a local cached version.
+- A wrapper for Install-DbaMaintenanceSolution to fetch the latest version of the Ola Hallengren's Maintenance Solution,
+  or install from a local cached version.
 version_added: 0.1.0
 options:
   backup_location:
     description:
-      - Location of the backup root directory. If this is not supplied, the default backup directory will be used.
+    - Location of the backup root directory. If this is not supplied, the default backup directory will be used.
     type: str
     required: false
   cleanup_time:
     description:
-      - Time in hours, after which backup files are deleted.
+    - Time in hours, after which backup files are deleted.
     type: int
     required: false
     default: 0
   output_file_dir:
     description:
-      - Specify the output file directory where the Maintenance Solution will write to.
+    - Specify the output file directory where the Maintenance Solution will write to.
     type: str
     required: false
   replace_existing:
     description:
-        - If this switch is enabled, objects already present in the target database will be dropped and recreated.
+    - If this switch is enabled, objects already present in the target database will be dropped and recreated.
     type: bool
     required: false
   log_to_table:
     description:
-      - If this switch is enabled, the Maintenance Solution will be configured to log commands to a table.
+    - If this switch is enabled, the Maintenance Solution will be configured to log commands to a table.
     type: bool
     required: false
     default: false
   solution:
     description:
-      - Specifies which portion of the Maintenance solution to install. Valid values are All (full solution), Backup, IntegrityCheck and IndexOptimize.
+    - Specifies which portion of the Maintenance Solution to install.
     type: str
     required: false
     default: 'All'
     choices: ['All', 'Backup', 'IntegrityCheck', 'IndexOptimize']
   install_jobs:
     description:
-      - If this switch is enabled, the corresponding SQL Agent Jobs will be created.
+    - If this switch is enabled, the corresponding SQL Agent Jobs will be created.
     type: bool
     required: false
     default: false
   install_parallel:
     description:
-      - If this switch is enabled, the Queue and QueueDatabase tables are created, for use when @DatabasesInParallel = 'Y' are set in the jobs.
+    - If this switch is enabled, the Queue and QueueDatabase tables are created, for use when @DatabasesInParallel = 'Y' are set in the jobs.
     type: bool
     required: false
     default: false
   local_file:
     description:
-      - Specifies the path to a local file to install Ola's solution from. This should be the zip file as distributed by the maintainers.
-        If this parameter is not specified, the latest version will be downloaded and installed
-        from https://github.com/olahallengren/sql-server-maintenance-solution.
+    - Specifies the path to a local file to install Ola's solution from. This should be the zip file as distributed by the maintainers.
+    - If this option is not specified, the latest version will be downloaded and installed
+      from the L(Maintenance Solution Github,https://github.com/olahallengren/sql-server-maintenance-solution).
     type: str
     required: false
   database:
     description:
-      - Name of the target database.
+    - Name of the target database.
     type: str
     required: true
   force:
     description:
-      - If this switch is enabled, the Maintenance Solution will be downloaded from the internet even if previously cached.
+    - If this switch is enabled, the Maintenance Solution will be downloaded from the internet even if previously cached.
     type: bool
     default: false
 author: "John McCall (@lowlydba)"

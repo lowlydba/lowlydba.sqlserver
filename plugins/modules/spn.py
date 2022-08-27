@@ -7,29 +7,29 @@
 DOCUMENTATION = r'''
 ---
 module: spn
-short_description: Configures SPNs for SQL Server.
+short_description: Configures SPNs for SQL Server
 description:
-     - Configures SPNs for SQL Server.
+- Configures SPNs for SQL Server.
 version_added: 0.6.0
 options:
   computer_username:
     description:
-      - Username of a credential to connect to Active Directory with.
+    - Username of a credential to connect to Active Directory with.
     type: str
     required: false
   computer_password:
     description:
-      - Password of a credential to connect to Active Directory with.
+    - Password of a credential to connect to Active Directory with.
     type: str
     required: false
   computer:
     description:
-      - The host or alias to configure the SPN for. Can include the port in the format host:port.
+    - The host or alias to configure the SPN for. Can include the port in the format host:port.
     type: str
     required: true
   service_account:
     description:
-      - The account you want the SPN added to. Will be looked up if not provided.
+    - The account you want the SPN added to. Will be looked up if not provided.
     type: str
     required: true
 author: "John McCall (@lowlydba)"
@@ -41,12 +41,21 @@ extends_documentation_fragment:
 
 EXAMPLES = r'''
 - name: Add server SPN
-  spn:
+  lowlydba.sqlserver.spn:
     computer: sql-01.myco.io
     service_account: myco\sql-svc
 
-- name: Add listener SPN on port 1433
-  spn:
+- name: Create an AG Listener
+  lowlydba.sqlserver.ag_listener:
+    sql_instance_primary: sql-01.myco.io
+    ag_name: AG_MyDatabase
+    listener_name: aglMyDatabase
+    ip_address: 10.0.20.20,10.1.77.77
+    subnet_ip: 255.255.252.0
+    subnet_mask: 255.255.255.0
+
+- name: Add SPN for new AG listener on port 1433
+  lowlydba.sqlserver.spn:
     computer: aglMyDatabase.myco.io:1433
     service_account: myco\sql-svc
 '''

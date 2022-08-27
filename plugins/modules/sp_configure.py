@@ -8,20 +8,20 @@
 DOCUMENTATION = r'''
 ---
 module: sp_configure
-short_description: Make instance level system configuration changes via sp_configure.
+short_description: Make instance level system configuration changes via C(sp_configure)
 description:
-     - Read instance level system configuration for a given configuration and update to a new value as provided.
-     - If the configuration needs a restart, a warning message will be returned stating a restart is required for the new value to be used.
+- Read instance level system configuration for a given configuration and update to a new value as provided.
+- If the configuration needs a restart, a warning message will be returned stating a restart is required for the new value to be used.
 version_added: 0.1.0
 options:
   name:
     description:
-      - Name of the configuration that will be changed.
+    - Name of the configuration that will be changed.
     type: str
     required: true
   value:
     description:
-      - New value the configuration will be set to.
+    - New value the configuration will be set to.
     type: int
     required: true
 author: "Sudhir Koduri (@kodurisudhir)"

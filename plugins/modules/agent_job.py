@@ -7,52 +7,52 @@
 DOCUMENTATION = r'''
 ---
 module: agent_job
-short_description: Configures a SQL Agent job.
+short_description: Configures a SQL Agent job
 description:
-  - Configure a SQL Agent job, including which schedules and category it belongs to.
+- Configure a SQL Agent job, including which schedules and category it belongs to.
 version_added: 0.1.0
 options:
   job:
     description:
-      - The name of the target SQL Agent job.
+    - The name of the target SQL Agent job.
     type: str
     required: true
   description:
     description:
-      - Description for the SQL Agent job.
+    - Description for the SQL Agent job.
     type: str
     required: false
   category:
     description:
-      - Category for the target SQL Agent job. Must already exist.
+    - Category for the target SQL Agent job. Must already exist.
     type: str
     required: false
   enabled:
     description:
-      - Whether the SQL Agent job should be enabled or disabled.
+    - Whether the SQL Agent job should be enabled or disabled.
     type: bool
     required: false
     default: true
     version_added: '0.4.0'
   owner_login:
     description:
-      - The owning login for the database. Will default to the current user if
-        the database is being created and none supplied.
+    - The owning login for the database. Will default to the current user if
+      the database is being created and none supplied.
     type: str
     required: false
   start_step_id:
     description:
-      - What step number the job should begin with when run.
+    - What step number the job should begin with when run.
     type: int
     required: false
   schedule:
     description:
-      - The name of the schedule the job should be associated with. Only one schedule per job is supported.
+    - The name of the schedule the job should be associated with. Only one schedule per job is supported.
     type: str
     required: false
   force:
     description:
-      - If I(force=true), any job categories will be created if they don't exist already.
+    - If I(force=true), any job categories will be created if they don't exist already.
     type: bool
     default: false
 author: "John McCall (@lowlydba)"

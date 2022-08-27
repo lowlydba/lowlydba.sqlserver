@@ -7,56 +7,56 @@
 DOCUMENTATION = r'''
 ---
 module: rg_resource_pool
-short_description: Configures a resource pool for use by the Resource Governor.
+short_description: Configures a resource pool for use by the Resource Governor
 description:
-     - Creates or modifies a resource pool to be used by the Resource Governor. Default values are handled by the Powershell functions themselves.
+  - Creates or modifies a resource pool to be used by the Resource Governor. Default values are handled by the Powershell functions themselves.
 version_added: 0.1.0
 options:
   resource_pool:
     description:
-      - Name of the target resource pool.
+    - Name of the target resource pool.
     type: str
     required: true
   type:
     description:
-      - Specify the type of resource pool.
+    - Specify the type of resource pool.
     type: str
     required: false
     default: 'Internal'
     choices: ['Internal', 'External']
   max_cpu_perc:
     description:
-      - Maximum CPU Percentage able to be used by queries in this resource pool.
+    - Maximum CPU Percentage able to be used by queries in this resource pool.
     type: int
     required: false
   min_cpu_perc:
     description:
-      - Minimum CPU Percentage able to be used by queries in this resource pool.
+    - Minimum CPU Percentage able to be used by queries in this resource pool.
     type: int
     required: false
   cap_cpu_perc:
     description:
-      - Cap CPU Percentage able to be used by queries in this resource pool.
+    - Cap CPU Percentage able to be used by queries in this resource pool.
     type: int
     required: false
   max_mem_perc:
     description:
-      - Maximum Memory Percentage able to be used by queries in this resource pool.
+    - Maximum Memory Percentage able to be used by queries in this resource pool.
     type: int
     required: false
   min_mem_perc:
     description:
-      - Minimum Memory Percentage able to be used by queries in this resource pool.
+    - Minimum Memory Percentage able to be used by queries in this resource pool.
     type: int
     required: false
   max_iops_per_vol:
     description:
-      - Maximum IOPS/volume able to be used by queries in this resource pool.
+    - Maximum IOPS/volume able to be used by queries in this resource pool.
     type: int
     required: false
   min_iops_per_vol:
     description:
-      - Minimum IOPS/volume able to be used by queries in this resource pool.
+    - Minimum IOPS/volume able to be used by queries in this resource pool.
     type: int
     required: false
 author: "John McCall (@lowlydba)"

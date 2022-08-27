@@ -7,80 +7,80 @@
 DOCUMENTATION = r'''
 ---
 module: agent_job_step
-short_description: Configures a SQL Agent job step.
+short_description: Configures a SQL Agent job step
 description:
-  - Configures a step for an agent job.
+- Configures a step for an agent job.
 version_added: 0.1.0
 options:
   job:
     description:
-      - The name of the job to which to add the step.
+    - The name of the job to which to add the step.
     required: true
     type: str
   step_id:
     description:
-      - The sequence identification number for the job step. Step identification numbers start at 1 and increment without gaps.
-        Required if I(state=present).
+    - The sequence identification number for the job step. Step identification numbers start at 1 and increment without gaps.
+    - Required if I(state=present).
     required: false
     type: int
   step_name:
     description:
-      - The name of the step. Required if I(state=present).
+    - The name of the step. Required if I(state=present).
     required: false
     type: str
   database:
     description:
-      - The name of the database in which to execute a Transact-SQL step. The default is 'master'.
+    - The name of the database in which to execute a Transact-SQL step.
     required: false
     type: str
     default: 'master'
   subsystem:
     description:
-      - The subsystem used by the SQL Server Agent service to execute command.
+    - The subsystem used by the SQL Server Agent service to execute command.
     required: false
     type: str
     default: 'TransactSql'
     choices: ['CmdExec', 'Distribution', 'LogReader', 'Merge', 'PowerShell', 'QueueReader', 'Snapshot', 'Ssis', 'TransactSql']
   command:
     description:
-      - The commands to be executed by SQLServerAgent service through subsystem.
+    - The commands to be executed by SQLServerAgent service through subsystem.
     required: false
     type: str
   on_success_action:
     description:
-      - The action to perform if the step succeeds.
+    - The action to perform if the step succeeds.
     required: false
     type: str
     default: 'QuitWithSuccess'
     choices: ['QuitWithSuccess', 'QuitWithFailure', 'GoToNextStep', 'GoToStep']
   on_success_step_id:
     description:
-      - The ID of the step in this job to execute if the step succeeds and OnSuccessAction is 'GoToStep'.
+    - The ID of the step in this job to execute if the step succeeds and I(on_success_action) is C(GoToStep).
     required: false
     type: int
     default: 0
   on_fail_action:
     description:
-      - The action to perform if the step fails.
+    - The action to perform if the step fails.
     required: false
     type: str
     default: 'QuitWithFailure'
     choices: ['QuitWithSuccess', 'QuitWithFailure', 'GoToNextStep', 'GoToStep']
   on_fail_step_id:
     description:
-      - The ID of the step in this job to execute if the step fails and OnFailAction is "GoToStep".
+    - The ID of the step in this job to execute if the step fails and I(on_fail_action) is C(GoToStep).
     required: false
     type: int
     default: 0
   retry_attempts:
     description:
-      - The number of retry attempts to use if this step fails. The default is 0.
+    - The number of retry attempts to use if this step fails. The default is 0.
     required: false
     type: int
     default: 0
   retry_interval:
     description:
-      - The amount of time in minutes between retry attempts.
+    - The amount of time in minutes between retry attempts.
     required: false
     type: int
     default: 0
