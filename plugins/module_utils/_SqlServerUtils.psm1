@@ -1,4 +1,3 @@
-#!powershell
 # -*- coding: utf-8 -*-
 
 # (c) 2022, John McCall (@lowlydba)
