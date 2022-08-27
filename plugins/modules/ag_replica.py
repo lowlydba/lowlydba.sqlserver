@@ -121,9 +121,14 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
+- name: Create Availability Group
+  lowlydba.sqlserver.availability_group:
+    sql_instance: sql-01.myco.io
+    ag_name: AG_MyDatabase
+
 - name: Add a DR replica
   lowlydba.sqlserver.ag_replica:
-    ag_name: 'agMyDatabase'
+    ag_name: 'AG_MyDatabase'
     sql_instance_primary: sql-01.myco.io
     sql_instance_replica: sql-02.myco.io
     failover_mode: 'Manual'

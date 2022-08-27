@@ -95,13 +95,19 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
+- name: Create a job
+  lowlydba.sqlserver.agent_job:
+    sql_instance: sql-01.myco.io
+    job: MyJob
+    force: true
+
 - name: Create a job step
   lowlydba.sqlserver.agent_job_step:
     sql_instance: sql-01.myco.io
     job: MyJob
     step_name: Step1
     step_id: 1
-    command: "TRUNCATE TABLE dbo.TestData"
+    command: "TRUNCATE TABLE dbo.TestData;"
 '''
 
 RETURN = r'''

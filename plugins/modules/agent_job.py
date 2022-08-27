@@ -68,7 +68,7 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Create a job schedule
+- name: Create a job
   lowlydba.sqlserver.agent_job:
     sql_instance: sql-01.myco.io
     job: MyJob

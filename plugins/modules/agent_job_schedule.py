@@ -116,7 +116,7 @@ EXAMPLES = r'''
 - name: Create a job schedule
   lowlydba.sqlserver.agent_job_schedule:
     sql_instance: sql-01.myco.io
-    schedule: Daily
+    schedule: DailySchedule
     force: true
     enabled: true
     start_date: 2020-05-25  # May 25, 2020
@@ -124,6 +124,13 @@ EXAMPLES = r'''
     start_time: 010500      # 01:05:00 AM
     end_time: 140030        # 02:00:30 PM
     state: present
+
+- name: Create a job with schedule
+  lowlydba.sqlserver.agent_job:
+    sql_instance: sql-01.myco.io
+    job: MyJob
+    force: true
+    schedule: DailySchedule
 '''
 
 RETURN = r'''

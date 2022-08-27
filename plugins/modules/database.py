@@ -72,10 +72,18 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Create Database
+- name: Create database
   lowlydba.sqlserver.database:
     sql_instance: sql-01.myco.io
     database: LowlyDB
+
+- name: Create database with customizations
+  lowlydba.sqlserver.database:
+    sql_instance: sql-01.myco.io
+    database: LowlyDB
+    owner: sa
+    maxdop: 2
+    recovery_model: Simple
 '''
 
 RETURN = r'''

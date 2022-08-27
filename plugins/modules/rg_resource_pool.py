@@ -68,6 +68,11 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
+- name: Enable resource governor
+  lowlydba.sqlserver.resource_governor:
+    sql_instance: sql-01.myco.io
+    enabled: true
+
 - name: Create rg resource pool
   lowlydba.sqlserver.rg_resource_pool:
     sql_instance: sql-01.myco.io

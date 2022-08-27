@@ -14,7 +14,7 @@ version_added: 0.1.0
 options:
   max:
     description:
-    - The maximum memory in MB that the SQL Server instance can utilize. 0 will automatically calculate the ideal value.
+    - The maximum memory in MB that the SQL Server instance can utilize. C(0) will automatically calculate the ideal value.
     type: int
     required: false
     default: 0
@@ -31,6 +31,11 @@ EXAMPLES = r'''
 - name: Automatically configure SQL max memory
   lowlydba.sqlserver.memory:
     sql_instance: sql-01.myco.io
+
+- name: Ma nually configure SQL max memory
+  lowlydba.sqlserver.memory:
+    sql_instance: sql-01.myco.io
+    max: 10240
 '''
 
 RETURN = r'''

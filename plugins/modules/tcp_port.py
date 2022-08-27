@@ -46,6 +46,11 @@ EXAMPLES = r'''
   lowlydba.sqlserver.tcp_port:
     sql_instance: sql-01.myco.io
     port: 1433
+
+- name: Set a non-standard default port
+  lowlydba.sqlserver.tcp_port:
+    sql_instance: sql-01.myco.io
+    port: 1933
 '''
 
 RETURN = r'''

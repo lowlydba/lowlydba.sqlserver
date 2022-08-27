@@ -64,11 +64,17 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name:
+- name: Create a login
   lowlydba.sqlserver.login:
     sql_instance: sql-01.myco.io
     login: TheIntern
     password: ReallyComplexStuff12345!
+
+- name: Disable a login
+  lowlydba.sqlserver.login:
+    sql_instance: sql-01.myco.io
+    login: TheIntern
+    enabled: false
 '''
 
 RETURN = r'''
