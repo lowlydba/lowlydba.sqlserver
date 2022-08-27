@@ -1,0 +1,4 @@
+bugfixes:
+  - Fixed alignment, formatting, and typos in module documentation.
+  - Added explicit license to private module util.
+  - Updated out of date runtime version info.
