@@ -20,7 +20,7 @@ options:
   job:
     description:
     - The name of the job that has the schedule.
-    - Schedules and jobs can also be associated via agent_job.
+    - Schedules and jobs can also be associated via M(lowlydba.sqlserver.agent_job).
     - See U(https://docs.dbatools.io/New-DbaAgentSchedule) for more detailed usage.
     type: str
     required: true
@@ -44,16 +44,16 @@ options:
   frequency_interval:
     description:
     - The days that a job is executed.
-    - Allowed values for I(frequency_type) C(Daily) - EveryDay or a number between 1 and 365.
-    - Allowed values for I(frequency_type) C(Weekly) - Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Weekdays, Weekend or EveryDay.
-    - Allowed values for I(frequency_type) C(Monthly) - Numbers 1 to 31 for each day of the month.
-    - If C(Weekdays), C(Weekend) or C(EveryDay) is used it over writes any other value that has been passed before.
-    - If I(force=true) the default will be 1.
+    - Allowed values for I(frequency_type=Daily) - C(EveryDay) or a number between C(1) and C(365) inclusive.
+    - Allowed values for I(frequency_type=Weekly) - C(Sunday), C(Monday), C(Tuesday), C(Wednesday), C(Thursday), C(Friday), C(Saturday), C(Weekdays), C(Weekend) or C(EveryDay).
+    - Allowed values for I(frequency_type=Monthly) - Numbers C(1) through C(31) for each day of the month.
+    - If C(Weekdays), C(Weekend) or C(EveryDay) is used it overwrites any other value that has been passed before.
+    - If I(force=true) the default will be C(1).
     type: str
     required: false
   frequency_subday_type:
     description:
-    - Specifies the units for the subday frequency_interval.
+    - Specifies the units for the subday I(frequency_interval).
     type: str
     required: false
     choices: ['Time', 'Seconds', 'Minutes', 'Hours']
@@ -64,42 +64,40 @@ options:
     required: false
   frequency_relative_interval:
     description:
-    - A job's occurrence of frequency_interval in each month, if I(frequency_interval=32) ('MonthlyRelative').
+    - A job's occurrence of I(frequency_interval) in each month. If I(frequency_interval=32) (C(MonthlyRelative)).
     type: str
     required: false
     choices: ['Unused', 'First', 'Second', 'Third', 'Fourth', 'Last']
   frequency_recurrence_factor:
     description:
     - The number of weeks or months between the scheduled execution of a job.
-    - Required if I(frequency_type='Weekly'), I(frequency_type='Monthly') or I(frequency_type='MonthlyRelative').
+    - Required if I(frequency_type=Weekly), I(frequency_type=Monthly) or I(frequency_type=MonthlyRelative).
     type: int
     required: false
   start_date:
     description:
     - The date on which execution of a job can begin.
-    - If force is used the start date will be the current day.
+    - If I(force=true)the start date will be the current day.
     - Format is C(YYYY-MM-DD).
     type: str
     required: false
   end_date:
     description:
     - The date on which execution of a job can stop.
-    - If I(force=true) the end date will be '9999-12-31'
+    - If I(force=true) the end date will be C(9999-12-31).
     - Format is C(YYYY-MM-DD).
     type: str
     required: false
   start_time:
     description:
-    - The time on any day to begin execution of a job. Format HHMMSS / 24 hour clock.
-    - If I(force=true) the start time will be '00:00:00'.
-    - Format is C(HHMMSS).
+    - The time on any day to begin execution of a job. Format C(HHMMSS) (24 hour clock).
+    - If I(force=true) the start time will be C(00:00:00).
     type: str
     required: false
   end_time:
     description:
-    - The time on any day to end execution of a job. Format HHMMSS / 24 hour clock.
-    - If (force=true) the start time will be '23:59:59'.
-    - Format is C(HHMMSS).
+    - The time on any day to end execution of a job. Format C(HHMMSS) (24 hour clock).
+    - If (force=true) the start time will be C(23:59:59).
     type: str
     required: false
 author: "John McCall (@lowlydba)"

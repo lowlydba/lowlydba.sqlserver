@@ -132,13 +132,13 @@ options:
   standby_directory:
     description:
     - If a directory is specified the database(s) will be restored into a standby state,
-    - with the standby file placed into this directory (which must exist, and be writable by the target Sql Server instance).
+      with the standby file placed into this directory (which must exist, and be writable by the target Sql Server instance).
     type: str
     required: false
   replace_db_name_in_file:
     description:
     - If switch set any occurrence of the original database's name in a data or log file
-    - will be replace with the name specified in the DatabaseName option.
+      will be replace with the name specified in the I(database_name) option.
     type: bool
     required: false
     default: false

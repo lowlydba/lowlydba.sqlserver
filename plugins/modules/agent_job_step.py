@@ -19,7 +19,7 @@ options:
     type: str
   step_id:
     description:
-    - The sequence identification number for the job step. Step identification numbers start at 1 and increment without gaps.
+    - The sequence identification number for the job step. Step identification numbers start at C(1) and increment without gaps.
     - Required if I(state=present).
     required: false
     type: int
@@ -55,7 +55,7 @@ options:
     choices: ['QuitWithSuccess', 'QuitWithFailure', 'GoToNextStep', 'GoToStep']
   on_success_step_id:
     description:
-    - The ID of the step in this job to execute if the step succeeds and I(on_success_action) is C(GoToStep).
+    - The ID of the step in this job to execute if the step succeeds and I(on_success_action=GoToStep).
     required: false
     type: int
     default: 0
@@ -68,13 +68,13 @@ options:
     choices: ['QuitWithSuccess', 'QuitWithFailure', 'GoToNextStep', 'GoToStep']
   on_fail_step_id:
     description:
-    - The ID of the step in this job to execute if the step fails and I(on_fail_action) is C(GoToStep).
+    - The ID of the step in this job to execute if the step fails and I(on_fail_action=GoToStep).
     required: false
     type: int
     default: 0
   retry_attempts:
     description:
-    - The number of retry attempts to use if this step fails. The default is 0.
+    - The number of retry attempts to use if this step fails. The default is C(0).
     required: false
     type: int
     default: 0

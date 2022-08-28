@@ -24,7 +24,7 @@ options:
     required: false
   computer:
     description:
-    - The host or alias to configure the SPN for. Can include the port in the format host:port.
+    - The host or alias to configure the SPN for. Can include the port in the format C(host:port).
     type: str
     required: true
   service_account:

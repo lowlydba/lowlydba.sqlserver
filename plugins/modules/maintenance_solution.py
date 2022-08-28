@@ -55,7 +55,7 @@ options:
     default: false
   install_parallel:
     description:
-    - If this switch is enabled, the Queue and QueueDatabase tables are created, for use when @DatabasesInParallel = 'Y' are set in the jobs.
+    - If this switch is enabled, the C(Queue) and C(QueueDatabase) tables are created, for use when C(@DatabasesInParallel = 'Y') are set in the jobs.
     type: bool
     required: false
     default: false

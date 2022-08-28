@@ -9,7 +9,7 @@ DOCUMENTATION = r'''
 module: agent_job_category
 short_description: Configures a SQL Agent job category
 description:
-- Creates if it doesn't exist, else does nothing.
+- Creates if it does not exist, else does nothing.
 version_added: 0.1.0
 options:
   category:

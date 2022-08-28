@@ -26,12 +26,12 @@ options:
   file_path:
     description:
     - The name of the file to backup to.
-    - If no name is specified then the backup files will be named DatabaseName_yyyyMMddHHmm (i.e. "Database1_201714022131")
+    - If no name is specified then the backup files will be named C(DatabaseName_yyyyMMddHHmm) (i.e. C(Database1_201714022131))
     type: str
     required: false
   increment_prefix:
     description:
-    - If set, this will prefix backup files with an incrementing integer (ie; '1-', '2-').
+    - If set, this will prefix backup files with an incrementing integer (ie; C(1-), C(2-)).
     - Using this has been alleged to improved restore times on some Azure based SQL Database platforms.
     type: bool
     required: false
@@ -43,7 +43,7 @@ options:
       C(servername) - will be replaced with the server name
       C(dbname) - will be replaced with the database name
       C(timestamp) - will be replaced with the timestamp (either the default, or the format provided)
-      C(backuptype) - will be replaced with Full, Log or Differential as appropriate
+      C(backuptype) - will be replaced with C(Full), C(Log), or C(Differential) as appropriate
     type: bool
     required: false
     default: false
@@ -156,7 +156,7 @@ options:
     default: false
   encryption_algorithm:
     description:
-    - Specified the Encryption Algorithm to used.
+    - Specifies the Encryption Algorithm to used.
     type: str
     required: false
     choices: ['AES128','AES192','AES256','TRIPLEDES']

@@ -21,7 +21,6 @@ options:
   classifier_function:
     description:
     - The name of the classifier function that resource governor will use. To clear the function, use the string C(NULL).
-    - Sending a literal C($null) will not change the value.
     type: str
     required: false
 author: "John McCall (@lowlydba)"

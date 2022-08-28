@@ -32,7 +32,7 @@ EXAMPLES = r'''
   lowlydba.sqlserver.memory:
     sql_instance: sql-01.myco.io
 
-- name: Ma nually configure SQL max memory
+- name: Manually configure SQL max memory
   lowlydba.sqlserver.memory:
     sql_instance: sql-01.myco.io
     max: 10240

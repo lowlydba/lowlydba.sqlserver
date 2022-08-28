@@ -26,7 +26,7 @@ options:
     required: true
   force:
     description:
-    - If this switch is enabled, then sp_WhoisActive will be downloaded from the internet even if previously cached.
+    - If this switch is enabled, then C(sp_WhoisActive) will be downloaded from the internet even if previously cached.
     type: bool
     default: false
 author: "John McCall (@lowlydba)"

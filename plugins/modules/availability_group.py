@@ -72,7 +72,7 @@ options:
   healthcheck_timeout:
     description:
     - This setting used to specify the length of time, in milliseconds,
-      that the SQL Server resource DLL should wait for information returned by the sp_server_diagnostics
+      that the SQL Server resource DLL should wait for information returned by the C(sp_server_diagnostics)
       stored procedure before reporting the Always On Failover Cluster Instance (FCI) as unresponsive.
     - Changes that are made to the timeout settings are effective immediately and do not require a restart of the SQL Server resource.
     type: int
@@ -121,7 +121,7 @@ options:
     choices: ['None', 'Primary', 'Secondary', 'SecondaryOnly']
   allow_null_backup:
     description:
-    - Allow taking a full backup to C(NULL) if one doesn't exist and I(seeding_mode=automatic).
+    - Allow taking a full backup to C(NULL) if one does not exist and I(seeding_mode=Automatic).
     type: bool
     required: false
   force:
