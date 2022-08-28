@@ -9,160 +9,160 @@ DOCUMENTATION = r'''
 module: backup
 short_description: Performs a backup operation
 description:
-- Performs a backup operation.
+  - Performs a backup operation.
 version_added: 0.8.0
 options:
   database:
     description:
-    - The database to process.
+      - The database to process.
     type: str
     required: true
   path:
     description:
-    - Path in which to place the backup files.
-    - If not specified, the backups will be placed in the default backup location for SqlInstance.
+      - Path in which to place the backup files.
+      - If not specified, the backups will be placed in the default backup location for SqlInstance.
     type: str
     required: false
   file_path:
     description:
-    - The name of the file to backup to.
-    - If no name is specified then the backup files will be named C(DatabaseName_yyyyMMddHHmm) (i.e. C(Database1_201714022131))
+      - The name of the file to backup to.
+      - If no name is specified then the backup files will be named C(DatabaseName_yyyyMMddHHmm) (i.e. C(Database1_201714022131))
     type: str
     required: false
   increment_prefix:
     description:
-    - If set, this will prefix backup files with an incrementing integer (ie; C(1-), C(2-)).
-    - Using this has been alleged to improved restore times on some Azure based SQL Database platforms.
+      - If set, this will prefix backup files with an incrementing integer (ie; C(1-), C(2-)).
+      - Using this has been alleged to improved restore times on some Azure based SQL Database platforms.
     type: bool
     required: false
     default: false
   replace_in_name:
     description:
-    - If set, the following list of strings will be replaced in the FilePath and Path strings.
-      C(instancename) - will be replaced with the instance Name
-      C(servername) - will be replaced with the server name
-      C(dbname) - will be replaced with the database name
-      C(timestamp) - will be replaced with the timestamp (either the default, or the format provided)
-      C(backuptype) - will be replaced with C(Full), C(Log), or C(Differential) as appropriate
+      - If set, the following list of strings will be replaced in the FilePath and Path strings.
+        C(instancename) - will be replaced with the instance Name
+        C(servername) - will be replaced with the server name
+        C(dbname) - will be replaced with the database name
+        C(timestamp) - will be replaced with the timestamp (either the default, or the format provided)
+        C(backuptype) - will be replaced with C(Full), C(Log), or C(Differential) as appropriate
     type: bool
     required: false
     default: false
   copy_only:
     description:
-    - The backup will be CopyOnly.
+      - The backup will be CopyOnly.
     type: bool
     required: false
     default: false
   type:
     description:
-    - The type of backup to perform.
+      - The type of backup to perform.
     type: str
     required: false
     default: 'database'
     choices: ['full', 'log', 'differential', 'diff', 'database']
   create_folder:
     description:
-    - If set, database is backed up to its own subfolder within the path.
+      - If set, database is backed up to its own subfolder within the path.
     type: bool
     required: false
     default: false
   file_count:
     description:
-    - The number of striped files to create the backup with.
+      - The number of striped files to create the backup with.
     type: int
     required: false
     default: 0
   compress:
     description:
-    - If set, use compression when creating the backup if it is supported by the version and edition.
+      - If set, use compression when creating the backup if it is supported by the version and edition.
     type: bool
     required: false
     default: false
   checksum:
     description:
-    - If set, the backup checksum will be calculated.
+      - If set, the backup checksum will be calculated.
     type: bool
     required: false
     default: false
   verify:
     description:
-    - If set, the backup will be verified via C(RESTORE VERIFYONLY)
+      - If set, the backup will be verified via C(RESTORE VERIFYONLY)
     type: bool
     required: false
     default: false
   max_transfer_size:
     description:
-    - Sets the size of the unit of transfer. Values must be a multiple of 64kb.
+      - Sets the size of the unit of transfer. Values must be a multiple of 64kb.
     type: int
     required: false
     default: 0
   block_size:
     description:
-    - Specifies block size to use.
+      - Specifies block size to use.
     type: str
     required: false
     choices: ['0.5kb','1kb','2kb','4kb','8kb','16kb','32kb','64kb']
   buffer_count:
     description:
-    - Number of I/O buffers to use.
+      - Number of I/O buffers to use.
     type: int
     required: false
     default: 0
   azure_base_url:
     description:
-    - The URL to the base container of an Azure Storage account to write backups to.
+      - The URL to the base container of an Azure Storage account to write backups to.
     type: str
     required: false
   azure_credential:
     description:
-    - The name of the credential on the SQL instance that can write to the I(azure_base_url),
-      only needed if using Storage access keys If using SAS credentials, the command will look for a credential with a name matching the I(azure_base_url).
+      - The name of the credential on the SQL instance that can write to the I(azure_base_url),
+        only needed if using Storage access keys If using SAS credentials, the command will look for a credential with a name matching the I(azure_base_url).
     type: str
     required: false
   no_recovery:
     description:
-    - If set, performs a tail log backup.
+      - If set, performs a tail log backup.
     type: bool
     required: false
     default: false
   build_path:
     description:
-    - By default this command will not attempt to create missing paths, this switch will change the behaviour so that it will.
+      - By default this command will not attempt to create missing paths, this switch will change the behaviour so that it will.
     type: bool
     required: false
     default: false
   with_format:
     description:
-    - Formats the media as the first step of the backup operation.
+      - Formats the media as the first step of the backup operation.
     type: bool
     required: false
     default: false
   initialize:
     description:
-    - Initializes the media as part of the backup operation.
+      - Initializes the media as part of the backup operation.
     type: bool
     required: false
     default: false
   timestamp_format:
     description:
-    - By default the command timestamps backups using the format C(yyyyMMddHHmm). Using this option this can be overridden.
+      - By default the command timestamps backups using the format C(yyyyMMddHHmm). Using this option this can be overridden.
     type: str
     required: false
   ignore_file_checks:
     description:
-    - If set, stops the function from checking path validity.
+      - If set, stops the function from checking path validity.
     type: bool
     required: false
     default: false
   encryption_algorithm:
     description:
-    - Specifies the Encryption Algorithm to used.
+      - Specifies the Encryption Algorithm to used.
     type: str
     required: false
     choices: ['AES128','AES192','AES256','TRIPLEDES']
   encryption_certificate:
     description:
-    - The name of the certificate to be used to encrypt the backups.
+      - The name of the certificate to be used to encrypt the backups.
     type: str
     required: false
 author: "John McCall (@lowlydba)"

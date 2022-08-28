@@ -9,22 +9,22 @@ DOCUMENTATION = r'''
 module: hadr
 short_description: Enable or disable HADR
 description:
-- Enable or disable the High Availability Disaster Recovery (HADR) feature.
+  - Enable or disable the High Availability Disaster Recovery (HADR) feature.
 version_added: 0.4.0
 options:
   sql_instance:
     description:
-    - The SQL Server instance to modify.
+      - The SQL Server instance to modify.
     type: str
     required: true
   username:
     description:
-    - Username for alternative credential to authenticate with Windows.
+      - Username for alternative credential to authenticate with Windows.
     type: str
     required: false
   password:
     description:
-    - Password for alternative credential to authenticate with Windows.
+      - Password for alternative credential to authenticate with Windows.
     type: str
     required: false
   enabled:

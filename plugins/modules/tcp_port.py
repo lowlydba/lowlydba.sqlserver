@@ -9,27 +9,27 @@ DOCUMENTATION = r'''
 module: tcp_port
 short_description: Sets the TCP port for the instance
 description:
-- Sets the TCP port for the instance.
+  - Sets the TCP port for the instance.
 version_added: 0.10.0
 options:
   username:
     description:
-    - Username for alternative credential to authenticate with Windows.
+      - Username for alternative credential to authenticate with Windows.
     type: str
     required: false
   password:
     description:
-    - Password for alternative credential to authenticate with Windows.
+      - Password for alternative credential to authenticate with Windows.
     type: str
     required: false
   port:
     description:
-    - Port for SQL Server to listen on.
+      - Port for SQL Server to listen on.
     type: int
     required: true
   ip_address:
     description:
-    - IPv4 address.
+      - IPv4 address.
     type: str
     required: false
 notes:

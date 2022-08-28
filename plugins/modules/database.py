@@ -9,56 +9,56 @@ DOCUMENTATION = r'''
 module: database
 short_description: Creates and configures a database
 description:
-- Adds a new database to an existing SQL Server instance.
+  - Adds a new database to an existing SQL Server instance.
 version_added: 0.1.0
 options:
   database:
     description:
-    - Name of the target database.
+      - Name of the target database.
     type: str
     required: true
   recovery_model:
     description:
-    - Choose the recovery model for the database.
+      - Choose the recovery model for the database.
     type: str
     required: false
     choices: ['Full', 'Simple', 'BulkLogged']
   data_file_path:
     description:
-    - Directory where the data files should be placed. Uses SQL Server's default if not supplied.
-    - Only used if database is being created.
+      - Directory where the data files should be placed. Uses SQL Server's default if not supplied.
+      - Only used if database is being created.
     type: str
     required: false
   log_file_path:
     description:
-    - Directory where the log files should be placed. Uses SQL Server's default if not supplied.
-    - Only used if database is being created.
+      - Directory where the log files should be placed. Uses SQL Server's default if not supplied.
+      - Only used if database is being created.
     type: str
     required: false
   owner:
     description:
-    - Database owner login.
+      - Database owner login.
     type: str
     required: false
   maxdop:
     description:
-    - MAXDOP value for the database.
+      - MAXDOP value for the database.
     required: false
     type: int
   secondary_maxdop:
     description:
-    - MAXDOP value for the database when it is a non-primary replica in an availability group.
+      - MAXDOP value for the database when it is a non-primary replica in an availability group.
     required: false
     type: int
   compatibility:
     description:
-    - Compatibility mode for the database. Follows the format of C(Version90), C(Version100), and so on.
-    - String is validated by C(Set-DbaDbCompatibility).
+      - Compatibility mode for the database. Follows the format of C(Version90), C(Version100), and so on.
+      - String is validated by C(Set-DbaDbCompatibility).
     required: false
     type: str
   rcsi:
     description:
-    - Whether or not to enable Read Committed Snapshot Isolation.
+      - Whether or not to enable Read Committed Snapshot Isolation.
     required: false
     type: bool
 author: "John McCall (@lowlydba)"

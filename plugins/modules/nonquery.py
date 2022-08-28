@@ -9,22 +9,22 @@ DOCUMENTATION = r'''
 module: nonquery
 short_description: Executes a generic nonquery
 description:
-- Execute a nonquery against a database. Does not return a resultset. Ideal for ad-hoc configurations or DML queries.
+  - Execute a nonquery against a database. Does not return a resultset. Ideal for ad-hoc configurations or DML queries.
 version_added: 0.1.0
 options:
   database:
     description:
-    - Name of the database to execute the nonquery in.
+      - Name of the database to execute the nonquery in.
     type: str
     required: true
   nonquery:
     description:
-    - The nonquery to be executed.
+      - The nonquery to be executed.
     type: str
     required: true
   query_timeout:
     description:
-    - Number of seconds to wait before timing out the nonquery execution.
+      - Number of seconds to wait before timing out the nonquery execution.
     type: int
     required: false
     default: 60

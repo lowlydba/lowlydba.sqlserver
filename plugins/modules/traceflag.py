@@ -10,18 +10,18 @@ DOCUMENTATION = r'''
 module: traceflag
 short_description: Enable or disable global trace flags on a SQL Server instance
 description:
-- Enable\Disable global trace flag on a SQL Instance. This trace flag takes affect immediatley and does not require SQL Instance restart.
+  - Enable\Disable global trace flag on a SQL Instance. This trace flag takes affect immediatley and does not require SQL Instance restart.
 - This setting does not persist after restart.
 version_added: 0.1.0
 options:
   trace_flag:
     description:
-    - Trace Flag number.
+      - Trace Flag number.
     type: int
     required: true
   enabled:
     description:
-    - Flag to enable or disable the trace flag.
+      - Flag to enable or disable the trace flag.
     type: bool
     required: true
 author: "Sudhir Koduri (@kodurisudhir)"

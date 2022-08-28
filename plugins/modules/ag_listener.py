@@ -9,44 +9,44 @@ DOCUMENTATION = r'''
 module: ag_listener
 short_description: Configures an availability group listener
 description:
-- Creates an Availability Group Listener for an existing availability group.
+  - Creates an Availability Group Listener for an existing availability group.
 version_added: 0.5.0
 options:
   ag_name:
     description:
-    - Name of the target availability group.
+      - Name of the target availability group.
     type: str
     required: true
   listener_name:
     description:
-    - Name of the Listener to be configured.
+      - Name of the Listener to be configured.
     type: str
     required: true
   ip_address:
     description:
-    - IP address(es) of the listener. Comma separated if multiple.
+      - IP address(es) of the listener. Comma separated if multiple.
     type: str
     required: false
   subnet_ip:
     description:
-    - Subnet IP address(es) of the listener. Comma separated if multiple.
+      - Subnet IP address(es) of the listener. Comma separated if multiple.
     type: str
     required: false
   subnet_mask:
     description:
-    - Sets the subnet IP mask(s) of the availability group listener. Comma separated if multiple.
+      - Sets the subnet IP mask(s) of the availability group listener. Comma separated if multiple.
     type: str
     required: false
     default: 255.255.255.0
   port:
     description:
-    - Sets the port number used to communicate with the availability group.
+      - Sets the port number used to communicate with the availability group.
     type: int
     required: false
     default: 1433
   dhcp:
     description:
-    - Indicates whether the listener uses DHCP.
+      - Indicates whether the listener uses DHCP.
     type: bool
     required: false
     default: false

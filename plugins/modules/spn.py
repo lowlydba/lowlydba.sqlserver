@@ -9,27 +9,27 @@ DOCUMENTATION = r'''
 module: spn
 short_description: Configures SPNs for SQL Server
 description:
-- Configures SPNs for SQL Server.
+  - Configures SPNs for SQL Server.
 version_added: 0.6.0
 options:
   computer_username:
     description:
-    - Username of a credential to connect to Active Directory with.
+      - Username of a credential to connect to Active Directory with.
     type: str
     required: false
   computer_password:
     description:
-    - Password of a credential to connect to Active Directory with.
+      - Password of a credential to connect to Active Directory with.
     type: str
     required: false
   computer:
     description:
-    - The host or alias to configure the SPN for. Can include the port in the format C(host:port).
+      - The host or alias to configure the SPN for. Can include the port in the format C(host:port).
     type: str
     required: true
   service_account:
     description:
-    - The account you want the SPN added to. Will be looked up if not provided.
+      - The account you want the SPN added to. Will be looked up if not provided.
     type: str
     required: true
 author: "John McCall (@lowlydba)"
