@@ -144,7 +144,7 @@ options:
     default: false
   destination_file_suffix:
     description:
-      - This value will be suffixed to ALL restored files (log and data).
+      - This value will be suffixed to B(all) restored files (log and data).
     type: str
     required: false
   keep_cdc:
