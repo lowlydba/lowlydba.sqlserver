@@ -122,7 +122,7 @@ No major release planned currently.
 
 ### Versioning
 
-This project adheres to [semantic versioning](https://semver.org/) as tracked in `galaxy.yml`.
+This project adheres to [semantic versioning](https://semver.org/) as tracked in [`galaxy.yml`](https://github.com/lowlydba/lowlydba.sqlserver/blob/main/galaxy.yml).
 
 ### Deprecation
 
