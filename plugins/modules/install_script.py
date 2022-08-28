@@ -25,7 +25,7 @@ options:
   schema_version_table:
     description:
       - A table that will hold the history of script execution. This table is used to choose what scripts are going to be
-      run during the deployment, preventing the scripts from being execured twice.
+        run during the deployment, preventing the scripts from being execured twice.
     type: str
     required: false
   deployment_method:

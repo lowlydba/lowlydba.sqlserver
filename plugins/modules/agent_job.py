@@ -37,7 +37,7 @@ options:
   owner_login:
     description:
       - The owning login for the database. Will default to the current user if
-      the database is being created and none supplied.
+        the database is being created and none supplied.
     type: str
     required: false
   start_step_id:
