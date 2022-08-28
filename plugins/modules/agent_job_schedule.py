@@ -45,7 +45,10 @@ options:
     description:
       - The days that a job is executed.
       - Allowed values for I(frequency_type=Daily) - C(EveryDay) or a number between C(1) and C(365) inclusive.
-      - Allowed values for I(frequency_type=Weekly) - C(Sunday), C(Monday), C(Tuesday), C(Wednesday), C(Thursday), C(Friday), C(Saturday), C(Weekdays), C(Weekend) or C(EveryDay).
+      - >-
+        Allowed values for I(frequency_type=Weekly) - 
+        C(Sunday), C(Monday), C(Tuesday), C(Wednesday), C(Thursday), C(Friday), C(Saturday),
+        C(Weekdays), C(Weekend) or C(EveryDay).
       - Allowed values for I(frequency_type=Monthly) - Numbers C(1) through C(31) for each day of the month.
       - If C(Weekdays), C(Weekend) or C(EveryDay) is used it overwrites any other value that has been passed before.
       - If I(force=true) the default will be C(1).
