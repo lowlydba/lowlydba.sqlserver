@@ -272,7 +272,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-encryption_algorithm"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-backup-module-parameter-encryption-algorithm"><strong>encryption_algorithm</strong></p>
 <a class="ansibleOptionLink" href="#parameter-encryption_algorithm" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Specified the Encryption Algorithm to used.</p>
+<td><div class="ansible-option-cell"><p>Specifies the Encryption Algorithm to used.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-choices-entry">AES128</span></p></li>
@@ -302,7 +302,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-file_path" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The name of the file to backup to.</p>
-<p>If no name is specified then the backup files will be named DatabaseName_yyyyMMddHHmm (i.e. “Database1_201714022131”)</p>
+<p>If no name is specified then the backup files will be named <code class="docutils literal notranslate"><span class="pre">DatabaseName_yyyyMMddHHmm</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">Database1_201714022131</span></code>)</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -321,7 +321,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-increment_prefix"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-backup-module-parameter-increment-prefix"><strong>increment_prefix</strong></p>
 <a class="ansibleOptionLink" href="#parameter-increment_prefix" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>If set, this will prefix backup files with an incrementing integer (ie; ‘1-’, ‘2-‘).</p>
+<td><div class="ansible-option-cell"><p>If set, this will prefix backup files with an incrementing integer (ie; <code class="docutils literal notranslate"><span class="pre">1-</span></code>, <code class="docutils literal notranslate"><span class="pre">2-</span></code>).</p>
 <p>Using this has been alleged to improved restore times on some Azure based SQL Database platforms.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
@@ -374,7 +374,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-replace_in_name"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-backup-module-parameter-replace-in-name"><strong>replace_in_name</strong></p>
 <a class="ansibleOptionLink" href="#parameter-replace_in_name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>If set, the following list of strings will be replaced in the FilePath and Path strings. <code class="docutils literal notranslate"><span class="pre">instancename</span></code> - will be replaced with the instance Name <code class="docutils literal notranslate"><span class="pre">servername</span></code> - will be replaced with the server name <code class="docutils literal notranslate"><span class="pre">dbname</span></code> - will be replaced with the database name <code class="docutils literal notranslate"><span class="pre">timestamp</span></code> - will be replaced with the timestamp (either the default, or the format provided) <code class="docutils literal notranslate"><span class="pre">backuptype</span></code> - will be replaced with Full, Log or Differential as appropriate</p>
+<td><div class="ansible-option-cell"><p>If set, the following list of strings will be replaced in the FilePath and Path strings. <code class="docutils literal notranslate"><span class="pre">instancename</span></code> - will be replaced with the instance Name <code class="docutils literal notranslate"><span class="pre">servername</span></code> - will be replaced with the server name <code class="docutils literal notranslate"><span class="pre">dbname</span></code> - will be replaced with the database name <code class="docutils literal notranslate"><span class="pre">timestamp</span></code> - will be replaced with the timestamp (either the default, or the format provided) <code class="docutils literal notranslate"><span class="pre">backuptype</span></code> - will be replaced with <code class="docutils literal notranslate"><span class="pre">Full</span></code>, <code class="docutils literal notranslate"><span class="pre">Log</span></code>, or <code class="docutils literal notranslate"><span class="pre">Differential</span></code> as appropriate</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>

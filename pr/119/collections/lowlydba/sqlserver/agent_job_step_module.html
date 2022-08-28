@@ -202,7 +202,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-on_fail_step_id"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-step-module-parameter-on-fail-step-id"><strong>on_fail_step_id</strong></p>
 <a class="ansibleOptionLink" href="#parameter-on_fail_step_id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The ID of the step in this job to execute if the step fails and <em>on_fail_action</em> is <code class="docutils literal notranslate"><span class="pre">GoToStep</span></code>.</p>
+<td><div class="ansible-option-cell"><p>The ID of the step in this job to execute if the step fails and <em>on_fail_action=GoToStep</em>.</p>
 <p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <span class="ansible-option-default">0</span></p>
 </div></td>
 </tr>
@@ -224,7 +224,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-on_success_step_id"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-step-module-parameter-on-success-step-id"><strong>on_success_step_id</strong></p>
 <a class="ansibleOptionLink" href="#parameter-on_success_step_id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The ID of the step in this job to execute if the step succeeds and <em>on_success_action</em> is <code class="docutils literal notranslate"><span class="pre">GoToStep</span></code>.</p>
+<td><div class="ansible-option-cell"><p>The ID of the step in this job to execute if the step succeeds and <em>on_success_action=GoToStep</em>.</p>
 <p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <span class="ansible-option-default">0</span></p>
 </div></td>
 </tr>
@@ -232,7 +232,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-retry_attempts"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-step-module-parameter-retry-attempts"><strong>retry_attempts</strong></p>
 <a class="ansibleOptionLink" href="#parameter-retry_attempts" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The number of retry attempts to use if this step fails. The default is 0.</p>
+<td><div class="ansible-option-cell"><p>The number of retry attempts to use if this step fails. The default is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
 <p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <span class="ansible-option-default">0</span></p>
 </div></td>
 </tr>
@@ -281,7 +281,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-step_id"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-step-module-parameter-step-id"><strong>step_id</strong></p>
 <a class="ansibleOptionLink" href="#parameter-step_id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The sequence identification number for the job step. Step identification numbers start at 1 and increment without gaps.</p>
+<td><div class="ansible-option-cell"><p>The sequence identification number for the job step. Step identification numbers start at <code class="docutils literal notranslate"><span class="pre">1</span></code> and increment without gaps.</p>
 <p>Required if <em>state=present</em>.</p>
 </div></td>
 </tr>

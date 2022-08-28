@@ -179,7 +179,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-end_date" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The date on which execution of a job can stop.</p>
-<p>If <em>force=true</em> the end date will be ‘9999-12-31’</p>
+<p>If <em>force=true</em> the end date will be <code class="docutils literal notranslate"><span class="pre">9999-12-31</span></code>.</p>
 <p>Format is <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>.</p>
 </div></td>
 </tr>
@@ -187,9 +187,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-end_time"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-schedule-module-parameter-end-time"><strong>end_time</strong></p>
 <a class="ansibleOptionLink" href="#parameter-end_time" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The time on any day to end execution of a job. Format HHMMSS / 24 hour clock.</p>
-<p>If (force=true) the start time will be ‘23:59:59’.</p>
-<p>Format is <code class="docutils literal notranslate"><span class="pre">HHMMSS</span></code>.</p>
+<td><div class="ansible-option-cell"><p>The time on any day to end execution of a job. Format <code class="docutils literal notranslate"><span class="pre">HHMMSS</span></code> (24 hour clock).</p>
+<p>If (force=true) the start time will be <code class="docutils literal notranslate"><span class="pre">23:59:59</span></code>.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -210,11 +209,11 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-frequency_interval" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The days that a job is executed.</p>
-<p>Allowed values for <em>frequency_type</em> <code class="docutils literal notranslate"><span class="pre">Daily</span></code> - EveryDay or a number between 1 and 365.</p>
-<p>Allowed values for <em>frequency_type</em> <code class="docutils literal notranslate"><span class="pre">Weekly</span></code> - Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Weekdays, Weekend or EveryDay.</p>
-<p>Allowed values for <em>frequency_type</em> <code class="docutils literal notranslate"><span class="pre">Monthly</span></code> - Numbers 1 to 31 for each day of the month.</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">Weekdays</span></code>, <code class="docutils literal notranslate"><span class="pre">Weekend</span></code> or <code class="docutils literal notranslate"><span class="pre">EveryDay</span></code> is used it over writes any other value that has been passed before.</p>
-<p>If <em>force=true</em> the default will be 1.</p>
+<p>Allowed values for <em>frequency_type=Daily</em> - <code class="docutils literal notranslate"><span class="pre">EveryDay</span></code> or a number between <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">365</span></code> inclusive.</p>
+<p>Allowed values for <em>frequency_type=Weekly</em> - <code class="docutils literal notranslate"><span class="pre">Sunday</span></code>, <code class="docutils literal notranslate"><span class="pre">Monday</span></code>, <code class="docutils literal notranslate"><span class="pre">Tuesday</span></code>, <code class="docutils literal notranslate"><span class="pre">Wednesday</span></code>, <code class="docutils literal notranslate"><span class="pre">Thursday</span></code>, <code class="docutils literal notranslate"><span class="pre">Friday</span></code>, <code class="docutils literal notranslate"><span class="pre">Saturday</span></code>, <code class="docutils literal notranslate"><span class="pre">Weekdays</span></code>, <code class="docutils literal notranslate"><span class="pre">Weekend</span></code> or <code class="docutils literal notranslate"><span class="pre">EveryDay</span></code>.</p>
+<p>Allowed values for <em>frequency_type=Monthly</em> - Numbers <code class="docutils literal notranslate"><span class="pre">1</span></code> through <code class="docutils literal notranslate"><span class="pre">31</span></code> for each day of the month.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">Weekdays</span></code>, <code class="docutils literal notranslate"><span class="pre">Weekend</span></code> or <code class="docutils literal notranslate"><span class="pre">EveryDay</span></code> is used it overwrites any other value that has been passed before.</p>
+<p>If <em>force=true</em> the default will be <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -222,14 +221,14 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-frequency_recurrence_factor" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The number of weeks or months between the scheduled execution of a job.</p>
-<p>Required if <em>frequency_type=’Weekly’</em>, <em>frequency_type=’Monthly’</em> or <em>frequency_type=’MonthlyRelative’</em>.</p>
+<p>Required if <em>frequency_type=Weekly</em>, <em>frequency_type=Monthly</em> or <em>frequency_type=MonthlyRelative</em>.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-frequency_relative_interval"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-schedule-module-parameter-frequency-relative-interval"><strong>frequency_relative_interval</strong></p>
 <a class="ansibleOptionLink" href="#parameter-frequency_relative_interval" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>A job’s occurrence of frequency_interval in each month, if <em>frequency_interval=32</em> (‘MonthlyRelative’).</p>
+<td><div class="ansible-option-cell"><p>A job’s occurrence of <em>frequency_interval</em> in each month. If <em>frequency_interval=32</em> (<code class="docutils literal notranslate"><span class="pre">MonthlyRelative</span></code>).</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-choices-entry">Unused</span></p></li>
@@ -252,7 +251,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-frequency_subday_type"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-schedule-module-parameter-frequency-subday-type"><strong>frequency_subday_type</strong></p>
 <a class="ansibleOptionLink" href="#parameter-frequency_subday_type" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Specifies the units for the subday frequency_interval.</p>
+<td><div class="ansible-option-cell"><p>Specifies the units for the subday <em>frequency_interval</em>.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-choices-entry">Time</span></p></li>
@@ -288,7 +287,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-job" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The name of the job that has the schedule.</p>
-<p>Schedules and jobs can also be associated via agent_job.</p>
+<p>Schedules and jobs can also be associated via <a class="reference internal" href="agent_job_module.html#ansible-collections-lowlydba-sqlserver-agent-job-module"><span class="std std-ref">lowlydba.sqlserver.agent_job</span></a>.</p>
 <p>See <a class="reference external" href="https://docs.dbatools.io/New-DbaAgentSchedule">https://docs.dbatools.io/New-DbaAgentSchedule</a> for more detailed usage.</p>
 </div></td>
 </tr>
@@ -325,7 +324,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-start_date" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The date on which execution of a job can begin.</p>
-<p>If force is used the start date will be the current day.</p>
+<p>If <em>force=true</em>the start date will be the current day.</p>
 <p>Format is <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>.</p>
 </div></td>
 </tr>
@@ -333,9 +332,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-start_time"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-schedule-module-parameter-start-time"><strong>start_time</strong></p>
 <a class="ansibleOptionLink" href="#parameter-start_time" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The time on any day to begin execution of a job. Format HHMMSS / 24 hour clock.</p>
-<p>If <em>force=true</em> the start time will be ‘00:00:00’.</p>
-<p>Format is <code class="docutils literal notranslate"><span class="pre">HHMMSS</span></code>.</p>
+<td><div class="ansible-option-cell"><p>The time on any day to begin execution of a job. Format <code class="docutils literal notranslate"><span class="pre">HHMMSS</span></code> (24 hour clock).</p>
+<p>If <em>force=true</em> the start time will be <code class="docutils literal notranslate"><span class="pre">00:00:00</span></code>.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">

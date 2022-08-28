@@ -357,8 +357,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-replace_db_name_in_file"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-replace-db-name-in-file"><strong>replace_db_name_in_file</strong></p>
 <a class="ansibleOptionLink" href="#parameter-replace_db_name_in_file" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>If switch set any occurrence of the original database’s name in a data or log file</p>
-<p>will be replace with the name specified in the DatabaseName option.</p>
+<td><div class="ansible-option-cell"><p>If switch set any occurrence of the original database’s name in a data or log file will be replace with the name specified in the <em>database_name</em> option.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
@@ -419,8 +418,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-standby_directory"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-standby-directory"><strong>standby_directory</strong></p>
 <a class="ansibleOptionLink" href="#parameter-standby_directory" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>If a directory is specified the database(s) will be restored into a standby state,</p>
-<p>with the standby file placed into this directory (which must exist, and be writable by the target Sql Server instance).</p>
+<td><div class="ansible-option-cell"><p>If a directory is specified the database(s) will be restored into a standby state, with the standby file placed into this directory (which must exist, and be writable by the target Sql Server instance).</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
