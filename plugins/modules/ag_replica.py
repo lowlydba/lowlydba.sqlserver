@@ -42,7 +42,6 @@ options:
     description:
       - By default, the property C(Fqdn) of C(Get-DbaEndpoint) is used as I(endpoint_url).
         Use I(endpoint_url) if a different URL is required due to special network configurations.
-        I(endpoint_url) has to be an array of strings in format C(TCP://system-address:port), one entry for every instance.
     type: str
     required: false
   backup_priority:
