@@ -1,4 +1,0 @@
-bugfixes:
-  - most modules - fixed alignment, formatting, and typos in module documentation (https://github.com/lowlydba/lowlydba.sqlserver/pull/119).
-  - _SqlServerUtils module_util - added explicit license to private module util (https://github.com/lowlydba/lowlydba.sqlserver/pull/119).
-  - meta/runtime.yml - updated out of date runtime version info (https://github.com/lowlydba/lowlydba.sqlserver/pull/119).
