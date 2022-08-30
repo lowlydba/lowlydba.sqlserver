@@ -5,6 +5,21 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v1.0.2
+======
+
+Release Summary
+---------------
+
+Minor documentation bugfixes and enhancements as requested in the Ansible inclusion process.
+
+Bugfixes
+--------
+
+- _SqlServerUtils module_util - added explicit license to private module util (https://github.com/lowlydba/lowlydba.sqlserver/pull/119).
+- meta/runtime.yml - updated out of date runtime version info (https://github.com/lowlydba/lowlydba.sqlserver/pull/119).
+- most modules - fixed alignment, formatting, and typos in module documentation (https://github.com/lowlydba/lowlydba.sqlserver/pull/119).
+
 v1.0.1
 ======
 
