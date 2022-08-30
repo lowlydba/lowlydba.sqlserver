@@ -116,7 +116,7 @@ No major release planned currently.
 
 ### Schedule
 
-- Minor releases and patches will aim to be released within 2 weeks of being merged into main or when necessary.
+- Minor releases and patches will aim to be released within 2 weeks of being merged into `main` or when necessary.
 - Non-current minor versions will not generally be patched, since there is little expected breaking of backwards compatibility.
   - If this does occur, an exception can be made.
 
