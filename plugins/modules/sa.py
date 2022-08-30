@@ -7,9 +7,9 @@
 DOCUMENTATION = r'''
 ---
 module: sa
-short_description: Configure the 'sa' login for security best practices.
+short_description: Configure the C(sa) login for security best practices
 description:
-  - Rename, disable, and reset the password for the 'sa' login on a SQL Server instance per best practices.
+  - Rename, disable, and reset the password for the C(sa) login on a SQL Server instance per best practices.
 options:
   password:
     description:
@@ -18,7 +18,7 @@ options:
     required: false
   new_name:
     description:
-      - The new name to rename the sa login to.
+      - The new name to rename the C(sa) login to.
     type: str
     required: false
   enabled:
@@ -31,7 +31,7 @@ options:
   password_must_change:
     description:
       - Enforces user must change password at next login.
-        When specified will enforce C(password_expiration_enabled) and C(password_policy_enforced) as they are required.
+      - When specified, will enforce I(password_expiration_enabled) and I(password_policy_enforced) as they are required.
     type: bool
     required: false
   password_policy_enforced:

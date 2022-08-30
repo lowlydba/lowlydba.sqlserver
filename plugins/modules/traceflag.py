@@ -8,10 +8,10 @@
 DOCUMENTATION = r'''
 ---
 module: traceflag
-short_description: Enable or disable global trace flags on a SQL  Server instance.
+short_description: Enable or disable global trace flags on a SQL Server instance
 description:
-     - Enable\Disable global trace flag on a SQL Instance. This trace flag takes affect immediatley and does not require SQL Instance restart.
-       This setting does not persist after restart.
+  - Enable\Disable global trace flag on a SQL Instance. This trace flag takes affect immediatley and does not require SQL Instance restart.
+  - This setting does not persist after restart.
 version_added: 0.1.0
 options:
   trace_flag:
@@ -39,6 +39,12 @@ EXAMPLES = r'''
     sql_instance: sql-01.myco.io
     trace_flag: 3226
     enabled: true
+
+- name: Disable trace flag
+  lowlydba.sqlserver.traceflag:
+    sql_instance: sql-01.myco.io
+    trace_flag: 3226
+    enabled: false
 '''
 
 RETURN = r'''

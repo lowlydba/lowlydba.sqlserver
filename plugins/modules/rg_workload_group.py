@@ -7,9 +7,9 @@
 DOCUMENTATION = r'''
 ---
 module: rg_workload_group
-short_description: Configures a workload group for use by the Resource Governor.
+short_description: Configures a workload group for use by the Resource Governor
 description:
-     - Creates or modifies a workload group to be used by the Resource Governor. Default values are handled by the Powershell functions themselves.
+  - Creates or modifies a workload group to be used by the Resource Governor. Default values are handled by the Powershell functions themselves.
 version_added: 0.1.0
 options:
   workload_group:
@@ -69,11 +69,22 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
+- name: Enable resource governor
+  lowlydba.sqlserver.resource_governor:
+    sql_instance: sql-01.myco.io
+    enabled: true
+
+- name: Create rg resource pool
+  lowlydba.sqlserver.rg_resource_pool:
+    sql_instance: sql-01.myco.io
+    resource_pool: "rpLittle"
+    max_cpu_perc: 5
+
 - name: Create rg workload group
   lowlydba.sqlserver.rg_workload_group:
     sql_instance: sql-01.myco.io
     workload_group: rgMyGroup
-    resource_pool: rpMyPool
+    resource_pool: rpLittle
     resource_pool_type: Internal
     max_dop: 2
     state: present

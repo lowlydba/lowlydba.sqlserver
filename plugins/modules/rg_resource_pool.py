@@ -7,9 +7,9 @@
 DOCUMENTATION = r'''
 ---
 module: rg_resource_pool
-short_description: Configures a resource pool for use by the Resource Governor.
+short_description: Configures a resource pool for use by the Resource Governor
 description:
-     - Creates or modifies a resource pool to be used by the Resource Governor. Default values are handled by the Powershell functions themselves.
+  - Creates or modifies a resource pool to be used by the Resource Governor. Default values are handled by the Powershell functions themselves.
 version_added: 0.1.0
 options:
   resource_pool:
@@ -68,6 +68,11 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
+- name: Enable resource governor
+  lowlydba.sqlserver.resource_governor:
+    sql_instance: sql-01.myco.io
+    enabled: true
+
 - name: Create rg resource pool
   lowlydba.sqlserver.rg_resource_pool:
     sql_instance: sql-01.myco.io

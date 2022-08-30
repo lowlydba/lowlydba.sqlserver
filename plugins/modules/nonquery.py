@@ -7,9 +7,9 @@
 DOCUMENTATION = r'''
 ---
 module: nonquery
-short_description: Executes a generic nonquery.
+short_description: Executes a generic nonquery
 description:
-     - Execute a nonquery against a database. Does not return a resultset. Ideal for ad-hoc configurations or DML queries.
+  - Execute a nonquery against a database. Does not return a resultset. Ideal for ad-hoc configurations or DML queries.
 version_added: 0.1.0
 options:
   database:

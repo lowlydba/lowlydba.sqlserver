@@ -7,9 +7,9 @@
 DOCUMENTATION = r'''
 ---
 module: install_script
-short_description: Runs migration scripts against a database.
+short_description: Runs migration scripts against a database
 description:
-     - Uses DBOps to run C(Dbo-InstallScript) against a target SQL Server database.
+  - Uses DBOps to run C(Dbo-InstallScript) against a target SQL Server database.
 version_added: 0.11.0
 options:
   database:
@@ -30,9 +30,9 @@ options:
     required: false
   deployment_method:
     description:
-      - SingleTransaction - wrap all the deployment scripts into a single transaction and rollback whole deployment on error.
-        TransactionPerScript - wrap each script into a separate transaction; rollback single script deployment in case of error.
-        NoTransaction - deploy as is.
+      - C(SingleTransaction) - wrap all the deployment scripts into a single transaction and rollback whole deployment on error.
+      - C(TransactionPerScript) - wrap each script into a separate transaction; rollback single script deployment in case of error.
+      - C(NoTransaction) - deploy as is.
     type: str
     required: false
     default: 'NoTransaction'
@@ -75,7 +75,7 @@ options:
     default: false
   match:
     description:
-      -  Runs a regex verification against provided file names using the provided Match string.
+      - Runs a regex verification against provided file names using the provided string.
     type: str
     required: false
 author: "John McCall (@lowlydba)"
@@ -86,9 +86,9 @@ extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
 '''
 
-EXAMPLES = '''
+EXAMPLES = r'''
 - name: Migrate a database
-  migrate_database:
+  lowlydba.sqlserver.install_script:
     sql_instance: test-server.my.company.com
     database: AdventureWorks
     path: migrations

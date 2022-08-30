@@ -7,9 +7,9 @@
 DOCUMENTATION = r'''
 ---
 module: hadr
-short_description: Enable or disable HADR.
+short_description: Enable or disable HADR
 description:
-     - Enable or disable the High Availability Disaster Recovery (HADR) feature.
+  - Enable or disable the High Availability Disaster Recovery (HADR) feature.
 version_added: 0.4.0
 options:
   sql_instance:

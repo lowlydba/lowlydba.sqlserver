@@ -7,7 +7,7 @@
 DOCUMENTATION = r'''
 ---
 module: agent_job
-short_description: Configures a SQL Agent job.
+short_description: Configures a SQL Agent job
 description:
   - Configure a SQL Agent job, including which schedules and category it belongs to.
 version_added: 0.1.0
@@ -68,7 +68,7 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Create a job schedule
+- name: Create a job
   lowlydba.sqlserver.agent_job:
     sql_instance: sql-01.myco.io
     job: MyJob

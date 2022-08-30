@@ -7,21 +7,21 @@
 DOCUMENTATION = r'''
 ---
 module: first_responder_kit
-short_description: Install/update the First Responder Kit scripts.
+short_description: Install/update the First Responder Kit scripts
 description:
-    - A wrapper for Install-DbaFirstResponderKit to fetch the latest version of the scripts, or install from a local cached version.
+  - A wrapper for Install-DbaFirstResponderKit to fetch the latest version of the scripts, or install from a local cached version.
 version_added: 0.10.0
 options:
   local_file:
     description:
       - Specifies the path to a local file to install FRK from. This should be the zip file as distributed by the maintainers.
-        If this parameter is not specified, the latest version will be downloaded and installed Github.
+      - If this option is not specified, the latest version will be downloaded and installed Github.
     type: str
     required: false
   only_script:
     description:
       - Specifies the name(s) of the script(s) to run for installation. Wildcards are permitted.
-        This way only part of the First Responder Kit can be installed.
+      - This way only part of the First Responder Kit can be installed.
     type: str
     required: false
     default: 'Install-All-Scripts.sql'

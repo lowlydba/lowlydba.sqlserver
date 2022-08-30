@@ -7,7 +7,7 @@
 DOCUMENTATION = r'''
 ---
 module: agent_job_step
-short_description: Configures a SQL Agent job step.
+short_description: Configures a SQL Agent job step
 description:
   - Configures a step for an agent job.
 version_added: 0.1.0
@@ -19,8 +19,8 @@ options:
     type: str
   step_id:
     description:
-      - The sequence identification number for the job step. Step identification numbers start at 1 and increment without gaps.
-        Required if I(state=present).
+      - The sequence identification number for the job step. Step identification numbers start at C(1) and increment without gaps.
+      - Required if I(state=present).
     required: false
     type: int
   step_name:
@@ -30,7 +30,7 @@ options:
     type: str
   database:
     description:
-      - The name of the database in which to execute a Transact-SQL step. The default is 'master'.
+      - The name of the database in which to execute a Transact-SQL step.
     required: false
     type: str
     default: 'master'
@@ -55,7 +55,7 @@ options:
     choices: ['QuitWithSuccess', 'QuitWithFailure', 'GoToNextStep', 'GoToStep']
   on_success_step_id:
     description:
-      - The ID of the step in this job to execute if the step succeeds and OnSuccessAction is 'GoToStep'.
+      - The ID of the step in this job to execute if the step succeeds and I(on_success_action=GoToStep).
     required: false
     type: int
     default: 0
@@ -68,13 +68,13 @@ options:
     choices: ['QuitWithSuccess', 'QuitWithFailure', 'GoToNextStep', 'GoToStep']
   on_fail_step_id:
     description:
-      - The ID of the step in this job to execute if the step fails and OnFailAction is "GoToStep".
+      - The ID of the step in this job to execute if the step fails and I(on_fail_action=GoToStep).
     required: false
     type: int
     default: 0
   retry_attempts:
     description:
-      - The number of retry attempts to use if this step fails. The default is 0.
+      - The number of retry attempts to use if this step fails. The default is C(0).
     required: false
     type: int
     default: 0
@@ -95,13 +95,19 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
+- name: Create a job
+  lowlydba.sqlserver.agent_job:
+    sql_instance: sql-01.myco.io
+    job: MyJob
+    force: true
+
 - name: Create a job step
   lowlydba.sqlserver.agent_job_step:
     sql_instance: sql-01.myco.io
     job: MyJob
     step_name: Step1
     step_id: 1
-    command: "TRUNCATE TABLE dbo.TestData"
+    command: "TRUNCATE TABLE dbo.TestData;"
 '''
 
 RETURN = r'''

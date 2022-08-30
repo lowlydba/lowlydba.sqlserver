@@ -7,9 +7,9 @@
 DOCUMENTATION = r'''
 ---
 module: resource_governor
-short_description: Configures the resource governor on a SQL Server instance.
+short_description: Configures the resource governor on a SQL Server instance
 description:
-     - Enables or disables and optionally sets the classifier function for the resource governor feature.
+  - Enables or disables and optionally sets the classifier function for the resource governor feature.
 version_added: 0.1.0
 options:
   enabled:
@@ -20,8 +20,7 @@ options:
     default: true
   classifier_function:
     description:
-      - The name of the classifier function that resource governor will use. To clear the function, use the string 'NULL'.
-      - Sending a literal $null will not change the value.
+      - The name of the classifier function that resource governor will use. To clear the function, use the string C(NULL).
     type: str
     required: false
 author: "John McCall (@lowlydba)"

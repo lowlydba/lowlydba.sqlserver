@@ -7,9 +7,9 @@
 DOCUMENTATION = r'''
 ---
 module: ag_replica
-short_description: Configures an availability group replica.
+short_description: Configures an availability group replica
 description:
-     - Configures an availability group replica.
+  - Configures an availability group replica.
 version_added: 0.5.0
 options:
   sql_instance_replica:
@@ -40,9 +40,8 @@ options:
     default: 'hadr_endpoint'
   endpoint_url:
     description:
-      - By default, the property Fqdn of Get-DbaEndpoint is used as EndpointUrl.
-        Use EndpointUrl if a different URL is required due to special network configurations.
-        EndpointUrl has to be an array of strings in format 'TCP://system-address:port', one entry for every instance.
+      - By default, the property C(Fqdn) of C(Get-DbaEndpoint) is used as I(endpoint_url).
+        Use I(endpoint_url) if a different URL is required due to special network configurations.
     type: str
     required: false
   backup_priority:
@@ -73,7 +72,7 @@ options:
     choices: ['Automatic', 'Manual']
   connection_mode_in_primary_role:
     description:
-        - Which connections can be made to the database when it is in the primary role.
+      - Which connections can be made to the database when it is in the primary role.
     type: str
     required: false
     default: 'AllowAllConnections'
@@ -121,9 +120,14 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
+- name: Create Availability Group
+  lowlydba.sqlserver.availability_group:
+    sql_instance: sql-01.myco.io
+    ag_name: AG_MyDatabase
+
 - name: Add a DR replica
   lowlydba.sqlserver.ag_replica:
-    ag_name: 'agMyDatabase'
+    ag_name: 'AG_MyDatabase'
     sql_instance_primary: sql-01.myco.io
     sql_instance_replica: sql-02.myco.io
     failover_mode: 'Manual'
