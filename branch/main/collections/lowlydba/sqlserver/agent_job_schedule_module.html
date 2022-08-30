@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lowlydba.sqlserver.agent_job_schedule module – Configures a SQL Agent job schedule. &mdash; Ansible collections  documentation</title>
+  <title>lowlydba.sqlserver.agent_job_schedule module – Configures a SQL Agent job schedule &mdash; Ansible collections  documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/ansible.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/antsibull-minimal.css" type="text/css" />
@@ -21,8 +21,8 @@
         <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="lowlydba.sqlserver.agent_job_step module – Configures a SQL Agent job step." href="agent_job_step_module.html" />
-    <link rel="prev" title="lowlydba.sqlserver.agent_job_category module – Configures a SQL Agent job category." href="agent_job_category_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+    <link rel="next" title="lowlydba.sqlserver.agent_job_step module – Configures a SQL Agent job step" href="agent_job_step_module.html" />
+    <link rel="prev" title="lowlydba.sqlserver.agent_job_category module – Configures a SQL Agent job category" href="agent_job_category_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
 
 
 
@@ -106,7 +106,7 @@
           <li><a href="../../index.html">Collection Index</a> &raquo;</li>
           <li><a href="../index.html">Collections in the Lowlydba Namespace</a> &raquo;</li>
           <li><a href="index.html">Lowlydba.Sqlserver</a> &raquo;</li>
-      <li>lowlydba.sqlserver.agent_job_schedule module – Configures a SQL Agent job schedule.</li>
+      <li>lowlydba.sqlserver.agent_job_schedule module – Configures a SQL Agent job schedule</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -118,10 +118,10 @@
            <div itemprop="articleBody">
              
   <span class="target" id="ansible-collections-lowlydba-sqlserver-agent-job-schedule-module"></span><section id="lowlydba-sqlserver-agent-job-schedule-module-configures-a-sql-agent-job-schedule">
-<h1>lowlydba.sqlserver.agent_job_schedule module – Configures a SQL Agent job schedule.<a class="headerlink" href="#lowlydba-sqlserver-agent-job-schedule-module-configures-a-sql-agent-job-schedule" title="Permalink to this heading"></a></h1>
+<h1>lowlydba.sqlserver.agent_job_schedule module – Configures a SQL Agent job schedule<a class="headerlink" href="#lowlydba-sqlserver-agent-job-schedule-module-configures-a-sql-agent-job-schedule" title="Permalink to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/lowlydba/sqlserver">lowlydba.sqlserver collection</a> (version 1.0.1).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/lowlydba/sqlserver">lowlydba.sqlserver collection</a> (version 1.0.2).</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">lowlydba.sqlserver</span></code>.
 You need further requirements to be able to use this module,
 see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-agent-job-schedule-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
@@ -178,21 +178,25 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-end_date"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-schedule-module-parameter-end-date"><strong>end_date</strong></p>
 <a class="ansibleOptionLink" href="#parameter-end_date" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The date on which execution of a job can stop. If <em>force=true</em> the end date will be ‘9999-12-31’</p>
+<td><div class="ansible-option-cell"><p>The date on which execution of a job can stop.</p>
+<p>If <em>force=true</em> the end date will be <code class="docutils literal notranslate"><span class="pre">9999-12-31</span></code>.</p>
+<p>Format is <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-end_time"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-schedule-module-parameter-end-time"><strong>end_time</strong></p>
 <a class="ansibleOptionLink" href="#parameter-end_time" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The time on any day to end execution of a job. Format HHMMSS / 24 hour clock. If (force=true) the start time will be ‘23:59:59’</p>
+<td><div class="ansible-option-cell"><p>The time on any day to end execution of a job. Format <code class="docutils literal notranslate"><span class="pre">HHMMSS</span></code> (24 hour clock).</p>
+<p>If (force=true) the start time will be <code class="docutils literal notranslate"><span class="pre">23:59:59</span></code>.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-force"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-schedule-module-parameter-force"><strong>force</strong></p>
 <a class="ansibleOptionLink" href="#parameter-force" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The force parameter will ignore some errors in the parameters and assume defaults. It will also remove the any present schedules with the same name for the specific job. If <em>force=true</em> the default will be ‘Once’.</p>
+<td><div class="ansible-option-cell"><p>The force option will ignore some errors in the options and assume defaults.</p>
+<p>It will also remove the any present schedules with the same name for the specific job.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-choices-entry">false</span></p></li>
@@ -204,21 +208,27 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-frequency_interval"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-schedule-module-parameter-frequency-interval"><strong>frequency_interval</strong></p>
 <a class="ansibleOptionLink" href="#parameter-frequency_interval" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The days that a job is executed. Allowed values for frequency_type ‘Daily’ - EveryDay or a number between 1 and 365. Allowed values for frequency_type ‘Weekly’ - Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Weekdays, Weekend or EveryDay. Allowed values for frequency_type ‘Monthly’ - Numbers 1 to 31 for each day of the month. If ‘Weekdays’, ‘Weekend’ or ‘EveryDay’ is used it over writes any other value that has been passed before. If <em>force=true</em> the default will be 1.</p>
+<td><div class="ansible-option-cell"><p>The days that a job is executed.</p>
+<p>Allowed values for <em>frequency_type=Daily</em> - <code class="docutils literal notranslate"><span class="pre">EveryDay</span></code> or a number between <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">365</span></code> inclusive.</p>
+<p>Allowed values for <em>frequency_type=Weekly</em> - <code class="docutils literal notranslate"><span class="pre">Sunday</span></code>, <code class="docutils literal notranslate"><span class="pre">Monday</span></code>, <code class="docutils literal notranslate"><span class="pre">Tuesday</span></code>, <code class="docutils literal notranslate"><span class="pre">Wednesday</span></code>, <code class="docutils literal notranslate"><span class="pre">Thursday</span></code>, <code class="docutils literal notranslate"><span class="pre">Friday</span></code>, <code class="docutils literal notranslate"><span class="pre">Saturday</span></code>, <code class="docutils literal notranslate"><span class="pre">Weekdays</span></code>, <code class="docutils literal notranslate"><span class="pre">Weekend</span></code> or <code class="docutils literal notranslate"><span class="pre">EveryDay</span></code>.</p>
+<p>Allowed values for <em>frequency_type=Monthly</em> - Numbers <code class="docutils literal notranslate"><span class="pre">1</span></code> through <code class="docutils literal notranslate"><span class="pre">31</span></code> for each day of the month.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">Weekdays</span></code>, <code class="docutils literal notranslate"><span class="pre">Weekend</span></code> or <code class="docutils literal notranslate"><span class="pre">EveryDay</span></code> is used it overwrites any other value that has been passed before.</p>
+<p>If <em>force=true</em> the default will be <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-frequency_recurrence_factor"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-schedule-module-parameter-frequency-recurrence-factor"><strong>frequency_recurrence_factor</strong></p>
 <a class="ansibleOptionLink" href="#parameter-frequency_recurrence_factor" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The number of weeks or months between the scheduled execution of a job. Required if <em>frequency_type=’Weekly’</em>, <em>frequency_type=’Monthly’</em> or <em>frequency_type=’MonthlyRelative’</em>.</p>
+<td><div class="ansible-option-cell"><p>The number of weeks or months between the scheduled execution of a job.</p>
+<p>Required if <em>frequency_type=Weekly</em>, <em>frequency_type=Monthly</em> or <em>frequency_type=MonthlyRelative</em>.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-frequency_relative_interval"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-schedule-module-parameter-frequency-relative-interval"><strong>frequency_relative_interval</strong></p>
 <a class="ansibleOptionLink" href="#parameter-frequency_relative_interval" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>A job’s occurrence of frequency_interval in each month, if <em>frequency_interval=32</em> (‘MonthlyRelative’).</p>
+<td><div class="ansible-option-cell"><p>A job’s occurrence of <em>frequency_interval</em> in each month. If <em>frequency_interval=32</em> (<code class="docutils literal notranslate"><span class="pre">MonthlyRelative</span></code>).</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-choices-entry">Unused</span></p></li>
@@ -241,7 +251,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-frequency_subday_type"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-schedule-module-parameter-frequency-subday-type"><strong>frequency_subday_type</strong></p>
 <a class="ansibleOptionLink" href="#parameter-frequency_subday_type" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Specifies the units for the subday frequency_interval.</p>
+<td><div class="ansible-option-cell"><p>Specifies the units for the subday <em>frequency_interval</em>.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-choices-entry">Time</span></p></li>
@@ -256,6 +266,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-frequency_type" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>A value indicating when a job is to be executed.</p>
+<p>If <em>force=true</em> the default will be <code class="docutils literal notranslate"><span class="pre">Once</span></code>.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-choices-entry">Once</span></p></li>
@@ -276,7 +287,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-job" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The name of the job that has the schedule.</p>
-<p>Schedules and jobs can also be associated via agent_job.</p>
+<p>Schedules and jobs can also be associated via <a class="reference internal" href="agent_job_module.html#ansible-collections-lowlydba-sqlserver-agent-job-module"><span class="std std-ref">lowlydba.sqlserver.agent_job</span></a>.</p>
 <p>See <a class="reference external" href="https://docs.dbatools.io/New-DbaAgentSchedule">https://docs.dbatools.io/New-DbaAgentSchedule</a> for more detailed usage.</p>
 </div></td>
 </tr>
@@ -312,15 +323,17 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-start_date"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-schedule-module-parameter-start-date"><strong>start_date</strong></p>
 <a class="ansibleOptionLink" href="#parameter-start_date" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The date on which execution of a job can begin. If force is used the start date will be the current day.</p>
+<td><div class="ansible-option-cell"><p>The date on which execution of a job can begin.</p>
+<p>If <em>force=true</em>the start date will be the current day.</p>
+<p>Format is <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-start_time"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-schedule-module-parameter-start-time"><strong>start_time</strong></p>
 <a class="ansibleOptionLink" href="#parameter-start_time" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The time on any day to begin execution of a job. Format HHMMSS / 24 hour clock.</p>
-<p>If <em>force=true</em> the start time will be ‘00:00:00’</p>
+<td><div class="ansible-option-cell"><p>The time on any day to begin execution of a job. Format <code class="docutils literal notranslate"><span class="pre">HHMMSS</span></code> (24 hour clock).</p>
+<p>If <em>force=true</em> the start time will be <code class="docutils literal notranslate"><span class="pre">00:00:00</span></code>.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -352,7 +365,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a job schedule</span><span class="w"></span>
 <span class="w">  </span><span class="nt">lowlydba.sqlserver.agent_job_schedule</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span><span class="w"></span>
-<span class="w">    </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Daily</span><span class="w"></span>
+<span class="w">    </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DailySchedule</span><span class="w"></span>
 <span class="w">    </span><span class="nt">force</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 <span class="w">    </span><span class="nt">start_date</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2020-05-25</span><span class="w">  </span><span class="c1"># May 25, 2020</span><span class="w"></span>
@@ -360,6 +373,13 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <span class="w">    </span><span class="nt">start_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">010500</span><span class="w">      </span><span class="c1"># 01:05:00 AM</span><span class="w"></span>
 <span class="w">    </span><span class="nt">end_time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">140030</span><span class="w">        </span><span class="c1"># 02:00:30 PM</span><span class="w"></span>
 <span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a job with schedule</span><span class="w"></span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.agent_job</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span><span class="w"></span>
+<span class="w">    </span><span class="nt">job</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MyJob</span><span class="w"></span>
+<span class="w">    </span><span class="nt">force</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">    </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DailySchedule</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -404,8 +424,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
           
 
 <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="agent_job_category_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.agent_job_category module – Configures a SQL Agent job category." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="agent_job_step_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.agent_job_step module – Configures a SQL Agent job step." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="agent_job_category_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.agent_job_category module – Configures a SQL Agent job category" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="agent_job_step_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.agent_job_step module – Configures a SQL Agent job step" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

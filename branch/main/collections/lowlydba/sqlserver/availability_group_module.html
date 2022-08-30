@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lowlydba.sqlserver.availability_group module – Configures availability group(s). &mdash; Ansible collections  documentation</title>
+  <title>lowlydba.sqlserver.availability_group module – Configures availability group(s) &mdash; Ansible collections  documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/ansible.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/antsibull-minimal.css" type="text/css" />
@@ -21,8 +21,8 @@
         <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="lowlydba.sqlserver.backup module – Performs a backup operation." href="backup_module.html" />
-    <link rel="prev" title="lowlydba.sqlserver.agent_job_step module – Configures a SQL Agent job step." href="agent_job_step_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+    <link rel="next" title="lowlydba.sqlserver.backup module – Performs a backup operation" href="backup_module.html" />
+    <link rel="prev" title="lowlydba.sqlserver.agent_job_step module – Configures a SQL Agent job step" href="agent_job_step_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
 
 
 
@@ -106,7 +106,7 @@
           <li><a href="../../index.html">Collection Index</a> &raquo;</li>
           <li><a href="../index.html">Collections in the Lowlydba Namespace</a> &raquo;</li>
           <li><a href="index.html">Lowlydba.Sqlserver</a> &raquo;</li>
-      <li>lowlydba.sqlserver.availability_group module – Configures availability group(s).</li>
+      <li>lowlydba.sqlserver.availability_group module – Configures availability group(s)</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -118,10 +118,10 @@
            <div itemprop="articleBody">
              
   <span class="target" id="ansible-collections-lowlydba-sqlserver-availability-group-module"></span><section id="lowlydba-sqlserver-availability-group-module-configures-availability-group-s">
-<h1>lowlydba.sqlserver.availability_group module – Configures availability group(s).<a class="headerlink" href="#lowlydba-sqlserver-availability-group-module-configures-availability-group-s" title="Permalink to this heading"></a></h1>
+<h1>lowlydba.sqlserver.availability_group module – Configures availability group(s)<a class="headerlink" href="#lowlydba-sqlserver-availability-group-module-configures-availability-group-s" title="Permalink to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/lowlydba/sqlserver">lowlydba.sqlserver collection</a> (version 1.0.1).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/lowlydba/sqlserver">lowlydba.sqlserver collection</a> (version 1.0.2).</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">lowlydba.sqlserver</span></code>.
 You need further requirements to be able to use this module,
 see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-availability-group-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
@@ -184,7 +184,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-allow_null_backup"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-allow-null-backup"><strong>allow_null_backup</strong></p>
 <a class="ansibleOptionLink" href="#parameter-allow_null_backup" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Allow taking a full backup to <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if one doesn’t exist and <em>seeding_mode=automatic</em>.</p>
+<td><div class="ansible-option-cell"><p>Allow taking a full backup to <code class="docutils literal notranslate"><span class="pre">NULL</span></code> if one does not exist and <em>seeding_mode=Automatic</em>.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-choices-entry">false</span></p></li>
@@ -210,7 +210,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-availability_mode"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-availability-mode"><strong>availability_mode</strong></p>
 <a class="ansibleOptionLink" href="#parameter-availability_mode" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Whether the replica should be Asynchronous or Synchronous. Only used in creating a new availability group.</p>
+<td><div class="ansible-option-cell"><p>Whether the replica should be Asynchronous or Synchronous.</p>
+<p>Only used in creating a new availability group.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-choices-entry">AsynchronousCommit</span></p></li>
@@ -319,7 +320,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-healthcheck_timeout"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-healthcheck-timeout"><strong>healthcheck_timeout</strong></p>
 <a class="ansibleOptionLink" href="#parameter-healthcheck_timeout" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>This setting used to specify the length of time, in milliseconds, that the SQL Server resource DLL should wait for information returned by the sp_server_diagnostics stored procedure before reporting the Always On Failover Cluster Instance (FCI) as unresponsive. Changes that are made to the timeout settings are effective immediately and do not require a restart of the SQL Server resource.</p>
+<td><div class="ansible-option-cell"><p>This setting used to specify the length of time, in milliseconds, that the SQL Server resource DLL should wait for information returned by the <code class="docutils literal notranslate"><span class="pre">sp_server_diagnostics</span></code> stored procedure before reporting the Always On Failover Cluster Instance (FCI) as unresponsive.</p>
+<p>Changes that are made to the timeout settings are effective immediately and do not require a restart of the SQL Server resource.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -472,8 +474,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
           
 
 <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="agent_job_step_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.agent_job_step module – Configures a SQL Agent job step." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="backup_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.backup module – Performs a backup operation." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="agent_job_step_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.agent_job_step module – Configures a SQL Agent job step" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="backup_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.backup module – Performs a backup operation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

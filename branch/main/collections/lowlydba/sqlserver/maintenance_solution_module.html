@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lowlydba.sqlserver.maintenance_solution module – Install/update Maintenance Solution by Ola Hallengren. &mdash; Ansible collections  documentation</title>
+  <title>lowlydba.sqlserver.maintenance_solution module – Install/update Maintenance Solution by Ola Hallengren &mdash; Ansible collections  documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/ansible.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/antsibull-minimal.css" type="text/css" />
@@ -21,8 +21,8 @@
         <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="lowlydba.sqlserver.memory module – Sets the maximum memory for a SQL Server instance." href="memory_module.html" />
-    <link rel="prev" title="lowlydba.sqlserver.login module – Configures a login for the target SQL Server instance." href="login_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+    <link rel="next" title="lowlydba.sqlserver.memory module – Sets the maximum memory for a SQL Server instance" href="memory_module.html" />
+    <link rel="prev" title="lowlydba.sqlserver.login module – Configures a login for the target SQL Server instance" href="login_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
 
 
 
@@ -106,7 +106,7 @@
           <li><a href="../../index.html">Collection Index</a> &raquo;</li>
           <li><a href="../index.html">Collections in the Lowlydba Namespace</a> &raquo;</li>
           <li><a href="index.html">Lowlydba.Sqlserver</a> &raquo;</li>
-      <li>lowlydba.sqlserver.maintenance_solution module – Install/update Maintenance Solution by Ola Hallengren.</li>
+      <li>lowlydba.sqlserver.maintenance_solution module – Install/update Maintenance Solution by Ola Hallengren</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -118,10 +118,10 @@
            <div itemprop="articleBody">
              
   <span class="target" id="ansible-collections-lowlydba-sqlserver-maintenance-solution-module"></span><section id="lowlydba-sqlserver-maintenance-solution-module-install-update-maintenance-solution-by-ola-hallengren">
-<h1>lowlydba.sqlserver.maintenance_solution module – Install/update Maintenance Solution by Ola Hallengren.<a class="headerlink" href="#lowlydba-sqlserver-maintenance-solution-module-install-update-maintenance-solution-by-ola-hallengren" title="Permalink to this heading"></a></h1>
+<h1>lowlydba.sqlserver.maintenance_solution module – Install/update Maintenance Solution by Ola Hallengren<a class="headerlink" href="#lowlydba-sqlserver-maintenance-solution-module-install-update-maintenance-solution-by-ola-hallengren" title="Permalink to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/lowlydba/sqlserver">lowlydba.sqlserver collection</a> (version 1.0.1).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/lowlydba/sqlserver">lowlydba.sqlserver collection</a> (version 1.0.2).</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">lowlydba.sqlserver</span></code>.
 You need further requirements to be able to use this module,
 see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-maintenance-solution-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
@@ -212,7 +212,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-install_parallel"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-maintenance-solution-module-parameter-install-parallel"><strong>install_parallel</strong></p>
 <a class="ansibleOptionLink" href="#parameter-install_parallel" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>If this switch is enabled, the Queue and QueueDatabase tables are created, for use when &#64;DatabasesInParallel = ‘Y’ are set in the jobs.</p>
+<td><div class="ansible-option-cell"><p>If this switch is enabled, the <code class="docutils literal notranslate"><span class="pre">Queue</span></code> and <code class="docutils literal notranslate"><span class="pre">QueueDatabase</span></code> tables are created, for use when <code class="docutils literal notranslate"><span class="pre">&#64;DatabasesInParallel</span> <span class="pre">=</span> <span class="pre">'Y'</span></code> are set in the jobs.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
@@ -224,7 +224,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-local_file"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-maintenance-solution-module-parameter-local-file"><strong>local_file</strong></p>
 <a class="ansibleOptionLink" href="#parameter-local_file" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Specifies the path to a local file to install Ola’s solution from. This should be the zip file as distributed by the maintainers. If this parameter is not specified, the latest version will be downloaded and installed from <a class="reference external" href="https://github.com/olahallengren/sql-server-maintenance-solution">https://github.com/olahallengren/sql-server-maintenance-solution</a>.</p>
+<td><div class="ansible-option-cell"><p>Specifies the path to a local file to install Ola’s solution from. This should be the zip file as distributed by the maintainers.</p>
+<p>If this option is not specified, the latest version will be downloaded and installed from the <a class="reference external" href="https://github.com/olahallengren/sql-server-maintenance-solution">Maintenance Solution Github</a>.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -262,7 +263,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-solution"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-maintenance-solution-module-parameter-solution"><strong>solution</strong></p>
 <a class="ansibleOptionLink" href="#parameter-solution" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Specifies which portion of the Maintenance solution to install. Valid values are All (full solution), Backup, IntegrityCheck and IndexOptimize.</p>
+<td><div class="ansible-option-cell"><p>Specifies which portion of the Maintenance Solution to install.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-default-bold">All</span> <span class="ansible-option-default">← (default)</span></p></li>
@@ -356,8 +357,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
           
 
 <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="login_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.login module – Configures a login for the target SQL Server instance." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="memory_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.memory module – Sets the maximum memory for a SQL Server instance." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="login_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.login module – Configures a login for the target SQL Server instance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="memory_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.memory module – Sets the maximum memory for a SQL Server instance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

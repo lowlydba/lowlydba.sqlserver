@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lowlydba.sqlserver.restore module – Performs a restore operation. &mdash; Ansible collections  documentation</title>
+  <title>lowlydba.sqlserver.restore module – Performs a restore operation &mdash; Ansible collections  documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/ansible.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/antsibull-minimal.css" type="text/css" />
@@ -21,8 +21,8 @@
         <script src="../../../_static/doctools.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="lowlydba.sqlserver.rg_resource_pool module – Configures a resource pool for use by the Resource Governor." href="rg_resource_pool_module.html" />
-    <link rel="prev" title="lowlydba.sqlserver.resource_governor module – Configures the resource governor on a SQL Server instance." href="resource_governor_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+    <link rel="next" title="lowlydba.sqlserver.rg_resource_pool module – Configures a resource pool for use by the Resource Governor" href="rg_resource_pool_module.html" />
+    <link rel="prev" title="lowlydba.sqlserver.resource_governor module – Configures the resource governor on a SQL Server instance" href="resource_governor_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
 
 
 
@@ -106,7 +106,7 @@
           <li><a href="../../index.html">Collection Index</a> &raquo;</li>
           <li><a href="../index.html">Collections in the Lowlydba Namespace</a> &raquo;</li>
           <li><a href="index.html">Lowlydba.Sqlserver</a> &raquo;</li>
-      <li>lowlydba.sqlserver.restore module – Performs a restore operation.</li>
+      <li>lowlydba.sqlserver.restore module – Performs a restore operation</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -118,10 +118,10 @@
            <div itemprop="articleBody">
              
   <span class="target" id="ansible-collections-lowlydba-sqlserver-restore-module"></span><section id="lowlydba-sqlserver-restore-module-performs-a-restore-operation">
-<h1>lowlydba.sqlserver.restore module – Performs a restore operation.<a class="headerlink" href="#lowlydba-sqlserver-restore-module-performs-a-restore-operation" title="Permalink to this heading"></a></h1>
+<h1>lowlydba.sqlserver.restore module – Performs a restore operation<a class="headerlink" href="#lowlydba-sqlserver-restore-module-performs-a-restore-operation" title="Permalink to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/lowlydba/sqlserver">lowlydba.sqlserver collection</a> (version 1.0.1).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/lowlydba/sqlserver">lowlydba.sqlserver collection</a> (version 1.0.2).</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">lowlydba.sqlserver</span></code>.
 You need further requirements to be able to use this module,
 see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-restore-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
@@ -165,7 +165,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-azure_credential"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-azure-credential"><strong>azure_credential</strong></p>
 <a class="ansibleOptionLink" href="#parameter-azure_credential" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The name of the credential on the SQL instance that can write to the AzureBaseUrl, only needed if using Storage access keys If using SAS credentials, the command will look for a credential with a name matching the AzureBaseUrl.</p>
+<td><div class="ansible-option-cell"><p>The name of the SQL Server credential to be used if restoring from an Azure hosted backup using Storage Access Keys.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -205,35 +205,38 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-destination_data_directory"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-destination-data-directory"><strong>destination_data_directory</strong></p>
 <a class="ansibleOptionLink" href="#parameter-destination_data_directory" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Path to restore the SQL Server backups to on the target instance. If only this parameter is specified, then all database files (data and log) will be restored to this location</p>
+<td><div class="ansible-option-cell"><p>Path to restore the SQL Server backups to on the target instance.</p>
+<p>If only this option is specified, then all database files (data and log) will be restored to this location</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-destination_file_prefix"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-destination-file-prefix"><strong>destination_file_prefix</strong></p>
 <a class="ansibleOptionLink" href="#parameter-destination_file_prefix" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>This value will be prefixed to ALL restored files (log and data).</p>
+<td><div class="ansible-option-cell"><p>This value will be prefixed to <strong>all</strong> restored files (log and data).</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-destination_file_suffix"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-destination-file-suffix"><strong>destination_file_suffix</strong></p>
 <a class="ansibleOptionLink" href="#parameter-destination_file_suffix" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>This value will be suffixed to ALL restored files (log and data).</p>
+<td><div class="ansible-option-cell"><p>This value will be suffixed to <strong>all</strong> restored files (log and data).</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-destination_filestream_directory"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-destination-filestream-directory"><strong>destination_filestream_directory</strong></p>
 <a class="ansibleOptionLink" href="#parameter-destination_filestream_directory" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Path to restore FileStream data to. This parameter can only be specified alongside DestinationDataDirectory.</p>
+<td><div class="ansible-option-cell"><p>Path to restore FileStream data to.</p>
+<p>This option can only be specified alongside <em>destination_data_directory</em>.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-destination_log_directory"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-destination-log-directory"><strong>destination_log_directory</strong></p>
 <a class="ansibleOptionLink" href="#parameter-destination_log_directory" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Path to restore the database log files to. This parameter can only be specified alongside DestinationDataDirectory.</p>
+<td><div class="ansible-option-cell"><p>Path to restore the database log files to.</p>
+<p>This option can only be specified alongside <em>destination_data_directory</em>.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -300,7 +303,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-maintenance_solution_backup"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-maintenance-solution-backup"><strong>maintenance_solution_backup</strong></p>
 <a class="ansibleOptionLink" href="#parameter-maintenance_solution_backup" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Switch to indicate the backup files are in a folder structure as created by Ola Hallengreen’s maintenance scripts. This allows for faster file parsing.</p>
+<td><div class="ansible-option-cell"><p>Switch to indicate the backup files are in a folder structure as created by Ola Hallengreen’s maintenance scripts.</p>
+<p>This allows for faster file parsing.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
@@ -332,7 +336,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-no_xp_dir_recurse"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-no-xp-dir-recurse"><strong>no_xp_dir_recurse</strong></p>
 <a class="ansibleOptionLink" href="#parameter-no_xp_dir_recurse" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>If specified, prevents the XpDirTree process from recursing (its default behaviour).</p>
+<td><div class="ansible-option-cell"><p>If specified, prevents the <code class="docutils literal notranslate"><span class="pre">XpDirTree</span></code> process from recursing (its default behaviour).</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
@@ -344,14 +348,16 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-path"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-path"><strong>path</strong></p>
 <a class="ansibleOptionLink" href="#parameter-path" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Path to SQL Server backup files. Paths passed in as strings will be scanned using the desired method, default is a recursive folder scan. Accepts multiple paths separated by ‘,’.</p>
+<td><div class="ansible-option-cell"><p>Path to SQL Server backup files.</p>
+<p>Paths passed in as strings will be scanned using the desired method, default is a recursive folder scan.</p>
+<p>Accepts multiple paths separated by <code class="docutils literal notranslate"><span class="pre">,</span></code>.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-replace_db_name_in_file"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-replace-db-name-in-file"><strong>replace_db_name_in_file</strong></p>
 <a class="ansibleOptionLink" href="#parameter-replace_db_name_in_file" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>If switch set any occurrence of the original database’s name in a data or log file will be replace with the name specified in the DatabaseName parameter.</p>
+<td><div class="ansible-option-cell"><p>If switch set any occurrence of the original database’s name in a data or log file will be replace with the name specified in the <em>database_name</em> option.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
@@ -363,7 +369,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-restore_time"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-restore-time"><strong>restore_time</strong></p>
 <a class="ansibleOptionLink" href="#parameter-restore_time" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Specify a DateTime object to which you want the database restored to. Default is to the latest point available in the specified backups.</p>
+<td><div class="ansible-option-cell"><p>Specify a datetime string <code class="docutils literal notranslate"><span class="pre">HH:MM:SS</span> <span class="pre">MM/DD/YYYY</span></code> to which you want the database restored to.</p>
+<p>Default is to the latest point available in the specified backups.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -377,7 +384,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-reuse_source_folder_structure"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-reuse-source-folder-structure"><strong>reuse_source_folder_structure</strong></p>
 <a class="ansibleOptionLink" href="#parameter-reuse_source_folder_structure" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>By default, databases will be migrated to the destination Sql Server’s default data and log directories. You can override this by using <code class="docutils literal notranslate"><span class="pre">reuse_source_folder_structure</span></code>.</p>
+<td><div class="ansible-option-cell"><p>By default, databases will be migrated to the destination Sql Server’s default data and log directories.</p>
+<p>You can override this by using <code class="docutils literal notranslate"><span class="pre">reuse_source_folder_structure</span></code>.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
@@ -417,14 +425,14 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-stop_after_date"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-stop-after-date"><strong>stop_after_date</strong></p>
 <a class="ansibleOptionLink" href="#parameter-stop_after_date" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>By default the restore will stop at the first occurence of StopMark found in the chain, passing a datetime where will cause it to stop the first StopMark atfer that datetime.</p>
+<td><div class="ansible-option-cell"><p>By default the restore will stop at the first occurence of <em>stop_mark</em> found in the chain, passing a datetime string <code class="docutils literal notranslate"><span class="pre">HH:MM:SS</span> <span class="pre">MM/DD/YYYY</span></code> will cause it to stop the first <em>stop_mark</em> after that datetime.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-stop_before"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-stop-before"><strong>stop_before</strong></p>
 <a class="ansibleOptionLink" href="#parameter-stop_before" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Switch to indicate the restore should stop before StopMark occurs, default is to stop when mark is created.</p>
+<td><div class="ansible-option-cell"><p>Switch to indicate the restore should stop before <em>stop_mark</em> occurs, default is to stop when mark is created.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
@@ -443,7 +451,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-use_destination_default_directories"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-use-destination-default-directories"><strong>use_destination_default_directories</strong></p>
 <a class="ansibleOptionLink" href="#parameter-use_destination_default_directories" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Switch that tells the restore to use the default Data and Log locations on the target server. If they don’t exist, the function will try to create them.</p>
+<td><div class="ansible-option-cell"><p>Switch that tells the restore to use the default Data and Log locations on the target server.</p>
+<p>If they don’t exist, the function will try to create them.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
@@ -479,7 +488,9 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="parameter-xp_dirtree"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-restore-module-parameter-xp-dirtree"><strong>xp_dirtree</strong></p>
 <a class="ansibleOptionLink" href="#parameter-xp_dirtree" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Switch that indicated file scanning should be performed by the SQL Server instance using <code class="docutils literal notranslate"><span class="pre">xp_dirtree</span></code>. This will scan recursively from the passed in path. You must have sysadmin role membership on the instance for this to work.</p>
+<td><div class="ansible-option-cell"><p>Switch that indicated file scanning should be performed by the SQL Server instance using <code class="docutils literal notranslate"><span class="pre">xp_dirtree</span></code>.</p>
+<p>This will scan recursively from the passed in path.</p>
+<p>You must have sysadmin role membership on the instance for this to work.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
 <li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
@@ -496,6 +507,18 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <span class="w">  </span><span class="nt">lowlydba.sqlserver.restore</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span><span class="w"></span>
 <span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LowlyDB</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Restore a Database and allow future T-Log restores</span><span class="w"></span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.restore</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span><span class="w"></span>
+<span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LowlyDB1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">no_recovery</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Verify backup files, no restore</span><span class="w"></span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.restore</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span><span class="w"></span>
+<span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LowlyDB2</span><span class="w"></span>
+<span class="w">    </span><span class="nt">verify_only</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -540,8 +563,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
           
 
 <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="resource_governor_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.resource_governor module – Configures the resource governor on a SQL Server instance." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rg_resource_pool_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.rg_resource_pool module – Configures a resource pool for use by the Resource Governor." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="resource_governor_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.resource_governor module – Configures the resource governor on a SQL Server instance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rg_resource_pool_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.rg_resource_pool module – Configures a resource pool for use by the Resource Governor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
