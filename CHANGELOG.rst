@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v1.0.3
+======
+
+Release Summary
+---------------
+
+Minor documentation fixes from the second Ansible inclusion review.
+
+Bugfixes
+--------
+
+- Minor documentation fixes (https://github.com/lowlydba/lowlydba.sqlserver/pull/122).
+
 v1.0.2
 ======
 

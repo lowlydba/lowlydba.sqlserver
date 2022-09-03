@@ -296,3 +296,13 @@ releases:
     - 119-doc-updates.yml
     - v1-0-2-release-summary.yml
     release_date: '2022-08-29'
+  1.0.3:
+    changes:
+      bugfixes:
+      - Minor documentation fixes (https://github.com/lowlydba/lowlydba.sqlserver/pull/122).
+      release_summary: Minor documentation fixes from the second Ansible inclusion
+        review.
+    fragments:
+    - 122-doc-fixes.yml
+    - v1-0-3-release-summary.yml
+    release_date: '2022-09-03'
