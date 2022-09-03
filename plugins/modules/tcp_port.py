@@ -9,7 +9,7 @@ DOCUMENTATION = r'''
 module: tcp_port
 short_description: Sets the TCP port for the instance
 description:
-  - Sets the TCP port for the instance.
+  - Sets the TCP port for a SQL Server instance.
 version_added: 0.10.0
 options:
   username:

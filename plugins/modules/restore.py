@@ -9,7 +9,7 @@ DOCUMENTATION = r'''
 module: restore
 short_description: Performs a restore operation
 description:
-  - Performs a restore operation.
+  - Performs a database restore operation.
 version_added: 0.9.0
 options:
   database:
