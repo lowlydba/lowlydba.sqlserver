@@ -9,7 +9,7 @@ DOCUMENTATION = r'''
 module: first_responder_kit
 short_description: Install/update the First Responder Kit scripts
 description:
-  - A wrapper for Install-DbaFirstResponderKit to fetch the latest version of the scripts, or install from a local cached version.
+  - A wrapper for C(Install-DbaFirstResponderKit) to fetch the latest version of the scripts, or install from a local cached version.
 version_added: 0.10.0
 options:
   local_file:

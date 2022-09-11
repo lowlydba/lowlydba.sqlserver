@@ -9,7 +9,7 @@ DOCUMENTATION = r'''
 module: backup
 short_description: Performs a backup operation
 description:
-  - Performs a backup operation.
+  - Performs any type of database backup operation.
 version_added: 0.8.0
 options:
   database:

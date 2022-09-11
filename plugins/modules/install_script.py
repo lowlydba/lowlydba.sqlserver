@@ -9,7 +9,7 @@ DOCUMENTATION = r'''
 module: install_script
 short_description: Runs migration scripts against a database
 description:
-  - Uses DBOps to run C(Dbo-InstallScript) against a target SQL Server database.
+  - Uses the module C(DBOps) to run C(Dbo-InstallScript) against a target SQL Server database.
 version_added: 0.11.0
 options:
   database:

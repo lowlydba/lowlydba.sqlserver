@@ -9,7 +9,7 @@ DOCUMENTATION = r'''
 module: dba_multitool
 short_description: Install/update the DBA Multitool suite by John McCall
 description:
-  - A wrapper for Install-DbaMultiTool to fetch the latest version of the scripts, or install from a local cached version.
+  - A wrapper for C(Install-DbaMultiTool) to fetch the latest version of the scripts, or install from a local cached version.
 version_added: 0.7.0
 options:
   sql_instance:

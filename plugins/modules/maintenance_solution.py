@@ -9,7 +9,7 @@ DOCUMENTATION = r'''
 module: maintenance_solution
 short_description: Install/update Maintenance Solution by Ola Hallengren
 description:
-  - A wrapper for Install-DbaMaintenanceSolution to fetch the latest version of the Ola Hallengren's Maintenance Solution,
+  - A wrapper for C(Install-DbaMaintenanceSolution) to fetch the latest version of the Ola Hallengren's Maintenance Solution,
     or install from a local cached version.
 version_added: 0.1.0
 options:
