@@ -111,7 +111,7 @@ jobs:
         run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
 
       - name: Install and cache PowerShell modules
-        uses: potatoqualitee/psmodulecache@v4.5
+        uses: potatoqualitee/psmodulecache@v5.0
         with:
           modules-to-cache: dbatools
           shell: powershell
