@@ -19,6 +19,7 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="lowlydba.sqlserver.agent_job module – Configures a SQL Agent job" href="agent_job_module.html" />
@@ -175,8 +176,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Whether the replica should be Asynchronous or Synchronous.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">AsynchronousCommit</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">SynchronousCommit</span></p></li>
+<li><p><span class="ansible-option-default-bold">“AsynchronousCommit”</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“SynchronousCommit”</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -195,9 +196,9 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Cluster type of the Availability Group. Only supported in SQL Server 2017 and above.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">Wsfc</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">External</span></p></li>
-<li><p><span class="ansible-option-choices-entry">None</span></p></li>
+<li><p><span class="ansible-option-default-bold">“Wsfc”</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“External”</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“None”</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -220,8 +221,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Which connections can be made to the database when it is in the primary role.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-choices-entry">AllowReadIntentConnectionsOnly</span></p></li>
-<li><p><span class="ansible-option-default-bold">AllowAllConnections</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“AllowReadIntentConnectionsOnly”</span></p></li>
+<li><p><span class="ansible-option-default-bold">“AllowAllConnections”</span> <span class="ansible-option-default">← (default)</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -232,9 +233,9 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Which connections can be made to the database when it is in the secondary role.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">AllowNoConnections</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">AllowReadIntentConnectionsOnly</span></p></li>
-<li><p><span class="ansible-option-choices-entry">AllowAllConnections</span></p></li>
+<li><p><span class="ansible-option-default-bold">“AllowNoConnections”</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“AllowReadIntentConnectionsOnly”</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“AllowAllConnections”</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -260,8 +261,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Whether the replica have Automatic or Manual failover.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-choices-entry">Automatic</span></p></li>
-<li><p><span class="ansible-option-default-bold">Manual</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“Automatic”</span></p></li>
+<li><p><span class="ansible-option-default-bold">“Manual”</span> <span class="ansible-option-default">← (default)</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -286,8 +287,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Default seeding mode for the replica. Should remain as the default otherwise manual setup may be required.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">Automatic</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">Manual</span></p></li>
+<li><p><span class="ansible-option-default-bold">“Automatic”</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“Manual”</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -347,8 +348,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Whether or not the object should be <code class="docutils literal notranslate"><span class="pre">present</span></code> or <code class="docutils literal notranslate"><span class="pre">absent</span></code>.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">present</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">absent</span></p></li>
+<li><p><span class="ansible-option-default-bold">“present”</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“absent”</span></p></li>
 </ul>
 </div></td>
 </tr>

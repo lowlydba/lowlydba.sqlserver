@@ -19,6 +19,7 @@
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="lowlydba.sqlserver.availability_group module – Configures availability group(s)" href="availability_group_module.html" />
@@ -191,10 +192,10 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>The action to perform if the step fails.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-choices-entry">QuitWithSuccess</span></p></li>
-<li><p><span class="ansible-option-default-bold">QuitWithFailure</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">GoToNextStep</span></p></li>
-<li><p><span class="ansible-option-choices-entry">GoToStep</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“QuitWithSuccess”</span></p></li>
+<li><p><span class="ansible-option-default-bold">“QuitWithFailure”</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“GoToNextStep”</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“GoToStep”</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -213,10 +214,10 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>The action to perform if the step succeeds.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">QuitWithSuccess</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">QuitWithFailure</span></p></li>
-<li><p><span class="ansible-option-choices-entry">GoToNextStep</span></p></li>
-<li><p><span class="ansible-option-choices-entry">GoToStep</span></p></li>
+<li><p><span class="ansible-option-default-bold">“QuitWithSuccess”</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“QuitWithFailure”</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“GoToNextStep”</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“GoToStep”</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -272,8 +273,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Whether or not the object should be <code class="docutils literal notranslate"><span class="pre">present</span></code> or <code class="docutils literal notranslate"><span class="pre">absent</span></code>.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">present</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">absent</span></p></li>
+<li><p><span class="ansible-option-default-bold">“present”</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“absent”</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -299,15 +300,15 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>The subsystem used by the SQL Server Agent service to execute command.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-choices-entry">CmdExec</span></p></li>
-<li><p><span class="ansible-option-choices-entry">Distribution</span></p></li>
-<li><p><span class="ansible-option-choices-entry">LogReader</span></p></li>
-<li><p><span class="ansible-option-choices-entry">Merge</span></p></li>
-<li><p><span class="ansible-option-choices-entry">PowerShell</span></p></li>
-<li><p><span class="ansible-option-choices-entry">QueueReader</span></p></li>
-<li><p><span class="ansible-option-choices-entry">Snapshot</span></p></li>
-<li><p><span class="ansible-option-choices-entry">Ssis</span></p></li>
-<li><p><span class="ansible-option-default-bold">TransactSql</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“CmdExec”</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“Distribution”</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“LogReader”</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“Merge”</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“PowerShell”</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“QueueReader”</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“Snapshot”</span></p></li>
+<li><p><span class="ansible-option-choices-entry">“Ssis”</span></p></li>
+<li><p><span class="ansible-option-default-bold">“TransactSql”</span> <span class="ansible-option-default">← (default)</span></p></li>
 </ul>
 </div></td>
 </tr>
