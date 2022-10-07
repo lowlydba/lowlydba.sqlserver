@@ -167,8 +167,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Specifies an alternate branch of the First Responder Kit to install.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-choices-entry">“main”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“dev”</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;main&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;dev&quot;</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -186,8 +186,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>If this switch is enabled, the FRK will be downloaded from the internet even if previously cached.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">false</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -207,25 +207,25 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <p>This way only part of the First Responder Kit can be installed.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">“Install-All-Scripts.sql”</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“Install-Core-Blitz-No-Query-Store.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“Install-Core-Blitz-With-Query-Store.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“sp_Blitz.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“sp_BlitzFirst.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“sp_BlitzIndex.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“sp_BlitzCache.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“sp_BlitzWho.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“sp_BlitzQueryStore.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“sp_BlitzAnalysis.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“sp_BlitzBackups.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“sp_BlitzInMemoryOLTP.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“sp_BlitzLock.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“sp_AllNightLog.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“sp_AllNightLog_Setup.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“sp_DatabaseRestore.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“sp_ineachdb.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“SqlServerVersions.sql”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“Uninstall.sql”</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">&quot;Install-All-Scripts.sql&quot;</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Install-Core-Blitz-No-Query-Store.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Install-Core-Blitz-With-Query-Store.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sp_Blitz.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sp_BlitzFirst.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sp_BlitzIndex.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sp_BlitzCache.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sp_BlitzWho.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sp_BlitzQueryStore.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sp_BlitzAnalysis.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sp_BlitzBackups.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sp_BlitzInMemoryOLTP.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sp_BlitzLock.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sp_AllNightLog.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sp_AllNightLog_Setup.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sp_DatabaseRestore.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;sp_ineachdb.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;SqlServerVersions.sql&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Uninstall.sql&quot;</span></code></p></li>
 </ul>
 </div></td>
 </tr>

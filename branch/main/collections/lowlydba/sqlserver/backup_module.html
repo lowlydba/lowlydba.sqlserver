@@ -181,14 +181,14 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Specifies block size to use.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-choices-entry">“0.5kb”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“1kb”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“2kb”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“4kb”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“8kb”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“16kb”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“32kb”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“64kb”</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;0.5kb&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;1kb&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;2kb&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;4kb&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;8kb&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;16kb&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;32kb&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;64kb&quot;</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -197,7 +197,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-buffer_count" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Number of I/O buffers to use.</p>
-<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <span class="ansible-option-default">0</span></p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">0</span></code></p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -207,8 +207,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>By default this command will not attempt to create missing paths, this switch will change the behaviour so that it will.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">false</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -219,8 +219,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>If set, the backup checksum will be calculated.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">false</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -231,8 +231,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>If set, use compression when creating the backup if it is supported by the version and edition.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">false</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -243,8 +243,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>The backup will be CopyOnly.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">false</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -255,8 +255,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>If set, database is backed up to its own subfolder within the path.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">false</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -274,10 +274,10 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Specifies the Encryption Algorithm to used.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-choices-entry">“AES128”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“AES192”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“AES256”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“TRIPLEDES”</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;AES128&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;AES192&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;AES256&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;TRIPLEDES&quot;</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -293,7 +293,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-file_count" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The number of striped files to create the backup with.</p>
-<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <span class="ansible-option-default">0</span></p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">0</span></code></p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -311,8 +311,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>If set, stops the function from checking path validity.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">false</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -324,8 +324,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <p>Using this has been alleged to improved restore times on some Azure based SQL Database platforms.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">false</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -336,8 +336,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Initializes the media as part of the backup operation.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">false</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -346,7 +346,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-max_transfer_size" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Sets the size of the unit of transfer. Values must be a multiple of 64kb.</p>
-<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <span class="ansible-option-default">0</span></p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">0</span></code></p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -356,8 +356,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>If set, performs a tail log backup.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">false</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -376,8 +376,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>If set, the following list of strings will be replaced in the FilePath and Path strings. <code class="docutils literal notranslate"><span class="pre">instancename</span></code> - will be replaced with the instance Name <code class="docutils literal notranslate"><span class="pre">servername</span></code> - will be replaced with the server name <code class="docutils literal notranslate"><span class="pre">dbname</span></code> - will be replaced with the database name <code class="docutils literal notranslate"><span class="pre">timestamp</span></code> - will be replaced with the timestamp (either the default, or the format provided) <code class="docutils literal notranslate"><span class="pre">backuptype</span></code> - will be replaced with <code class="docutils literal notranslate"><span class="pre">Full</span></code>, <code class="docutils literal notranslate"><span class="pre">Log</span></code>, or <code class="docutils literal notranslate"><span class="pre">Differential</span></code> as appropriate</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">false</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -416,11 +416,11 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>The type of backup to perform.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-choices-entry">“full”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“log”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“differential”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“diff”</span></p></li>
-<li><p><span class="ansible-option-default-bold">“database”</span> <span class="ansible-option-default">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;full&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;log&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;differential&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;diff&quot;</span></code></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">&quot;database&quot;</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
 </ul>
 </div></td>
 </tr>
@@ -431,8 +431,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>If set, the backup will be verified via <code class="docutils literal notranslate"><span class="pre">RESTORE</span> <span class="pre">VERIFYONLY</span></code></p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">false</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -443,8 +443,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Formats the media as the first step of the backup operation.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">false</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">false</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>

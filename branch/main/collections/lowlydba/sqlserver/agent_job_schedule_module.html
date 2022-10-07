@@ -168,8 +168,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Whether the schedule is enabled or disabled.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-choices-entry">false</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -198,8 +198,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <p>It will also remove the any present schedules with the same name for the specific job.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-choices-entry">false</span></p></li>
-<li><p><span class="ansible-option-choices-entry">true</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -230,12 +230,12 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>A job’s occurrence of <em>frequency_interval</em> in each month. If <em>frequency_interval=32</em> (<code class="docutils literal notranslate"><span class="pre">MonthlyRelative</span></code>).</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-choices-entry">“Unused”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“First”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“Second”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“Third”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“Fourth”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“Last”</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Unused&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;First&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Second&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Third&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Fourth&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Last&quot;</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -253,10 +253,10 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Specifies the units for the subday <em>frequency_interval</em>.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-choices-entry">“Time”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“Seconds”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“Minutes”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“Hours”</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Time&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Seconds&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Minutes&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Hours&quot;</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -268,16 +268,16 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <p>If <em>force=true</em> the default will be <code class="docutils literal notranslate"><span class="pre">Once</span></code>.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-choices-entry">“Once”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“OneTime”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“Daily”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“Weekly”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“Monthly”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“MonthlyRelative”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“AgentStart”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“AutoStart”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“IdleComputer”</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“OnIdle”</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Once&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OneTime&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Daily&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Weekly&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Monthly&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;MonthlyRelative&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;AgentStart&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;AutoStart&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;IdleComputer&quot;</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;OnIdle&quot;</span></code></p></li>
 </ul>
 </div></td>
 </tr>
@@ -342,8 +342,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Whether or not the object should be <code class="docutils literal notranslate"><span class="pre">present</span></code> or <code class="docutils literal notranslate"><span class="pre">absent</span></code>.</p>
 <p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
 <ul class="simple">
-<li><p><span class="ansible-option-default-bold">“present”</span> <span class="ansible-option-default">← (default)</span></p></li>
-<li><p><span class="ansible-option-choices-entry">“absent”</span></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">&quot;present&quot;</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;absent&quot;</span></code></p></li>
 </ul>
 </div></td>
 </tr>
