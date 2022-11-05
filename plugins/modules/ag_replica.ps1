@@ -39,7 +39,7 @@ $spec = @{
         }
         connection_mode_in_primary_role = @{
             type = 'str'
-            required = $false;
+            required = $false
             default = 'AllowAllConnections'
             choices = @('AllowReadIntentConnectionsOnly', 'AllowAllConnections')
         }
@@ -51,11 +51,11 @@ $spec = @{
         }
         read_only_routing_connection_url = @{
             type = 'str'
-            required = $false;
+            required = $false
         }
         read_only_routing_list = @{
             type = 'str'
-            required = $false;
+            required = $false
         }
         cluster_type = @{
             type = 'str'

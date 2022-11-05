@@ -33,7 +33,7 @@ $spec = @{
             choices = @("SynchronousCommit", "AsynchronousCommit")
         }
         failure_condition_level = @{
-            type = "str";
+            type = "str"
             required = $false
             choices = @(
                 "OnAnyQualifiedFailureCondition",
