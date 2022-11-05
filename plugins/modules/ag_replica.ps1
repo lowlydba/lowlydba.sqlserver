@@ -21,46 +21,46 @@ $spec = @{
         endpoint_url = @{type = 'str'; required = $false }
         backup_priority = @{type = 'int'; required = $false; default = 50 }
         failover_mode = @{
-            type = 'str';
-            required = $false;
-            default = 'Manual';
+            type = 'str'
+            required = $false
+            default = 'Manual'
             choices = @('Manual', 'Automatic')
         }
         availability_mode = @{
-            type = 'str';
-            required = $false; default = 'AsynchronousCommit';
+            type = 'str'
+            required = $false; default = 'AsynchronousCommit'
             choices = @('SynchronousCommit', 'AsynchronousCommit')
         }
         seeding_mode = @{
-            type = 'str';
-            required = $false;
-            default = 'Automatic';
+            type = 'str'
+            required = $false
+            default = 'Automatic'
             choices = @('Manual', 'Automatic')
         }
         connection_mode_in_primary_role = @{
-            type = 'str';
+            type = 'str'
             required = $false;
-            default = 'AllowAllConnections';
+            default = 'AllowAllConnections'
             choices = @('AllowReadIntentConnectionsOnly', 'AllowAllConnections')
         }
         connection_mode_in_secondary_role = @{
-            type = 'str';
-            required = $false;
-            default = 'AllowNoConnections';
+            type = 'str'
+            required = $false
+            default = 'AllowNoConnections'
             choices = @('AllowNoConnections', 'AllowReadIntentConnectionsOnly', 'AllowAllConnections')
         }
         read_only_routing_connection_url = @{
-            type = 'str';
+            type = 'str'
             required = $false;
         }
         read_only_routing_list = @{
-            type = 'str';
+            type = 'str'
             required = $false;
         }
         cluster_type = @{
-            type = 'str';
-            required = $false;
-            default = 'Wsfc';
+            type = 'str'
+            required = $false
+            default = 'Wsfc'
             choices = @('Wsfc', 'External', 'None')
         }
         configure_xe_session = @{ type = 'bool'; required = $false; default = $false }

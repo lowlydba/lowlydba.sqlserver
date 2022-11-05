@@ -1,2 +1,2 @@
 bugfixes:
-  - Fix cleanup_time default to match documentation default (https://github.com/lowlydba/lowlydba.sqlserver/pull/127).
+  - Fix cleanup_time default to match documentation default & lint fixes (https://github.com/lowlydba/lowlydba.sqlserver/pull/127).
