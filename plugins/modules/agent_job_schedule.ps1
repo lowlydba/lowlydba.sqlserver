@@ -17,7 +17,7 @@ $spec = @{
         job = @{type = 'str'; required = $true }
         enabled = @{type = 'bool'; required = $false }
         force = @{type = 'bool'; required = $false }
-        frequency_type = @{type = 'str'; required = $false;
+        frequency_type = @{type = 'str'; required = $false
             choices = @('Once', 'OneTime', 'Daily', 'Weekly', 'Monthly', 'MonthlyRelative', 'AgentStart', 'AutoStart', 'IdleComputer', 'OnIdle')
         }
         frequency_interval = @{type = 'str'; required = $false; }

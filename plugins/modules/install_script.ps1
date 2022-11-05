@@ -14,7 +14,7 @@ $spec = @{
     options = @{
         database = @{type = 'str'; required = $true }
         path = @{type = 'str'; required = $true }
-        deployment_method = @{type = 'str'; required = $false; default = 'NoTransaction';
+        deployment_method = @{type = 'str'; required = $false; default = 'NoTransaction'
             choices = @('NoTransaction', 'SingleTransaction', 'TransactionPerScript')
         }
         schema_version_table = @{type = 'str'; required = $false }

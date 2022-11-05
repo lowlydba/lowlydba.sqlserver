@@ -14,7 +14,7 @@ $spec = @{
     supports_check_mode = $true
     options = @{
         backup_location = @{type = 'str'; required = $false }
-        cleanup_time = @{type = 'int'; required = $false; }
+        cleanup_time = @{type = 'int'; required = $false; default = 0 }
         output_file_dir = @{type = 'str'; required = $false }
         replace_existing = @{type = 'bool'; required = $false; }
         log_to_table = @{type = 'bool'; required = $false; default = $false }

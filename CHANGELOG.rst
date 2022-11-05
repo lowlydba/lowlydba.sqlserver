@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v1.0.4
+======
+
+Release Summary
+---------------
+
+Minor fixes to resolve new dlevel sanity checks.
+
+Bugfixes
+--------
+
+- Fix cleanup_time default to match documentation default & lint fixes (https://github.com/lowlydba/lowlydba.sqlserver/pull/127).
+
 v1.0.3
 ======
 

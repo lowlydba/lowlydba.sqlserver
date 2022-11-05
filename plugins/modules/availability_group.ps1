@@ -27,14 +27,14 @@ $spec = @{
         use_last_backup = @{type = "bool"; required = $false; }
         healthcheck_timeout = @{type = "int"; required = $false; }
         availability_mode = @{
-            type = "str";
-            required = $false;
+            type = "str"
+            required = $false
             default = "SynchronousCommit"
             choices = @("SynchronousCommit", "AsynchronousCommit")
         }
         failure_condition_level = @{
-            type = "str";
-            required = $false;
+            type = "str"
+            required = $false
             choices = @(
                 "OnAnyQualifiedFailureCondition",
                 "OnCriticalServerErrors",
@@ -44,27 +44,27 @@ $spec = @{
             )
         }
         failover_mode = @{
-            type = "str";
-            required = $false;
-            default = "Automatic";
+            type = "str"
+            required = $false
+            default = "Automatic"
             choices = @("Manual", "Automatic")
         }
         seeding_mode = @{
-            type = "str";
-            required = $false;
-            default = "Manual";
+            type = "str"
+            required = $false
+            default = "Manual"
             choices = @("Manual", "Automatic")
         }
         automated_backup_preference = @{
-            type = "str";
-            required = $false;
-            default = "Secondary";
+            type = "str"
+            required = $false
+            default = "Secondary"
             choices = @("None", "Primary", "Secondary", "SecondaryOnly")
         }
         cluster_type = @{
-            type = "str";
-            required = $false;
-            default = "Wsfc";
+            type = "str"
+            required = $false
+            default = "Wsfc"
             choices = @("Wsfc", "External", "None")
         }
         allow_null_backup = @{type = "bool"; required = $false }
