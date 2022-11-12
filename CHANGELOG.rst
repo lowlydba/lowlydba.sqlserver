@@ -5,6 +5,14 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v1.1.0
+======
+
+New Modules
+-----------
+
+- user - Configures a user within a database
+
 v1.0.4
 ======
 
