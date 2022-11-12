@@ -49,35 +49,40 @@
     - assert:
         that:
           - result.data != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Database = "{{ database }}"
+          - result.data.DefaultSchema = "{{ default_schema }}"
+          - result.data.Login = "{{ login_name }}"
+          - result.data.Name = "{{ username }}"
 
-    # - name: Modify login
-    #   lowlydba.sqlserver.login:
-    #     default_database: "model"
-    #     enabled: true
-    #   register: result
-    # - assert:
-    #     that:
-    #       - result.data != None
-    #       - result.data.ComputerName != None
-    #       - result.data.InstanceName != None
-    #       - result.data.SqlInstance != None
-    #       - result.data.IsDisabled is false
-    #       - result.data.Name == "{{ login_name }}"
-    #       - result.data.DefaultDatabase == "model"
+    - name: Modify user's schema
+      lowlydba.sqlserver.user:
+        default_schema: "guest"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Database = "{{ database }}"
+          - result.data.DefaultSchema = "guest"
+          - result.data.Login = "{{ login_name }}"
+          - result.data.Name = "{{ username }}"
 
-    # - name: Drop login
-    #   lowlydba.sqlserver.login:
-    #     state: "absent"
-    #   register: result
-    # - assert:
-    #     that:
-    #       - result.data != None
-    #       - result.data.ComputerName != None
-    #       - result.data.InstanceName != None
-    #       - result.data.SqlInstance != None
-    #       - result.data.Login == "{{ login_name }}"
-    #       - result.data.Status == "Dropped"
-    #       - result is changed
+    - name: Drop user
+      lowlydba.sqlserver.user:
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result is changed
 
     # - name: Create login in checkmode
     #   lowlydba.sqlserver.login:
