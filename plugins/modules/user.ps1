@@ -63,7 +63,7 @@ try {
                     Schema = $defaultSchema
                     EnableException = $true
                 }
-                $existingSchema = Get-DbaDbSchema $getSchemaSplat
+                $existingSchema = Get-DbaDbSchema @getSchemaSplat
 
                 if ($null -ne $existingSchema) {
                     # do schema change
