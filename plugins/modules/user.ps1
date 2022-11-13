@@ -123,7 +123,7 @@ try {
                 $module.result.changed = $true
             }
             catch {
-                $module.FailJson("Configuring user failed: $($_.Exception.Message)", $_)
+                $module.FailJson("Creating user failed: $($_.Exception.Message)", $_)
             }
         }
         # If not in check mode, add extra fields we can change to default display set
@@ -139,5 +139,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Configuring user failed: $($_.Exception.Message)", $_)
+    $module.FailJson("Failure: $($_.Exception.Message)", $_)
 }
