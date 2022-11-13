@@ -47,69 +47,84 @@ try {
 
     if ($state -eq "absent") {
         if ($null -ne $existingUser) {
-            $removeUserSplat = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                User = $username
-                Database = $database
-                EnableException = $true
-                WhatIf = $checkMode
-                Force = $true
-                Confirm = $false
+            try {
+                $removeUserSplat = @{
+                    SqlInstance = $sqlInstance
+                    SqlCredential = $sqlCredential
+                    User = $username
+                    Database = $database
+                    EnableException = $true
+                    WhatIf = $checkMode
+                    Force = $true
+                    Confirm = $false
+                }
+                $output = Remove-DbaDbUser @removeUserSplat
+                $module.Result.changed = $true
             }
-            $output = Remove-DbaDbUser @removeUserSplat
-            $module.Result.changed = $true
+            catch {
+                $module.FailJson("Removing user failed: $($_.Exception.Message)", $_)
+            }
         }
     }
     elseif ($state -eq "present") {
         # User exists
         if ($null -ne $existingUser) {
             if ($defaultSchema -ne $existingUser.DefaultSchema) {
-                # No Set-DbaDbUser command exists, use SMO
-                $getSchemaSplat = @{
-                    SqlInstance = $sqlInstance
-                    SqlCredential = $sqlCredential
-                    Database = $database
-                    Schema = $defaultSchema
-                    IncludeSystemDatabases = $true
-                    IncludeSystemSchemas = $true
-                    EnableException = $true
-                }
-                $existingSchema = Get-DbaDbSchema @getSchemaSplat
-
-                if ($null -ne $existingSchema) {
-                    # do schema change
-                    if (-not($checkMode)) {
-                        $existingUser.DefaultSchema = $defaultSchema
-                        $existingUser.Alter()
-                        $output = $existingUser
+                try {
+                    # No Set-DbaDbUser command exists, use SMO
+                    $getSchemaSplat = @{
+                        SqlInstance = $sqlInstance
+                        SqlCredential = $sqlCredential
+                        Database = $database
+                        Schema = $defaultSchema
+                        IncludeSystemDatabases = $true
+                        IncludeSystemSchemas = $true
+                        EnableException = $true
                     }
-                    $module.result.changed = $true
+                    $existingSchema = Get-DbaDbSchema @getSchemaSplat
+
+                    if ($null -ne $existingSchema) {
+                        # do schema change
+                        if (-not($checkMode)) {
+                            $existingUser.DefaultSchema = $defaultSchema
+                            $existingUser.Alter()
+                            $output = $existingUser
+                        }
+                        $module.result.changed = $true
+                    }
+                    else {
+                        $module.FailJson("Schema '$defaultSchema' not found in [$database].")
+                    }
                 }
-                else {
-                    $module.FailJson("Schema '$defaultSchema' not found in [$database].")
+                catch {
+                    $module.FailJson("Configuring user failed: $($_.Exception.Message)", $_)
                 }
             }
         }
         # New User
         else {
-            $newUserSplat = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                Username = $username
-                Login = $login
-                Database = $database
-                DefaultSchema = $defaultSchema
-                EnableException = $true
-                WhatIf = $checkMode
-                Force = $true
-                Confirm = $false
+            try {
+                $newUserSplat = @{
+                    SqlInstance = $sqlInstance
+                    SqlCredential = $sqlCredential
+                    Username = $username
+                    Login = $login
+                    Database = $database
+                    DefaultSchema = $defaultSchema
+                    EnableException = $true
+                    WhatIf = $checkMode
+                    Force = $true
+                    Confirm = $false
+                }
+                if ($externalProvider -eq $true) {
+                    $newUserSplat.add("ExternalProvider", $true)
+                }
+                $output = New-DbaDbUser @newUserSplat
+                $module.result.changed = $true
             }
-            if ($externalProvider -eq $true) {
-                $newUserSplat.add("ExternalProvider", $true)
+            catch {
+                $module.FailJson("Configuring user failed: $($_.Exception.Message)", $_)
             }
-            $output = New-DbaDbUser @newUserSplat
-            $module.result.changed = $true
         }
         # If not in check mode, add extra fields we can change to default display set
         if ($null -ne $output) {
