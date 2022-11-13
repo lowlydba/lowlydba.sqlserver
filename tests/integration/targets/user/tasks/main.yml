@@ -59,7 +59,7 @@
 
     - name: Modify user's schema
       lowlydba.sqlserver.user:
-        default_schema: "guest"
+        default_schema: "INFORMATION_SCHEMA"
       register: result
     - assert:
         that:
@@ -68,7 +68,7 @@
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
           - result.data.Database == "{{ database }}"
-          - result.data.DefaultSchema == "guest"
+          - result.data.DefaultSchema == "INFORMATION_SCHEMA"
           - result.data.Login == "{{ login_name }}"
           - result.data.Name == "{{ username }}"
 
