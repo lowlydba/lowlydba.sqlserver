@@ -47,7 +47,17 @@ try {
 
     if ($state -eq "absent") {
         if ($null -ne $existingUser) {
-            $output = $existingUser | Remove-DbaDbUser -WhatIf:$checkMode -EnableException -Force -Confirm:$false
+            $removeUserSplat = @{
+                SqlInstance = $sqlInstance
+                SqlCredential = $sqlCredential
+                User = $username
+                Database = $database
+                EnableException = $true
+                WhatIf = $checkMode
+                Force = $true
+                Confirm = $false
+            }
+            $output = Remove-DbaDbUser @removeUserSplat
             $module.Result.changed = $true
         }
     }
