@@ -61,6 +61,8 @@ try {
                     SqlCredential = $sqlCredential
                     Database = $database
                     Schema = $defaultSchema
+                    IncludeSystemDatabases = $true
+                    IncludeSystemSchemas = $true
                     EnableException = $true
                 }
                 $existingSchema = Get-DbaDbSchema @getSchemaSplat
