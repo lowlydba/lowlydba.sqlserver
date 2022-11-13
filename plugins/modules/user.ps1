@@ -57,7 +57,8 @@ if ($state -eq "absent") {
                 Force = $true
                 Confirm = $false
             }
-            $output = Remove-DbaDbUser @removeUserSplat
+            #$output =
+            Remove-DbaDbUser @removeUserSplat
             $module.Result.changed = $true
         }
         catch {
