@@ -76,7 +76,7 @@ jobs:
 
       # Install the head of the given branch (devel, stable-2.10)
       - name: Install ansible-base (${{ matrix.ansible }})
-        run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
+        run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
 
       # run ansible-test sanity inside of Docker.
       # The docker container has all the pinned dependencies that are required
@@ -119,14 +119,12 @@ jobs:
       fail-fast: false
       matrix:
         ansible:
-          - stable-2.10
           - stable-2.11
           - stable-2.12
           - stable-2.13
           - stable-2.14
           - devel
         python:
-          #- 3.8
           - 3.9
 
     steps:
@@ -143,11 +141,12 @@ jobs:
           python-version: 3.9
 
       - name: Install ansible-base (${{ matrix.ansible }})
-        run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
+        run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
 
       - name: Install collection dependencies
         id: collection-dependency
         run: ansible-galaxy collection install community.general -p .
+        continue-on-error: true
 
       - name: Retry install collection dependencies
         if: steps.collection-dependency.outcome == 'failure'

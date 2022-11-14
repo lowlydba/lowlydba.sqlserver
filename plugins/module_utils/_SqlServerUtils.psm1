@@ -168,6 +168,13 @@ function ConvertTo-SerializableObject {
                     }
                     break
                 }
+                { $pValue.GetType().Name -eq 'User' } {
+                    @{
+                        Name = $pName
+                        Expression = { [string[]]($pValue.Name) }.GetNewClosure()
+                    }
+                    break
+                }
                 default { $pName }
             }
         }
