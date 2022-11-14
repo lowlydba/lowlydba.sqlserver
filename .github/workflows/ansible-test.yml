@@ -146,6 +146,7 @@ jobs:
       - name: Install collection dependencies
         id: collection-dependency
         run: ansible-galaxy collection install community.general -p .
+        continue-on-error: true
 
       - name: Retry install collection dependencies
         if: steps.collection-dependency.outcome == 'failure'
