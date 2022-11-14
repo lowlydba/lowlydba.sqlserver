@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lowlydba.sqlserver.rg_resource_pool module – Configures a resource pool for use by the Resource Governor &mdash; Ansible collections  documentation</title>
+  <title>lowlydba.sqlserver.user module – Configures a user within a database &mdash; Ansible collections  documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/ansible.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/antsibull-minimal.css" type="text/css" />
@@ -22,8 +22,8 @@
         <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="lowlydba.sqlserver.rg_workload_group module – Configures a workload group for use by the Resource Governor" href="rg_workload_group_module.html" />
-    <link rel="prev" title="lowlydba.sqlserver.restore module – Performs a restore operation" href="restore_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+    <link rel="next" title="Index of all Modules" href="../../index_module.html" />
+    <link rel="prev" title="lowlydba.sqlserver.traceflag module – Enable or disable global trace flags on a SQL Server instance" href="traceflag_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
 
 
 
@@ -108,7 +108,7 @@
           <li class="breadcrumb-item"><a href="../../index.html">Collection Index</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Collections in the Lowlydba Namespace</a></li>
           <li class="breadcrumb-item"><a href="index.html">Lowlydba.Sqlserver</a></li>
-      <li class="breadcrumb-item active">lowlydba.sqlserver.rg_resource_pool module – Configures a resource pool for use by the Resource Governor</li>
+      <li class="breadcrumb-item active">lowlydba.sqlserver.user module – Configures a user within a database</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -119,17 +119,17 @@
   
            <div itemprop="articleBody">
              
-  <span class="target" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module"></span><section id="lowlydba-sqlserver-rg-resource-pool-module-configures-a-resource-pool-for-use-by-the-resource-governor">
-<h1>lowlydba.sqlserver.rg_resource_pool module – Configures a resource pool for use by the Resource Governor<a class="headerlink" href="#lowlydba-sqlserver-rg-resource-pool-module-configures-a-resource-pool-for-use-by-the-resource-governor" title="Permalink to this heading"></a></h1>
+  <span class="target" id="ansible-collections-lowlydba-sqlserver-user-module"></span><section id="lowlydba-sqlserver-user-module-configures-a-user-within-a-database">
+<h1>lowlydba.sqlserver.user module – Configures a user within a database<a class="headerlink" href="#lowlydba-sqlserver-user-module-configures-a-user-within-a-database" title="Permalink to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/lowlydba/sqlserver">lowlydba.sqlserver collection</a> (version 1.1.0).</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">lowlydba.sqlserver</span></code>.
 You need further requirements to be able to use this module,
-see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
-<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">lowlydba.sqlserver.rg_resource_pool</span></code>.</p>
+see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-user-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">lowlydba.sqlserver.user</span></code>.</p>
 </div>
-<p class="ansible-version-added">New in lowlydba.sqlserver 0.1.0</p>
+<p class="ansible-version-added">New in lowlydba.sqlserver 1.1.0</p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
 <li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
@@ -142,11 +142,11 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <section id="synopsis">
 <h2><a class="toc-backref" href="#id1">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this heading"></a></h2>
 <ul class="simple">
-<li><p>Creates or modifies a resource pool to be used by the Resource Governor. Default values are handled by the Powershell functions themselves.</p></li>
+<li><p>Creates, modifies, or removes a user in a database.</p></li>
 </ul>
 </section>
 <section id="requirements">
-<span id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-requirements"></span><h2><a class="toc-backref" href="#id2">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<span id="ansible-collections-lowlydba-sqlserver-user-module-requirements"></span><h2><a class="toc-backref" href="#id2">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
 <p>The below requirements are needed on the host that executes this module.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.powershellgallery.com/packages/dbatools/">dbatools</a> PowerShell module</p></li>
@@ -162,84 +162,62 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-cap_cpu_perc"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-parameter-cap-cpu-perc"><strong>cap_cpu_perc</strong></p>
-<a class="ansibleOptionLink" href="#parameter-cap_cpu_perc" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
+<div class="ansibleOptionAnchor" id="parameter-database"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-module-parameter-database"><strong>database</strong></p>
+<a class="ansibleOptionLink" href="#parameter-database" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Cap CPU Percentage able to be used by queries in this resource pool.</p>
-</div></td>
-</tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-max_cpu_perc"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-parameter-max-cpu-perc"><strong>max_cpu_perc</strong></p>
-<a class="ansibleOptionLink" href="#parameter-max_cpu_perc" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Maximum CPU Percentage able to be used by queries in this resource pool.</p>
-</div></td>
-</tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-max_iops_per_vol"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-parameter-max-iops-per-vol"><strong>max_iops_per_vol</strong></p>
-<a class="ansibleOptionLink" href="#parameter-max_iops_per_vol" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Maximum IOPS/volume able to be used by queries in this resource pool.</p>
+<td><div class="ansible-option-cell"><p>Database for the user.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-max_mem_perc"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-parameter-max-mem-perc"><strong>max_mem_perc</strong></p>
-<a class="ansibleOptionLink" href="#parameter-max_mem_perc" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
+<div class="ansibleOptionAnchor" id="parameter-default_schema"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-module-parameter-default-schema"><strong>default_schema</strong></p>
+<a class="ansibleOptionLink" href="#parameter-default_schema" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Maximum Memory Percentage able to be used by queries in this resource pool.</p>
+<td><div class="ansible-option-cell"><p>The default database schema for the user.</p>
+<p class="ansible-option-line"><span class="ansible-option-default-bold">Default:</span> <code class="ansible-option-default docutils literal notranslate"><span class="pre">&quot;dbo&quot;</span></code></p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-min_cpu_perc"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-parameter-min-cpu-perc"><strong>min_cpu_perc</strong></p>
-<a class="ansibleOptionLink" href="#parameter-min_cpu_perc" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
+<div class="ansibleOptionAnchor" id="parameter-external_provider"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-module-parameter-external-provider"><strong>external_provider</strong></p>
+<a class="ansibleOptionLink" href="#parameter-external_provider" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Minimum CPU Percentage able to be used by queries in this resource pool.</p>
+<td><div class="ansible-option-cell"><p>Specifies that the user is for Azure AD Authentication. Only used when creating a new user, this cannot be modified for an existing user.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
+</ul>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-min_iops_per_vol"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-parameter-min-iops-per-vol"><strong>min_iops_per_vol</strong></p>
-<a class="ansibleOptionLink" href="#parameter-min_iops_per_vol" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
+<div class="ansibleOptionAnchor" id="parameter-login"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-module-parameter-login"><strong>login</strong></p>
+<a class="ansibleOptionLink" href="#parameter-login" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Minimum IOPS/volume able to be used by queries in this resource pool.</p>
-</div></td>
-</tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-min_mem_perc"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-parameter-min-mem-perc"><strong>min_mem_perc</strong></p>
-<a class="ansibleOptionLink" href="#parameter-min_mem_perc" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Minimum Memory Percentage able to be used by queries in this resource pool.</p>
-</div></td>
-</tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-resource_pool"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-parameter-resource-pool"><strong>resource_pool</strong></p>
-<a class="ansibleOptionLink" href="#parameter-resource_pool" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Name of the target resource pool.</p>
+<td><div class="ansible-option-cell"><p>Name of the login that the user is mapped to.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_instance"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-parameter-sql-instance"><strong>sql_instance</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-sql_instance"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-module-parameter-sql-instance"><strong>sql_instance</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_instance" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The SQL Server instance to modify.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-parameter-sql-password"><strong>sql_password</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-sql_password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-module-parameter-sql-password"><strong>sql_password</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Password for SQL Authentication.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-parameter-sql-username"><strong>sql_username</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-sql_username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-module-parameter-sql-username"><strong>sql_username</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Username for SQL Authentication.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-parameter-state"><strong>state</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-module-parameter-state"><strong>state</strong></p>
 <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Whether or not the object should be <code class="docutils literal notranslate"><span class="pre">present</span></code> or <code class="docutils literal notranslate"><span class="pre">absent</span></code>.</p>
@@ -251,15 +229,10 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-type"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-parameter-type"><strong>type</strong></p>
-<a class="ansibleOptionLink" href="#parameter-type" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+<div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-module-parameter-username"><strong>username</strong></p>
+<a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Specify the type of resource pool.</p>
-<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
-<ul class="simple">
-<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">&quot;Internal&quot;</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
-<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;External&quot;</span></code></p></li>
-</ul>
+<td><div class="ansible-option-cell"><p>Name of the user.</p>
 </div></td>
 </tr>
 </tbody>
@@ -267,16 +240,28 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </section>
 <section id="examples">
 <h2><a class="toc-backref" href="#id4">Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Enable resource governor</span><span class="w"></span>
-<span class="w">  </span><span class="nt">lowlydba.sqlserver.resource_governor</span><span class="p">:</span><span class="w"></span>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a user</span><span class="w"></span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.user</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span><span class="w"></span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">    </span><span class="nt">login</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TheIntern</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TheIntern</span><span class="w"></span>
+<span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">InternProject1</span><span class="w"></span>
 
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create rg resource pool</span><span class="w"></span>
-<span class="w">  </span><span class="nt">lowlydba.sqlserver.rg_resource_pool</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Change user&#39;s schema</span><span class="w"></span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.login</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span><span class="w"></span>
-<span class="w">    </span><span class="nt">resource_pool</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;rpLittle&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="nt">max_cpu_perc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"></span>
+<span class="w">    </span><span class="nt">login</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TheIntern</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TheIntern</span><span class="w"></span>
+<span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">InternProject1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">default_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dev</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Remove a user</span><span class="w"></span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.login</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span><span class="w"></span>
+<span class="w">    </span><span class="nt">login</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TheIntern</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TheIntern</span><span class="w"></span>
+<span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">InternProject1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">absent</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -291,10 +276,10 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="return-data"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-rg-resource-pool-module-return-data"><strong>data</strong></p>
+<div class="ansibleOptionAnchor" id="return-data"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-module-return-data"><strong>data</strong></p>
 <a class="ansibleOptionLink" href="#return-data" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Output from the <code class="docutils literal notranslate"><span class="pre">Set-DbaRgResourcePool</span></code>, <code class="docutils literal notranslate"><span class="pre">New-DbaRgResourcePool</span></code>, or <code class="docutils literal notranslate"><span class="pre">Remove-DbaRgResourcePool</span></code> function.</p>
+<td><div class="ansible-option-cell"><p>Output from the <code class="docutils literal notranslate"><span class="pre">New-DbaDbUser</span></code>, <code class="docutils literal notranslate"><span class="pre">Get-DbaDbUser</span></code>, or <code class="docutils literal notranslate"><span class="pre">Remove-DbaDbUser</span></code> function.</p>
 <p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success, but not in check_mode.</p>
 </div></td>
 </tr>
@@ -321,8 +306,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
           
 
 <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="restore_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.restore module – Performs a restore operation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="rg_workload_group_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.rg_workload_group module – Configures a workload group for use by the Resource Governor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="traceflag_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.traceflag module – Enable or disable global trace flags on a SQL Server instance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../index_module.html" class="btn btn-neutral float-right" title="Index of all Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
