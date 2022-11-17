@@ -13,16 +13,6 @@ class ModuleDocFragment(object):
 options: {}
 '''
 
-    ACTION_GROUP = r'''
-options: {}
-attributes:
-  action_group:
-    description: Use C(group/community.hashi_vault.vault) in C(module_defaults) to set defaults for this module.
-    support: full
-    membership:
-      - community.hashi_vault.vault
-'''
-
     CHECK_MODE = r'''
 options: {}
 attributes:
