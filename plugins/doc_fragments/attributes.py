@@ -34,6 +34,7 @@ options: {}
 attributes:
   platform:
     platforms: all
+    description: Target OS/families that can be operated against.
 '''
 
     PLATFORM_WIN = r'''
@@ -41,4 +42,5 @@ options: {}
 attributes:
   platform:
     platforms: Windows
+    description: Target OS/families that can be operated against.
 '''
