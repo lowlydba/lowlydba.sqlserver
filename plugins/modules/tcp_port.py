@@ -32,13 +32,13 @@ options:
       - IPv4 address.
     type: str
     required: false
-notes:
-  - Windows only.
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.check_mode
+  - lowlydba.sqlserver.platform_win
 '''
 
 EXAMPLES = r'''

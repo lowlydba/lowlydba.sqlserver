@@ -77,12 +77,12 @@ options:
     type: bool
     default: false
 author: "John McCall (@lowlydba)"
-notes:
-    - Check mode is not supported.
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.check_mode
+  - lowlydba.sqlserver.platform_all
 '''
 
 EXAMPLES = r'''

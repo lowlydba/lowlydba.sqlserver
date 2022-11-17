@@ -57,13 +57,14 @@ options:
     default: false
 author: "John McCall (@lowlydba)"
 notes:
-  - Check mode is supported.
   - On slower hardware, stale job component data may be returned (i.e., a previous or default job category).
     Configuring each component (schedule, step, category, etc.) individually is recommended for this reason.
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.check_mode
+  - lowlydba.sqlserver.platform_all
   - lowlydba.sqlserver.state
 '''
 
