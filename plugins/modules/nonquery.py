@@ -29,12 +29,12 @@ options:
     required: false
     default: 60
 author: "John McCall (@lowlydba)"
-notes:
-  - Check mode is supported, but the nonquery will not be parsed.
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.attributes.check_mode
+  - lowlydba.sqlserver.attributes.platform_all
 '''
 
 EXAMPLES = r'''

@@ -104,12 +104,12 @@ options:
     type: str
     required: false
 author: "John McCall (@lowlydba)"
-notes:
-  - Check mode is supported.
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.attributes.check_mode
+  - lowlydba.sqlserver.attributes.platform_all
   - lowlydba.sqlserver.state
 '''
 
