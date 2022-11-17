@@ -33,7 +33,8 @@ attributes:
 options: {}
 attributes:
   platform:
-    support: All
+    support:
+      platforms: all
     description: Target OS/families that can be operated against.
 '''
 
@@ -41,6 +42,7 @@ attributes:
 options: {}
 attributes:
   platform:
-    support: Windows
+    support:
+      platforms: Windows
     description: Target OS/families that can be operated against.
 '''
