@@ -84,8 +84,8 @@ requirements:
   - L(dbops,https://github.com/dataplat/dbops) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
-  - lowlydba.sqlserver.check_mode
-  - lowlydba.sqlserver.platform_all
+  - lowlydba.sqlserver.attributes.check_mode
+  - lowlydba.sqlserver.attributes.platform_all
 '''
 
 EXAMPLES = r'''
