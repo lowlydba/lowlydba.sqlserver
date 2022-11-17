@@ -33,16 +33,12 @@ attributes:
 options: {}
 attributes:
   platform:
-    support:
-      platforms: all
-    description: Target OS/families that can be operated against.
+    platforms: all
 '''
 
     PLATFORM_WIN = r'''
 options: {}
 attributes:
   platform:
-    support:
-      platforms: Windows
-    description: Target OS/families that can be operated against.
+    platforms: Windows
 '''
