@@ -98,6 +98,7 @@ jobs:
         with:
           install: sqlengine
           sa-password: L0wlydb4
+          version: 2022
 
       - name: Retry SQL Server install
         id: retry1
@@ -106,6 +107,7 @@ jobs:
         with:
           install: sqlengine
           sa-password: L0wlydb4
+          version: 2022
 
       - name: Add a hosts entry
         shell: cmd
