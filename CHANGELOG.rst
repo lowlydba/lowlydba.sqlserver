@@ -5,8 +5,21 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v1.1.1
+======
+
+Minor Changes
+-------------
+
+- modules - all modules now document their platform and support for check mode in their attributes documentation (https://github.com/lowlydba/lowlydba.sqlserver/pull/134).
+
 v1.1.0
 ======
+
+Release Summary
+---------------
+
+Adding a new user module.
 
 New Modules
 -----------
