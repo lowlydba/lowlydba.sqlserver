@@ -21,7 +21,7 @@ $spec = @{
         restore_time = @{type = 'str'; required = $false }
         with_replace = @{type = 'bool'; required = $false; default = $false }
         keep_replication = @{type = 'bool'; required = $false; default = $false }
-        xp_dirtree = @{type = 'bool'; required = $false; default = $false }
+        xp_dirtree = @{type = 'bool'; required = $false }
         no_xp_dir_recurse = @{type = 'bool'; required = $false; default = $false }
         verify_only = @{type = 'bool'; required = $false; default = $false }
         maintenance_solution_backup = @{type = 'bool'; required = $false; default = $false }
