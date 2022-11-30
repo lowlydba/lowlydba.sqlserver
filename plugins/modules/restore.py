@@ -67,7 +67,6 @@ options:
       - You must have sysadmin role membership on the instance for this to work.
     type: bool
     required: false
-    default: false
   no_xp_dir_recurse:
     description:
       - If specified, prevents the C(XpDirTree) process from recursing (its default behaviour).
