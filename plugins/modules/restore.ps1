@@ -90,7 +90,6 @@ try {
         Path = $path
         WithReplace = $withReplace
         KeepReplication = $keepReplication
-        XpDirTree = $xpDirTree
         NoXpDirRecurse = $noXpDirRecurse
         VerifyOnly = $verifyOnly
         MaintenanceSolutionBackup = $maintenanceSolutionBackup
@@ -143,6 +142,9 @@ try {
     }
     if ($null -ne $azureCredential) {
         $restoreSplat.Add("AzureCredential", $azureCredential)
+    }
+    if ($null -ne $xpDirTree) {
+        $restoreSplat.Add("xpDirTree", $xpDirTree)
     }
     $output = Restore-DbaDatabase @restoreSplat
 
