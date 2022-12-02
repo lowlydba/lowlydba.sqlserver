@@ -1,0 +1,2 @@
+bugfixes:
+  - Removed the default value for xp_dirtree to allow compatibility with Azure SQL Mangaed instances
