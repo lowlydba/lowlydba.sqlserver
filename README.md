@@ -68,6 +68,7 @@ To learn how to maintain / become a maintainer of this collection, refer to the 
 ### SQL Server
 
 - SQL Server 2000 - current (via DBATools)
+- Azure SQL Database Managed Instance - YMMV
 
 ## External requirements
 
