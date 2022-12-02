@@ -331,3 +331,13 @@ releases:
     fragments:
     - 137-add-attributes.yml
     release_date: '2022-11-28'
+  1.1.2:
+    changes:
+      bugfixes:
+      - Removed the default value for xp_dirtree to allow compatibility with Azure
+        SQL Mangaed instances (https://github.com/lowlydba/lowlydba.sqlserver/pull/141)
+      release_summary: Bug fix for Azure Database Managed Instance compatibility.
+    fragments:
+    - 1-1-2-release-summary.yml
+    - xpdirtree_sql_mi_bugfix.yml
+    release_date: '2022-12-02'

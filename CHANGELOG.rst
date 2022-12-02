@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v1.1.2
+======
+
+Release Summary
+---------------
+
+Bug fix for Azure Database Managed Instance compatibility.
+
+Bugfixes
+--------
+
+- Removed the default value for xp_dirtree to allow compatibility with Azure SQL Mangaed instances (https://github.com/lowlydba/lowlydba.sqlserver/pull/141)
+
 v1.1.1
 ======
 
