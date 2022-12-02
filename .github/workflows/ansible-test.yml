@@ -57,7 +57,7 @@ jobs:
           - stable-2.13
           - stable-2.14
           - devel
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       # ansible-test requires the collection to be in a directory in the form
       # .../ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/
@@ -105,7 +105,7 @@ jobs:
   # https://github.com/ansible-collections/community.zabbix/tree/master/.github/workflows
 
   integration:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     name: I (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
     services:
       sqlserver:
