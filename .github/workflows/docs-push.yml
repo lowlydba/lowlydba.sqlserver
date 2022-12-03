@@ -7,9 +7,7 @@ on:
     branches:
       - main
     tags:
-      - '*'
-  schedule:
-    - cron: '0 13 * * *'
+      - "*"
 
 jobs:
   build-docs:
