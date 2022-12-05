@@ -28,7 +28,7 @@ $spec = @{
         ignore_log_backup = @{type = 'bool'; required = $false; default = $false }
         ignore_diff_backup = @{type = 'bool'; required = $false; default = $false }
         use_destination_default_directories = @{type = 'bool'; required = $false; default = $false }
-        reuse_source_folder_structure = @{type = 'bool'; required = $false; default = $false }
+        reuse_source_folder_structure = @{type = 'bool'; required = $false }
         destination_file_prefix = @{type = 'str'; required = $false }
         restored_database_name_prefix = @{type = 'str'; required = $false }
         directory_recurse = @{type = 'bool'; required = $false; default = $false }
@@ -95,7 +95,6 @@ try {
         MaintenanceSolutionBackup = $maintenanceSolutionBackup
         IgnoreLogBackup = $ignoreLogBackup
         IgnoreDiffBackup = $ignoreDiffBackup
-        ReuseSourceFolderStructure = $reuseSourceFolderStructure
         DirectoryRecurse = $directoryRecurse
         ReplaceDbNameInFile = $replaceDbNameInFile
         KeepCDC = $keepCDC
@@ -145,6 +144,9 @@ try {
     }
     if ($null -ne $xpDirTree) {
         $restoreSplat.Add("xpDirTree", $xpDirTree)
+    }
+    if ($null -ne $reuseSourceFolderStructure) {
+        $restoreSplat.Add("reuseSourceFolderStructure", $reuseSourceFolderStructure)
     }
     $output = Restore-DbaDatabase @restoreSplat
 

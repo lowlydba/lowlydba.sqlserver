@@ -111,7 +111,6 @@ options:
       - You can override this by using C(reuse_source_folder_structure).
     type: bool
     required: false
-    default: false
   destination_file_prefix:
     description:
       - This value will be prefixed to B(all) restored files (log and data).
