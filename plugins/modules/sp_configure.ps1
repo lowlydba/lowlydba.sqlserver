@@ -40,6 +40,10 @@ try {
             EnableException = $true
         }
         $output = Set-DbaSpConfigure @setSpConfigureSplat
+
+        if ($existingConfig.IsDynamic -eq $false) {
+            $output | Add-Member -MemberType NoteProperty -Name "RestartRequired" -Value $true
+        }
         $module.Result.changed = $true
     }
 
