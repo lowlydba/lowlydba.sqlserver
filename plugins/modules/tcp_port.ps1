@@ -19,6 +19,7 @@ $spec = @{
         password = @{type = 'str'; required = $false; no_log = $true }
         port = @{type = 'int'; required = $true }
         ip_address = @{type = 'str'; required = $false }
+        force = @{type = 'bool'; required = $false; default = $false }
     }
     required_together = @(
         , @('username', 'password')
@@ -50,6 +51,9 @@ try {
 
     if ($output.Changes.Count -gt 0 -or $checkMode) {
         $module.Result.changed = $true
+        if ($force -ne $true) {
+            $output | Add-Member -MemberType NoteProperty -Name "RestartRequired" -Value $true
+        }
     }
 
     if ($null -ne $output) {

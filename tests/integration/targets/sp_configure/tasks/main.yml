@@ -50,6 +50,16 @@
         that:
           - result is not changed
 
+    - name: Config requiring restart
+      lowlydba.sqlserver.sp_configure:
+        name: "ScanForStartupProcedures"
+        value: 1
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.RestartRequired == 1
+
   always:
     - name: Reset Option
       lowlydba.sqlserver.sp_configure:
