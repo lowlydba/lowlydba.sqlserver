@@ -45,7 +45,11 @@ jobs:
           with open('changelogs/changelog.yaml', 'r') as s:
               ri = yaml.safe_load(s)
 
-          summary = ri['releases'][ver]['changes']['release_summary']
+          if ('release_summary' not in ri['releases'][ver]['changes']):
+            summary = 'No release summary available.'
+          else:
+            summary = ri['releases'][ver]['changes']['release_summary']
+
           reldate = ri['releases'][ver]['release_date']
 
           description = '''## Summary
