@@ -38,6 +38,7 @@ options:
     type: bool
     required: false
     default: false
+    version_added: 1.2.0
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module

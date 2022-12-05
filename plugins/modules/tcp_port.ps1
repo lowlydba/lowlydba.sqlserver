@@ -35,6 +35,7 @@ if ($null -ne $module.Params.username) {
 $port = $module.Params.port
 $ipAddress = $module.Params.ip_address
 $checkMode = $module.CheckMode
+$force = $module.Params.force
 $module.Result.changed = $false
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
@@ -43,6 +44,7 @@ try {
         SqlInstance = $SqlInstance
         Credential = $credential
         Port = $port
+        Force = $force
     }
     if ($ipAddress) {
         $tcpPortSplat.Add("IPAddress", $ipAddress)
