@@ -58,7 +58,7 @@
     - assert:
         that:
           - result is changed
-          - result.data.RestartRequired == 1
+          - result.data.RestartRequired is true
 
   always:
     - name: Reset Option
