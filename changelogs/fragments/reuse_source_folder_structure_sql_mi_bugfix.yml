@@ -1,2 +1,0 @@
-bugfixes:
-  - Removed default value for reuse_source_folder_structure to fix compatability with SQL MI (https://github.com/lowlydba/lowlydba.sqlserver/pull/145)

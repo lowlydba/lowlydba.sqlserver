@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v1.1.3
+======
+
+Release Summary
+---------------
+
+Another minor fix to increase SQL Managed Instance support.
+
+Bugfixes
+--------
+
+- Removed default value for reuse_source_folder_structure to fix compatability with SQL MI (https://github.com/lowlydba/lowlydba.sqlserver/pull/145)
+
 v1.1.2
 ======
 
