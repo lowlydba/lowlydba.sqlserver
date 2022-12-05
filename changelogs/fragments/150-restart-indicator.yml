@@ -1,0 +1,3 @@
+minor_changes:
+  - Return "RestartRequired" when a module performs changes that require an addition service restart to take effect. (https://github.com/lowlydba/lowlydba.sqlserver/pull/150/)
+  - Fixed typo in the traceflag module's documentation.
