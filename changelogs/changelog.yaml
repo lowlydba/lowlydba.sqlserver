@@ -367,3 +367,15 @@ releases:
     - 150-restart-indicator.yml
     - ReplaceDbNameInFile_sql_mi_bugfix.yml
     release_date: '2022-12-05'
+  1.2.1:
+    changes:
+      bugfixes:
+      - Added missing mapping for UseDestinationDefaultDirectories (https://github.com/lowlydba/lowlydba.sqlserver/pull/153)
+      - Removed default value for KeepCDC to fix compatability with SQL MI (https://github.com/lowlydba/lowlydba.sqlserver/pull/153)
+      - Removed default value for UseDestinationDefaultDirectories to fix compatability
+        with SQL MI (https://github.com/lowlydba/lowlydba.sqlserver/pull/153)
+      release_summary: More Azure SQL Managed Instance compatibility fixes.
+    fragments:
+    - 1-2-1-release_summary.yml
+    - 153-additional_sql_mi_fixes.yml
+    release_date: '2022-12-06'
