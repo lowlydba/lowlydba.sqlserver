@@ -54,6 +54,9 @@ try {
             $output = $server | Enable-DbaAgHadr @setHadr
         }
 
+        if ($force -ne $true) {
+            $output | Add-Member -MemberType NoteProperty -Name "RestartRequired" -Value $true
+        }
         $module.Result.changed = $true
     }
 

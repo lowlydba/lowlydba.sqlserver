@@ -19,6 +19,7 @@ $spec = @{
         password = @{type = 'str'; required = $false; no_log = $true }
         port = @{type = 'int'; required = $true }
         ip_address = @{type = 'str'; required = $false }
+        force = @{type = 'bool'; required = $false; default = $false }
     }
     required_together = @(
         , @('username', 'password')
@@ -34,6 +35,7 @@ if ($null -ne $module.Params.username) {
 $port = $module.Params.port
 $ipAddress = $module.Params.ip_address
 $checkMode = $module.CheckMode
+$force = $module.Params.force
 $module.Result.changed = $false
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
@@ -42,6 +44,7 @@ try {
         SqlInstance = $SqlInstance
         Credential = $credential
         Port = $port
+        Force = $force
     }
     if ($ipAddress) {
         $tcpPortSplat.Add("IPAddress", $ipAddress)
@@ -50,6 +53,9 @@ try {
 
     if ($output.Changes.Count -gt 0 -or $checkMode) {
         $module.Result.changed = $true
+        if ($force -ne $true) {
+            $output | Add-Member -MemberType NoteProperty -Name "RestartRequired" -Value $true
+        }
     }
 
     if ($null -ne $output) {

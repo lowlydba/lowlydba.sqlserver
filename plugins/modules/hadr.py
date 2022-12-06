@@ -58,7 +58,9 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from the C(Enable-DbaAgHadr) or C(Disable-DbaAgHadr) function.
+  description:
+    - Output from the C(Enable-DbaAgHadr) or C(Disable-DbaAgHadr) function.
+    - RestartRequired returned if the setting requires a service restart to take effect.
   returned: success, but not in check_mode.
   type: dict
 '''

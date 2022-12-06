@@ -32,6 +32,13 @@ options:
       - IPv4 address.
     type: str
     required: false
+  force:
+    description:
+      - Restart SQL Server and SQL Agent services automatically.
+    type: bool
+    required: false
+    default: false
+    version_added: 1.2.0
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
@@ -55,7 +62,9 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from the C(Set-DbaTcpPort) function.
+  description:
+    - Output from the C(Set-DbaTcpPort) function.
+    - RestartRequired returned if the change requires a service restart to take effect.
   returned: success, but not in check_mode.
   type: dict
 '''
