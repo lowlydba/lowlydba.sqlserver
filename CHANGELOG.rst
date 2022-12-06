@@ -5,6 +5,21 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v1.2.1
+======
+
+Release Summary
+---------------
+
+More Azure SQL Managed Instance compatibility fixes.
+
+Bugfixes
+--------
+
+- Added missing mapping for UseDestinationDefaultDirectories (https://github.com/lowlydba/lowlydba.sqlserver/pull/153)
+- Removed default value for KeepCDC to fix compatability with SQL MI (https://github.com/lowlydba/lowlydba.sqlserver/pull/153)
+- Removed default value for UseDestinationDefaultDirectories to fix compatability with SQL MI (https://github.com/lowlydba/lowlydba.sqlserver/pull/153)
+
 v1.2.0
 ======
 
