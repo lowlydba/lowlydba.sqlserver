@@ -1,0 +1,4 @@
+bugfixes:
+  - Removed default value for UseDestinationDefaultDirectories to fix compatability with SQL MI
+  - Removed default value for KeepCDC to fix compatability with SQL MI
+  - Added missing mapping for UseDestinationDefaultDirectories
