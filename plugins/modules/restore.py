@@ -104,7 +104,6 @@ options:
       - If they don't exist, the function will try to create them.
     type: bool
     required: false
-    default: false
   reuse_source_folder_structure:
     description:
       - By default, databases will be migrated to the destination Sql Server's default data and log directories.
@@ -149,7 +148,6 @@ options:
       - Indicates whether CDC information should be restored as part of the database.
     type: bool
     required: false
-    default: false
   stop_before:
     description:
       - Switch to indicate the restore should stop before I(stop_mark) occurs, default is to stop when mark is created.
