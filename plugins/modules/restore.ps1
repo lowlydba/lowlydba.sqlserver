@@ -27,7 +27,7 @@ $spec = @{
         maintenance_solution_backup = @{type = 'bool'; required = $false; default = $false }
         ignore_log_backup = @{type = 'bool'; required = $false; default = $false }
         ignore_diff_backup = @{type = 'bool'; required = $false; default = $false }
-        use_destination_default_directories = @{type = 'bool'; required = $false; default = $false }
+        use_destination_default_directories = @{type = 'bool'; required = $false }
         reuse_source_folder_structure = @{type = 'bool'; required = $false }
         destination_file_prefix = @{type = 'str'; required = $false }
         restored_database_name_prefix = @{type = 'str'; required = $false }
@@ -35,7 +35,7 @@ $spec = @{
         standby_directory = @{type = 'str'; required = $false }
         replace_db_name_in_file = @{type = 'bool'; required = $false }
         destination_file_suffix = @{type = 'str'; required = $false }
-        keep_cdc = @{type = 'bool'; required = $false; default = $false }
+        keep_cdc = @{type = 'bool'; required = $false }
         stop_before = @{type = 'bool'; required = $false; default = $false }
         stop_mark = @{type = 'str'; required = $false }
         stop_after_date = @{type = 'str'; required = $false }
@@ -63,6 +63,7 @@ $verifyOnly = $module.Params.verify_only
 $maintenanceSolutionBackup = $module.Params.maintenance_solution_backup
 $ignoreLogBackup = $module.Params.ignore_log_backup
 $ignoreDiffBackup = $module.Params.ignore_diff_backup
+$useDestinationDefaultDirectories = $use_destination_default_directories
 $reuseSourceFolderStructure = $module.Params.reuse_source_folder_structure
 $destinationFilePrefix = $module.Params.destination_file_prefix
 $restoredDatabaseNamePrefix = $module.Params.restored_database_name_prefix
@@ -96,7 +97,6 @@ try {
         IgnoreLogBackup = $ignoreLogBackup
         IgnoreDiffBackup = $ignoreDiffBackup
         DirectoryRecurse = $directoryRecurse
-        KeepCDC = $keepCDC
         StopBefore = $stopBefore
         NoRecovery = $noRecovery
         MaxTransferSize = $maxTransferSize
@@ -149,6 +149,12 @@ try {
     }
     if ($null -ne $replaceDbNameInFile) {
         $restoreSplat.Add("replaceDbNameInFile", $replaceDbNameInFile)
+    }
+    if ($null -ne $useDestinationDefaultDirectories) {
+        $restoreSplat.Add("useDestinationDefaultDirectories", $useDestinationDefaultDirectories)
+    }
+    if ($null -ne $keepCDC) {
+        $restoreSplat.Add("KeepCDC", $keepCDC)
     }
     $output = Restore-DbaDatabase @restoreSplat
 
