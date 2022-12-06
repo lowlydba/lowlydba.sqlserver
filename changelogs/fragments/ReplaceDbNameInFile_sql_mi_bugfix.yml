@@ -1,2 +1,0 @@
-bugfixes:
-  - Removed default value for ReplaceDbNameInFile to fix compatability with SQL MI (https://github.com/lowlydba/lowlydba.sqlserver/pull/148)
