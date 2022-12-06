@@ -1,0 +1,4 @@
+bugfixes:
+  - Removed default value for UseDestinationDefaultDirectories to fix compatability with SQL MI (https://github.com/lowlydba/lowlydba.sqlserver/pull/153)
+  - Removed default value for KeepCDC to fix compatability with SQL MI (https://github.com/lowlydba/lowlydba.sqlserver/pull/153)
+  - Added missing mapping for UseDestinationDefaultDirectories (https://github.com/lowlydba/lowlydba.sqlserver/pull/153)
