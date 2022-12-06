@@ -5,6 +5,25 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v1.2.0
+======
+
+Release Summary
+---------------
+
+Azure SQL MI compatibility fixes & indicating required restarts for settings changes.
+
+Minor Changes
+-------------
+
+- Fixed typo in the traceflag module's documentation. (https://github.com/lowlydba/lowlydba.sqlserver/pull/150)
+- Return "RestartRequired" when a module performs changes that require an addition service restart to take effect. (https://github.com/lowlydba/lowlydba.sqlserver/pull/150/)
+
+Bugfixes
+--------
+
+- Removed default value for ReplaceDbNameInFile to fix compatability with SQL MI (https://github.com/lowlydba/lowlydba.sqlserver/pull/148)
+
 v1.1.3
 ======
 
