@@ -33,7 +33,7 @@ $spec = @{
         restored_database_name_prefix = @{type = 'str'; required = $false }
         directory_recurse = @{type = 'bool'; required = $false; default = $false }
         standby_directory = @{type = 'str'; required = $false }
-        replace_db_name_in_file = @{type = 'bool'; required = $false; default = $false }
+        replace_db_name_in_file = @{type = 'bool'; required = $false }
         destination_file_suffix = @{type = 'str'; required = $false }
         keep_cdc = @{type = 'bool'; required = $false; default = $false }
         stop_before = @{type = 'bool'; required = $false; default = $false }
@@ -96,7 +96,6 @@ try {
         IgnoreLogBackup = $ignoreLogBackup
         IgnoreDiffBackup = $ignoreDiffBackup
         DirectoryRecurse = $directoryRecurse
-        ReplaceDbNameInFile = $replaceDbNameInFile
         KeepCDC = $keepCDC
         StopBefore = $stopBefore
         NoRecovery = $noRecovery
@@ -147,6 +146,9 @@ try {
     }
     if ($null -ne $reuseSourceFolderStructure) {
         $restoreSplat.Add("reuseSourceFolderStructure", $reuseSourceFolderStructure)
+    }
+    if ($null -ne $replaceDbNameInFile) {
+        $restoreSplat.Add("replaceDbNameInFile", $replaceDbNameInFile)
     }
     $output = Restore-DbaDatabase @restoreSplat
 

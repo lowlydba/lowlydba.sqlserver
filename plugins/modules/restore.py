@@ -139,7 +139,6 @@ options:
         will be replace with the name specified in the I(database_name) option.
     type: bool
     required: false
-    default: false
   destination_file_suffix:
     description:
       - This value will be suffixed to B(all) restored files (log and data).
