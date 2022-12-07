@@ -66,7 +66,7 @@ if ($state -eq "absent") {
 }
 elseif ($state -eq "present") {
     # Credential exists
-    if ($null -ne $existingUser) {
+    if ($null -ne $existingCredential) {
         try {
             $newCredentialSplat = @{
                 SqlInstance = $sqlInstance
