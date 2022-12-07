@@ -38,74 +38,119 @@ $checkMode = $module.CheckMode
 
 $module.Result.changed = $false
 
-$getCredendtialSplat = @{
-    SqlInstance = $sqlInstance
-    SqlCredential = $sqlCredential
-    Identity = $identity
-    EnableException = $true
-}
-$existingCredential = Get-DbaCredential @getCredendtialSplat
-
-if ($state -eq "absent") {
-    # Remove credential if it exists
-    if ($null -ne $existingCredential) {
-        try {
-            $removeCredentialSplat = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                Identity = $identity
-                EnableException = $true
-                WhatIf = $checkMode
-                Confirm = $false
-            }
-            $output = Remove-DbaCredential @removeCredentialSplat
-            $module.Result.changed = $true
-        }
-        catch {
-            $module.FailJson("Removing credential failed: $($_.Exception.Message)", $_)
-        }
-    }
-}
-elseif ($state -eq "present") {
-    # Credential exists
-    if ($null -ne $existingCredential) {
-        try {
-            $newCredentialSplat = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                Identity = $identity
-                EnableException = $true
-                WhatIf = $checkMode
-                Force = $force
-                Confirm = $false
-            }
-            if ($null -ne $name) {
-                $restoreSplat.Add("Name", $name)
-            }
-            if ($null -ne $secure_password) {
-                $restoreSplat.Add("SecurePassword", $secure_password)
-            }
-            if ($null -ne $mapped_class_type) {
-                $restoreSplat.Add("MappedClassType", $mapped_class_type)
-            }
-            if ($null -ne $provider_name) {
-                $restoreSplat.Add("ProviderName", $provider_name)
-            }
-            $output = New-DbaDbCredential @newCredentialSplat
-            $module.result.changed = $true
-        }
-        catch {
-            $module.FailJson("Creating credential failed: $($_.Exception.Message)", $_)
-        }
-    }
-}
 try {
-    if ($null -ne $output) {
-        $resultData = ConvertTo-SerializableObject -InputObject $output
-        $module.Result.data = $resultData
+    $getCredendtialSplat = @{
+        SqlInstance = $sqlInstance
+        SqlCredential = $sqlCredential
+        Identity = $identity
+        EnableException = $true
     }
-    $module.ExitJson()
+    $existingCredential = Get-DbaCredential @getCredendtialSplat
+
+    if ($state -eq "absent") {
+        # Remove credential if it exists
+        if ($null -ne $existingCredential) {
+            try {
+                $removeCredentialSplat = @{
+                    SqlInstance = $sqlInstance
+                    SqlCredential = $sqlCredential
+                    Identity = $identity
+                    EnableException = $true
+                    WhatIf = $checkMode
+                    Confirm = $false
+                }
+                $output = Remove-DbaCredential @removeCredentialSplat
+                $module.Result.changed = $true
+            }
+            catch {
+                $module.FailJson("Removing credential failed: $($_.Exception.Message)", $_)
+            }
+        }
+    }
+    elseif ($state -eq "present") {
+        # Credential exists and force is true
+        if ($null -ne $existingCredential and $force -eq $true) {
+            try {
+                $newCredentialSplat = @{
+                    SqlInstance = $sqlInstance
+                    SqlCredential = $sqlCredential
+                    Identity = $identity
+                    EnableException = $true
+                    WhatIf = $checkMode
+                    Force = $force
+                    Confirm = $false
+                }
+                if ($null -ne $name) {
+                    $restoreSplat.Add("Name", $name)
+                }
+                if ($null -ne $secure_password) {
+                    $restoreSplat.Add("SecurePassword", $secure_password)
+                }
+                if ($null -ne $mapped_class_type) {
+                    $restoreSplat.Add("MappedClassType", $mapped_class_type)
+                }
+                if ($null -ne $provider_name) {
+                    $restoreSplat.Add("ProviderName", $provider_name)
+                }
+                $output = New-DbaDbCredential @newCredentialSplat
+                $module.result.changed = $true
+            }
+            catch {
+                $module.FailJson("Creating credential failed: $($_.Exception.Message)", $_)
+            }
+        }
+        # Credential doesn't exist
+        elseif($null -eq $existingCredential){
+            try {
+                $newCredentialSplat = @{
+                    SqlInstance = $sqlInstance
+                    SqlCredential = $sqlCredential
+                    Identity = $identity
+                    EnableException = $true
+                    WhatIf = $checkMode
+                    Force = $force
+                    Confirm = $false
+                }
+                if ($null -ne $name) {
+                    $restoreSplat.Add("Name", $name)
+                }
+                if ($null -ne $secure_password) {
+                    $restoreSplat.Add("SecurePassword", $secure_password)
+                }
+                if ($null -ne $mapped_class_type) {
+                    $restoreSplat.Add("MappedClassType", $mapped_class_type)
+                }
+                if ($null -ne $provider_name) {
+                    $restoreSplat.Add("ProviderName", $provider_name)
+                }
+                $output = New-DbaDbCredential @newCredentialSplat
+                $module.result.changed = $true
+            }
+            catch {
+                $module.FailJson("Creating credential failed: $($_.Exception.Message)", $_)
+            }
+        }
+        else{
+            try {
+                $output = Get-DbaCredential @getCredendtialSplat
+                $module.result.changed = $false
+            }
+            catch {
+                $module.FailJson("Configuring credential failed: $($_.Exception.Message)", $_)
+            }
+        }
+    }
+    try {
+        if ($null -ne $output) {
+            $resultData = ConvertTo-SerializableObject -InputObject $output
+            $module.Result.data = $resultData
+        }
+        $module.ExitJson()
+    }
+    catch {
+        $module.FailJson("Failure: $($_.Exception.Message)", $_)
+    }
 }
 catch {
-    $module.FailJson("Failure: $($_.Exception.Message)", $_)
+    $module.FailJson("Configuring credential failed: $($_.Exception.Message) ; $getCredendtialSplat", $_)
 }
