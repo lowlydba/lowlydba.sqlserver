@@ -54,7 +54,6 @@ if ($state -eq "absent") {
                 Identity = $identity
                 EnableException = $true
                 WhatIf = $checkMode
-                Force = $force
                 Confirm = $false
             }
             $output = Remove-DbaCredential @removeCredentialSplat
@@ -90,7 +89,7 @@ elseif ($state -eq "present") {
             if ($null -ne $provider_name) {
                 $restoreSplat.Add("ProviderName", $provider_name)
             }
-            $output = New-DbaDbUser @newUserSplat
+            $output = New-DbaDbCredential @newUserSplat
             $module.result.changed = $true
         }
         catch {
