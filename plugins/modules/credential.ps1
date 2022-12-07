@@ -54,12 +54,11 @@ try {
                 $removeCredentialSplat = @{
                     SqlInstance = $sqlInstance
                     SqlCredential = $sqlCredential
-                    Identity = $identity
                     EnableException = $true
                     WhatIf = $checkMode
                     Confirm = $false
                 }
-                $output = Remove-DbaCredential @removeCredentialSplat
+                $output = Get-DbaCredential @getCredendtialSplat | Remove-DbaCredential @removeCredentialSplat
                 $module.Result.changed = $true
             }
             catch {
