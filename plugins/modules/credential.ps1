@@ -51,11 +51,10 @@ try {
         # Remove credential if it exists
         if ($null -ne $existingCredential) {
             try {
-                $credentialInput = Get-DbaCredential @getCredendtialSplat
                 $removeCredentialSplat = @{
                     SqlInstance = $sqlInstance
                     SqlCredential = $sqlCredential
-                    Credential = $credentialInput
+                    Identity = $identity
                     EnableException = $true
                     WhatIf = $checkMode
                     Confirm = $false
