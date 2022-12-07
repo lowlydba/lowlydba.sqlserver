@@ -15,8 +15,8 @@ $spec = @{
     options = @{
         identity = @{type = 'str'; required = $true }
         name = @{type = 'str'; required = $false }
-        secure_password = @{type = 'str'; required = $false }
-        mapped_class_type = @{type = 'str'; required = $false; choices = @('present', 'absent') }
+        secure_password = @{type = 'str'; required = $false; no_log = $true }
+        mapped_class_type = @{type = 'str'; required = $false; choices = @('CryptographicProvider', 'None') }
         provider_name = @{type = 'str'; required = $false }
         force = @{type = 'bool'; required = $false; default = $false }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
