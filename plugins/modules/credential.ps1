@@ -68,39 +68,7 @@ try {
         }
     }
     elseif ($state -eq "present") {
-        # Credential exists and force is true
-        if ($null -ne $existingCredential and $force -eq $true) {
-            try {
-                $newCredentialSplat = @{
-                    SqlInstance = $sqlInstance
-                    SqlCredential = $sqlCredential
-                    Identity = $identity
-                    EnableException = $true
-                    WhatIf = $checkMode
-                    Force = $force
-                    Confirm = $false
-                }
-                if ($null -ne $name) {
-                    $restoreSplat.Add("Name", $name)
-                }
-                if ($null -ne $secure_password) {
-                    $restoreSplat.Add("SecurePassword", $secure_password)
-                }
-                if ($null -ne $mapped_class_type) {
-                    $restoreSplat.Add("MappedClassType", $mapped_class_type)
-                }
-                if ($null -ne $provider_name) {
-                    $restoreSplat.Add("ProviderName", $provider_name)
-                }
-                $output = New-DbaDbCredential @newCredentialSplat
-                $module.result.changed = $true
-            }
-            catch {
-                $module.FailJson("Creating credential failed: $($_.Exception.Message)", $_)
-            }
-        }
-        # Credential doesn't exist
-        elseif($null -eq $existingCredential){
+        if (($null -ne $existingCredential -and $force -eq $true) -or $null -eq $existingCredential) {
             try {
                 $newCredentialSplat = @{
                     SqlInstance = $sqlInstance
