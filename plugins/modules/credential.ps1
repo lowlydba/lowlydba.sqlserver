@@ -68,6 +68,7 @@ try {
         }
     }
     elseif ($state -eq "present") {
+        # Create credential
         if (($null -ne $existingCredential -and $force -eq $true) -or $null -eq $existingCredential) {
             try {
                 $newCredentialSplat = @{
@@ -98,6 +99,7 @@ try {
                 $module.FailJson("Creating credential failed: $($_.Exception.Message)", $_)
             }
         }
+        # Return existing credential if nothing is changed
         else{
             try {
                 $output = Get-DbaCredential @getCredendtialSplat
