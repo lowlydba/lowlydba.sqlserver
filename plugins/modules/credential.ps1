@@ -100,7 +100,7 @@ try {
             }
         }
         # Return existing credential if nothing is changed
-        else{
+        else {
             try {
                 $output = Get-DbaCredential @getCredendtialSplat
                 $module.result.changed = $false
