@@ -10,7 +10,7 @@ module: credential
 short_description: Configures a credential on a SQL server
 description:
   - Creates, replaces, or removes a credential on a SQL server.
-version_added: 1.2.2
+version_added: 1.3.0
 options:
   identity:
     description:
@@ -32,12 +32,12 @@ options:
       - Sets the class associated with the credential.
     type: str
     required: false
+    choices: ['CryptographicProvider','None']
   provider_name:
     description:
       - Sets the name of the provider.
     type: str
     required: false
-    default: "dbo"
   force:
     description:
       - If this switch is enabled, the existing credential will be dropped and recreated.
