@@ -92,7 +92,7 @@ try {
                 if ($null -ne $provider_name) {
                     $newCredentialSplat.Add("ProviderName", $provider_name)
                 }
-                $output = New-DbaDbCredential @newCredentialSplat
+                $output = New-DbaCredential @newCredentialSplat
                 $module.result.changed = $true
             }
             catch {
