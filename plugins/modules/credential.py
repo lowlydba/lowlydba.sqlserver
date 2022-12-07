@@ -22,9 +22,9 @@ options:
       - The Credential name.
     type: str
     required: false
-  secure_password:
+  password:
     description:
-      - Secure string used to authenticate the Credential Identity.
+      - Password used to authenticate the Credential Identity.
     type: str
     required: false
   mapped_class_type:

@@ -15,7 +15,7 @@ $spec = @{
     options = @{
         identity = @{type = 'str'; required = $true }
         name = @{type = 'str'; required = $false }
-        secure_password = @{type = 'str'; required = $false; no_log = $true }
+        password = @{type = 'str'; required = $false; no_log = $true }
         mapped_class_type = @{type = 'str'; required = $false; choices = @('CryptographicProvider', 'None') }
         provider_name = @{type = 'str'; required = $false }
         force = @{type = 'bool'; required = $false; default = $false }
@@ -27,7 +27,9 @@ $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlS
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $identity = $module.Params.identity
 $name = $module.Params.name
-$secure_password = $module.Params.secure_password
+if ($null -ne $module.Params.password) {
+    $secure_password = ConvertTo-SecureString -String $module.Params.password -AsPlainText -Force
+}
 $mapped_class_type = $module.Params.mapped_class_type
 $provider_name = $module.Params.provider_name
 $state = $module.Params.state
