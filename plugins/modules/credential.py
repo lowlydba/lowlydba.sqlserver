@@ -35,7 +35,7 @@ options:
     choices: ['CryptographicProvider','None']
   provider_name:
     description:
-      - Sets the name of the provider.
+      - Specifies the cryptographic provider name for the Enterprise Key Management Provider.
     type: str
     required: false
   force:
