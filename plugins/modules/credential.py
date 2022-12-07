@@ -59,7 +59,7 @@ EXAMPLES = r'''
 - name: Create a credential with a password
   lowlydba.sqlserver.credential:
     sql_instance: sql-01.myco.io
-    identity: ad\user
+    identity: ad\\user
     name: MyCredential
     secure_password : <Password>
 
