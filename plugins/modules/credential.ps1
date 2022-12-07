@@ -81,16 +81,16 @@ try {
                     Confirm = $false
                 }
                 if ($null -ne $name) {
-                    $restoreSplat.Add("Name", $name)
+                    $newCredentialSplat.Add("Name", $name)
                 }
                 if ($null -ne $secure_password) {
-                    $restoreSplat.Add("SecurePassword", $secure_password)
+                    $newCredentialSplat.Add("SecurePassword", $secure_password)
                 }
                 if ($null -ne $mapped_class_type) {
-                    $restoreSplat.Add("MappedClassType", $mapped_class_type)
+                    $newCredentialSplat.Add("MappedClassType", $mapped_class_type)
                 }
                 if ($null -ne $provider_name) {
-                    $restoreSplat.Add("ProviderName", $provider_name)
+                    $newCredentialSplat.Add("ProviderName", $provider_name)
                 }
                 $output = New-DbaDbCredential @newCredentialSplat
                 $module.result.changed = $true
