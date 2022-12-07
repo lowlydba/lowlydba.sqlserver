@@ -89,7 +89,7 @@ elseif ($state -eq "present") {
             if ($null -ne $provider_name) {
                 $restoreSplat.Add("ProviderName", $provider_name)
             }
-            $output = New-DbaDbCredential @newUserSplat
+            $output = New-DbaDbCredential @newCredentialSplat
             $module.result.changed = $true
         }
         catch {
