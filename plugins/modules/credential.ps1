@@ -52,9 +52,6 @@ try {
         if ($null -ne $existingCredential) {
             try {
                 $removeCredentialSplat = @{
-                    #SqlInstance = $sqlInstance
-                    #SqlCredential = $sqlCredential
-                    #Identity = $identity
                     EnableException = $true
                     WhatIf = $checkMode
                     Confirm = $false
