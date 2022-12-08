@@ -97,14 +97,8 @@ try {
             }
         }
         # Return existing credential if nothing is changed
-        else {
-            try {
-                $output = Get-DbaCredential @getCredendtialSplat
-                $module.result.changed = $false
-            }
-            catch {
-                $module.FailJson("Configuring credential failed: $($_.Exception.Message)", $_)
-            }
+        elseif ($null -ne $existingCredential) {
+            $output = $existingCredential
         }
     }
     try {
