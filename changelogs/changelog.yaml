@@ -379,3 +379,16 @@ releases:
     - 1-2-1-release_summary.yml
     - 153-additional_sql_mi_fixes.yml
     release_date: '2022-12-06'
+  1.3.0:
+    changes:
+      minor_changes:
+      - Adding a new credential module
+      release_summary: New module to manage credentials added!
+    fragments:
+    - 1-3-0-release_summary.yml
+    - add_credential_module.yml
+    modules:
+    - description: Configures a credential on a SQL server
+      name: credential
+      namespace: ''
+    release_date: '2022-12-09'

@@ -5,6 +5,24 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v1.3.0
+======
+
+Release Summary
+---------------
+
+New module to manage credentials added!
+
+Minor Changes
+-------------
+
+- Adding a new credential module
+
+New Modules
+-----------
+
+- credential - Configures a credential on a SQL server
+
 v1.2.1
 ======
 
