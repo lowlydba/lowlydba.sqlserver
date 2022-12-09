@@ -61,7 +61,7 @@ EXAMPLES = r'''
     sql_instance: sql-01.myco.io
     identity: ad\\user
     name: MyCredential
-    secure_password : <Password>
+    password : <Password>
 
 - name: Replace an existing credential
   lowlydba.sqlserver.credential:
@@ -74,7 +74,7 @@ EXAMPLES = r'''
     sql_instance: sql-01.myco.io
     identity: SHARED ACCESS SIGNATURE
     name: https://<azure storage account name>.blob.core.windows.net/<blob container>
-    secure_password : <Shared Access Token>
+    password : <Shared Access Token>
 
 - name: Remove a credential
   lowlydba.sqlserver.credential:
