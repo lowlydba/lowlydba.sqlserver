@@ -15,7 +15,7 @@ $spec = @{
     options = @{
         database = @{type = 'str'; required = $true }
         username = @{type = 'str'; required = $true }
-        roles = @{type = 'list'; elements='str'; required = $true }
+        roles = @{type = 'list'; elements = 'str'; required = $true }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
 }
@@ -37,7 +37,7 @@ $getRoleSplat = @{
     Database = $database
     EnableException = $true
 }
-$existingRoleObjects = Get-DbaDbRoleMember @getRoleSplat | where {$_.UserName -eq $username}
+$existingRoleObjects = Get-DbaDbRoleMember @getRoleSplat | Where-Object { $_.UserName -eq $username }
 
 if ($state -eq "absent") {
     # loop through all roles to remove and see if they are assigned to the user
@@ -59,7 +59,7 @@ if ($state -eq "absent") {
                 WhatIf = $checkMode
                 Confirm = $false
             }
-            $output = Remove-DbaDbRoleMember @removeUserSplat
+            $output = Remove-DbaDbRoleMember @removeRolesSplat
             $module.Result.changed = $true
         }
         catch {
@@ -77,7 +77,7 @@ elseif ($state -eq "present") {
         $existingRoles += $roleObject.role
     }
     # compare the list of roles to add vs the existing roles for the user and get the difference
-    $addRoles = $roles | where {$existingRoles -NotContains $_}
+    $addRoles = $roles | Where-Object { $existingRoles -NotContains $_ }
     if ($null -ne $addRoles) {
         try {
             # No Set-DbaDbUser command exists, use SMO
