@@ -1,0 +1,2 @@
+bugfixes:
+  - Fixes to incorrect variable reference in Login module
