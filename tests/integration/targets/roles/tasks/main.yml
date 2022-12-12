@@ -62,12 +62,6 @@
       register: result
     - assert:
         that:
-          - result.data != None
-          - result.data.ComputerName != None
-          - result.data.InstanceName != None
-          - result.data.SqlInstance != None
-          - result.data.User == "{{ username }}"
-          - result.data.Database == "{{ database }}"
           - result is changed
 
     - name: Add roles for the user in checkmode
@@ -85,12 +79,6 @@
       register: result
     - assert:
         that:
-          - result.data != None
-          - result.data.ComputerName != None
-          - result.data.InstanceName != None
-          - result.data.SqlInstance != None
-          - result.data.User == "{{ username }}"
-          - result.data.Database == "{{ database }}"
           - result is not changed
 
     - name: Drop roles for the user
@@ -100,12 +88,6 @@
       register: result
     - assert:
         that:
-          - result.data != None
-          - result.data.ComputerName != None
-          - result.data.InstanceName != None
-          - result.data.SqlInstance != None
-          - result.data.User == "{{ username }}"
-          - result.data.Database == "{{ database }}"
           - result is changed
 
     - name: Drop user
