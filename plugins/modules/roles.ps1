@@ -58,6 +58,7 @@ if ($state -eq "absent") {
                 EnableException = $true
                 WhatIf = $checkMode
                 Confirm = $false
+                Verbose = $true
             }
             $output = Remove-DbaDbRoleMember @removeRolesSplat
             $module.Result.changed = $true
@@ -90,6 +91,7 @@ elseif ($state -eq "present") {
                 EnableException = $true
                 WhatIf = $checkMode
                 Confirm = $false
+                Verbose = $true
             }
             $output = Add-DbaDbRoleMember @addRolesSplat
             $module.Result.changed = $true
