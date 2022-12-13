@@ -43,7 +43,7 @@ if ($state -eq "absent") {
     # loop through all roles to remove and see if they are assigned to the user
     $removeRoles = @()
     foreach ($roleObject in $existingRoleObjects) {
-        if ($roles -Contains $roleObject.role) {
+        if ($roles.Contains($roleObject.role)) {
             $removeRoles += $roleObject.role
         }
     }
