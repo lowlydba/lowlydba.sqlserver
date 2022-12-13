@@ -38,7 +38,7 @@ $getRoleSplat = @{
     EnableException = $true
 }
 $module.Result.roles = $roles
-$existingRoleObjects = Get-DbaDbRoleMember @getRoleSplat | Where-Object { $_.UserName -eq $username }
+$existingRoleObjects = Get-DbaDbRoleMember @getRoleSplat #| Where-Object { $_.UserName -eq $username }
 $module.Result.existingRoleObjects = $existingRoleObjects
 
 if ($state -eq "absent") {
