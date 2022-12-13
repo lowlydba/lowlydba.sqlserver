@@ -47,6 +47,7 @@ if ($state -eq "absent") {
             $removeRoles += $roleObject.role
         }
     }
+    $module.Result.remove = $removeRoles
     if ($null -ne $removeRoles) {
         try {
             $removeRolesSplat = @{
@@ -79,6 +80,7 @@ elseif ($state -eq "present") {
     }
     # compare the list of roles to add vs the existing roles for the user and get the difference
     $addRoles = $roles | Where-Object { $existingRoles -NotContains $_ }
+    $module.Result.addRoles = $addRoles
     if ($null -ne $addRoles) {
         try {
             # No Set-DbaDbUser command exists, use SMO
