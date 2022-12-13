@@ -75,7 +75,8 @@
 
     - name: Verify no changes from checkmode
       lowlydba.sqlserver.roles:
-        roles: db_datareader, db_datawriter
+        roles: db_ddladmin
+        state: "absent"
       register: result
     - assert:
         that:
