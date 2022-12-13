@@ -48,7 +48,7 @@ if ($state -eq "absent") {
         }
     }
     $module.Result.removeRoles = $removeRoles
-    if ($removeRoles.count() -gt 0) {
+    if ($removeRoles) {
         try {
             $removeRolesSplat = @{
                 SqlInstance = $sqlInstance
