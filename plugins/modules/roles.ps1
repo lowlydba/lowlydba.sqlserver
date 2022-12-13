@@ -38,6 +38,7 @@ $getRoleSplat = @{
     EnableException = $true
 }
 $existingRoleObjects = Get-DbaDbRoleMember @getRoleSplat | Where-Object { $_.UserName -eq $username }
+$module.Result.existingRoleObjects = $existingRoleObjects
 
 if ($state -eq "absent") {
     # loop through all roles to remove and see if they are assigned to the user
@@ -47,6 +48,7 @@ if ($state -eq "absent") {
             $removeRoles += $roleObject.role
         }
     }
+
     $module.Result.removeRoles = $removeRoles
     if ($removeRoles) {
         try {
