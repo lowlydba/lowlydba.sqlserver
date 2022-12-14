@@ -39,7 +39,7 @@ $getRoleSplat = @{
 }
 $module.Result.roles = $roles
 $existingRoleObjects = Get-DbaDbRoleMember @getRoleSplat #| Where-Object { $_.UserName -eq $username }
-$module.Result.existingRoleObjects = ConvertTo-SerializableObject -InputObject $existingRoleObjects
+$module.Result.existingRoleObjects = $existingRoleObjects
 
 if ($state -eq "absent") {
     # loop through all roles to remove and see if they are assigned to the user
