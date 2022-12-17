@@ -160,6 +160,12 @@ jobs:
           python3 -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
 
       - name: Install collection dependencies
+        id: collection-dependency
+        run: ansible-galaxy collection install ansible.windows -p "${{ env.GHWS }}"
+        continue-on-error: true
+
+      - name: Retry install collection dependencies
+        if: steps.collection-dependency.outcome == 'failure'
         run: ansible-galaxy collection install ansible.windows -p "${{ env.GHWS }}"
 
       - name: Set integration test options
