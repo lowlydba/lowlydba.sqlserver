@@ -35,7 +35,8 @@ $getRoleSplat = @{
     SqlInstance = $sqlInstance
     SqlCredential = $sqlCredential
     Database = $database
-    #EnableException = $true
+    EnableException = $true
+    IncludeSystemUser = $true
 }
 $module.Result.roles = $roles
 $existingRoleObjects = Get-DbaDbRoleMember @getRoleSplat #| Where-Object { $_.UserName -eq $username }
