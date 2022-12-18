@@ -40,7 +40,11 @@ $getRoleSplat = @{
 }
 $module.Result.roles = $roles
 $existingRoleObjects = Get-DbaDbRoleMember @getRoleSplat #| Where-Object { $_.UserName -eq $username }
-$module.Result.existingRoleObjects = ConvertTo-SerializableObject -InputObject $existingRoleObjects
+$roleObjectOutput = @{}
+foreach ($object in $existingRoleObjects) {
+    $roleObjectOutput.Add($_.UserName, $_.Role)
+}
+$module.Result.existingRoleObjects = $roleObjectOutput
 
 if ($state -eq "absent") {
     # loop through all roles to remove and see if they are assigned to the user
@@ -118,5 +122,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Failure: $($_.Exception.Message)")
+    $module.FailJson("Failure: $($_.Exception.Message)", $_)
 }
