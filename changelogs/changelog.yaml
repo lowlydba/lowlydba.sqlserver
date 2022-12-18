@@ -392,3 +392,16 @@ releases:
       name: credential
       namespace: ''
     release_date: '2022-12-09'
+  1.3.1:
+    changes:
+      bugfixes:
+      - Fixes to incorrect variable reference in Login module (https://github.com/lowlydba/lowlydba.sqlserver/pull/161)
+      minor_changes:
+      - Update login module documentation to indicate result will always be changed
+        when a password is supplied. (https://github.com/lowlydba/lowlydba.sqlserver/pull/167)
+      release_summary: Small bugfixes and documentation enhancements.
+    fragments:
+    - 1-3-1-release_summary.yml
+    - 167-update-login-docs.yml
+    - fix_sa.yml
+    release_date: '2022-12-18'

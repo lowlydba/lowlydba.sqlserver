@@ -1,2 +1,0 @@
-minor_changes:
-  - Update login module documentation to indicate result will always be changed when a password is supplied. (https://github.com/lowlydba/lowlydba.sqlserver/pull/167)

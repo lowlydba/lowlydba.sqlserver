@@ -1,2 +1,0 @@
-bugfixes:
-  - Fixes to incorrect variable reference in Login module (https://github.com/lowlydba/lowlydba.sqlserver/pull/161)
