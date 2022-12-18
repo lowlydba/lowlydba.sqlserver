@@ -118,5 +118,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Failure: $($_.Exception.Message)", $_)
+    $module.FailJson("Failure: $($_.Exception.Message)")
 }
