@@ -56,7 +56,8 @@ options:
     type: bool
     required: false
 author: "John McCall (@lowlydba)"
-notes: Module will always return changed if a password is supplied.
+notes:
+  - Module will always return changed if a password is supplied.
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
