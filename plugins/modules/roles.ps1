@@ -36,13 +36,14 @@ $getRoleSplat = @{
     SqlCredential = $sqlCredential
     Database = $database
     EnableException = $true
-    IncludeSystemUser = $true
 }
 $module.Result.roles = $roles
-$existingRoleObjects = Get-DbaDbRoleMember @getRoleSplat #| Where-Object { $_.UserName -eq $username }
+$existingRoleObjects = Get-DbaDbRoleMember @getRoleSplat | Where-Object { $_.UserName -eq $username }
 $roleObjectOutput = @{}
+$i = 0
 foreach ($object in $existingRoleObjects) {
-    $roleObjectOutput.Add($_.UserName, $_.Role)
+    $roleObjectOutput.Add("$($object.UserName)_($i)", $object.Role)
+    $i++
 }
 $module.Result.existingRoleObjects = $roleObjectOutput
 
