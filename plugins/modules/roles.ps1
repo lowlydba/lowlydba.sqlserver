@@ -38,15 +38,9 @@ $getRoleSplat = @{
 }
 $module.Result.roles = $roles
 $existingRoleObjects = Get-DbaDbRoleMember @getRoleSplat | Where-Object { $_.UserName -eq $username }
-if ($null -ne $existingRoleObjects) {
-    $module.Result.existingRoleObjects = ConvertTo-SerializableObject -InputObject $existingRoleObjects
-}
-else {
-    $module.Result.existingRoleObjects = "$username doesn't have any existing roles assigned on $database"
-}
 
 if ($state -eq "absent") {
-    # loop through all roles to remove and see if they are assigned to the user
+    # loop through all roles to remove and see if any are assigned to the user
     $removeRoles = @()
     foreach ($roleObject in $existingRoleObjects) {
         if ($roles.Contains($roleObject.role)) {
@@ -76,7 +70,13 @@ if ($state -eq "absent") {
         }
     }
     else {
-        $output = $existingRoleObjects
+        # If there are no changes we'll return the output of Get-DbaDbRoleMember
+        if ($null -ne $existingRoleObjects) {
+            $module.Result.existingRoleObjects =  $existingRoleObjects
+        }
+        else {
+            $module.Result.existingRoleObjects = "$username doesn't have any existing roles assigned on $database"
+        }
     }
 }
 elseif ($state -eq "present") {
@@ -90,7 +90,6 @@ elseif ($state -eq "present") {
     $module.Result.addRoles = $addRoles
     if ($null -ne $addRoles) {
         try {
-            # No Set-DbaDbUser command exists, use SMO
             $addRolesSplat = @{
                 SqlInstance = $sqlInstance
                 SqlCredential = $sqlCredential
@@ -110,7 +109,13 @@ elseif ($state -eq "present") {
         }
     }
     else {
-        $output = $existingRoleObjects
+        # If there are no changes we'll return the output of Get-DbaDbRoleMember
+        if ($null -ne $existingRoleObjects) {
+            $module.Result.existingRoleObjects =  $existingRoleObjects
+        }
+        else {
+            $module.Result.existingRoleObjects = "$username doesn't have any existing roles assigned on $database"
+        }
     }
 }
 try {
