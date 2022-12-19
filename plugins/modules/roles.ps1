@@ -72,7 +72,7 @@ if ($state -eq "absent") {
     else {
         # If there are no changes we'll return the output of Get-DbaDbRoleMember
         if ($null -ne $existingRoleObjects) {
-            $module.Result.existingRoleObjects =  $existingRoleObjects
+            $module.Result.existingRoleObjects = ConvertTo-SerializableObject -InputObject $existingRoleObjects
         }
         else {
             $module.Result.existingRoleObjects = "$username doesn't have any existing roles assigned on $database"
@@ -111,7 +111,7 @@ elseif ($state -eq "present") {
     else {
         # If there are no changes we'll return the output of Get-DbaDbRoleMember
         if ($null -ne $existingRoleObjects) {
-            $module.Result.existingRoleObjects =  $existingRoleObjects
+            $module.Result.existingRoleObjects = ConvertTo-SerializableObject -InputObject $existingRoleObjects
         }
         else {
             $module.Result.existingRoleObjects = "$username doesn't have any existing roles assigned on $database"
