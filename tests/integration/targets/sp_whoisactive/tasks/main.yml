@@ -8,6 +8,7 @@
       sql_username: "{{ sqlserver_username }}"
       sql_password: "{{ sqlserver_password }}"
       database: "{{ target_database }}"
+      local_file: sp_WhoIsActive.sql
   tags: ["sp_whoisactive"]
   block:
     - name: Install sp_whoisactive
