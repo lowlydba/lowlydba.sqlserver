@@ -9,25 +9,25 @@ DOCUMENTATION = r'''
 module: roles
 short_description: Add or remove one or more roles for a given user in a specific database.
 description:
-  - Add or remove one or more roles for a given user in a specific database. Returns a list of current roles if there are no changes.
+  - Add or remove one or more roles for a given user in a specific database. Returns a list of current roles for the given user if there are no changes.
 version_added: 1.4.0
 options:
   username:
     description:
-      - Name of the user.
+      - Name of the user
     type: str
     required: true
   database:
     description:
-      - Database for the user.
+      - Database for the user
     type: str
     required: true
   roles:
     description:
-      - Specifies a comma separated list of roles to add or remove
+      - Specifies a comma separated list of one or more roles to add or remove
     type: list
     elements: str
-    required: true
+    required: false
 
 author:
   - "Joe Krilov (@joey40)"

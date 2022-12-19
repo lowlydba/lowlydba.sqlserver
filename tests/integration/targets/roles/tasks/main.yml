@@ -82,6 +82,13 @@
         that:
           - result is not changed
 
+    - name: Get a list of roles without making changes
+      lowlydba.sqlserver.roles:
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
     - name: Drop roles for the user
       lowlydba.sqlserver.roles:
         roles: db_datareader, db_datawriter

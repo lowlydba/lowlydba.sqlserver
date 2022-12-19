@@ -15,11 +15,10 @@ $spec = @{
     options = @{
         database = @{type = 'str'; required = $true }
         username = @{type = 'str'; required = $true }
-        roles = @{type = 'list'; elements = 'str'; required = $true }
+        roles = @{type = 'list'; elements = 'str'; required = $false }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
 }
-
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
@@ -45,7 +44,6 @@ if ($null -ne $existingRoleObjects) {
 else {
     $module.Result.existingRoleObjects = "$username doesn't have any existing roles assigned on $database"
 }
-
 
 if ($state -eq "absent") {
     # loop through all roles to remove and see if they are assigned to the user
