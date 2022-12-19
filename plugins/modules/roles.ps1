@@ -38,6 +38,18 @@ $getRoleSplat = @{
 }
 $module.Result.roles = $roles
 $existingRoleObjects = Get-DbaDbRoleMember @getRoleSplat | Where-Object { $_.UserName -eq $username }
+$existingRoles = @()
+# build an array of roles for the selected user
+foreach ($roleObject in $existingRoleObjects) {
+    $existingRoles += $roleObject.role
+}
+# Always return a list of existing roles if any exist
+if ($null -ne $existingRoleObjects) {
+    $module.Result.existingRoles = $existingRoles
+}
+else {
+    $module.Result.noRoles = "'$username' doesn't have any existing roles assigned on '$database'"
+}
 
 if ($state -eq "absent") {
     # loop through all roles to remove and see if any are assigned to the user
@@ -69,22 +81,8 @@ if ($state -eq "absent") {
             $module.FailJson("Removing role failed: $($_.Exception.Message)", $_)
         }
     }
-    else {
-        # If there are no changes we'll return the output of Get-DbaDbRoleMember
-        if ($null -ne $existingRoleObjects) {
-            $module.Result.existingRoleObjects = ConvertTo-SerializableObject -InputObject $existingRoleObjects
-        }
-        else {
-            $module.Result.existingRoleObjects = "$username doesn't have any existing roles assigned on $database"
-        }
-    }
 }
 elseif ($state -eq "present") {
-    $existingRoles = @()
-    # build an array of roles for the selected user
-    foreach ($roleObject in $existingRoleObjects) {
-        $existingRoles += $roleObject.role
-    }
     # compare the list of roles to add vs the existing roles for the user and get the difference
     $addRoles = $roles | Where-Object { $existingRoles -NotContains $_ }
     $module.Result.addRoles = $addRoles
@@ -106,15 +104,6 @@ elseif ($state -eq "present") {
         }
         catch {
             $module.FailJson("Adding role failed: $($_.Exception.Message)", $_)
-        }
-    }
-    else {
-        # If there are no changes we'll return the output of Get-DbaDbRoleMember
-        if ($null -ne $existingRoleObjects) {
-            $module.Result.existingRoleObjects = ConvertTo-SerializableObject -InputObject $existingRoleObjects
-        }
-        else {
-            $module.Result.existingRoleObjects = "$username doesn't have any existing roles assigned on $database"
         }
     }
 }

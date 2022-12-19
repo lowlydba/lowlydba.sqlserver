@@ -88,6 +88,7 @@
     - assert:
         that:
           - result is not changed
+          - result.existingRoles != None
 
     - name: Drop roles for the user
       lowlydba.sqlserver.roles:
@@ -106,6 +107,7 @@
     - assert:
         that:
           - result is not changed
+          - result.noRoles != None
 
     - name: Drop user
       lowlydba.sqlserver.user:
