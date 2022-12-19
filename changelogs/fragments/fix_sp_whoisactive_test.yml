@@ -1,0 +1,2 @@
+bugfixes:
+  - Use local file during integration tests to avoid 403 error during sp_whoisactive installation
