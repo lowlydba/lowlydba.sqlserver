@@ -13,7 +13,7 @@
     username: "MrRoleTest"
     database: "master"
   module_defaults:
-    lowlydba.sqlserver.roles:
+    lowlydba.sqlserver.role:
       sql_instance: "{{ sqlserver_instance }}"
       sql_username: "{{ sqlserver_username }}"
       sql_password: "{{ sqlserver_password }}"
@@ -40,7 +40,7 @@
       username: "{{ username }}"
       default_schema: "{{ default_schema }}"
       state: present
-  tags: ["roles"]
+  tags: ["role"]
   block:
     - name: Create login
       lowlydba.sqlserver.login:
@@ -57,7 +57,7 @@
           - result.data != None
 
     - name: Add roles for the user
-      lowlydba.sqlserver.roles:
+      lowlydba.sqlserver.role:
         roles: db_datareader, db_datawriter
       register: result
     - assert:
@@ -65,7 +65,7 @@
           - result is changed
 
     - name: Add roles for the user in checkmode
-      lowlydba.sqlserver.roles:
+      lowlydba.sqlserver.role:
         roles: db_datareader, db_datawriter, db_ddladmin
       register: result
       check_mode: true
@@ -74,7 +74,7 @@
           - result is changed
 
     - name: Verify no changes from checkmode
-      lowlydba.sqlserver.roles:
+      lowlydba.sqlserver.role:
         roles: db_ddladmin
         state: "absent"
       register: result
@@ -83,7 +83,7 @@
           - result is not changed
 
     - name: Get a list of roles without making changes
-      lowlydba.sqlserver.roles:
+      lowlydba.sqlserver.role:
       register: result
     - assert:
         that:
@@ -91,7 +91,7 @@
           - result.existingRoles != None
 
     - name: Drop roles for the user
-      lowlydba.sqlserver.roles:
+      lowlydba.sqlserver.role:
         roles: db_datareader, db_datawriter
         state: "absent"
       register: result
@@ -100,7 +100,7 @@
           - result is changed
 
     - name: Verify drop roles for the user
-      lowlydba.sqlserver.roles:
+      lowlydba.sqlserver.role:
         roles: db_datareader, db_datawriter
         state: "absent"
       register: result

@@ -6,10 +6,10 @@
 
 DOCUMENTATION = r'''
 ---
-module: roles
+module: role
 short_description: Add or remove one or more roles for a given user in a specific database.
 description:
-  - Add or remove one or more roles for a given user in a specific database. Returns a list of current roles for the given user if there are no changes.
+  - Add or remove one or more roles for a given user in a specific database.
 version_added: 1.4.0
 options:
   username:
