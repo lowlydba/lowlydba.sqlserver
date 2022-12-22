@@ -47,7 +47,7 @@ try {
     }
 
     if ($null -ne $output) {
-        $resultData = ConvertTo-Json -InputObject $output -Depth 10 -Compress -AsArray
+        $resultData = ConvertTo-Json -InputObject $output -Depth 10 -Compress
         $module.Result.data = $resultData
     }
 
