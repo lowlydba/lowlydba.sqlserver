@@ -8,9 +8,24 @@
       sql_username: "{{ sqlserver_username }}"
       sql_password: "{{ sqlserver_password }}"
       database: "{{ target_database }}"
-      local_file: sp_WhoIsActive.sql
   tags: ["sp_whoisactive"]
   block:
+
+    - name: Install sp_whoisactive from local file
+      lowlydba.sqlserver.sp_whoisactive:
+        local_file: sp_WhoIsActive.sql
+      register: result
+    - assert:
+        that:
+          - result.data.Status != None
+          - result.data.SqlInstance != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.Database == "{{ target_database }}"
+          - result.data.Version != None
+          - result.data.Status in ('Installed', 'Updated')
+          - result is changed
+
     - name: Install sp_whoisactive
       lowlydba.sqlserver.sp_whoisactive:
       register: result
