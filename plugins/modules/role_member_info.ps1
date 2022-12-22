@@ -24,8 +24,6 @@ $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $username = $module.Params.username
 $database = $module.Params.database
 $roles = $module.Params.roles
-$state = $module.Params.state
-$checkMode = $module.CheckMode
 
 $module.Result.changed = $false
 
