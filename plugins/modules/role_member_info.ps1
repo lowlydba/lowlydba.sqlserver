@@ -49,10 +49,10 @@ try {
     }
 
     if ($null -ne $output) {
-        $resultData = ConvertTo-SerializableObject -InputObject $output
+        $resultData = ConvertTo-Json -InputObject $output -Depth 10 -EnumsAsStrings
         $module.Result.data = $resultData
     }
-    
+
     $module.ExitJson()
 
 }
