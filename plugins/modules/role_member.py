@@ -6,7 +6,7 @@
 
 DOCUMENTATION = r'''
 ---
-module: role
+module: role_member
 short_description: Add or remove one or more roles for a given user in a specific database.
 description:
   - Add or remove one or more roles for a given user in a specific database.
@@ -43,21 +43,21 @@ extends_documentation_fragment:
 
 EXAMPLES = r'''
 - name: Add a single role for a user
-  lowlydba.sqlserver.role:
+  lowlydba.sqlserver.role_member:
     sql_instance: sql-01.myco.io
     username: TheIntern
     database: InternProject1
     role: db_datareader
 
 - name: Add multiple roles for a user
-  lowlydba.sqlserver.role:
+  lowlydba.sqlserver.role_member:
     sql_instance: sql-01.myco.io
     username: TheIntern
     database: InternProject1
     role: db_datareader, db_datawriter
 
 - name: Remove roles for a user
-  lowlydba.sqlserver.role:
+  lowlydba.sqlserver.role_member:
     sql_instance: sql-01.myco.io
     username: TheIntern
     database: InternProject1

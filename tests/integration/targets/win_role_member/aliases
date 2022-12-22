@@ -2,4 +2,4 @@ windows/all
 windows/group/1
 context/target
 setup/once/setup_win_sqlserver
-needs/target/role
+needs/target/role_member
