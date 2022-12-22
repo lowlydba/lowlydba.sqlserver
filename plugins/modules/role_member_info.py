@@ -11,6 +11,23 @@ short_description: Returns basic information about a role or roles
 description:
   - Returns basic information about a role or roles.
 version_added: 1.4.0
+options:
+  username:
+    description:
+      - Name of the user
+    type: str
+    required: false
+  database:
+    description:
+      - Database for the user
+    type: str
+    required: false
+  roles:
+    description:
+      - Specifies a comma separated list of one or more roles
+    type: list
+    elements: str
+    required: false
 author:
   - "Joe Krilov (@joey40)"
   - "John McCall (@lowlydba)"
