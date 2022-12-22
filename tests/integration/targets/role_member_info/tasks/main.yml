@@ -1,0 +1,120 @@
+---
+- name: Var block
+  vars:
+    login_name: "MrRoleTest"
+    plain_password: "P0pS3cret!23$%"
+    password_expiration_enabled: false
+    password_policy_enforced: false
+    password_must_change: false
+    enabled: false
+    default_database: "master"
+    language: "us_english"
+    default_schema: "dbo"
+    username: "MrRoleTest"
+    database: "master"
+  module_defaults:
+    lowlydba.sqlserver.role_member_info:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      database: "{{ database }}"
+    lowlydba.sqlserver.role_member:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      username: "{{ username }}"
+      database: "{{ database }}"
+    lowlydba.sqlserver.login:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      default_database: "{{ default_database }}"
+      login: "{{ login_name }}"
+      password: "{{ plain_password }}"
+      password_expiration_enabled: "{{ password_expiration_enabled }}"
+      password_must_change: "{{ password_must_change }}"
+      enabled: "{{ enabled }}"
+      language: "{{ language }}"
+      state: present
+    lowlydba.sqlserver.user:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      database: "{{ database }}"
+      login: "{{ login_name }}"
+      username: "{{ username }}"
+      default_schema: "{{ default_schema }}"
+      state: present
+  tags: ["role_member"]
+  block:
+    - name: Create login
+      lowlydba.sqlserver.login:
+      register: result
+    - assert:
+        that:
+          - result.data != None
+
+    - name: Create user
+      lowlydba.sqlserver.user:
+      register: result
+    - assert:
+        that:
+          - result.data != None
+
+    - name: Add roles for the user
+      lowlydba.sqlserver.role_member:
+        roles: db_datareader, db_datawriter
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+
+    - name: Get roles for the user
+      lowlydba.sqlserver.role_member_info:
+        username: "{{ username }}"
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Get member of db_datareader and db_datawriter roles
+      lowlydba.sqlserver.role_member_info:
+        roles: db_datareader, db_datawriter
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Drop roles for the user
+      lowlydba.sqlserver.role_member:
+        roles: db_datareader, db_datawriter
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Drop user
+      lowlydba.sqlserver.user:
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+
+    - name: Drop login
+      lowlydba.sqlserver.login:
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+
+  always:
+    - name: Drop user
+      lowlydba.sqlserver.user:
+        state: "absent"
+    - name: Drop login
+      lowlydba.sqlserver.login:
+        state: "absent"
