@@ -47,7 +47,7 @@ try {
     }
 
     if ($null -ne $output) {
-        $resultData = ConvertTo-Json -InputObject $output -Depth 10 -EnumsAsStrings
+        $resultData = ConvertTo-Json -InputObject $output -Depth 10
         $module.Result.data = $resultData
     }
 
