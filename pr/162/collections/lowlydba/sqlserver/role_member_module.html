@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lowlydba.sqlserver.sa module – Configure the sa login for security best practices &mdash; Ansible collections  documentation</title>
+  <title>lowlydba.sqlserver.role_member module – Add or remove one or more roles for a given user in a specific database. &mdash; Ansible collections  documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/ansible.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/antsibull-minimal.css" type="text/css" />
@@ -22,8 +22,8 @@
         <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="lowlydba.sqlserver.sp_configure module – Make instance level system configuration changes via sp_configure" href="sp_configure_module.html" />
-    <link rel="prev" title="lowlydba.sqlserver.role_member_info module – Returns basic information about a role or roles" href="role_member_info_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+    <link rel="next" title="lowlydba.sqlserver.role_member_info module – Returns basic information about a role or roles" href="role_member_info_module.html" />
+    <link rel="prev" title="lowlydba.sqlserver.rg_workload_group module – Configures a workload group for use by the Resource Governor" href="rg_workload_group_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
 
 
 
@@ -112,7 +112,7 @@
           <li class="breadcrumb-item"><a href="../../index.html">Collection Index</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Collections in the Lowlydba Namespace</a></li>
           <li class="breadcrumb-item"><a href="index.html">Lowlydba.Sqlserver</a></li>
-      <li class="breadcrumb-item active">lowlydba.sqlserver.sa module – Configure the <code class="docutils literal notranslate"><span class="pre">sa</span></code> login for security best practices</li>
+      <li class="breadcrumb-item active">lowlydba.sqlserver.role_member module – Add or remove one or more roles for a given user in a specific database.</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -123,17 +123,17 @@
   
            <div itemprop="articleBody">
              
-  <span class="target" id="ansible-collections-lowlydba-sqlserver-sa-module"></span><section id="lowlydba-sqlserver-sa-module-configure-the-sa-login-for-security-best-practices">
-<h1>lowlydba.sqlserver.sa module – Configure the <code class="docutils literal notranslate"><span class="pre">sa</span></code> login for security best practices<a class="headerlink" href="#lowlydba-sqlserver-sa-module-configure-the-sa-login-for-security-best-practices" title="Permalink to this heading"></a></h1>
+  <span class="target" id="ansible-collections-lowlydba-sqlserver-role-member-module"></span><section id="lowlydba-sqlserver-role-member-module-add-or-remove-one-or-more-roles-for-a-given-user-in-a-specific-database">
+<h1>lowlydba.sqlserver.role_member module – Add or remove one or more roles for a given user in a specific database.<a class="headerlink" href="#lowlydba-sqlserver-role-member-module-add-or-remove-one-or-more-roles-for-a-given-user-in-a-specific-database" title="Permalink to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/lowlydba/sqlserver">lowlydba.sqlserver collection</a> (version 1.3.1).</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">lowlydba.sqlserver</span></code>.
 You need further requirements to be able to use this module,
-see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-sa-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
-<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">lowlydba.sqlserver.sa</span></code>.</p>
+see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-role-member-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">lowlydba.sqlserver.role_member</span></code>.</p>
 </div>
-<p class="ansible-version-added">New in lowlydba.sqlserver 0.3.0</p>
+<p class="ansible-version-added">New in lowlydba.sqlserver 1.4.0</p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
 <li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
@@ -147,11 +147,11 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <section id="synopsis">
 <h2><a class="toc-backref" href="#id1">Synopsis</a><a class="headerlink" href="#synopsis" title="Permalink to this heading"></a></h2>
 <ul class="simple">
-<li><p>Rename, disable, and reset the password for the <code class="docutils literal notranslate"><span class="pre">sa</span></code> login on a SQL Server instance per best practices.</p></li>
+<li><p>Add or remove one or more roles for a given user in a specific database.</p></li>
 </ul>
 </section>
 <section id="requirements">
-<span id="ansible-collections-lowlydba-sqlserver-sa-module-requirements"></span><h2><a class="toc-backref" href="#id2">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
+<span id="ansible-collections-lowlydba-sqlserver-role-member-module-requirements"></span><h2><a class="toc-backref" href="#id2">Requirements</a><a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
 <p>The below requirements are needed on the host that executes this module.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.powershellgallery.com/packages/dbatools/">dbatools</a> PowerShell module</p></li>
@@ -167,88 +167,57 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-enabled"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-sa-module-parameter-enabled"><strong>enabled</strong></p>
-<a class="ansibleOptionLink" href="#parameter-enabled" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
-<p><span class="ansible-option-versionadded">added in lowlydba.sqlserver 0.4.0</span></p>
+<div class="ansibleOptionAnchor" id="parameter-database"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-role-member-module-parameter-database"><strong>database</strong></p>
+<a class="ansibleOptionLink" href="#parameter-database" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Whether the login is enabled or disabled.</p>
-<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
-<ul class="simple">
-<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
-<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">true</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
-</ul>
+<td><div class="ansible-option-cell"><p>Database for the user</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-new_name"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-sa-module-parameter-new-name"><strong>new_name</strong></p>
-<a class="ansibleOptionLink" href="#parameter-new_name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+<div class="ansibleOptionAnchor" id="parameter-roles"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-role-member-module-parameter-roles"><strong>roles</strong></p>
+<a class="ansibleOptionLink" href="#parameter-roles" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>The new name to rename the <code class="docutils literal notranslate"><span class="pre">sa</span></code> login to.</p>
-</div></td>
-</tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-sa-module-parameter-password"><strong>password</strong></p>
-<a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Password for the login.</p>
-</div></td>
-</tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-password_expiration_enabled"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-sa-module-parameter-password-expiration-enabled"><strong>password_expiration_enabled</strong></p>
-<a class="ansibleOptionLink" href="#parameter-password_expiration_enabled" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Enforces password expiration policy. Requires <em>password_policy_enforced=true</em>.</p>
-<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
-<ul class="simple">
-<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
-<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
-</ul>
+<td><div class="ansible-option-cell"><p>Specifies a comma separated list of one or more roles to add or remove</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-password_must_change"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-sa-module-parameter-password-must-change"><strong>password_must_change</strong></p>
-<a class="ansibleOptionLink" href="#parameter-password_must_change" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Enforces user must change password at next login.</p>
-<p>When specified, will enforce <em>password_expiration_enabled</em> and <em>password_policy_enforced</em> as they are required.</p>
-<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
-<ul class="simple">
-<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
-<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
-</ul>
-</div></td>
-</tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-password_policy_enforced"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-sa-module-parameter-password-policy-enforced"><strong>password_policy_enforced</strong></p>
-<a class="ansibleOptionLink" href="#parameter-password_policy_enforced" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Enforces password complexity policy.</p>
-<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
-<ul class="simple">
-<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
-<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
-</ul>
-</div></td>
-</tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_instance"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-sa-module-parameter-sql-instance"><strong>sql_instance</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-sql_instance"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-role-member-module-parameter-sql-instance"><strong>sql_instance</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_instance" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The SQL Server instance to modify.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-sa-module-parameter-sql-password"><strong>sql_password</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-sql_password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-role-member-module-parameter-sql-password"><strong>sql_password</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Password for SQL Authentication.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-sa-module-parameter-sql-username"><strong>sql_username</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-sql_username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-role-member-module-parameter-sql-username"><strong>sql_username</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Username for SQL Authentication.</p>
+</div></td>
+</tr>
+<tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-role-member-module-parameter-state"><strong>state</strong></p>
+<a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Whether or not the object should be <code class="docutils literal notranslate"><span class="pre">present</span></code> or <code class="docutils literal notranslate"><span class="pre">absent</span></code>.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">&quot;present&quot;</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;absent&quot;</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-role-member-module-parameter-username"><strong>username</strong></p>
+<a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Name of the user</p>
 </div></td>
 </tr>
 </tbody>
@@ -265,7 +234,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="attribute-check_mode"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-sa-module-attribute-check-mode"><strong>check_mode</strong></p>
+<div class="ansibleOptionAnchor" id="attribute-check_mode"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-role-member-module-attribute-check-mode"><strong>check_mode</strong></p>
 <a class="ansibleOptionLink" href="#attribute-check_mode" title="Permalink to this attribute"></a></div></td>
 <td><div class="ansible-option-cell"><p><span class="ansible-attribute-support-label">Support: </span><span class="ansible-attribute-support-full">full</span></p>
 </div></td>
@@ -273,7 +242,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="attribute-platform"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-sa-module-attribute-platform"><strong>platform</strong></p>
+<div class="ansibleOptionAnchor" id="attribute-platform"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-role-member-module-attribute-platform"><strong>platform</strong></p>
 <a class="ansibleOptionLink" href="#attribute-platform" title="Permalink to this attribute"></a></div></td>
 <td><div class="ansible-option-cell"><p><span class="ansible-attribute-support-property">Platforms:</span> <span class="ansible-attribute-support-full">all</span></p>
 </div></td>
@@ -285,15 +254,27 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </section>
 <section id="examples">
 <h2><a class="toc-backref" href="#id5">Examples</a><a class="headerlink" href="#examples" title="Permalink to this heading"></a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Disable sa login</span><span class="w"></span>
-<span class="w">  </span><span class="nt">lowlydba.sqlserver.sa</span><span class="p">:</span><span class="w"></span>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Add a single role for a user</span><span class="w"></span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.role_member</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span><span class="w"></span>
-<span class="w">    </span><span class="nt">disable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TheIntern</span><span class="w"></span>
+<span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">InternProject1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db_datareader</span><span class="w"></span>
 
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Rename sa login</span><span class="w"></span>
-<span class="w">  </span><span class="nt">lowlydba.sqlserver.sa</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Add multiple roles for a user</span><span class="w"></span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.role_member</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span><span class="w"></span>
-<span class="w">    </span><span class="nt">new_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;notthesayourelookingfor&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TheIntern</span><span class="w"></span>
+<span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">InternProject1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db_datareader, db_datawriter</span><span class="w"></span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Remove roles for a user</span><span class="w"></span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.role_member</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span><span class="w"></span>
+<span class="w">    </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TheIntern</span><span class="w"></span>
+<span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">InternProject1</span><span class="w"></span>
+<span class="w">    </span><span class="nt">role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db_datareader, db_datawriter</span><span class="w"></span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">absent</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -308,10 +289,10 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="return-data"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-sa-module-return-data"><strong>data</strong></p>
+<div class="ansibleOptionAnchor" id="return-data"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-role-member-module-return-data"><strong>data</strong></p>
 <a class="ansibleOptionLink" href="#return-data" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Output from the <code class="docutils literal notranslate"><span class="pre">Set-DbaLogin</span></code> function.</p>
+<td><div class="ansible-option-cell"><p>Output from the <code class="docutils literal notranslate"><span class="pre">Add-DbaDbRoleMember</span></code>, <code class="docutils literal notranslate"><span class="pre">Get-DbaDbRoleMember</span></code>, or <code class="docutils literal notranslate"><span class="pre">Remove-DbaDbRoleMember</span></code> function.</p>
 <p class="ansible-option-line"><span class="ansible-option-returned-bold">Returned:</span> success, but not in check_mode.</p>
 </div></td>
 </tr>
@@ -320,6 +301,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <section id="authors">
 <h3>Authors<a class="headerlink" href="#authors" title="Permalink to this heading"></a></h3>
 <ul class="simple">
+<li><p>Joe Krilov (&#64;joey40)</p></li>
 <li><p>John McCall (&#64;lowlydba)</p></li>
 </ul>
 </section>
@@ -338,8 +320,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
           
 
 <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="role_member_info_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.role_member_info module – Returns basic information about a role or roles" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="sp_configure_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.sp_configure module – Make instance level system configuration changes via sp_configure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="rg_workload_group_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.rg_workload_group module – Configures a workload group for use by the Resource Governor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="role_member_info_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.role_member_info module – Returns basic information about a role or roles" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
