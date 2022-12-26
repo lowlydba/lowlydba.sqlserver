@@ -8,10 +8,9 @@
 DOCUMENTATION = r'''
 ---
 module: sp_configure
-short_description: Make instance level system configuration changes via sp_configure.
+short_description: Make instance level system configuration changes via C(sp_configure)
 description:
-     - Read instance level system configuration for a given configuration and update to a new value as provided.
-     - If the configuration needs a restart, a warning message will be returned stating a restart is required for the new value to be used.
+  - Read instance level system configuration for a given configuration and update to a new value as provided.
 version_added: 0.1.0
 options:
   name:
@@ -25,12 +24,12 @@ options:
     type: int
     required: true
 author: "Sudhir Koduri (@kodurisudhir)"
-notes:
-  - Check mode is supported.
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.attributes.check_mode
+  - lowlydba.sqlserver.attributes.platform_all
 '''
 
 EXAMPLES = r'''
@@ -43,7 +42,9 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from the C(Set-DbaSpConfigure) function.
+  description:
+    - Output from the C(Set-DbaSpConfigure) function.
+    - RestartRequired returned if the setting requires a service restart to take effect.
   returned: success, but not in check_mode.
   type: dict
 '''

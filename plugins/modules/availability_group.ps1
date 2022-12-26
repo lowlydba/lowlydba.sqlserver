@@ -6,7 +6,7 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
-#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.95" }
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.112" }
 
 $ErrorActionPreference = "Stop"
 
@@ -27,14 +27,14 @@ $spec = @{
         use_last_backup = @{type = "bool"; required = $false; }
         healthcheck_timeout = @{type = "int"; required = $false; }
         availability_mode = @{
-            type = "str";
-            required = $false;
+            type = "str"
+            required = $false
             default = "SynchronousCommit"
             choices = @("SynchronousCommit", "AsynchronousCommit")
         }
         failure_condition_level = @{
-            type = "str";
-            required = $false;
+            type = "str"
+            required = $false
             choices = @(
                 "OnAnyQualifiedFailureCondition",
                 "OnCriticalServerErrors",
@@ -44,27 +44,27 @@ $spec = @{
             )
         }
         failover_mode = @{
-            type = "str";
-            required = $false;
-            default = "Automatic";
+            type = "str"
+            required = $false
+            default = "Automatic"
             choices = @("Manual", "Automatic")
         }
         seeding_mode = @{
-            type = "str";
-            required = $false;
-            default = "Manual";
+            type = "str"
+            required = $false
+            default = "Manual"
             choices = @("Manual", "Automatic")
         }
         automated_backup_preference = @{
-            type = "str";
-            required = $false;
-            default = "Secondary";
+            type = "str"
+            required = $false
+            default = "Secondary"
             choices = @("None", "Primary", "Secondary", "SecondaryOnly")
         }
         cluster_type = @{
-            type = "str";
-            required = $false;
-            default = "Wsfc";
+            type = "str"
+            required = $false
+            default = "Wsfc"
             choices = @("Wsfc", "External", "None")
         }
         allow_null_backup = @{type = "bool"; required = $false }
@@ -111,8 +111,7 @@ $module.Result.changed = $false
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 try {
-    #$server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
-    $existingAG = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName -EnableException
+    $existingAG = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
 
     if ($state -eq "present") {
         $agSplat = @{
@@ -163,7 +162,7 @@ try {
         if ($null -eq $existingAG) {
             # Full backup requirement for new AG via automatic seeding
             if ($seedingMode -eq "automatic" -and $null -ne $database) {
-                $dbBackup = Get-DbaLastBackup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Database $database -EnableException
+                $dbBackup = Get-DbaLastBackup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Database $database
                 if ($null -eq $dbBackup.LastFullBackup -and $allowNullBackup -eq $true) {
                     $backupSplat = @{
                         SqlInstance = $sqlInstance
@@ -172,7 +171,7 @@ try {
                         FilePath = "NUL"
                         Type = "Full"
                     }
-                    $null = Backup-DbaDatabase $backupSplat
+                    $null = Backup-DbaDatabase @backupSplat
                 }
             }
             $output = New-DbaAvailabilityGroup @agSplat
@@ -185,7 +184,7 @@ try {
                 ClusterType = $clusterType
             }
             if ($all_ags -eq $true) {
-                $agSplat.Add("AllAvailabilityGroups", $all_ags)
+                $setAgSplat.Add("AllAvailabilityGroups", $all_ags)
             }
             if ($dtcSupportEnabled -eq $true) {
                 $setAgSplat.Add("DtcSupportEnabled", $dtcSupportEnabled)
@@ -203,7 +202,7 @@ try {
                 $setAgSplat.Add("HealthCheckTimeout", $healthCheckTimeout)
             }
             if ($isDistributedAg -eq $true) {
-                $agSplat.Add("IsDistributedAvailabilityGroup", $isDistributedAg)
+                $setAgSplat.Add("IsDistributedAvailabilityGroup", $isDistributedAg)
             }
             $compareProperty = ($existingAG.Properties | Where-Object Name -in $setAgSplat.Keys).Name
             $agDiff = Compare-Object -ReferenceObject $existingAG -DifferenceObject $setAgSplat -Property $compareProperty

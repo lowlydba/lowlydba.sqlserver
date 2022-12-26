@@ -7,9 +7,9 @@
 DOCUMENTATION = r'''
 ---
 module: database
-short_description: Creates and configures a database.
+short_description: Creates and configures a database
 description:
-     - Adds a new database to an existing SQL Server instance.
+  - Adds a new database to an existing SQL Server instance.
 version_added: 0.1.0
 options:
   database:
@@ -26,13 +26,13 @@ options:
   data_file_path:
     description:
       - Directory where the data files should be placed. Uses SQL Server's default if not supplied.
-        Only used if database is being created.
+      - Only used if database is being created.
     type: str
     required: false
   log_file_path:
     description:
       - Directory where the log files should be placed. Uses SQL Server's default if not supplied.
-        Only used if database is being created.
+      - Only used if database is being created.
     type: str
     required: false
   owner:
@@ -52,8 +52,8 @@ options:
     type: int
   compatibility:
     description:
-      - Compatibility mode for the database. Follows the format of "Version90", "Version100", and so on.
-        String is validated by C(Set-DbaDbCompatibility).
+      - Compatibility mode for the database. Follows the format of C(Version90), C(Version100), and so on.
+      - String is validated by C(Set-DbaDbCompatibility).
     required: false
     type: str
   rcsi:
@@ -62,20 +62,28 @@ options:
     required: false
     type: bool
 author: "John McCall (@lowlydba)"
-notes:
-  - Check mode is supported.
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.attributes.check_mode
+  - lowlydba.sqlserver.attributes.platform_all
   - lowlydba.sqlserver.state
 '''
 
 EXAMPLES = r'''
-- name: Create Database
+- name: Create database
   lowlydba.sqlserver.database:
     sql_instance: sql-01.myco.io
     database: LowlyDB
+
+- name: Create database with customizations
+  lowlydba.sqlserver.database:
+    sql_instance: sql-01.myco.io
+    database: LowlyDB
+    owner: sa
+    maxdop: 2
+    recovery_model: Simple
 '''
 
 RETURN = r'''

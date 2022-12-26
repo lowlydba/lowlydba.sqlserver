@@ -7,7 +7,7 @@
 DOCUMENTATION = r'''
 ---
 module: instance_info
-short_description: Returns basic information for a SQL Server instance.
+short_description: Returns basic information for a SQL Server instance
 description:
   - Returns basic information for a SQL Server instance.
 version_added: 0.2.0
@@ -16,10 +16,12 @@ requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.attributes.check_mode_read_only
+  - lowlydba.sqlserver.attributes.platform_all
 '''
 
 EXAMPLES = r'''
-- name:
+- name: Get basic info for an instance
   lowlydba.sqlserver.instance_info:
     sql_instance: sql-01.myco.io
 '''

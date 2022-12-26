@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version number to release'
+        description: "Version number to release"
         required: true
 
 env:
@@ -18,12 +18,17 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
 
       - name: Install PyYaml
         run: pip install pyyaml
+
+      - name: Publish to Galaxy
+        uses: artis3n/ansible_galaxy_collection@v2.8.2
+        with:
+          api_key: ${{ secrets.GALAXY_API_KEY }}
 
       - name: Validate version is published to Galaxy
         run: curl --head -s -f -o /dev/null https://galaxy.ansible.com/download/lowlydba-sqlserver-${{ github.event.inputs.version }}.tar.gz
@@ -40,7 +45,11 @@ jobs:
           with open('changelogs/changelog.yaml', 'r') as s:
               ri = yaml.safe_load(s)
 
-          summary = ri['releases'][ver]['changes']['release_summary']
+          if ('release_summary' not in ri['releases'][ver]['changes']):
+            summary = 'No release summary available.'
+          else:
+            summary = ri['releases'][ver]['changes']['release_summary']
+
           reldate = ri['releases'][ver]['release_date']
 
           description = '''## Summary
@@ -60,12 +69,11 @@ jobs:
 
       - name: Create Release
         id: create_release
-        # TODO: this action is no longer maintained, replace
-        # likely candidate: https://github.com/softprops/action-gh-release
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v0.1.15
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          token: ${{ env.GITHUB_TOKEN }}
           tag_name: ${{ github.event.inputs.version }}
-          release_name: ${{ github.event.inputs.version }}
+          name: ${{ github.event.inputs.version }}
           body: ${{ env.RELEASE_DESCRIPTION }}

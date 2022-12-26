@@ -1,0 +1,115 @@
+---
+- name: Var block
+  vars:
+    login_name: "PhillipJFry"
+    plain_password: "P0pS3cret!23$%"
+    password_expiration_enabled: false
+    password_policy_enforced: false
+    password_must_change: false
+    enabled: false
+    default_database: "master"
+    language: "us_english"
+    default_schema: "dbo"
+    username: "PhillipJFry"
+    database: "master"
+  module_defaults:
+    lowlydba.sqlserver.login:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      default_database: "{{ default_database }}"
+      login: "{{ login_name }}"
+      password: "{{ plain_password }}"
+      password_expiration_enabled: "{{ password_expiration_enabled }}"
+      password_must_change: "{{ password_must_change }}"
+      enabled: "{{ enabled }}"
+      language: "{{ language }}"
+      state: present
+    lowlydba.sqlserver.user:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      database: "{{ database }}"
+      login: "{{ login_name }}"
+      username: "{{ username }}"
+      default_schema: "{{ default_schema }}"
+      state: present
+  tags: ["sqlserver.user"]
+  block:
+    - name: Create login
+      lowlydba.sqlserver.login:
+      register: result
+    - assert:
+        that:
+          - result.data != None
+
+    - name: Create user
+      lowlydba.sqlserver.user:
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Database == "{{ database }}"
+          - result.data.DefaultSchema == "{{ default_schema }}"
+          - result.data.Login == "{{ login_name }}"
+          - result.data.Name == "{{ username }}"
+
+    - name: Modify user's schema
+      lowlydba.sqlserver.user:
+        default_schema: "INFORMATION_SCHEMA"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Database == "{{ database }}"
+          - result.data.DefaultSchema == "INFORMATION_SCHEMA"
+          - result.data.Login == "{{ login_name }}"
+          - result.data.Name == "{{ username }}"
+
+    - name: Drop a user
+      lowlydba.sqlserver.user:
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result is changed
+
+    - name: Create user in checkmode
+      lowlydba.sqlserver.user:
+      register: result
+      check_mode: true
+    - assert:
+        that:
+          - result is changed
+
+    - name: Verify checkmode works
+      lowlydba.sqlserver.user:
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Database == "{{ database }}"
+          - result.data.DefaultSchema == "{{ default_schema }}"
+          - result.data.Login == "{{ login_name }}"
+          - result.data.Name == "{{ username }}"
+
+  always:
+    - name: Drop user
+      lowlydba.sqlserver.user:
+        state: "absent"
+    - name: Drop login
+      lowlydba.sqlserver.login:
+        state: "absent"

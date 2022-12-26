@@ -7,9 +7,9 @@
 DOCUMENTATION = r'''
 ---
 module: maintenance_solution
-short_description: Install/update Maintenance Solution by Ola Hallengren.
+short_description: Install/update Maintenance Solution by Ola Hallengren
 description:
-  - A wrapper for Install-DbaMaintenanceSolution to fetch the latest version of the Ola Hallengren's Maintenance Solution,
+  - A wrapper for C(Install-DbaMaintenanceSolution) to fetch the latest version of the Ola Hallengren's Maintenance Solution,
     or install from a local cached version.
 version_added: 0.1.0
 options:
@@ -31,7 +31,7 @@ options:
     required: false
   replace_existing:
     description:
-        - If this switch is enabled, objects already present in the target database will be dropped and recreated.
+      - If this switch is enabled, objects already present in the target database will be dropped and recreated.
     type: bool
     required: false
   log_to_table:
@@ -42,7 +42,7 @@ options:
     default: false
   solution:
     description:
-      - Specifies which portion of the Maintenance solution to install. Valid values are All (full solution), Backup, IntegrityCheck and IndexOptimize.
+      - Specifies which portion of the Maintenance Solution to install.
     type: str
     required: false
     default: 'All'
@@ -55,15 +55,15 @@ options:
     default: false
   install_parallel:
     description:
-      - If this switch is enabled, the Queue and QueueDatabase tables are created, for use when @DatabasesInParallel = 'Y' are set in the jobs.
+      - If this switch is enabled, the C(Queue) and C(QueueDatabase) tables are created, for use when C(@DatabasesInParallel = 'Y') are set in the jobs.
     type: bool
     required: false
     default: false
   local_file:
     description:
       - Specifies the path to a local file to install Ola's solution from. This should be the zip file as distributed by the maintainers.
-        If this parameter is not specified, the latest version will be downloaded and installed
-        from https://github.com/olahallengren/sql-server-maintenance-solution.
+      - If this option is not specified, the latest version will be downloaded and installed
+        from the L(Maintenance Solution Github,https://github.com/olahallengren/sql-server-maintenance-solution).
     type: str
     required: false
   database:
@@ -77,12 +77,12 @@ options:
     type: bool
     default: false
 author: "John McCall (@lowlydba)"
-notes:
-    - Check mode is not supported.
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.attributes.check_mode
+  - lowlydba.sqlserver.attributes.platform_all
 '''
 
 EXAMPLES = r'''

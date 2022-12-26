@@ -7,7 +7,7 @@
 DOCUMENTATION = r'''
 ---
 module: ag_listener
-short_description: Configures an availability group listener.
+short_description: Configures an availability group listener
 description:
   - Creates an Availability Group Listener for an existing availability group.
 version_added: 0.5.0
@@ -54,14 +54,21 @@ author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
+  - lowlydba.sqlserver.attributes.check_mode
+  - lowlydba.sqlserver.attributes.platform_all
   - lowlydba.sqlserver.sql_credentials
   - lowlydba.sqlserver.state
 '''
 
 EXAMPLES = r'''
+- name: Create Availability Group
+  lowlydba.sqlserver.availability_group:
+    sql_instance: sql-01.myco.io
+    ag_name: AG_MyDatabase
+
 - name: Create AG Listener
-  ag_listener:
-    sql_instance_primary: xxx.myco.com
+  lowlydba.sqlserver.ag_listener:
+    sql_instance_primary: sql-01.myco.io
     ag_name: AG_MyDatabase
     listener_name: aglMyDatabase
     ip_address: 10.0.20.20,10.1.77.77

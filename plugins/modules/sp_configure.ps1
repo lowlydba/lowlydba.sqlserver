@@ -7,7 +7,7 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
-#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.95" }
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.112" }
 
 $ErrorActionPreference = "Stop"
 
@@ -40,6 +40,10 @@ try {
             EnableException = $true
         }
         $output = Set-DbaSpConfigure @setSpConfigureSplat
+
+        if ($existingConfig.IsDynamic -eq $false) {
+            $output | Add-Member -MemberType NoteProperty -Name "RestartRequired" -Value $true
+        }
         $module.Result.changed = $true
     }
 

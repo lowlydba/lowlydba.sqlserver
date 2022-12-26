@@ -6,7 +6,7 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
-#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.95" }
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.112" }
 
 $ErrorActionPreference = "Stop"
 
@@ -71,7 +71,7 @@ try {
             $setLoginSplat.add("DefaultDatabase", $defaultDatabase)
         }
         if ($null -ne $passwordExpirationEnabled) {
-            if ($sa.PasswordExpirationEnabled -ne $passwordExpirationEnabled) {
+            if ($existingLogin.PasswordExpirationEnabled -ne $passwordExpirationEnabled) {
                 $changed = $true
             }
             if ($passwordExpirationEnabled -eq $true) {
@@ -79,7 +79,7 @@ try {
             }
         }
         if ($null -ne $passwordPolicyEnforced) {
-            if ($sa.PasswordPolicyEnforced -ne $passwordPolicyEnforced) {
+            if ($existingLogin.PasswordPolicyEnforced -ne $passwordPolicyEnforced) {
                 $changed = $true
             }
             if ($passwordPolicyEnforced -eq $true) {
@@ -87,7 +87,7 @@ try {
             }
         }
         if ($true -eq $passwordMustChange) {
-            if ($sa.PasswordMustChange -ne $passwordMustChange) {
+            if ($existingLogin.PasswordMustChange -ne $passwordMustChange) {
                 $changed = $true
             }
             if ($passwordMustChange -eq $true) {
@@ -109,7 +109,7 @@ try {
                 $setLoginSplat.add("Enable", $true)
             }
             # Login needs to be modified
-            if (($changed -eq $true) -or ($disabled -ne $sa.IsDisabled) -or ($secPassword)) {
+            if (($changed -eq $true) -or ($disabled -ne $existingLogin.IsDisabled) -or ($secPassword)) {
                 $output = Set-DbaLogin @setLoginSplat
                 $module.result.changed = $true
             }

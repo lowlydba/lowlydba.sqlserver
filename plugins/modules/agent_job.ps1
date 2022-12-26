@@ -6,7 +6,7 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
-#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.95" }
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.112" }
 
 $ErrorActionPreference = "Stop"
 
@@ -98,20 +98,26 @@ try {
         }
         # Job exists
         else {
-            # Compare existing values with passed params, skipping over values not specified
-            $existingJob | Add-Member -MemberType NoteProperty -Name 'OwnerLogin' -Value $existingJob.OwnerLoginName
-            $keys = $jobParams.Keys | Where-Object { $_ -ne 'SqlInstance' }
-            $compareProperty = ($existingJob.Properties | Where-Object Name -in $keys).Name
-            $diff = Compare-Object -ReferenceObject $existingJob -DifferenceObject $jobParams -Property $compareProperty
-            # Update job
-            if ($null -ne $diff -or $existingJob.IsEnabled -ne $enabled) {
-                # Update the job
-                # Enabled is special flag only used in Set-DbaAgentJob
-                if ($enabled -eq $true) {
-                    $jobParams.Add("Enabled", $true)
+            # Need to serialize to prevent SMO auto refreshing
+            $old = ConvertTo-SerializableObject -InputObject $existingJob -UseDefaultProperty $false
+            if ($enabled -eq $true) {
+                $jobParams.Add("Enabled", $true)
+            }
+            $output = Set-DbaAgentJob @jobParams
+            if ($null -ne $output) {
+                $compareProperty = @(
+                    "Category"
+                    "Enabled"
+                    "Name"
+                    "OwnerLoginName"
+                    "HasSchedule"
+                    "Description"
+                    "StartStepId"
+                )
+                $diff = Compare-Object -ReferenceObject $output -DifferenceObject $old -Property $compareProperty
+                if ($diff -or $checkMode) {
+                    $module.Result.changed = $true
                 }
-                $output = Set-DbaAgentJob @jobParams
-                $module.Result.changed = $true
             }
         }
     }

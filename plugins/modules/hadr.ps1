@@ -6,7 +6,7 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
-#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.95" }
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.112" }
 
 $ErrorActionPreference = "Stop"
 
@@ -54,6 +54,9 @@ try {
             $output = $server | Enable-DbaAgHadr @setHadr
         }
 
+        if ($force -ne $true) {
+            $output | Add-Member -MemberType NoteProperty -Name "RestartRequired" -Value $true
+        }
         $module.Result.changed = $true
     }
 

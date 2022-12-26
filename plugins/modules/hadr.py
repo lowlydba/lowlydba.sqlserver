@@ -7,9 +7,9 @@
 DOCUMENTATION = r'''
 ---
 module: hadr
-short_description: Enable or disable HADR.
+short_description: Enable or disable HADR
 description:
-     - Enable or disable the High Availability Disaster Recovery (HADR) feature.
+  - Enable or disable the High Availability Disaster Recovery (HADR) feature.
 version_added: 0.4.0
 options:
   sql_instance:
@@ -39,13 +39,13 @@ options:
     type: bool
     required: false
     default: false
-notes:
-  - Windows only.
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.attributes.check_mode
+  - lowlydba.sqlserver.attributes.platform_win
 '''
 
 EXAMPLES = r'''
@@ -58,7 +58,9 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from the C(Enable-DbaAgHadr) or C(Disable-DbaAgHadr) function.
+  description:
+    - Output from the C(Enable-DbaAgHadr) or C(Disable-DbaAgHadr) function.
+    - RestartRequired returned if the setting requires a service restart to take effect.
   returned: success, but not in check_mode.
   type: dict
 '''

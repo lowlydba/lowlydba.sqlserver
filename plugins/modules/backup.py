@@ -7,9 +7,9 @@
 DOCUMENTATION = r'''
 ---
 module: backup
-short_description: Performs a backup operation.
+short_description: Performs a backup operation
 description:
-     - Performs a backup operation.
+  - Performs any type of database backup operation.
 version_added: 0.8.0
 options:
   database:
@@ -20,30 +20,30 @@ options:
   path:
     description:
       - Path in which to place the backup files.
-        If not specified, the backups will be placed in the default backup location for SqlInstance.
+      - If not specified, the backups will be placed in the default backup location for SqlInstance.
     type: str
     required: false
   file_path:
     description:
       - The name of the file to backup to.
-        If no name is specified then the backup files will be named DatabaseName_yyyyMMddHHmm (i.e. "Database1_201714022131")
+      - If no name is specified then the backup files will be named C(DatabaseName_yyyyMMddHHmm) (i.e. C(Database1_201714022131))
     type: str
     required: false
   increment_prefix:
     description:
-      - If set, this will prefix backup files with an incrementing integer (ie; '1-', '2-').
-        Using this has been alleged to improved restore times on some Azure based SQL Database platforms.
+      - If set, this will prefix backup files with an incrementing integer (ie; C(1-), C(2-)).
+      - Using this has been alleged to improved restore times on some Azure based SQL Database platforms.
     type: bool
     required: false
     default: false
   replace_in_name:
     description:
       - If set, the following list of strings will be replaced in the FilePath and Path strings.
-        instancename - will be replaced with the instance Name
-        servername - will be replaced with the server name
-        dbname - will be replaced with the database name
-        timestamp - will be replaced with the timestamp (either the default, or the format provided)
-        backuptype - will be replaced with Full, Log or Differential as appropriate
+        C(instancename) - will be replaced with the instance Name
+        C(servername) - will be replaced with the server name
+        C(dbname) - will be replaced with the database name
+        C(timestamp) - will be replaced with the timestamp (either the default, or the format provided)
+        C(backuptype) - will be replaced with C(Full), C(Log), or C(Differential) as appropriate
     type: bool
     required: false
     default: false
@@ -115,8 +115,8 @@ options:
     required: false
   azure_credential:
     description:
-      - The name of the credential on the SQL instance that can write to the AzureBaseUrl,
-        only needed if using Storage access keys If using SAS credentials, the command will look for a credential with a name matching the AzureBaseUrl.
+      - The name of the credential on the SQL instance that can write to the I(azure_base_url),
+        only needed if using Storage access keys If using SAS credentials, the command will look for a credential with a name matching the I(azure_base_url).
     type: str
     required: false
   no_recovery:
@@ -145,8 +145,7 @@ options:
     default: false
   timestamp_format:
     description:
-      - By default the command timestamps backups using the format yyyyMMddHHmm. Using this parameter this can be overridden.
-        The timestamp format should be defined using the Get-Date formats, illegal formats will cause an error to be thrown.
+      - By default the command timestamps backups using the format C(yyyyMMddHHmm). Using this option this can be overridden.
     type: str
     required: false
   ignore_file_checks:
@@ -157,7 +156,7 @@ options:
     default: false
   encryption_algorithm:
     description:
-      - Specified the Encryption Algorithm to used.
+      - Specifies the Encryption Algorithm to used.
     type: str
     required: false
     choices: ['AES128','AES192','AES256','TRIPLEDES']
@@ -171,13 +170,23 @@ requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.attributes.check_mode
+  - lowlydba.sqlserver.attributes.platform_all
 '''
 
 EXAMPLES = r'''
-- name: Create Database
+- name: Create striped full database backup in default dir
   lowlydba.sqlserver.backup:
     sql_instance: sql-01.myco.io
     database: LowlyDB
+    type: full
+    file_count: 8
+
+- name: Create t-log backup
+  lowlydba.sqlserver.backup:
+    sql_instance: sql-01.myco.io
+    database: LowlyDB
+    type: log
 '''
 
 RETURN = r'''

@@ -6,7 +6,7 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
-#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.95" }
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.112" }
 
 $ErrorActionPreference = "Stop"
 
@@ -21,46 +21,46 @@ $spec = @{
         endpoint_url = @{type = 'str'; required = $false }
         backup_priority = @{type = 'int'; required = $false; default = 50 }
         failover_mode = @{
-            type = 'str';
-            required = $false;
-            default = 'Manual';
+            type = 'str'
+            required = $false
+            default = 'Manual'
             choices = @('Manual', 'Automatic')
         }
         availability_mode = @{
-            type = 'str';
-            required = $false; default = 'AsynchronousCommit';
+            type = 'str'
+            required = $false; default = 'AsynchronousCommit'
             choices = @('SynchronousCommit', 'AsynchronousCommit')
         }
         seeding_mode = @{
-            type = 'str';
-            required = $false;
-            default = 'Automatic';
+            type = 'str'
+            required = $false
+            default = 'Automatic'
             choices = @('Manual', 'Automatic')
         }
         connection_mode_in_primary_role = @{
-            type = 'str';
-            required = $false;
-            default = 'AllowAllConnections';
+            type = 'str'
+            required = $false
+            default = 'AllowAllConnections'
             choices = @('AllowReadIntentConnectionsOnly', 'AllowAllConnections')
         }
         connection_mode_in_secondary_role = @{
-            type = 'str';
-            required = $false;
-            default = 'AllowNoConnections';
+            type = 'str'
+            required = $false
+            default = 'AllowNoConnections'
             choices = @('AllowNoConnections', 'AllowReadIntentConnectionsOnly', 'AllowAllConnections')
         }
         read_only_routing_connection_url = @{
-            type = 'str';
-            required = $false;
+            type = 'str'
+            required = $false
         }
         read_only_routing_list = @{
-            type = 'str';
-            required = $false;
+            type = 'str'
+            required = $false
         }
         cluster_type = @{
-            type = 'str';
-            required = $false;
-            default = 'Wsfc';
+            type = 'str'
+            required = $false
+            default = 'Wsfc'
             choices = @('Wsfc', 'External', 'None')
         }
         configure_xe_session = @{ type = 'bool'; required = $false; default = $false }
@@ -102,8 +102,9 @@ $checkMode = $module.CheckMode
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 try {
-    $availabilityGroup = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
-    $existingReplica = $availabilityGroup | Get-DbaAgReplica -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential | Get-Unique
+    $replicaInstance = Connect-DbaInstance -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential
+    $allReplicas = Get-DbaAgReplica -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential -AvailabilityGroup $agName
+    $existingReplica = $allReplicas | Where-Object Name -eq $replicaInstance.DomainInstanceName
 
     if ($state -eq "present") {
         $addReplicaSplat = @{
@@ -135,6 +136,7 @@ try {
         }
 
         if ($null -eq $existingReplica) {
+            $availabilityGroup = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
             $output = $availabilityGroup | Add-DbaAgReplica @addReplicaSplat
             $module.Result.changed = $true
         }
@@ -153,18 +155,33 @@ try {
             $addReplicaSplat.GetEnumerator() | Where-Object Key -in $compareReplicaProperty | ForEach-Object { $setReplicaSplat.Add($_.Key, $_.Value) }
             [string[]]$compareProperty = $setReplicaSplat.Keys
             $replicaDiff = Compare-Object -ReferenceObject $setReplicaSplat -DifferenceObject $existingReplica -Property $compareProperty
+            $setReplicaSplat.Add("SqlInstance", $sqlInstance)
+            $setReplicaSplat.Add("SqlCredential", $sqlCredential)
+            $setReplicaSplat.Add("Replica", $existingReplica.Name)
+            $setReplicaSplat.Add("AvailabilityGroup", $agName)
             if ($replicaDiff) {
-                $output = $existingReplica | Set-DbaAgReplica @setReplicaSplat
+                $output = Set-DbaAgReplica @setReplicaSplat
                 $module.Result.changed = $true
             }
         }
     }
-    elseif ($state -eq "absent") {
+}
+catch {
+    $module.FailJson("Configuring Availability Group replica failed: $($_.Exception.Message)")
+}
+try {
+    if ($state -eq "absent") {
         if ($null -ne $existingReplica) {
             $output = $existingReplica | Remove-DbaAgReplica
             $module.Result.changed = $true
         }
     }
+}
+catch {
+    $module.FailJson("Removing Availability Group replica failed: $($_.Exception.Message)")
+}
+
+try {
     if ($output) {
         $resultData = ConvertTo-SerializableObject -InputObject $output
         $module.Result.data = $resultData
@@ -172,5 +189,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Configuring Availability Group replica failed: $($_.Exception.Message)", $_)
+    $module.FailJson("Error parsing results - operation likely completed: $($_.Exception.Message)")
 }

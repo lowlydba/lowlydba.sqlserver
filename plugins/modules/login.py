@@ -7,7 +7,7 @@
 DOCUMENTATION = r'''
 ---
 module: login
-short_description: Configures a login for the target SQL Server instance.
+short_description: Configures a login for the target SQL Server instance
 description:
   - Creates, modifies, or removes a Windows or SQL Authentication login on a SQL Server instance.
 version_added: 0.1.0
@@ -42,7 +42,7 @@ options:
   password_must_change:
     description:
       - Enforces user must change password at next login.
-        When specified will enforce C(password_expiration_enabled) and C(password_policy_enforced) as they are required.
+      - When specified will enforce I(password_expiration_enabled) and I(password_policy_enforced) as they are required.
     type: bool
     required: false
   password_policy_enforced:
@@ -56,19 +56,29 @@ options:
     type: bool
     required: false
 author: "John McCall (@lowlydba)"
+notes:
+  - Module will always return changed if a password is supplied.
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.attributes.check_mode
+  - lowlydba.sqlserver.attributes.platform_all
   - lowlydba.sqlserver.state
 '''
 
 EXAMPLES = r'''
-- name:
+- name: Create a login
   lowlydba.sqlserver.login:
     sql_instance: sql-01.myco.io
     login: TheIntern
     password: ReallyComplexStuff12345!
+
+- name: Disable a login
+  lowlydba.sqlserver.login:
+    sql_instance: sql-01.myco.io
+    login: TheIntern
+    enabled: false
 '''
 
 RETURN = r'''

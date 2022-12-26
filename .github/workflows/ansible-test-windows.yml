@@ -32,7 +32,7 @@ concurrency:
 env:
   NAMESPACE: lowlydba
   COLLECTION_NAME: sqlserver
-  DBATOOLS_VERSION: "1.1.95"
+  DBATOOLS_VERSION: "1.1.112"
 
 jobs:
   ###
@@ -52,6 +52,7 @@ jobs:
           - stable-2.11
           - stable-2.12
           - stable-2.13
+          - stable-2.14
           - devel
         group: # windows/group/#/
           - "1"
@@ -93,30 +94,32 @@ jobs:
       - name: Install a SQL Server
         continue-on-error: true
         id: mssqlsuite
-        uses: potatoqualitee/mssqlsuite@v1.5
+        uses: potatoqualitee/mssqlsuite@v1.7
         with:
           install: sqlengine
           sa-password: L0wlydb4
+          version: 2022
 
       - name: Retry SQL Server install
         id: retry1
         if: steps.mssqlsuite.outcome == 'failure'
-        uses: potatoqualitee/mssqlsuite@v1.5
+        uses: potatoqualitee/mssqlsuite@v1.7
         with:
           install: sqlengine
           sa-password: L0wlydb4
+          version: 2022
 
       - name: Add a hosts entry
         shell: cmd
         run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
 
       - name: Install and cache PowerShell modules
-        uses: potatoqualitee/psmodulecache@v4.5
+        uses: potatoqualitee/psmodulecache@v5.2
         with:
           modules-to-cache: dbatools
           shell: powershell
 
-      - uses: Vampire/setup-wsl@v1.2.0
+      - uses: Vampire/setup-wsl@v1.3.4
         with:
           distribution: Debian
           additional-packages: |
@@ -153,10 +156,16 @@ jobs:
 
       - name: Install ansible-base (${{ matrix.ansible }})
         run: |
-          python3 -m pip install --upgrade pip setuptools pypsrp --disable-pip-version-check
-          python3 -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check
+          python3 -m pip install --upgrade pip setuptools pypsrp --disable-pip-version-check --retries 10
+          python3 -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
 
       - name: Install collection dependencies
+        id: collection-dependency
+        run: ansible-galaxy collection install ansible.windows -p "${{ env.GHWS }}"
+        continue-on-error: true
+
+      - name: Retry install collection dependencies
+        if: steps.collection-dependency.outcome == 'failure'
         run: ansible-galaxy collection install ansible.windows -p "${{ env.GHWS }}"
 
       - name: Set integration test options

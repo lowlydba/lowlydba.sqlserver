@@ -7,7 +7,7 @@
 DOCUMENTATION = r'''
 ---
 module: availability_group
-short_description: Configures availability group(s).
+short_description: Configures availability group(s)
 description:
   - Configures SQL Server Availability Group(s) with up to one replica.
 version_added: 0.4.0
@@ -33,7 +33,7 @@ options:
     type: str
     required: false
     aliases:
-      - database_name
+    - database_name
   ag_name:
     description:
       - Name of the Availability Group.
@@ -72,9 +72,9 @@ options:
   healthcheck_timeout:
     description:
       - This setting used to specify the length of time, in milliseconds,
-        that the SQL Server resource DLL should wait for information returned by the sp_server_diagnostics
+        that the SQL Server resource DLL should wait for information returned by the C(sp_server_diagnostics)
         stored procedure before reporting the Always On Failover Cluster Instance (FCI) as unresponsive.
-        Changes that are made to the timeout settings are effective immediately and do not require a restart of the SQL Server resource.
+      - Changes that are made to the timeout settings are effective immediately and do not require a restart of the SQL Server resource.
     type: int
     required: false
   failure_condition_level:
@@ -100,7 +100,7 @@ options:
   availability_mode:
     description:
       - Whether the replica should be Asynchronous or Synchronous.
-        Only used in creating a new availability group.
+      - Only used in creating a new availability group.
     type: str
     required: false
     default: 'SynchronousCommit'
@@ -121,7 +121,7 @@ options:
     choices: ['None', 'Primary', 'Secondary', 'SecondaryOnly']
   allow_null_backup:
     description:
-      - Allow taking a full backup to C(NULL) if one doesn't exist and I(seeding_mode=automatic).
+      - Allow taking a full backup to C(NULL) if one does not exist and I(seeding_mode=Automatic).
     type: bool
     required: false
   force:
@@ -137,13 +137,15 @@ requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.attributes.check_mode
+  - lowlydba.sqlserver.attributes.platform_all
   - lowlydba.sqlserver.state
 '''
 
 EXAMPLES = r'''
 - name: Create Availability Group
   lowlydba.sqlserver.availability_group:
-    sql_instance_primary: sql-01.myco.io
+    sql_instance: sql-01.myco.io
     ag_name: AG_MyDatabase
 '''
 

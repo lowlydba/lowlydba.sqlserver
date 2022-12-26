@@ -5,6 +5,291 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v1.3.0
+======
+
+Release Summary
+---------------
+
+New module to manage credentials added!
+
+Minor Changes
+-------------
+
+- Adding a new credential module
+
+New Modules
+-----------
+
+- credential - Configures a credential on a SQL server
+
+v1.2.1
+======
+
+Release Summary
+---------------
+
+More Azure SQL Managed Instance compatibility fixes.
+
+Bugfixes
+--------
+
+- Added missing mapping for UseDestinationDefaultDirectories (https://github.com/lowlydba/lowlydba.sqlserver/pull/153)
+- Removed default value for KeepCDC to fix compatability with SQL MI (https://github.com/lowlydba/lowlydba.sqlserver/pull/153)
+- Removed default value for UseDestinationDefaultDirectories to fix compatability with SQL MI (https://github.com/lowlydba/lowlydba.sqlserver/pull/153)
+
+v1.2.0
+======
+
+Release Summary
+---------------
+
+Azure SQL MI compatibility fixes & indicating required restarts for settings changes.
+
+Minor Changes
+-------------
+
+- Fixed typo in the traceflag module's documentation. (https://github.com/lowlydba/lowlydba.sqlserver/pull/150)
+- Return "RestartRequired" when a module performs changes that require an addition service restart to take effect. (https://github.com/lowlydba/lowlydba.sqlserver/pull/150/)
+
+Bugfixes
+--------
+
+- Removed default value for ReplaceDbNameInFile to fix compatability with SQL MI (https://github.com/lowlydba/lowlydba.sqlserver/pull/148)
+
+v1.1.3
+======
+
+Release Summary
+---------------
+
+Another minor fix to increase SQL Managed Instance support.
+
+Bugfixes
+--------
+
+- Removed default value for reuse_source_folder_structure to fix compatability with SQL MI (https://github.com/lowlydba/lowlydba.sqlserver/pull/145)
+
+v1.1.2
+======
+
+Release Summary
+---------------
+
+Bug fix for Azure Database Managed Instance compatibility.
+
+Bugfixes
+--------
+
+- Removed the default value for xp_dirtree to allow compatibility with Azure SQL Mangaed instances (https://github.com/lowlydba/lowlydba.sqlserver/pull/141)
+
+v1.1.1
+======
+
+Minor Changes
+-------------
+
+- modules - all modules now document their platform and support for check mode in their attributes documentation (https://github.com/lowlydba/lowlydba.sqlserver/pull/134).
+
+v1.1.0
+======
+
+Release Summary
+---------------
+
+Adding a new user module.
+
+New Modules
+-----------
+
+- user - Configures a user within a database
+
+v1.0.4
+======
+
+Release Summary
+---------------
+
+Minor fixes to resolve new dlevel sanity checks.
+
+Bugfixes
+--------
+
+- Fix cleanup_time default to match documentation default & lint fixes (https://github.com/lowlydba/lowlydba.sqlserver/pull/127).
+
+v1.0.3
+======
+
+Release Summary
+---------------
+
+Minor documentation fixes from the second Ansible inclusion review.
+
+Bugfixes
+--------
+
+- Minor documentation fixes (https://github.com/lowlydba/lowlydba.sqlserver/pull/122).
+
+v1.0.2
+======
+
+Release Summary
+---------------
+
+Minor documentation bugfixes and enhancements as requested in the Ansible inclusion process.
+
+Bugfixes
+--------
+
+- _SqlServerUtils module_util - added explicit license to private module util (https://github.com/lowlydba/lowlydba.sqlserver/pull/119).
+- meta/runtime.yml - updated out of date runtime version info (https://github.com/lowlydba/lowlydba.sqlserver/pull/119).
+- most modules - fixed alignment, formatting, and typos in module documentation (https://github.com/lowlydba/lowlydba.sqlserver/pull/119).
+
+v1.0.1
+======
+
+Release Summary
+---------------
+
+Minor bug fix.
+
+Bugfixes
+--------
+
+- Fixed bug in how the classifier function name is being assigned to the variable in the resource_governor module.
+
+v1.0.0
+======
+
+Release Summary
+---------------
+
+Bumping to version 1.0.0 now that this collection is being used in production in at least one place 🎉
+
+v0.11.2
+=======
+
+Release Summary
+---------------
+
+Bumping required dbatools version to ensure the `restore` module works on MacOS PowerShell Core (https://github.com/dataplat/dbatools/pull/8435).
+
+v0.11.1
+=======
+
+Release Summary
+---------------
+
+Bug fixes for AlwaysOn related modules and fixing errors in some documentation examples.
+
+Bugfixes
+--------
+
+- Fix `availability_group` module so that NUL backups can be properly taken if needed.
+- Fix incorrect examples in `availability_group` module documentation.
+- Fix incorrect examples in `install_script` module documentation.
+- Fix incorrect examples in `spn` module documentationb.
+- Fixed bugs where adding replica did not work properly for several reasons.
+
+v0.11.0
+=======
+
+Release Summary
+---------------
+
+Adding new dbops module.
+
+New Modules
+-----------
+
+- install_script - Runs migration scripts against a database.
+
+v0.10.1
+=======
+
+Release Summary
+---------------
+
+Bug fix for resource_governor.
+
+Bugfixes
+--------
+
+- Fix change detection in resource_governor module.
+
+v0.10.0
+=======
+
+Release Summary
+---------------
+
+The first_responder_kit and tcp_port modules, along with a bump in the required dbatools version.
+
+Minor Changes
+-------------
+
+- Update minimum required DBATools version universally to 1.1.108 to accommodate new tcp module.
+
+New Modules
+-----------
+
+- first_responder_kit - Install/update the First Responder Kit scripts.
+- tcp_port - Sets the TCP port for the instance.
+
+v0.9.3
+======
+
+Release Summary
+---------------
+
+More change detection fixing.
+
+Bugfixes
+--------
+
+- memory - Fix improper changed detection.
+
+v0.9.2
+======
+
+Release Summary
+---------------
+
+Bugfixes for agent related modules that incorrectly reported change statuses.
+
+Bugfixes
+--------
+
+- agent_job - Fix incorrectly reported change status when no change occurred.
+- agent_job_schedule - Fix incorrectly reported change status when no change occurred.
+- agent_job_step - Fix incorrectly reported change status when no change occurred.
+
+v0.9.1
+======
+
+Release Summary
+---------------
+
+Bugfix!
+
+Bugfixes
+--------
+
+- Allow agent job steps to be removed by specifying the step ID only. This is likely needed in cleanup of steps from previous job configurations.
+
+v0.9.0
+======
+
+Bugfixes
+--------
+
+- backup - Only use blocksize when specified.
+
+New Modules
+-----------
+
+- restore - Performs a restore operation.
+
 v0.8.0
 ======
 

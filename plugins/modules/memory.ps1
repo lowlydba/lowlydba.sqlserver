@@ -6,7 +6,7 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
-#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.95" }
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.112" }
 
 $ErrorActionPreference = "Stop"
 
@@ -23,6 +23,7 @@ $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $max = $module.Params.max
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
+$PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 # Set max memory for SQL Instance
 try {
@@ -31,12 +32,10 @@ try {
         SqlInstance = $sqlInstance
         SqlCredential = $sqlCredential
         Max = $max
-        WhatIf = $checkMode
-        EnableException = $true
     }
     $output = Set-DbaMaxMemory @setMemorySplat
 
-    if ($output.PreviousMaxValue -ne $max) {
+    if ($output.PreviousMaxValue -ne $output.MaxValue -or $checkMode) {
         $module.Result.changed = $true
     }
 

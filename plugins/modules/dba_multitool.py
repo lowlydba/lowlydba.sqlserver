@@ -7,9 +7,9 @@
 DOCUMENTATION = r'''
 ---
 module: dba_multitool
-short_description: Install/update the DBA Multitool suite by John McCAll
+short_description: Install/update the DBA Multitool suite by John McCall
 description:
-  - A wrapper for Install-DbaMultiTool to fetch the latest version of the scripts, or install from a local cached version.
+  - A wrapper for C(Install-DbaMultiTool) to fetch the latest version of the scripts, or install from a local cached version.
 version_added: 0.7.0
 options:
   sql_instance:
@@ -20,7 +20,7 @@ options:
   local_file:
     description:
       - Specifies the path to a local file to install DBA MultiTool from. This should be the zip file as distributed by the maintainers.
-        If this parameter is not specified, the latest version will be downloaded and installed from https://github.com/LowlyDBA/dba-multitool/.
+      - If this option is not specified, the latest version will be downloaded and installed from https://github.com/LowlyDBA/dba-multitool/.
     type: str
     required: false
   branch:
@@ -40,8 +40,12 @@ options:
     type: bool
     default: false
 author: "John McCall (@lowlydba)"
+requirements:
+  - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.attributes.check_mode
+  - lowlydba.sqlserver.attributes.platform_all
 '''
 
 EXAMPLES = r'''

@@ -7,7 +7,7 @@
 DOCUMENTATION = r'''
 ---
 module: agent_job
-short_description: Configures a SQL Agent job.
+short_description: Configures a SQL Agent job
 description:
   - Configure a SQL Agent job, including which schedules and category it belongs to.
 version_added: 0.1.0
@@ -57,18 +57,19 @@ options:
     default: false
 author: "John McCall (@lowlydba)"
 notes:
-  - Check mode is supported.
   - On slower hardware, stale job component data may be returned (i.e., a previous or default job category).
     Configuring each component (schedule, step, category, etc.) individually is recommended for this reason.
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
 extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
+  - lowlydba.sqlserver.attributes.check_mode
+  - lowlydba.sqlserver.attributes.platform_all
   - lowlydba.sqlserver.state
 '''
 
 EXAMPLES = r'''
-- name: Create a job schedule
+- name: Create a job
   lowlydba.sqlserver.agent_job:
     sql_instance: sql-01.myco.io
     job: MyJob

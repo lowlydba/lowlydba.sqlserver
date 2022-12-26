@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+
+# (c) 2022, John McCall (@lowlydba)
+# GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+
 # Private
 
 function Get-LowlyDbaSqlServerAuthSpec {
@@ -107,7 +112,8 @@ function ConvertTo-SerializableObject {
                 Parent is not useful.
             #>
             'Parent'
-        )
+        ),
+        [bool]$UseDefaultProperty = $true
     )
 
     Begin {
@@ -123,7 +129,7 @@ function ConvertTo-SerializableObject {
 
     Process {
         $defaultProperty = $InputObject.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
-        if ($defaultProperty) {
+        if ($defaultProperty -and $UseDefaultProperty) {
             $objectProperty = $InputObject.PSObject.Properties | Where-Object { $_.Name -in $defaultProperty -and $_.Name -notin $ExcludeProperty }
         }
         else {
@@ -156,6 +162,13 @@ function ConvertTo-SerializableObject {
                     break
                 }
                 { $pValue.GetType().Name -like '*Collection' } {
+                    @{
+                        Name = $pName
+                        Expression = { [string[]]($pValue.Name) }.GetNewClosure()
+                    }
+                    break
+                }
+                { $pValue.GetType().Name -eq 'User' } {
                     @{
                         Name = $pName
                         Expression = { [string[]]($pValue.Name) }.GetNewClosure()

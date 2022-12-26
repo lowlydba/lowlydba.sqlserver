@@ -6,7 +6,7 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
-#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.95" }
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.112" }
 
 $ErrorActionPreference = "Stop"
 
@@ -93,7 +93,6 @@ try {
         Checksum = $checkSum
         Verify = $verify
         MaxTransferSize = $maxTransferSize
-        BlockSize = $blockSize
         BufferCount = $bufferCount
         NoRecovery = $noRecovery
         BuildPath = $buildPath
@@ -108,7 +107,7 @@ try {
         $backupSplat.Add("FilePath", $filePath)
     }
     if ($null -ne $blockSize) {
-        $backupSplat.Add("BlockSize", $blockSize)
+        $backupSplat.Add("BlockSize", ($blockSize / 1))
     }
     if ($null -ne $timestampFormat) {
         $backupSplat.Add("TimestampFormat", $timestampFormat)
