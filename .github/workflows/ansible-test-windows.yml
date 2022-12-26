@@ -81,11 +81,6 @@ jobs:
           $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1'))
           & $sb -Verbose -ForceNewSSLCert 4>&1
 
-      - name: Enable winrm
-        shell: powershell
-        run: |
-          winrm quickconfig -force
-
       - name: Why is MongoDB running? Disable it.
         shell: powershell
         run: |
