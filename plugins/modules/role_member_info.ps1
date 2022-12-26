@@ -47,8 +47,8 @@ try {
     }
 
     if ($null -ne $output) {
-        $resultData = ConvertTo-Json -InputObject $output -Depth 10 -Compress -EnumsAsStrings | Out-String
-        $module.Result.data = $resultData
+        $resultData = ConvertTo-Json -InputObject $output -Depth 10 -Compress
+        $module.Result.data = $resultData.ToString()
     }
 
     $module.ExitJson()
