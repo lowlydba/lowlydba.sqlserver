@@ -47,8 +47,8 @@ try {
     }
 
     if ($null -ne $output) {
-        $resultData = ConvertTo-Json -InputObject $output -Depth 10 -Compress
-        $module.Result.data = $resultData.ToString()
+        $resultData = ConvertTo-SerializableObject -InputObject $output
+        $module.Result.data = $resultData
     }
 
     $module.ExitJson()
