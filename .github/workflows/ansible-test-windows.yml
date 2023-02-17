@@ -118,7 +118,7 @@ jobs:
           modules-to-cache: dbatools
           shell: powershell
 
-      - uses: Vampire/setup-wsl@v2.0.0
+      - uses: Vampire/setup-wsl@v2.0.1
         with:
           distribution: Debian
           additional-packages: |
