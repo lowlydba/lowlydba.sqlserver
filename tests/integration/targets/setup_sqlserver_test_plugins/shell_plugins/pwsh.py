@@ -59,7 +59,6 @@ import re
 import shlex
 import pkgutil
 import xml.etree.ElementTree as ET
-import ntpath
 
 from ansible.module_utils._text import to_bytes, to_text
 from ansible.plugins.shell import ShellBase

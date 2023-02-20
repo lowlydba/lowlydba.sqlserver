@@ -26,7 +26,6 @@ import subprocess
 import fcntl
 import getpass
 
-import ansible.constants as C
 from ansible.errors import AnsibleError, AnsibleFileNotFound
 from ansible.module_utils.compat import selectors
 from ansible.module_utils.six import text_type, binary_type
