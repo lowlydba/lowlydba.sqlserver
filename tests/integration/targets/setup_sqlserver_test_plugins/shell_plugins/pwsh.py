@@ -253,8 +253,8 @@ class ShellModule(ShellBase):
                 # before it made it to the remote host. The reason we can't just embed it in commands as strings is because
                 # it will be too big.
                 local_mu = os.path.join(os.path.dirname(__file__), '..', 'module_utils')
-                ansible_basic_cs = os.path.join(local_mu, 'Ansible.Basic.cs')
-                addtype_ps = os.path.join(local_mu, 'Ansible.ModuleUtils.AddType.psm1')
+                ansible_basic_cs = os.path.join(local_mu, '_Ansible.Basic.cs')
+                addtype_ps = os.path.join(local_mu, '_Ansible.ModuleUtils.AddType.psm1')
                 wrapper_hacked = '''
                     &chcp.com 65001 > $null
                     $exec_wrapper_str = $input | Out-String
