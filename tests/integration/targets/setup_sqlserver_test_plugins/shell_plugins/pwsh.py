@@ -65,6 +65,9 @@ from packaging import version
 from ansible.module_utils._text import to_bytes, to_text
 from ansible.plugins.shell import ShellBase
 from ansible.release import __version__ as ansible_version
+from ansible.utils.display import Display
+
+display = Display()
 
 
 _common_args = ['pwsh', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Unrestricted']
@@ -225,6 +228,65 @@ class ShellModule(ShellBase):
     def build_module_command(self, env_string, shebang, cmd, arg_path=None):
         bootstrap_wrapper = pkgutil.get_data("ansible.executor.powershell", "bootstrap_wrapper.ps1")
 
+        # TODO: remove when support for ansible-core <2.13 is dropped
+        ver = version.parse(ansible_version)
+        cutoff = version.parse('2.13')
+        info = "ansible_version (parsed) [<2.13]: %s (%s) [%r]" % (ansible_version, ver, (ver < cutoff))
+        display.vvv(info)
+        if ver < cutoff:
+            # HACK begin dirty, dirty hack
+            # we need to override the built-in Ansible.Basic module util
+            # to one that will work on non-Windows platforms.
+            # But, we don't have access to the code that processes those in anything pluggable.
+            # So instead, we're going to replace the bootstrap_wrapper with one that contains a slight modification
+            # that will replace the Ansible.Basic module util contents with the contents of the one in this collection.
+            # This particular way of hacking it will only work because we're relying on the connection being local.
+            # To make this hack work on remote hosts, we'd have to also copy that file's contents or modify the payload
+            # before it made it to the remote host. The reason we can't just embed it in commands as strings is because
+            # it will be too big.
+            local_mu = os.path.join(os.path.dirname(__file__), '..', 'module_utils')
+            ansible_basic_cs = os.path.join(local_mu, '_Ansible.Basic.cs')
+            addtype_ps = os.path.join(local_mu, '_Ansible.ModuleUtils.AddType.psm1')
+            wrapper_hacked = '''
+                &chcp.com 65001 > $null
+                $exec_wrapper_str = $input | Out-String
+                $split_parts = $exec_wrapper_str.Split(@("`0`0`0`0"), 2, [StringSplitOptions]::RemoveEmptyEntries)
+                If (-not $split_parts.Length -eq 2) { throw "invalid payload" }
+                Set-Variable -Name json_raw -Value $split_parts[1]
+                # begin hack
+                ############
+                function Get-EncodedFileContents {
+                    param($Path)
+
+                    $enc = [System.Text.Encoding]::UTF8
+                    $mustring = [System.IO.File]::ReadAllText($Path, $enc)
+                    $mubytes = $enc.GetBytes($mustring)
+                    $mu64 = [Convert]::ToBase64String($mubytes)
+
+                    $mu64
+                }
+
+                $payload_obj = $json_raw | ConvertFrom-Json
+
+                if ($payload_obj.csharp_utils.'Ansible.Basic') {
+                    $local_basic_file = '%s'
+                    $payload_obj.csharp_utils.'Ansible.Basic' = Get-EncodedFileContents($local_basic_file)
+                }
+
+                if ($payload_obj.powershell_modules.'Ansible.ModuleUtils.AddType') {
+                    $local_addtype_file = '%s'
+                    $payload_obj.powershell_modules.'Ansible.ModuleUtils.AddType' = Get-EncodedFileContents($local_addtype_file)
+                }
+
+                $json_raw = $payload_obj | ConvertTo-Json -Depth 99
+                ##########
+                # end hack
+                $exec_wrapper = [ScriptBlock]::Create($split_parts[0])
+                &$exec_wrapper
+            ''' % (ansible_basic_cs, addtype_ps)
+            bootstrap_wrapper = wrapper_hacked
+        # end hack for ansible-core < 2.13
+
         # pipelining bypass
         if cmd == '':
             return self._encode_script(script=bootstrap_wrapper, strict_mode=False, preserve_rc=False)
@@ -237,63 +299,6 @@ class ShellModule(ShellBase):
             if not self._unquote(cmd_parts[0]).lower().endswith('.ps1'):
                 # we're running a module via the bootstrap wrapper
                 cmd_parts[0] = '"%s.ps1"' % self._unquote(cmd_parts[0])
-
-            # TODO: remove when support for ansible-core <2.13 is dropped
-            ver = version.parse(ansible_version)
-            cutoff = version.parse('2.13')
-            if ver < cutoff:
-                # HACK begin dirty, dirty hack
-                # we need to override the built-in Ansible.Basic module util
-                # to one that will work on non-Windows platforms.
-                # But, we don't have access to the code that processes those in anything pluggable.
-                # So instead, we're going to replace the bootstrap_wrapper with one that contains a slight modification
-                # that will replace the Ansible.Basic module util contents with the contents of the one in this collection.
-                # This particular way of hacking it will only work because we're relying on the connection being local.
-                # To make this hack work on remote hosts, we'd have to also copy that file's contents or modify the payload
-                # before it made it to the remote host. The reason we can't just embed it in commands as strings is because
-                # it will be too big.
-                local_mu = os.path.join(os.path.dirname(__file__), '..', 'module_utils')
-                ansible_basic_cs = os.path.join(local_mu, '_Ansible.Basic.cs')
-                addtype_ps = os.path.join(local_mu, '_Ansible.ModuleUtils.AddType.psm1')
-                wrapper_hacked = '''
-                    &chcp.com 65001 > $null
-                    $exec_wrapper_str = $input | Out-String
-                    $split_parts = $exec_wrapper_str.Split(@("`0`0`0`0"), 2, [StringSplitOptions]::RemoveEmptyEntries)
-                    If (-not $split_parts.Length -eq 2) { throw "invalid payload" }
-                    Set-Variable -Name json_raw -Value $split_parts[1]
-                    # begin hack
-                    ############
-                    function Get-EncodedFileContents {
-                        param($Path)
-
-                        $enc = [System.Text.Encoding]::UTF8
-                        $mustring = [System.IO.File]::ReadAllText($Path, $enc)
-                        $mubytes = $enc.GetBytes($mustring)
-                        $mu64 = [Convert]::ToBase64String($mubytes)
-
-                        $mu64
-                    }
-
-                    $payload_obj = $json_raw | ConvertFrom-Json
-
-                    if ($payload_obj.csharp_utils.'Ansible.Basic') {
-                        $local_basic_file = '%s'
-                        $payload_obj.csharp_utils.'Ansible.Basic' = Get-EncodedFileContents($local_basic_file)
-                    }
-
-                    if ($payload_obj.powershell_modules.'Ansible.ModuleUtils.AddType') {
-                        $local_addtype_file = '%s'
-                        $payload_obj.powershell_modules.'Ansible.ModuleUtils.AddType' = Get-EncodedFileContents($local_addtype_file)
-                    }
-
-                    $json_raw = $payload_obj | ConvertTo-Json -Depth 99
-                    ##########
-                    # end hack
-                    $exec_wrapper = [ScriptBlock]::Create($split_parts[0])
-                    &$exec_wrapper
-                ''' % (ansible_basic_cs, addtype_ps)
-                bootstrap_wrapper = wrapper_hacked
-            # end hack for ansible-core < 2.13
 
             wrapper_cmd = "cat " + cmd_parts[0] + " | " + self._encode_script(script=bootstrap_wrapper, strict_mode=False, preserve_rc=False)
             return wrapper_cmd
