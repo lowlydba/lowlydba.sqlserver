@@ -7,6 +7,7 @@
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
 #Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.112" }
+Import-Module -Name dbatools -MinimumVersion "1.1.112"
 
 $ErrorActionPreference = "Stop"
 
