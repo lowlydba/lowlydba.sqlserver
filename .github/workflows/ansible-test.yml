@@ -156,7 +156,9 @@ jobs:
 
       # Run the integration tests
       - name: Run integration test
-        run: ansible-test integration -v --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker --docker-network="${{ job.services.sqlserver.network }}" --coverage
+        env:
+          TEST_CONTAINER: ${{ matrix.ansible == 'devel' && 'quay.io/ansible/default-test-container:7.4.0' || 'default' }}
+        run: ansible-test integration -v --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker ${TEST_CONTAINER} --docker-network="${{ job.services.sqlserver.network }}" --coverage
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       # ansible-test support producing code coverage date
