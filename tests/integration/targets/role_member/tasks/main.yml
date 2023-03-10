@@ -63,6 +63,9 @@
     - assert:
         that:
           - result is changed
+          - result.data.SqlInstance != None
+          - result.data.Database == "{{ database }}"
+          - result.data.UserName == "{{ username }}"
 
     - name: Add roles for the user in checkmode
       lowlydba.sqlserver.role_member:
