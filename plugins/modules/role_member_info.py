@@ -46,7 +46,6 @@ EXAMPLES = r'''
     database: InternProject1
     role: db_datareader, db_datawriter
 
-
 - name: Return all roles for user 'TheIntern' on the 'InternProject1' DB
   lowlydba.sqlserver.role_member_info:
     sql_instance: sql-01.myco.io
