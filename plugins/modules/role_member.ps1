@@ -43,13 +43,6 @@ $existingRoles = @()
 foreach ($roleObject in $existingRoleObjects) {
     $existingRoles += $roleObject.role
 }
-# Always return a list of existing roles if any exist
-if ($null -ne $existingRoleObjects) {
-    $module.Result.existingRoles = $existingRoles
-}
-else {
-    $module.Result.noRoles = "'$username' doesn't have any existing roles assigned on '$database'"
-}
 
 if ($state -eq "absent") {
     # loop through all roles to remove and see if any are assigned to the user
