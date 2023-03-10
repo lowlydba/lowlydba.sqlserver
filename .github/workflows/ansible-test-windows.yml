@@ -22,7 +22,7 @@ on:
   # Run CI once per day (at 06:00 UTC)
   # This ensures that even if there haven't been commits that we are still testing against latest version of ansible-test for each ansible-base version
   schedule:
-    - cron: "0 6 * * *"
+    - cron: "0 8 * * *"
 
 # Cancel existing runs on new commits to a branch
 concurrency:
@@ -49,7 +49,6 @@ jobs:
         os:
           - windows-2022
         ansible:
-          - stable-2.11
           - stable-2.12
           - stable-2.13
           - stable-2.14
@@ -114,12 +113,12 @@ jobs:
         run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
 
       - name: Install and cache PowerShell modules
-        uses: potatoqualitee/psmodulecache@v5.1
+        uses: potatoqualitee/psmodulecache@v5.2
         with:
           modules-to-cache: dbatools
           shell: powershell
 
-      - uses: Vampire/setup-wsl@v1.3.4
+      - uses: Vampire/setup-wsl@v2.0.1
         with:
           distribution: Debian
           additional-packages: |
@@ -160,10 +159,15 @@ jobs:
           python3 -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
 
       - name: Install collection dependencies
+        id: collection-dependency
+        run: ansible-galaxy collection install ansible.windows -p "${{ env.GHWS }}"
+        continue-on-error: true
+
+      - name: Retry install collection dependencies
+        if: steps.collection-dependency.outcome == 'failure'
         run: ansible-galaxy collection install ansible.windows -p "${{ env.GHWS }}"
 
       - name: Set integration test options
-        shell: bash
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration
         run: |
           cp integration_config.sample.yml integration_config.yml

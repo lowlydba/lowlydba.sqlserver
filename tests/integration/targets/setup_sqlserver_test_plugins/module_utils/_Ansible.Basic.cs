@@ -16,6 +16,10 @@ using Newtonsoft.Json;
 using System.Web.Script.Serialization;
 #endif
 
+// Newtonsoft.Json may reference a different System.Runtime version (6.x) than loaded by PowerShell 7.3 (7.x).
+// Ignore CS1701 so the code can be compiled when warnings are reported as errors.
+//NoWarn -Name CS1701 -CLR Core
+
 // System.Diagnostics.EventLog.dll reference different versioned dlls that are
 // loaded in PSCore, ignore CS1702 so the code will ignore this warning
 //NoWarn -Name CS1702 -CLR Core
@@ -128,6 +132,7 @@ namespace Ansible.Basic
             {
                 if (tmpdir == null)
                 {
+#if WINDOWS
                     SecurityIdentifier user = WindowsIdentity.GetCurrent().User;
                     DirectorySecurity dirSecurity = new DirectorySecurity();
                     dirSecurity.SetOwner(user);
@@ -183,6 +188,9 @@ namespace Ansible.Basic
 
                     if (!KeepRemoteFiles)
                         cleanupFiles.Add(tmpdir);
+#else
+                    throw new NotImplementedException("Tmpdir is only supported on Windows");
+#endif
                 }
                 return tmpdir;
             }
@@ -336,13 +344,10 @@ namespace Ansible.Basic
 
         public void LogEvent(string message, EventLogEntryType logEntryType = EventLogEntryType.Information, bool sanitise = true)
         {
-            // non-Windows hack; event log is not supported, not implementing a x-plat compat logger at this time
-            // original content left as comment, because it may make it easier to update this
-            return;
-            /*
             if (NoLog)
                 return;
 
+#if WINDOWS
             string logSource = "Ansible";
             bool logSourceExists = false;
             try
@@ -382,7 +387,10 @@ namespace Ansible.Basic
                     warnings.Add(String.Format("Unknown error when creating event log entry: {0}", e.Message));
                 }
             }
-            */
+#else
+            // Windows Event Log is only available on Windows
+            return;
+#endif
         }
 
         public void Warn(string message)

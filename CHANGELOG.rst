@@ -5,6 +5,24 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v1.3.1
+======
+
+Release Summary
+---------------
+
+Small bugfixes and documentation enhancements.
+
+Minor Changes
+-------------
+
+- Update login module documentation to indicate result will always be changed when a password is supplied. (https://github.com/lowlydba/lowlydba.sqlserver/pull/167)
+
+Bugfixes
+--------
+
+- Fixes to incorrect variable reference in Login module (https://github.com/lowlydba/lowlydba.sqlserver/pull/161)
+
 v1.3.0
 ======
 

@@ -52,12 +52,11 @@ jobs:
         ansible:
           # It's important that Sanity is tested against all stable-X.Y branches
           # Testing against `devel` may fail as new tests are added.
-          - stable-2.11
           - stable-2.12
           - stable-2.13
           - stable-2.14
           - devel
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       # ansible-test requires the collection to be in a directory in the form
       # .../ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/
@@ -105,7 +104,7 @@ jobs:
   # https://github.com/ansible-collections/community.zabbix/tree/master/.github/workflows
 
   integration:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     name: I (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
     services:
       sqlserver:
@@ -119,7 +118,6 @@ jobs:
       fail-fast: false
       matrix:
         ansible:
-          - stable-2.11
           - stable-2.12
           - stable-2.13
           - stable-2.14
@@ -158,7 +156,9 @@ jobs:
 
       # Run the integration tests
       - name: Run integration test
-        run: ansible-test integration -v --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker --docker-network="${{ job.services.sqlserver.network }}" --coverage
+        env:
+          TEST_CONTAINER: ${{ matrix.ansible == 'devel' && 'quay.io/ansible/default-test-container:7.4.0' || 'default' }}
+        run: ansible-test integration -v --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker ${TEST_CONTAINER} --docker-network="${{ job.services.sqlserver.network }}" --coverage
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       # ansible-test support producing code coverage date
