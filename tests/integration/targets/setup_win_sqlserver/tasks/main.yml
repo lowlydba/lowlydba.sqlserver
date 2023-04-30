@@ -2,7 +2,6 @@
 - name: Install Powershell modules
   ansible.windows.win_shell: |
     {{ item }}
-  #no_log: "{{ ansible_verbosity | int < 3 }}"
   loop:
     - "{{ dbatools_install_cmd }}"
     - "{{ dbops_install_cmd }}"
