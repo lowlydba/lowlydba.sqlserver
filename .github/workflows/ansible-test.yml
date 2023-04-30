@@ -141,23 +141,41 @@ jobs:
       - name: Install ansible-base (${{ matrix.ansible }})
         run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
 
-      - name: Install collection dependencies
-        id: collection-dependency
-        run: ansible-galaxy collection install community.general -p .
-        continue-on-error: true
+      # - name: Install collection dependencies
+      #   id: collection-dependency
+      #   run: ansible-galaxy collection install community.general -p .
+      #   continue-on-error: true
 
-      - name: Retry install collection dependencies
-        if: steps.collection-dependency.outcome == 'failure'
-        run: ansible-galaxy collection install community.general -p .
+      # - name: Retry install collection dependencies
+      #   if: steps.collection-dependency.outcome == 'failure'
+      #   run: ansible-galaxy collection install community.general -p .
 
       - name: Set integration test options
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration
         run: cp integration_config.sample.yml integration_config.yml
 
       # Run the integration tests
-      - name: Run integration test
-        run: ansible-test integration -v --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker-network="${{ job.services.sqlserver.network }}" --coverage
-        working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
+      # - name: Run integration test
+      #   run: ansible-test integration -v --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker-network="${{ job.services.sqlserver.network }}" --coverage
+      #   working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
+
+      - name: Run integration tests
+        # See the documentation for the following GitHub action on
+        # https://github.com/ansible-community/ansible-test-gh-action/blob/main/README.md
+        uses: ansible-community/ansible-test-gh-action@release/v1
+        with:
+          ansible-core-version: ${{ matrix.ansible }}
+          # OPTIONAL command to run before invoking `ansible-test integration`
+          # pre-test-cmd:
+          target-python-version: ${{ matrix.python }}
+          testing-type: integration
+          # OPTIONAL If your integration tests require code
+          # from other collections, install them like this
+          test-deps: community.general
+          # OPTIONAL If set to true, will test only against changed files,
+          # which should improve CI performance. See limitations on
+          # https://github.com/ansible-community/ansible-test-gh-action#pull-request-change-detection
+          pull-request-change-detection: false
 
       # ansible-test support producing code coverage date
       - name: Generate coverage report
