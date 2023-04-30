@@ -1,8 +1,6 @@
 name: CI (Windows)
 on:
-  # Manual triggers
   workflow_dispatch:
-  # Run CI against all pushes (direct commits, also merged PRs), Pull Requests
   push:
     branches:
       - main
@@ -32,7 +30,7 @@ concurrency:
 env:
   NAMESPACE: lowlydba
   COLLECTION_NAME: sqlserver
-  DBATOOLS_VERSION: "1.1.112"
+  DBATOOLS_VERSION: "2.0.0"
 
 jobs:
   ###
@@ -49,9 +47,9 @@ jobs:
         os:
           - windows-2022
         ansible:
-          - stable-2.12
           - stable-2.13
           - stable-2.14
+          - stable-2.15
           - devel
         group: # windows/group/#/
           - "1"

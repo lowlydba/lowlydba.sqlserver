@@ -6,7 +6,7 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
-#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.112" }
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="2.0.0" }
 
 $ErrorActionPreference = "Stop"
 
@@ -110,6 +110,7 @@ elseif ($state -eq "present") {
                 Login = $login
                 Database = $database
                 DefaultSchema = $defaultSchema
+                IncludeSystem = $true
                 EnableException = $true
                 WhatIf = $checkMode
                 Force = $true

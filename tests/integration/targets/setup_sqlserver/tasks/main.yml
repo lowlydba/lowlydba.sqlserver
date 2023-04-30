@@ -3,7 +3,6 @@
   when: not sqlserver_windows
   ansible.builtin.command: >
     pwsh -Command "{{ item }}"
-  no_log: "{{ ansible_verbosity | int < 3 }}"
   loop:
     - "{{ dbatools_install_cmd }}"
     - "{{ dbops_install_cmd }}"
