@@ -130,7 +130,7 @@ jobs:
         with:
           docker-image: 'quay.io/ansible/default-test-container:6.13.0'
           ansible-core-version: ${{ matrix.ansible }}
-          #target-python-version: ${{ matrix.python }}
+          target-python-version: 3.9
           testing-type: integration
           test-deps: community.general
           pull-request-change-detection: false
