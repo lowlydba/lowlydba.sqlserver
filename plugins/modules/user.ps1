@@ -110,6 +110,7 @@ elseif ($state -eq "present") {
                 Login = $login
                 Database = $database
                 DefaultSchema = $defaultSchema
+                IncludeSystem = $true
                 EnableException = $true
                 WhatIf = $checkMode
                 Force = $true
