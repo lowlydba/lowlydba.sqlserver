@@ -66,23 +66,12 @@ jobs:
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Run unit tests
+        uses: ansible-community/ansible-test-gh-action@release/v1.13.0
         with:
-          # it is just required to run that once as "ansible-test sanity" in the docker image
-          # will run on all python versions it supports.
-          python-version: 3.9
-
-      # Install the head of the given branch (devel, stable-2.10)
-      - name: Install ansible-base (${{ matrix.ansible }})
-        run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
-
-      # run ansible-test sanity inside of Docker.
-      # The docker container has all the pinned dependencies that are required
-      # and all python versions ansible supports.
-      - name: Run sanity tests
-        run: ansible-test sanity --docker -v --color --coverage
-        working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
+          ansible-core-version: ${{ matrix.ansible }}
+          testing-type: units
+          pull-request-change-detection: false
 
       # ansible-test support producing code coverage date
       - name: Generate coverage report
@@ -127,54 +116,33 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.5.2
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          # it is just required to run that once as "ansible-test integration" in the docker image
-          # will run on all python versions it supports.
-          python-version: 3.9
-
-      - name: Install ansible-base (${{ matrix.ansible }})
-        run: pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
-
-      # - name: Install collection dependencies
-      #   id: collection-dependency
-      #   run: ansible-galaxy collection install community.general -p .
-      #   continue-on-error: true
-
-      # - name: Retry install collection dependencies
-      #   if: steps.collection-dependency.outcome == 'failure'
-      #   run: ansible-galaxy collection install community.general -p .
 
       - name: Set integration test options
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration
         run: cp integration_config.sample.yml integration_config.yml
 
-      # Run the integration tests
-      # - name: Run integration test
-      #   run: ansible-test integration -v --color --retry-on-error --continue-on-error --diff --python ${{ matrix.python }} --docker-network="${{ job.services.sqlserver.network }}" --coverage
-      #   working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
-
       - name: Run integration tests
-        # See the documentation for the following GitHub action on
-        # https://github.com/ansible-community/ansible-test-gh-action/blob/main/README.md
-        uses: ansible-community/ansible-test-gh-action@release/v1
+        if: ${{ matrix.ansible == '2.13' }}
+        uses: ansible-community/ansible-test-gh-action@release/v1.13.0
         with:
+          docker-image: 'quay.io/ansible/default-test-container:6.13.0'
           ansible-core-version: ${{ matrix.ansible }}
-          # OPTIONAL command to run before invoking `ansible-test integration`
-          # pre-test-cmd:
           target-python-version: ${{ matrix.python }}
           testing-type: integration
-          # OPTIONAL If your integration tests require code
-          # from other collections, install them like this
           test-deps: community.general
-          # OPTIONAL If set to true, will test only against changed files,
-          # which should improve CI performance. See limitations on
-          # https://github.com/ansible-community/ansible-test-gh-action#pull-request-change-detection
+          pull-request-change-detection: false
+
+      - name: Run integration tests
+        if: ${{ matrix.ansible != '2.13'}}
+        uses: ansible-community/ansible-test-gh-action@release/v1.13.0
+        with:
+          ansible-core-version: ${{ matrix.ansible }}
+          target-python-version: ${{ matrix.python }}
+          testing-type: integration
+          test-deps: community.general
           pull-request-change-detection: false
 
       # ansible-test support producing code coverage date
