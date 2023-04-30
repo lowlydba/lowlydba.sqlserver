@@ -124,8 +124,8 @@ jobs:
         run: cp integration_config.sample.yml integration_config.yml
 
       # Prevent dbatools v2+ issues with newer docker image for 2.13
-      - name: Run integration tests
-        if: ${{ matrix.ansible == '2.13' }}
+      - name: Run integration tests - v2.13 workaround
+        if: ${{ matrix.ansible == 'stable-2.13' }}
         uses: ansible-community/ansible-test-gh-action@v1.13.0
         with:
           docker-image: 'default-test-container:6.13.0'
