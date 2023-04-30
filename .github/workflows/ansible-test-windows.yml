@@ -1,8 +1,6 @@
 name: CI (Windows)
 on:
-  # Manual triggers
   workflow_dispatch:
-  # Run CI against all pushes (direct commits, also merged PRs), Pull Requests
   push:
     branches:
       - main

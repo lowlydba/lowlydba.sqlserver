@@ -1,0 +1,3 @@
+release_summary: A major version bump of DBATools to version 2+. This will guarantee compatibility with PowerShell Core versions
+7.3+ and future SQL Server versions. For more information on that release, see https://blog.netnerds.net/2023/03/whats-new-dbatools-2.0/.
+Outside of major problems, new changes to this collection will not be backported to v1.

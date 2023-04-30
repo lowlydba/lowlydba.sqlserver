@@ -59,9 +59,9 @@ To learn how to maintain / become a maintainer of this collection, refer to the 
 
 ### Ansible
 
-- 2.12
 - 2.13
 - 2.14
+- 2.15
 - dlevel
 
 ### SQL Server

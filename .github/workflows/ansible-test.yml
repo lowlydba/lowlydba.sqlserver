@@ -130,17 +130,17 @@ jobs:
         with:
           docker-image: 'quay.io/ansible/default-test-container:6.13.0'
           ansible-core-version: ${{ matrix.ansible }}
-          target-python-version: ${{ matrix.python }}
+          #target-python-version: ${{ matrix.python }}
           testing-type: integration
           test-deps: community.general
           pull-request-change-detection: false
 
       - name: Run integration tests
-        if: ${{ matrix.ansible != '2.13'}}
+        if: ${{ matrix.ansible != 'stable-2.13'}}
         uses: ansible-community/ansible-test-gh-action@v1.13.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
-          target-python-version: ${{ matrix.python }}
+          #target-python-version: ${{ matrix.python }}
           testing-type: integration
           test-deps: community.general
           pull-request-change-detection: false
