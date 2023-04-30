@@ -5,6 +5,20 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v2.0.0
+======
+
+Release Summary
+---------------
+
+A major version bump of DBATools to version 2+. This will guarantee compatibility with PowerShell Core versions 7.3+ and future SQL Server versions. For more information on that release, see https://blog.netnerds.net/2023/03/whats-new-dbatools-2.0/. Outside of major problems, new changes to this collection will not be backported to v1.
+
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- Updating minimum DBATools version to v2.0.0 to allow for pwsh 7.3+ compatibility. There may also be breaking change behavior in DBATools, see https://blog.netnerds.net/2023/03/whats-new-dbatools-2.0/. (https://github.com/lowlydba/lowlydba.sqlserver/pull/181)
+
 v1.3.1
 ======
 
