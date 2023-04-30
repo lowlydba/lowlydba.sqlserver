@@ -66,14 +66,13 @@ jobs:
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
-      - name: Run unit tests
+      - name: Run confidence tests
         uses: ansible-community/ansible-test-gh-action@v1.13.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
-          testing-type: units
+          testing-type: sanity
           pull-request-change-detection: false
 
-      # ansible-test support producing code coverage date
       - name: Generate coverage report
         run: ansible-test coverage xml -v --requirements --group-by command --group-by version
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
@@ -124,11 +123,12 @@ jobs:
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration
         run: cp integration_config.sample.yml integration_config.yml
 
+      # Prevent dbatools v2+ issues with newer docker image for 2.13
       - name: Run integration tests
         if: ${{ matrix.ansible == '2.13' }}
         uses: ansible-community/ansible-test-gh-action@v1.13.0
         with:
-          docker-image: 'quay.io/ansible/default-test-container:6.13.0'
+          docker-image: 'default-test-container:6.13.0'
           ansible-core-version: ${{ matrix.ansible }}
           target-python-version: ${{ matrix.python }}
           testing-type: integration
