@@ -138,6 +138,10 @@ try {
         # Create schedule
         else {
             $output = New-DbaAgentSchedule @scheduleParams
+            if ($null -ne $job) {
+                # https://github.com/dataplat/dbatools/issues/8933
+                $output.Refresh()
+            }
             $module.Result.changed = $true
         }
     }
