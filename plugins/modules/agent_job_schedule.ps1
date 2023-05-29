@@ -140,7 +140,9 @@ try {
             $output = New-DbaAgentSchedule @scheduleParams
             if ($null -ne $job) {
                 # https://github.com/dataplat/dbatools/issues/8933
-                $output.Refresh()
+                if ($output | Get-Member -Name 'Refresh') {
+                    $output.Refresh()
+                }
             }
             $module.Result.changed = $true
         }
