@@ -1,0 +1,2 @@
+minor_changes:
+  - Add refresh workaround for agent schedule bug where properties returned are stale. (https://github.com/lowlydba/lowlydba.sqlserver/pull/185)
