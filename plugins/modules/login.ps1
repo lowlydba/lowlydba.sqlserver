@@ -22,7 +22,6 @@ $spec = @{
         password_policy_enforced = @{type = 'bool'; required = $false }
         password_expiration_enabled = @{type = 'bool'; required = $false }
         sid = @{type = 'str'; required = $false }
-        skip_password_reset = @{type = 'bool'; required = $false }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
 }
@@ -39,7 +38,6 @@ $language = $module.Params.language
 [nullable[bool]]$passwordMustChange = $module.Params.password_must_change
 [nullable[bool]]$passwordExpirationEnabled = $module.Params.password_expiration_enabled
 [nullable[bool]]$passwordPolicyEnforced = $module.Params.password_policy_enforced
-[nullable[bool]]$skip_password_reset = $module.Params.skip_password_reset
 $sid = $module.Params.sid
 $state = $module.Params.state
 $checkMode = $module.CheckMode
