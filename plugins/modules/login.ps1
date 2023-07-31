@@ -21,6 +21,7 @@ $spec = @{
         password_must_change = @{type = 'bool'; required = $false }
         password_policy_enforced = @{type = 'bool'; required = $false }
         password_expiration_enabled = @{type = 'bool'; required = $false }
+        sid = @{type = 'str'; required = $false }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
 }
@@ -37,6 +38,7 @@ $language = $module.Params.language
 [nullable[bool]]$passwordMustChange = $module.Params.password_must_change
 [nullable[bool]]$passwordExpirationEnabled = $module.Params.password_expiration_enabled
 [nullable[bool]]$passwordPolicyEnforced = $module.Params.password_policy_enforced
+$sid = $module.Params.sid
 $state = $module.Params.state
 $checkMode = $module.CheckMode
 
@@ -121,6 +123,9 @@ try {
             }
             if ($enabled -eq $false) {
                 $setLoginSplat.add("Disabled", $true)
+            }
+            if ($null -ne $sid) {
+                $setLoginSplat.add("Sid", $sid)
             }
             $output = New-DbaLogin @setLoginSplat
             $module.result.changed = $true

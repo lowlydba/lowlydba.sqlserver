@@ -6,6 +6,7 @@
     password_expiration_enabled: false
     password_policy_enforced: false
     password_must_change: false
+    sid: "0x918315B409D64E4BABB31DF2D9FEA879"
     enabled: false
     default_database: "master"
     language: "us_english"
@@ -19,6 +20,7 @@
       password: "{{ plain_password }}"
       password_expiration_enabled: "{{ password_expiration_enabled }}"
       password_must_change: "{{ password_must_change }}"
+      sid: "{{ sid }}"
       enabled: "{{ enabled }}"
       language: "{{ language }}"
       state: present
