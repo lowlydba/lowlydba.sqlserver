@@ -22,6 +22,7 @@ $spec = @{
         password_policy_enforced = @{type = 'bool'; required = $false }
         password_expiration_enabled = @{type = 'bool'; required = $false }
         sid = @{type = 'str'; required = $false }
+        skip_password_reset = @{type = 'bool'; required = $false }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
 }
@@ -38,6 +39,7 @@ $language = $module.Params.language
 [nullable[bool]]$passwordMustChange = $module.Params.password_must_change
 [nullable[bool]]$passwordExpirationEnabled = $module.Params.password_expiration_enabled
 [nullable[bool]]$passwordPolicyEnforced = $module.Params.password_policy_enforced
+[nullable[bool]]$skip_password_reset = $module.Params.skip_password_reset
 $sid = $module.Params.sid
 $state = $module.Params.state
 $checkMode = $module.CheckMode
@@ -97,6 +99,7 @@ try {
             }
         }
         if ($null -ne $secPassword) {
+            $changed = $true
             $setLoginSplat.add("SecurePassword", $secPassword)
         }
 
@@ -110,8 +113,11 @@ try {
                 $disabled = $false
                 $setLoginSplat.add("Enable", $true)
             }
+            if ( ($true -eq $skip_password_reset) -and ($setLoginSplat.ContainsKey("SecurePassword")) ) {
+                $setLoginSplat.Remove("SecurePassword")
+            }
             # Login needs to be modified
-            if (($changed -eq $true) -or ($disabled -ne $existingLogin.IsDisabled) -or ($secPassword)) {
+            if (($changed -eq $true) -or ($disabled -ne $existingLogin.IsDisabled) -or ($setLoginSplat.ContainsKey("SecurePassword"))) {
                 $output = Set-DbaLogin @setLoginSplat
                 $module.result.changed = $true
             }
