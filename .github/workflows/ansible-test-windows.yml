@@ -75,7 +75,7 @@ jobs:
       - name: Set up the runner for PowerShell remoting
         shell: powershell
         run: |
-          $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://github.com/ansible/ansible-documentation/blob/devel/examples/scripts/ConfigureRemotingForAnsible.ps1'))
+          $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/38e50c9f819a045ea4d40068f83e78adbfaf2e68/examples/scripts/ConfigureRemotingForAnsible.ps1'))
           & $sb -Verbose -ForceNewSSLCert 4>&1
 
       - name: Enable winrm
