@@ -58,7 +58,7 @@ EXAMPLES = r'''
 - name: Disable sa login
   lowlydba.sqlserver.sa:
     sql_instance: sql-01.myco.io
-    disable: true
+    enabled: false
 
 - name: Rename sa login
   lowlydba.sqlserver.sa:
