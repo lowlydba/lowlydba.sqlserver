@@ -51,11 +51,22 @@ jobs:
           - stable-2.14
           - stable-2.15
           - devel
+        python:
+          - python3
+          - python3.10
         group: # windows/group/#/
           - "1"
           - "2"
           #- '3'
-
+      exclude:
+        - ansible: stable-2.13
+          python: python3.10
+        - ansible: stable-2.14
+          python: python3.10
+        - ansible: stable-2.15
+          python: python3.10
+        - ansible: devel
+          python: python3
     defaults:
       run:
         shell: wsl-bash {0}
@@ -119,9 +130,10 @@ jobs:
       - uses: Vampire/setup-wsl@v2.0.1
         with:
           distribution: Debian
+          update: 'true'
           additional-packages: |
             git
-            python3
+            ${{ matrix.python }}
             python3-pip
             openssh-client
 
