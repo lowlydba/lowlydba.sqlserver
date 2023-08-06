@@ -129,7 +129,7 @@ jobs:
 
       - uses: Vampire/setup-wsl@v2.0.1
         with:
-          distribution: Debian
+          distribution: Ubuntu-22.04
           update: 'true'
           additional-packages: |
             git
