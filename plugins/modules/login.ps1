@@ -111,11 +111,8 @@ try {
                 $disabled = $false
                 $setLoginSplat.add("Enable", $true)
             }
-            if ( ($true -eq $skip_password_reset) -and ($setLoginSplat.ContainsKey("SecurePassword")) ) {
-                $setLoginSplat.Remove("SecurePassword")
-            }
             # Login needs to be modified
-            if (($changed -eq $true) -or ($disabled -ne $existingLogin.IsDisabled) -or ($setLoginSplat.ContainsKey("SecurePassword"))) {
+            if (($changed -eq $true) -or ($disabled -ne $existingLogin.IsDisabled) -or ($secPassword)) {
                 $output = Set-DbaLogin @setLoginSplat
                 $module.result.changed = $true
             }
