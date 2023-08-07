@@ -97,7 +97,6 @@ try {
             }
         }
         if ($null -ne $secPassword) {
-            $changed = $true
             $setLoginSplat.add("SecurePassword", $secPassword)
         }
 
