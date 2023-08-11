@@ -4,5 +4,5 @@
   ansible.builtin.command: >
     pwsh -Command "{{ item }}"
   loop:
-    - "{{ dbatools_install_cmd }}"
     - "{{ dbops_install_cmd }}"
+    - "{{ dbatools_install_cmd }}"

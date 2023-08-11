@@ -51,11 +51,22 @@ jobs:
           - stable-2.14
           - stable-2.15
           - devel
+        python:
+          - python3
+          - python3.10
         group: # windows/group/#/
           - "1"
           - "2"
           #- '3'
-
+        exclude:
+          - ansible: stable-2.13
+            python: python3.10
+          - ansible: stable-2.14
+            python: python3.10
+          - ansible: stable-2.15
+            python: python3.10
+          - ansible: devel
+            python: python3
     defaults:
       run:
         shell: wsl-bash {0}
@@ -75,7 +86,7 @@ jobs:
       - name: Set up the runner for PowerShell remoting
         shell: powershell
         run: |
-          $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1'))
+          $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/38e50c9f819a045ea4d40068f83e78adbfaf2e68/examples/scripts/ConfigureRemotingForAnsible.ps1'))
           & $sb -Verbose -ForceNewSSLCert 4>&1
 
       - name: Enable winrm
@@ -88,40 +99,18 @@ jobs:
         run: |
           Get-Service -Name MongoDB | Where-Object Status -eq 'Running' | Stop-Service -Force
 
-      - name: Install a SQL Server
-        continue-on-error: true
-        id: mssqlsuite
-        uses: potatoqualitee/mssqlsuite@v1.7
-        with:
-          install: sqlengine
-          sa-password: L0wlydb4
-          version: 2022
-
-      - name: Retry SQL Server install
-        id: retry1
-        if: steps.mssqlsuite.outcome == 'failure'
-        uses: potatoqualitee/mssqlsuite@v1.7
-        with:
-          install: sqlengine
-          sa-password: L0wlydb4
-          version: 2022
-
       - name: Add a hosts entry
         shell: cmd
         run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
 
-      - name: Install and cache PowerShell modules
-        uses: potatoqualitee/psmodulecache@v5.2
-        with:
-          modules-to-cache: dbatools
-          shell: powershell
-
       - uses: Vampire/setup-wsl@v2.0.1
         with:
-          distribution: Debian
+          distribution: Ubuntu-22.04
+          update: "true"
+          use-cache: "true"
           additional-packages: |
             git
-            python3
+            ${{ matrix.python }}
             python3-pip
             openssh-client
 
@@ -153,8 +142,8 @@ jobs:
 
       - name: Install ansible-base (${{ matrix.ansible }})
         run: |
-          python3 -m pip install --upgrade pip setuptools pypsrp --disable-pip-version-check --retries 10
-          python3 -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
+          ${{ matrix.python }} -m pip install --upgrade pip setuptools pypsrp --disable-pip-version-check --retries 10
+          ${{ matrix.python }} -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
 
       - name: Install collection dependencies
         id: collection-dependency
@@ -171,13 +160,29 @@ jobs:
           cp integration_config.sample.yml integration_config.yml
           cp inventory.winrm.ci inventory.winrm
 
-      # Run the integration tests
+      - name: Install SQL Server
+        continue-on-error: true
+        id: mssqlsuite
+        uses: potatoqualitee/mssqlsuite@v1.7
+        with:
+          install: sqlengine
+          sa-password: L0wlydb4
+          version: 2022
+
+      - name: Retry SQL Server install
+        id: retry1
+        if: steps.mssqlsuite.outcome == 'failure'
+        uses: potatoqualitee/mssqlsuite@v1.7
+        with:
+          install: sqlengine
+          sa-password: L0wlydb4
+          version: 2022
+
       - name: Run integration test
         run: |
           pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
           ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements windows/group/${{ matrix.group }}/
 
-      # ansible-test support producing code coverage data
       - name: Generate coverage report
         run: |
           pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
