@@ -38,7 +38,8 @@ function Get-SqlCredential {
     param (
         [Parameter(Mandatory = $true)]
         [ValidateScript({ $_.GetType().FullName -eq 'Ansible.Basic.AnsibleModule' })]
-        $Module
+        $Module,
+        [bool]$Encrypt = $false
     )
     try {
         $sqlInstance = $module.Params.sql_instance
@@ -48,6 +49,10 @@ function Get-SqlCredential {
         }
         else {
             $sqlCredential = $null
+        }
+
+        if ($Encrypt = $false) {
+            $null = Set-DbatoolsInsecureConnection
         }
         return $sqlInstance, $sqlCredential
     }
