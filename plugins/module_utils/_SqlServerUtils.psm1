@@ -52,7 +52,7 @@ function Get-SqlCredential {
         }
 
         # Hamfisted approach to fixing insecure conn defaults that won't stick globally, needed for CI use cases + legacy
-        if ($Encrypt = $false) {
+        if ($Encrypt -eq $false) {
             $null = Set-DbatoolsInsecureConnection
         }
         return $sqlInstance, $sqlCredential
