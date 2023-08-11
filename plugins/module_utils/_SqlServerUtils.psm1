@@ -39,7 +39,7 @@ function Get-SqlCredential {
         [Parameter(Mandatory = $true)]
         [ValidateScript({ $_.GetType().FullName -eq 'Ansible.Basic.AnsibleModule' })]
         $Module,
-        [bool]$Encrypt = $false
+        [bool]$Encrypt = $true
     )
     try {
         $sqlInstance = $module.Params.sql_instance
@@ -51,6 +51,7 @@ function Get-SqlCredential {
             $sqlCredential = $null
         }
 
+        # Hamfisted approach to fixing insecure conn defaults that won't stick globally, needed for CI use cases + legacy
         if ($Encrypt = $false) {
             $null = Set-DbatoolsInsecureConnection
         }
