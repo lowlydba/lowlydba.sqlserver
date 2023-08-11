@@ -1,0 +1,2 @@
+minor_changes:
+  - Added SID as an optional parameter to the login module (https://github.com/lowlydba/lowlydba.sqlserver/pull/189)
