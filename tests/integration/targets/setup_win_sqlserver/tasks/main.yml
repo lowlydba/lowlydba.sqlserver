@@ -3,5 +3,5 @@
   ansible.windows.win_shell: |
     {{ item }}
   loop:
-    - "{{ dbatools_install_cmd }}"
     - "{{ dbops_install_cmd }}"
+    - "{{ dbatools_install_cmd }}"

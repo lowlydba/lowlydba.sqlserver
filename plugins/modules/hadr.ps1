@@ -36,7 +36,6 @@ $checkMode = $module.CheckMode
 $module.Result.changed = $false
 
 try {
-    Set-DbatoolsInsecureConnection -Scope 'SystemMandatory'
     $server = Connect-DbaInstance -SqlInstance $sqlInstance -SqlCredential $sqlCredential
     $existingHadr = $server | Get-DbaAgHadr -EnableException
     $output = $existingHadr

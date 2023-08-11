@@ -117,15 +117,6 @@ jobs:
           sa-password: L0wlydb4
           version: 2022
 
-      - name: Configure SQL Server encryption
-        shell: powershell
-        run: |
-          Install-Module dbatools -Force
-          $ComputerName = $env:computername
-          New-DbaComputerCertificate -ComputerName $ComputerName -Dns "$ComputerName.ad.local", $ComputerName
-          Enable-DbaForceNetworkEncryption -SqlInstance $ComputerName
-          Restart-DbaService -ComputerName $ComputerName -Force
-
       - name: Add a hosts entry
         shell: cmd
         run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
