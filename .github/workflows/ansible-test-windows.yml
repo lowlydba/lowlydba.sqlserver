@@ -99,24 +99,6 @@ jobs:
         run: |
           Get-Service -Name MongoDB | Where-Object Status -eq 'Running' | Stop-Service -Force
 
-      - name: Install SQL Server
-        continue-on-error: true
-        id: mssqlsuite
-        uses: potatoqualitee/mssqlsuite@v1.7
-        with:
-          install: sqlengine
-          sa-password: L0wlydb4
-          version: 2022
-
-      - name: Retry SQL Server install
-        id: retry1
-        if: steps.mssqlsuite.outcome == 'failure'
-        uses: potatoqualitee/mssqlsuite@v1.7
-        with:
-          install: sqlengine
-          sa-password: L0wlydb4
-          version: 2022
-
       - name: Add a hosts entry
         shell: cmd
         run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
@@ -177,13 +159,29 @@ jobs:
           cp integration_config.sample.yml integration_config.yml
           cp inventory.winrm.ci inventory.winrm
 
-      # Run the integration tests
+      - name: Install SQL Server
+        continue-on-error: true
+        id: mssqlsuite
+        uses: potatoqualitee/mssqlsuite@v1.7
+        with:
+          install: sqlengine
+          sa-password: L0wlydb4
+          version: 2022
+
+      - name: Retry SQL Server install
+        id: retry1
+        if: steps.mssqlsuite.outcome == 'failure'
+        uses: potatoqualitee/mssqlsuite@v1.7
+        with:
+          install: sqlengine
+          sa-password: L0wlydb4
+          version: 2022
+
       - name: Run integration test
         run: |
           pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
           ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements windows/group/${{ matrix.group }}/
 
-      # ansible-test support producing code coverage data
       - name: Generate coverage report
         run: |
           pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
