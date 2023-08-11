@@ -44,9 +44,6 @@ $PSDefaultParameterValues = @{
 }
 
 try {
-    # TEST
-    Set-DbatoolsInsecureConnection -Scope 'SystemMandatory'
-    
     $existingListener = Get-DbaAgListener -AvailabilityGroup $agName -Listener $listenerName
     if ($state -eq "present") {
         if ($null -eq $existingListener) {
