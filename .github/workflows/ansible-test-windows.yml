@@ -107,6 +107,7 @@ jobs:
         with:
           distribution: Ubuntu-22.04
           update: "true"
+          use-cache: "true"
           additional-packages: |
             git
             ${{ matrix.python }}

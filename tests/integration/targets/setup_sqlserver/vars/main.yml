@@ -3,9 +3,7 @@ dbatools_min_version: 2.0.0
 dbatools_install_cmd: >
   if (-not(Get-Module -FullyQualifiedName @{ModuleName='dbatools';ModuleVersion='{{ dbatools_min_version }}'} -ListAvailable)) {
       Install-Module dbatools -MinimumVersion {{ dbatools_min_version }} -Force
-      Set-DbatoolsInsecureConnection -Scope UserMandatory
-      Set-DbatoolsInsecureConnection -Scope SystemDefault
-      #Set-DbatoolsInsecureConnection -Scope FileUserLocal
+      Set-DbatoolsInsecureConnection -Scope FileUserLocal
   }
 
 dbops_min_version: 0.8.0
