@@ -120,6 +120,7 @@ jobs:
       - name: Configure SQL Server encryption
         shell: powershell
         run: |
+          Install-Module dbatools -Force
           $ComputerName = $env:computername
           New-DbaComputerCertificate -ComputerName $ComputerName -Dns "$ComputerName.ad.local", $ComputerName
           Enable-DbaForceNetworkEncryption -SqlInstance $ComputerName
