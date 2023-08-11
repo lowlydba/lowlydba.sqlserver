@@ -5,6 +5,20 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v2.1.0
+======
+
+Release Summary
+---------------
+
+Add sid to login, thanks @OsirisDBA!
+
+Minor Changes
+-------------
+
+- Add refresh workaround for agent schedule bug where properties returned are stale. (https://github.com/lowlydba/lowlydba.sqlserver/pull/185)
+- Added SID as an optional parameter to the login module (https://github.com/lowlydba/lowlydba.sqlserver/pull/189)
+
 v2.0.0
 ======
 
@@ -12,7 +26,6 @@ Release Summary
 ---------------
 
 A major version bump of DBATools to version 2+. This will guarantee compatibility with PowerShell Core versions 7.3+ and future SQL Server versions. For more information on that release, see https://blog.netnerds.net/2023/03/whats-new-dbatools-2.0/. Outside of major problems, new changes to this collection will not be backported to v1.
-
 
 Breaking Changes / Porting Guide
 --------------------------------
