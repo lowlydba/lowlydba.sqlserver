@@ -55,6 +55,12 @@ options:
       - Enforces password expiration policy. Requires I(password_policy_enforced=true).
     type: bool
     required: false
+  sid:
+    description:
+      - Provide an explicit Sid that should be used when creating the account.
+    type: str
+    required: false
+    version_added: '2.1.0'
 author: "John McCall (@lowlydba)"
 notes:
   - Module will always return changed if a password is supplied.

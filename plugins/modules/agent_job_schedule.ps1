@@ -6,7 +6,7 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
-#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.112" }
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="2.0.0" }
 
 $ErrorActionPreference = "Stop"
 
@@ -138,6 +138,12 @@ try {
         # Create schedule
         else {
             $output = New-DbaAgentSchedule @scheduleParams
+            if ($null -ne $job) {
+                # https://github.com/dataplat/dbatools/issues/8933
+                if ($null -ne $output -and ($null -ne ($output | Get-Member -Name 'Refresh'))) {
+                    $output.Refresh()
+                }
+            }
             $module.Result.changed = $true
         }
     }
