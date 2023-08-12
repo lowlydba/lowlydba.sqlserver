@@ -6,7 +6,7 @@
 
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
-#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="1.1.112" }
+#Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="2.0.0" }
 
 $ErrorActionPreference = "Stop"
 
@@ -21,6 +21,7 @@ $spec = @{
         password_must_change = @{type = 'bool'; required = $false }
         password_policy_enforced = @{type = 'bool'; required = $false }
         password_expiration_enabled = @{type = 'bool'; required = $false }
+        sid = @{type = 'str'; required = $false }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
 }
@@ -37,6 +38,7 @@ $language = $module.Params.language
 [nullable[bool]]$passwordMustChange = $module.Params.password_must_change
 [nullable[bool]]$passwordExpirationEnabled = $module.Params.password_expiration_enabled
 [nullable[bool]]$passwordPolicyEnforced = $module.Params.password_policy_enforced
+$sid = $module.Params.sid
 $state = $module.Params.state
 $checkMode = $module.CheckMode
 
@@ -71,7 +73,7 @@ try {
             $setLoginSplat.add("DefaultDatabase", $defaultDatabase)
         }
         if ($null -ne $passwordExpirationEnabled) {
-            if ($sa.PasswordExpirationEnabled -ne $passwordExpirationEnabled) {
+            if ($existingLogin.PasswordExpirationEnabled -ne $passwordExpirationEnabled) {
                 $changed = $true
             }
             if ($passwordExpirationEnabled -eq $true) {
@@ -79,7 +81,7 @@ try {
             }
         }
         if ($null -ne $passwordPolicyEnforced) {
-            if ($sa.PasswordPolicyEnforced -ne $passwordPolicyEnforced) {
+            if ($existingLogin.PasswordPolicyEnforced -ne $passwordPolicyEnforced) {
                 $changed = $true
             }
             if ($passwordPolicyEnforced -eq $true) {
@@ -87,7 +89,7 @@ try {
             }
         }
         if ($true -eq $passwordMustChange) {
-            if ($sa.PasswordMustChange -ne $passwordMustChange) {
+            if ($existingLogin.PasswordMustChange -ne $passwordMustChange) {
                 $changed = $true
             }
             if ($passwordMustChange -eq $true) {
@@ -109,7 +111,7 @@ try {
                 $setLoginSplat.add("Enable", $true)
             }
             # Login needs to be modified
-            if (($changed -eq $true) -or ($disabled -ne $sa.IsDisabled) -or ($secPassword)) {
+            if (($changed -eq $true) -or ($disabled -ne $existingLogin.IsDisabled) -or ($secPassword)) {
                 $output = Set-DbaLogin @setLoginSplat
                 $module.result.changed = $true
             }
@@ -121,6 +123,9 @@ try {
             }
             if ($enabled -eq $false) {
                 $setLoginSplat.add("Disabled", $true)
+            }
+            if ($null -ne $sid) {
+                $setLoginSplat.add("Sid", $sid)
             }
             $output = New-DbaLogin @setLoginSplat
             $module.result.changed = $true

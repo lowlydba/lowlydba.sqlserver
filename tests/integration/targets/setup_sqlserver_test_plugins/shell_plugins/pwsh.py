@@ -59,10 +59,15 @@ import re
 import shlex
 import pkgutil
 import xml.etree.ElementTree as ET
-import ntpath
+
+from packaging import version
 
 from ansible.module_utils._text import to_bytes, to_text
 from ansible.plugins.shell import ShellBase
+from ansible.release import __version__ as ansible_version
+from ansible.utils.display import Display
+
+display = Display()
 
 
 _common_args = ['pwsh', '-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Unrestricted']
@@ -223,18 +228,12 @@ class ShellModule(ShellBase):
     def build_module_command(self, env_string, shebang, cmd, arg_path=None):
         bootstrap_wrapper = pkgutil.get_data("ansible.executor.powershell", "bootstrap_wrapper.ps1")
 
-        # pipelining bypass
-        if cmd == '':
-            return self._encode_script(script=bootstrap_wrapper, strict_mode=False, preserve_rc=False)
-
-        # non-pipelining
-
-        cmd_parts = shlex.split(cmd, posix=False)
-        cmd_parts = list(map(to_text, cmd_parts))
-        if shebang and shebang.lower() == '#!powershell':
-            if not self._unquote(cmd_parts[0]).lower().endswith('.ps1'):
-                # we're running a module via the bootstrap wrapper
-                cmd_parts[0] = '"%s.ps1"' % self._unquote(cmd_parts[0])
+        # TODO: remove when support for ansible-core <2.13 is dropped
+        ver = version.parse(ansible_version)
+        cutoff = version.parse('2.13')
+        info = "ansible_version (parsed) [<2.13]: %s (%s) [%r]" % (ansible_version, ver, (ver < cutoff))
+        display.vvv(info)
+        if ver < cutoff:
             # HACK begin dirty, dirty hack
             # we need to override the built-in Ansible.Basic module util
             # to one that will work on non-Windows platforms.
@@ -246,8 +245,8 @@ class ShellModule(ShellBase):
             # before it made it to the remote host. The reason we can't just embed it in commands as strings is because
             # it will be too big.
             local_mu = os.path.join(os.path.dirname(__file__), '..', 'module_utils')
-            ansible_basic_cs = os.path.join(local_mu, 'Ansible.Basic.cs')
-            addtype_ps = os.path.join(local_mu, 'Ansible.ModuleUtils.AddType.psm1')
+            ansible_basic_cs = os.path.join(local_mu, '_Ansible.Basic.cs')
+            addtype_ps = os.path.join(local_mu, '_Ansible.ModuleUtils.AddType.psm1')
             wrapper_hacked = '''
                 &chcp.com 65001 > $null
                 $exec_wrapper_str = $input | Out-String
@@ -286,6 +285,21 @@ class ShellModule(ShellBase):
                 &$exec_wrapper
             ''' % (ansible_basic_cs, addtype_ps)
             bootstrap_wrapper = wrapper_hacked
+        # end hack for ansible-core < 2.13
+
+        # pipelining bypass
+        if cmd == '':
+            return self._encode_script(script=bootstrap_wrapper, strict_mode=False, preserve_rc=False)
+
+        # non-pipelining
+
+        cmd_parts = shlex.split(cmd, posix=False)
+        cmd_parts = list(map(to_text, cmd_parts))
+        if shebang and shebang.lower() == '#!powershell':
+            if not self._unquote(cmd_parts[0]).lower().endswith('.ps1'):
+                # we're running a module via the bootstrap wrapper
+                cmd_parts[0] = '"%s.ps1"' % self._unquote(cmd_parts[0])
+
             wrapper_cmd = "cat " + cmd_parts[0] + " | " + self._encode_script(script=bootstrap_wrapper, strict_mode=False, preserve_rc=False)
             return wrapper_cmd
         elif shebang and shebang.startswith('#!'):

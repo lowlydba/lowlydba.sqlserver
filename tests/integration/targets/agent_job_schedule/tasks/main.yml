@@ -44,6 +44,7 @@
     - assert:
         that:
           - result is changed
+          - result.data.Name == "{{ job_name }}"
 
     - name: Create job schedule with force
       lowlydba.sqlserver.agent_job_schedule:
