@@ -1,0 +1,2 @@
+minor_changes:
+  - Added only_accessible as an optional parameter to the database module (https://github.com/lowlydba/lowlydba.sqlserver/pull/198)
