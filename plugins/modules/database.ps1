@@ -22,6 +22,7 @@ $spec = @{
         secondary_maxdop = @{type = 'int'; required = $false; }
         compatibility = @{type = 'str'; required = $false; }
         rcsi = @{type = 'bool'; required = $false; }
+        only_accessible = @{type = 'bool'; default = 'true' }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
 }
@@ -35,6 +36,7 @@ $logFilePath = $module.Params.log_file_path
 $owner = $module.Params.owner
 $compatibility = $module.Params.compatibility
 [nullable[bool]]$rcsiEnabled = $module.Params.rcsi
+[nullable[bool]]$onlyAccessible = $module.Params.only_accessible
 [nullable[int]]$maxDop = $module.Params.maxdop
 [nullable[int]]$secondaryMaxDop = $module.Params.secondary_maxdop
 $state = $module.Params.state
@@ -48,7 +50,7 @@ try {
             SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential
             Database = $database
-            OnlyAccessible = $true
+            OnlyAccessible = $onlyAccessible
             ExcludeSystem = $true
             EnableException = $true
         }
