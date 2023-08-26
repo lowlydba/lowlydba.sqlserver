@@ -130,7 +130,7 @@
 <h1>lowlydba.sqlserver.database module – Creates and configures a database<a class="headerlink" href="#lowlydba-sqlserver-database-module-creates-and-configures-a-database" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/lowlydba/sqlserver">lowlydba.sqlserver collection</a> (version 2.1.0).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/lowlydba/sqlserver">lowlydba.sqlserver collection</a> (version 2.2.0).</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">lowlydba.sqlserver</span></code>.
 You need further requirements to be able to use this module,
 see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-database-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
@@ -208,13 +208,26 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-only_accessible"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-database-module-parameter-only-accessible"><strong>only_accessible</strong></p>
+<a class="ansibleOptionLink" href="#parameter-only_accessible" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+<p><span class="ansible-option-versionadded">added in lowlydba.sqlserver 2.2.0</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Whether or not to enable Read Committed Snapshot Isolation.</p>
+<p class="ansible-option-line"><span class="ansible-option-choices">Choices:</span></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><span class="pre">true</span></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-owner"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-database-module-parameter-owner"><strong>owner</strong></p>
 <a class="ansibleOptionLink" href="#parameter-owner" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Database owner login.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-rcsi"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-database-module-parameter-rcsi"><strong>rcsi</strong></p>
 <a class="ansibleOptionLink" href="#parameter-rcsi" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -226,7 +239,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-recovery_model"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-database-module-parameter-recovery-model"><strong>recovery_model</strong></p>
 <a class="ansibleOptionLink" href="#parameter-recovery_model" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
@@ -239,35 +252,35 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-secondary_maxdop"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-database-module-parameter-secondary-maxdop"><strong>secondary_maxdop</strong></p>
 <a class="ansibleOptionLink" href="#parameter-secondary_maxdop" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>MAXDOP value for the database when it is a non-primary replica in an availability group.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_instance"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-database-module-parameter-sql-instance"><strong>sql_instance</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_instance" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The SQL Server instance to modify.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-database-module-parameter-sql-password"><strong>sql_password</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Password for SQL Authentication.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-database-module-parameter-sql-username"><strong>sql_username</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Username for SQL Authentication.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-database-module-parameter-state"><strong>state</strong></p>
 <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
