@@ -1,2 +1,0 @@
-minor_changes:
-  - Fixes error handling for Remove-DbaDatabase when joined to AvailabilityGroup, exception was not being thrown so we have to parse Status
