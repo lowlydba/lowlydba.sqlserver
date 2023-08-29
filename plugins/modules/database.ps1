@@ -63,8 +63,18 @@ try {
 
     if ($state -eq "absent") {
         if ($null -ne $existingDatabase) {
-            $existingDatabase | Remove-DbaDatabase -WhatIf:$checkMode -EnableException -Confirm:$false
-            $module.Result.changed = $true
+            try {
+                $droppedDatabase = $existingDatabase | Remove-DbaDatabase -WhatIf:$checkMode -EnableException -Confirm:$false
+                if ($droppedDatabase.Status -eq "Dropped") {
+                    $module.Result.changed = $true
+                }
+                elseif ($droppedDatabase.Status -ne "Dropped") {
+                    $module.FailJson("Database [$database] was not dropped. " + $droppedDatabase.Status)
+                }
+            }
+            catch {
+                $module.FailJson("An exception occurred while trying to drop database [$database].", $_)
+            }
         }
         $module.ExitJson()
     }
