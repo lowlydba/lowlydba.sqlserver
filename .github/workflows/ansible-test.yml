@@ -62,7 +62,7 @@ jobs:
       # .../ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/
 
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
@@ -115,7 +115,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v4
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
