@@ -1,0 +1,2 @@
+bugfixes:
+  - Get port properly from AG Listener when comparing to input port value.
