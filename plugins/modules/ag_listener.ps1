@@ -63,7 +63,7 @@ try {
             $output = Add-DbaAgListener @listenerParams
             $module.Result.changed = $true
         }
-        elseif ($existingListener.Port -ne $port) {
+        elseif ($existingListener.PortNumber -ne $port) {
             $output = Set-DbaAgListener -AvailabilityGroup $agName -Listener $listenerName -Port $port
             $module.Result.changed = $true
         }
