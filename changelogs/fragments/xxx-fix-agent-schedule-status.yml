@@ -1,2 +1,2 @@
 bugfixes:
-  - Properly set enabled/disable status of agent job schedules.
+  - Only use disabled parameter when setting schedule status. Increases backwards compatibility with older DbaTools versions.
