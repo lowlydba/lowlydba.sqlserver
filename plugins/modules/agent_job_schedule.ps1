@@ -59,11 +59,9 @@ $scheduleParams = @{
     SqlCredential = $sqlCredential
     Force = $force
     Schedule = $schedule
+    Disabled = !$enabled
 }
 
-if ($enabled -eq $false) {
-    $scheduleParams.add("Disabled", $true)
-}
 if ($null -ne $job) {
     $scheduleParams.add("Job", $job)
 }
@@ -101,9 +99,6 @@ if ($null -ne $frequencyRecurrenceFactor) {
 try {
     $existingSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $schedule
     if ($state -eq "present") {
-        if ($enabled -eq $true) {
-            $scheduleParams.Add("Disabled", $false)
-        }
         # Update schedule
         if ($null -ne $existingSchedule) {
             # Need to serialize to prevent SMO auto refreshing
