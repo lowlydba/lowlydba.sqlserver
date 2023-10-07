@@ -59,9 +59,11 @@ $scheduleParams = @{
     SqlCredential = $sqlCredential
     Force = $force
     Schedule = $schedule
-    Disabled = !$enabled
 }
 
+if ($null -ne $enabled) {
+    $scheduleParams.add("Disabled", !$enabled)
+}
 if ($null -ne $job) {
     $scheduleParams.add("Job", $job)
 }
