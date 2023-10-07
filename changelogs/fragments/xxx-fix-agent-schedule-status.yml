@@ -1,0 +1,2 @@
+bugfixes:
+  - Properly set enabled/disable status of agent job schedules.

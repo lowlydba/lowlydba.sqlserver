@@ -102,7 +102,7 @@ try {
     $existingSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $schedule
     if ($state -eq "present") {
         if ($enabled -eq $true) {
-            $scheduleParams.Add("Enabled", $true)
+            $scheduleParams.Add("Disabled", $false)
         }
         # Update schedule
         if ($null -ne $existingSchedule) {
