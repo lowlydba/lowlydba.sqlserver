@@ -113,7 +113,7 @@ try {
                 $compareProperty = @(
                     "ActiveEndDate"
                     "ActiveEndTimeOfDay"
-                    "ActiveEndTimeOfDay"
+                    "ActiveStartDate"
                     "ActiveStartTimeOfDay"
                     "Description"
                     "FrequencyInterval"
