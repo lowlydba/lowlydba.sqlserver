@@ -32,7 +32,7 @@ if ($null -ne $module.Params.computer_username) {
 $computer = $module.Params.computer
 $serviceAccount = $module.Params.service_account
 $serviceClass = "MSSQLSvc"
-$spn = "$serviceClass\$computer"
+$spn = "$serviceClass/$computer"
 $state = $module.Params.state
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
