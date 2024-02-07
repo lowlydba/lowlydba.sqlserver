@@ -5,6 +5,20 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v2.2.3
+======
+
+Release Summary
+---------------
+
+Minor bugfixes.
+
+Bugfixes
+--------
+
+- Add ActiveStartDate to the compare properties so this item is marked accurately as changed.
+- Fixed the formatting of the SPN by updating the backslash to a forward-slash for the $spn var (lowlydba.sqlserver.spn)
+
 v2.2.1
 ======
 

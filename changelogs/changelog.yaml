@@ -451,3 +451,16 @@ releases:
     - 2-2-1-release-summary.yml
     - 200-remove-dbadatabase-exception-handling.yml
     release_date: '2023-08-29'
+  2.2.3:
+    changes:
+      bugfixes:
+      - Add ActiveStartDate to the compare properties so this item is marked accurately
+        as changed.
+      - Fixed the formatting of the SPN by updating the backslash to a forward-slash
+        for the $spn var (lowlydba.sqlserver.spn)
+      release_summary: Minor bugfixes.
+    fragments:
+    - 214-fix-schedule-activestartdate.yml
+    - 219-spn-format-fix.yml
+    - release-summary-2-2-3.yml
+    release_date: '2024-02-07'
