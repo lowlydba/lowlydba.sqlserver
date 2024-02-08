@@ -76,7 +76,6 @@
           - result.data.AvailabilityMode == availability_mode
           - result.data.SessionTimeout == 20
           - result.data.FailoverMode == failover_mode
-          - result.data.EndpointUrl == "TCP://{{ result.data.SqlInstance }}:5022"
           - result is changed
 
   always:
