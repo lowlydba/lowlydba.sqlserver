@@ -40,7 +40,7 @@ jobs:
 
   integration:
     runs-on: ${{ matrix.os }}
-    name: I (Ⓐ${{ matrix.ansible }}+${{ matrix.os }}|grp${{ matrix.group }})
+    name: I (Ⓐ${{ matrix.ansible }}+win-2022|grp${{ matrix.group }})
     strategy:
       fail-fast: false
       matrix:
