@@ -56,6 +56,10 @@
       lowlydba.sqlserver.availability_group:
       register: ag
 
+    - name: Set ag SqlInstance fact
+      set_fact:
+        ag_sql_instance: "{{ ag.data.SqlInstance }}"
+
     - name: Set replica
       lowlydba.sqlserver.ag_replica:
         session_timeout: 20
@@ -63,8 +67,6 @@
         read_only_routing_list: "{{ ag.data.SqlInstance }}"
         read_only_routing_connection_url: "TCP://{{ ag.data.SqlInstance }}:1433"
       register: result
-
-    - name: Assert set replica
     - assert:
         that:
           - result.data.ComputerName != None
@@ -74,7 +76,7 @@
           - result.data.AvailabilityMode == availability_mode
           - result.data.SessionTimeout == 20
           - result.data.FailoverMode == failover_mode
-          - result.data.EndpointUrl == "TCP://{{ ag.data.SqlInstance }}:5022"
+          - result.data.EndpointUrl == "TCP://{{ result.data.SqlInstance }}:5022"
           - result is changed
 
   always:
