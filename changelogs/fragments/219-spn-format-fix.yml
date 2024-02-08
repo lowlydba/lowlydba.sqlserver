@@ -1,2 +1,0 @@
-bugfixes:
-  - Fixed the formatting of the SPN by updating the backslash to a forward-slash for the $spn var (lowlydba.sqlserver.spn)
