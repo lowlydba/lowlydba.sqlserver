@@ -63,6 +63,8 @@
         read_only_routing_list: "{{ ag.data.SqlInstance }}"
         read_only_routing_connection_url: "TCP://{{ ag.data.SqlInstance }}:1433"
       register: result
+
+    - name: Assert set replica
     - assert:
         that:
           - result.data.ComputerName != None
