@@ -61,6 +61,13 @@ options:
     type: str
     required: false
     version_added: '2.1.0'
+  skip_password_reset:
+    description:
+      - Skips the password reset if the login exists and I(password) is set.
+    type: bool
+    required: false
+    default: false
+    version_added: '2.3.0'
 author: "John McCall (@lowlydba)"
 notes:
   - Module will always return changed if a password is supplied.
