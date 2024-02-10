@@ -66,6 +66,7 @@ options:
       - Skips the password reset if the login exists and I(password) is set.
     type: bool
     required: false
+    default: false
     version_added: '2.2.4'
 author: "John McCall (@lowlydba)"
 notes:
