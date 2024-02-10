@@ -1,2 +1,0 @@
-minor_changes:
-  - Add ability to prevent changing login's password, even if password supplied.

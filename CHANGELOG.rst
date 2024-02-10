@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v2.3.0
+======
+
+Release Summary
+---------------
+
+New feature from @OsirisDBA for skipping login password resets!
+
+Minor Changes
+-------------
+
+- Add ability to prevent changing login's password, even if password supplied.
+
 v2.2.3
 ======
 
