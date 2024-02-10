@@ -67,7 +67,7 @@ options:
     type: bool
     required: false
     default: false
-    version_added: '2.2.4'
+    version_added: '2.3.0'
 author: "John McCall (@lowlydba)"
 notes:
   - Module will always return changed if a password is supplied.
