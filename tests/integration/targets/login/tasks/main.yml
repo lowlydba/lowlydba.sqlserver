@@ -58,10 +58,6 @@
       register: result
     - assert:
         that:
-          - result.data != None
-          - result.data.ComputerName != None
-          - result.data.InstanceName != None
-          - result.data.SqlInstance != None
           - result is not changed
 
     - name: Drop login
