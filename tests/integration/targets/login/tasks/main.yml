@@ -49,6 +49,21 @@
           - result.data.Name == "{{ login_name }}"
           - result.data.DefaultDatabase == "model"
 
+    - name: Skip pwd reset
+      lowlydba.sqlserver.login:
+        default_database: "model"
+        password: "ItWasA11ADream!"
+        skip_password_reset: true
+        enabled: true
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result is not changed
+
     - name: Drop login
       lowlydba.sqlserver.login:
         state: "absent"
