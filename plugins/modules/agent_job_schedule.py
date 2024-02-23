@@ -81,16 +81,17 @@ options:
     description:
       - The date on which execution of a job can begin.
       - If I(force=true)the start date will be the current day.
-      - Format is C(YYYY-MM-DD).
+      - Format is C(yyyyMMdd).
     type: str
     required: false
   end_date:
     description:
       - The date on which execution of a job can stop.
-      - If I(force=true) the end date will be C(9999-12-31).
-      - Format is C(YYYY-MM-DD).
+      - If I(force=true) the end date will be C(99991231), via dbatools.
+      - Format is C(yyyyMMdd).
     type: str
     required: false
+
   start_time:
     description:
       - The time on any day to begin execution of a job. Format C(HHMMSS) (24 hour clock).

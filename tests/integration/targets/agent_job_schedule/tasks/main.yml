@@ -10,7 +10,6 @@
     frequency_subday_type: "Hours"
     frequency_subday_interval: 5
     frequency_relative_interval: "First"
-    end_date: "30200525"
     end_time: "000929"
     start_date_result: "3020-05-25T00:00:00"
     end_date_result: "3020-05-25T00:00:00"
@@ -46,7 +45,7 @@
           - result is changed
           - result.data.Name == "{{ job_name }}"
 
-    - name: Create job schedule with force
+    - name: Create job schedule with force, no end date
       lowlydba.sqlserver.agent_job_schedule:
         schedule: "{{ forced_schedule_name }}"
         force: true
@@ -56,7 +55,7 @@
         that:
           - result.data.ScheduleUid != None
           - result.data.ActiveStartDate == "3020-05-25T00:00:00.0000000"
-          - result.data.ActiveEndDate == "3020-05-25T00:00:00.0000000"
+          - result.data.ActiveEndDate == "9999-12-31T00:00:00.0000000"
           - result.data.JobCount == 1
           - result.data.IsEnabled is true
           - result.data.ScheduleName == "{{ forced_schedule_name }}"
