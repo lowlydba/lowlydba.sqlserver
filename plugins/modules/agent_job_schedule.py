@@ -80,7 +80,7 @@ options:
   start_date:
     description:
       - The date on which execution of a job can begin.
-      - If I(force=true)the start date will be the current day.
+      - If I(force=true) the start date will be the current day.
       - Format is C(yyyyMMdd).
     type: str
     required: false

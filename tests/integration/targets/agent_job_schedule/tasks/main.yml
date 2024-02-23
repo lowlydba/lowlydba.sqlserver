@@ -10,6 +10,7 @@
     frequency_subday_type: "Hours"
     frequency_subday_interval: 5
     frequency_relative_interval: "First"
+    end_date: "30200525"
     end_time: "000929"
     start_date_result: "3020-05-25T00:00:00"
     end_date_result: "3020-05-25T00:00:00"
@@ -25,7 +26,6 @@
       sql_password: "{{ sqlserver_password }}"
       start_date: "{{ start_date }}"
       start_time: "{{ start_time }}"
-      end_date: "{{ end_date }}"
       end_time: "{{ end_time }}"
       frequency_type: "{{ frequency_type }}"
       frequency_interval: "{{ frequency_interval }}"
