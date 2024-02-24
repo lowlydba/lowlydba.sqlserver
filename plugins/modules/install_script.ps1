@@ -7,7 +7,7 @@
 #AnsibleRequires -CSharpUtil Ansible.Basic
 #AnsibleRequires -PowerShell ansible_collections.lowlydba.sqlserver.plugins.module_utils._SqlServerUtils
 #Requires -Modules @{ ModuleName="dbatools"; ModuleVersion="2.0.0" }
-#Requires -Modules @{ ModuleName="dbops"; ModuleVersion="0.8.0" }
+#Requires -Modules @{ ModuleName="dbops"; ModuleVersion="0.9.0" }
 
 $spec = @{
     supports_check_mode = $true
@@ -15,7 +15,7 @@ $spec = @{
         database = @{type = 'str'; required = $true }
         path = @{type = 'str'; required = $true }
         deployment_method = @{type = 'str'; required = $false; default = 'NoTransaction'
-            choices = @('NoTransaction', 'SingleTransaction', 'TransactionPerScript')
+            choices = @('NoTransaction', 'SingleTransaction', 'TransactionPerScript', 'AlwaysRollback')
         }
         schema_version_table = @{type = 'str'; required = $false }
         no_log_version = @{type = 'bool'; required = $false; default = $false }

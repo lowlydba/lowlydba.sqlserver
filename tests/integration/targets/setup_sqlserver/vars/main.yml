@@ -6,7 +6,7 @@ dbatools_install_cmd: >
       Set-DbatoolsInsecureConnection -Scope FileUserLocal
   }
 
-dbops_min_version: 0.8.0
+dbops_min_version: 0.9.0
 dbops_install_cmd: >
   if (-not(Get-Module -FullyQualifiedName @{ModuleName='dbops';ModuleVersion='{{ dbops_min_version }}'} -ListAvailable)) {
       Install-Module dbops -MinimumVersion {{ dbops_min_version }} -Force -SkipPublisherCheck -AllowClobber
