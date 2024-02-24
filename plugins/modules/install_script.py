@@ -33,6 +33,7 @@ options:
       - C(SingleTransaction) - wrap all the deployment scripts into a single transaction and rollback whole deployment on error.
       - C(TransactionPerScript) - wrap each script into a separate transaction; rollback single script deployment in case of error.
       - C(NoTransaction) - deploy as is.
+      - C(AlwaysRollback) - roll back the transaction.
     type: str
     required: false
     default: 'NoTransaction'
