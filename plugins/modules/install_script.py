@@ -37,7 +37,7 @@ options:
     type: str
     required: false
     default: 'NoTransaction'
-    choices: ['NoTransaction', 'SingleTransaction', 'TransactionPerScript']
+    choices: ['NoTransaction', 'SingleTransaction', 'TransactionPerScript', 'AlwaysRollback']
   no_log_version:
     description:
       - If set, the deployment will not be tracked in the database. That will also mean that all the scripts

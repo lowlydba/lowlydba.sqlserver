@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v2.3.1
+======
+
+Release Summary
+---------------
+
+Update the install script feature to accommodate the latest minor DbOps release (v0.9.x)
+
+Minor Changes
+-------------
+
+- Add new input strings to be compatible with dbops v0.9.x (https://github.com/lowlydba/lowlydba.sqlserver/pull/231)
+
 v2.3.0
 ======
 
