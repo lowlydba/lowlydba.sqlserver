@@ -5,6 +5,19 @@ lowlydba.sqlserver Release Notes
 .. contents:: Topics
 
 
+v2.3.2
+======
+
+Release Summary
+---------------
+
+Small fix for documentation and upstream fix available in dbatools v2.1.9.
+
+Bugfixes
+--------
+
+- Update documentation for agent_job_schedule to reflect proper input formatting. (https://github.com/lowlydba/lowlydba.sqlserver/pull/229)
+
 v2.3.1
 ======
 
