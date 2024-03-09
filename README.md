@@ -1,4 +1,4 @@
-# lowlydba.sqlserver Collection for Ansible
+# lowlydba.sqlserver Collection for Ansible<!-- omit in toc -->
 
 ![GPL v3](https://img.shields.io/github/license/lowlydba/lowlydba.sqlserver)
 [![CI](https://github.com/lowlydba/lowlydba.sqlserver/actions/workflows/ansible-test.yml/badge.svg)](https://github.com/lowlydba/lowlydba.sqlserver/actions/workflows/ansible-test.yml)
@@ -11,11 +11,17 @@
 - [Contributing to this collection](#contributing-to-this-collection)
 - [Collection maintenance](#collection-maintenance)
 - [Tested with](#tested-with)
+  - [Ansible](#ansible)
+  - [SQL Server](#sql-server)
 - [External requirements](#external-requirements)
 - [Using this collection](#using-this-collection)
   - [Installing the Collection from Ansible Galaxy](#installing-the-collection-from-ansible-galaxy)
-- [Release notes](#release-notes)
 - [Releasing](#releasing)
+  - [Release notes](#release-notes)
+  - [Next Release](#next-release)
+  - [Schedule](#schedule)
+  - [Versioning](#versioning)
+  - [Deprecation](#deprecation)
 
 ## Modules
 
@@ -73,7 +79,7 @@ To learn how to maintain / become a maintainer of this collection, refer to the 
 
 - PowerShell modules
   - [dbatools][dbatools] >= 2.0.0
-  - [dbops][dbops] >= 0.8.0
+  - [dbops][dbops] >= 0.9.0
 
 ## Using this collection
 
