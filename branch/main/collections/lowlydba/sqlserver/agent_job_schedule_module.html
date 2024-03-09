@@ -131,7 +131,7 @@
 <h1>lowlydba.sqlserver.agent_job_schedule module – Configures a SQL Agent job schedule<a class="headerlink" href="#lowlydba-sqlserver-agent-job-schedule-module-configures-a-sql-agent-job-schedule" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/lowlydba/sqlserver/">lowlydba.sqlserver collection</a> (version 2.3.1).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/lowlydba/sqlserver/">lowlydba.sqlserver collection</a> (version 2.3.2).</p>
 <p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">lowlydba.sqlserver</span></code>.
@@ -189,8 +189,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-end_date" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The date on which execution of a job can stop.</p>
-<p>If <em>force=true</em> the end date will be <code class="docutils literal notranslate"><span class="pre">9999-12-31</span></code>.</p>
-<p>Format is <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>.</p>
+<p>If <em>force=true</em> the end date will be <code class="docutils literal notranslate"><span class="pre">99991231</span></code>, via dbatools.</p>
+<p>Format is <code class="docutils literal notranslate"><span class="pre">yyyyMMdd</span></code>.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -334,8 +334,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-start_date" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The date on which execution of a job can begin.</p>
-<p>If <em>force=true</em>the start date will be the current day.</p>
-<p>Format is <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>.</p>
+<p>If <em>force=true</em> the start date will be the current day.</p>
+<p>Format is <code class="docutils literal notranslate"><span class="pre">yyyyMMdd</span></code>.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
