@@ -1,0 +1,2 @@
+bugfixes:
+  - fixed the expected type of the ip_address parameter to be a list instead of a string (lowlydba.sqlserver.ag_listener)

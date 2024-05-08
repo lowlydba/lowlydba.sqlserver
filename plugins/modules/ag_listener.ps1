@@ -15,7 +15,7 @@ $spec = @{
     options = @{
         ag_name = @{type = 'str'; required = $true }
         listener_name = @{type = 'str'; required = $true }
-        ip_address = @{type = 'str'; required = $false }
+        ip_address = @{type = 'list'; required = $false }
         subnet_ip = @{type = 'str'; required = $false }
         subnet_mask = @{type = 'str'; required = $false; default = '255.255.255.0' }
         port = @{type = 'int'; required = $false; default = 1433 }
