@@ -2,6 +2,5 @@
     "files.eol": "\n",
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
-    "files.trimTrailingWhitespace": true,
-    "ansible.python.interpreterPath": "/bin/python"
+    "files.trimTrailingWhitespace": true
 }
