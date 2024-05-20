@@ -15,9 +15,9 @@ $spec = @{
     options = @{
         ag_name = @{type = 'str'; required = $true }
         listener_name = @{type = 'str'; required = $true }
-        ip_address = @{type = 'list'; required = $false }
-        subnet_ip = @{type = 'str'; required = $false }
-        subnet_mask = @{type = 'str'; required = $false; default = '255.255.255.0' }
+        ip_address = @{type = 'list'; elements= 'str'; required = $false }
+        subnet_ip = @{type = 'list'; elements= 'str'; required = $false }
+        subnet_mask = @{type = 'list'; elements= 'str'; required = $false; default = '255.255.255.0' }
         port = @{type = 'int'; required = $false; default = 1433 }
         dhcp = @{type = 'bool'; required = $false; default = $false }
         state = @{type = "str"; required = $false; default = "present"; choices = @("present", "absent") }
