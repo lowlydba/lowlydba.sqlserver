@@ -70,6 +70,7 @@
         sql_instance: ag_name
         login: TheIntern
         password: ReallyComplexStuff12345!
+      when: contained_availability_group
 
     - name: Change availability group
       lowlydba.sqlserver.availability_group:
