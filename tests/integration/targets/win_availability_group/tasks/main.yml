@@ -65,6 +65,11 @@
           - result.data.DtcSupportEnabled is false
           - result.data.AvailabilityReplicas != None
           - result is changed
+    - name: Create login on contained AG
+      lowlydba.sqlserver.login:
+        sql_instance: ag_name
+        login: TheIntern
+        password: ReallyComplexStuff12345!
 
     - name: Change availability group
       lowlydba.sqlserver.availability_group:
