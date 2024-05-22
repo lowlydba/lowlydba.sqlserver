@@ -11,6 +11,7 @@
     use_last_backup: false
     healthcheck_timeout: 15000
     basic_availability_group: false
+    contained_availability_group: false
     force: false
     failure_condition_level: "OnServerDown"
     database: "ag-test-db"
@@ -29,6 +30,7 @@
       database: "{{ database }}"
       healthcheck_timeout: "{{ healthcheck_timeout }}"
       basic_availability_group: "{{ basic_availability_group }}"
+      contained_availability_group: "{{ contained_availability_group }}"
       force: "{{ force }}"
       allow_null_backup: true
       failure_condition_level: "{{ failure_condition_level }}"
