@@ -197,10 +197,6 @@ try {
             if ($basicAvailabilityGroup -eq $true) {
                 $setAgSplat.Add("BasicAvailabilityGroup", $basicAvailabilityGroup)
             }
-            if ($containedAvailabilityGroup -eq $true) {
-                $setAgSplat.Add("ContainedAvailabilityGroup", $containedAvailabilityGroup)
-            }
-
             if ($databaseHealthTrigger -eq $true) {
                 $setAgSplat.Add("DatabaseHealthTrigger", $databaseHealthTrigger)
             }
