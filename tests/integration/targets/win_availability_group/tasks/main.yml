@@ -65,9 +65,15 @@
           - result.data.DtcSupportEnabled is false
           - result.data.AvailabilityReplicas != None
           - result is changed
+    - name: Create listener
+      lowlydba.sqlserver.ag_listener:
+        ag_name: "{{ ag_name }}"
+        sql_instance: "{{ sqlserver_instance }}"
+        listener_name: "{{ ag_name }}-lis"
+      when: contained_availability_group
     - name: Create login on contained AG
       lowlydba.sqlserver.login:
-        sql_instance: ag_name
+        sql_instance: "{{ ag_name }}-lis"
         login: TheIntern
         password: ReallyComplexStuff12345!
       when: contained_availability_group
