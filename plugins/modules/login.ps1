@@ -23,6 +23,7 @@ $spec = @{
         password_expiration_enabled = @{type = 'bool'; required = $false }
         sid = @{type = 'str'; required = $false }
         skip_password_reset = @{type = 'bool'; required = $false; default = $false }
+        roles = @{type = 'list'; elements = 'str' }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
 }
@@ -63,7 +64,7 @@ try {
         }
     }
     elseif ($state -eq "present") {
-        $setLoginSplat = @{
+        $baseLoginSplat = @{
             SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential
             Login = $login
@@ -71,6 +72,8 @@ try {
             EnableException = $true
             Confirm = $false
         }
+        $setLoginSplat = $baseLoginSplat
+
         if ($null -ne $defaultDatabase) {
             $setLoginSplat.add("DefaultDatabase", $defaultDatabase)
         }
@@ -105,6 +108,25 @@ try {
 
         # Login already exists
         if ($null -ne $existingLogin) {
+            # Roles
+            if ($null -ne $roles) {
+                $getServerRoleMemberSplat = $baseLoginSplat
+                $setLoginSplat.add("AddRole", $roles)
+                $removeRoles = @()
+                # Since Set-DbaLogin only allows for setting fixed roles, that is all we can work with
+                $fixedServerRoles = @("bulkadmin", "dbcreator", "diskadmin", "processadmin", "public", "securityadmin", "serveradmin", "setupadmin", "sysadmin")
+                $getServerRoleMemberSplat.add("ServerRole", $fixedServerRoles)
+                $existingLoginRoles = Get-DbaServerRoleMember $getServerRoleMemberSplat
+
+                foreach ($existingLoginRole in $existingLoginRoles) {
+                    if ($existingLoginRole.Role -notin $roles) {
+                        $removeRoles += $existingLoginRole.Role
+                    }
+                }
+                if ($removeRoles.count -gt 0) {
+                    $setLoginSplat.add("RemoveRole", $removeRoles)
+                }
+            }
             # Splat login status
             if ($enabled -eq $false) {
                 $disabled = $true
@@ -132,8 +154,13 @@ try {
                 $setLoginSplat.add("Sid", $sid)
             }
             $output = New-DbaLogin @setLoginSplat
+            # Roles
+            if ($null -ne $roles) {
+                $null = Set-DbaLogin $baseLoginSplat -AddRole $roles
+            }
             $module.result.changed = $true
         }
+
         # If not in check mode, add extra fields we can change to default display set
         if ($null -ne $output) {
             $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("DefaultDatabase")
