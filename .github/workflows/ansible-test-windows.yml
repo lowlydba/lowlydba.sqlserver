@@ -104,7 +104,7 @@ jobs:
         shell: cmd
         run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
 
-      - uses: Vampire/setup-wsl@v3.0.0
+      - uses: Vampire/setup-wsl@v3.1.1
         with:
           distribution: Ubuntu-22.04
           update: "true"
