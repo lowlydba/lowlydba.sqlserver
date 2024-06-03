@@ -74,9 +74,13 @@ EXAMPLES = r'''
     sql_instance_primary: sql-01.myco.io
     ag_name: AG_MyDatabase
     listener_name: aglMyDatabase
-    ip_address: 10.0.20.20,10.1.77.77
-    subnet_ip: 255.255.252.0
-    subnet_mask: 255.255.255.0
+    ip_address:
+      - 10.0.20.20
+      - 10.1.77.77
+    subnet_ip:
+      - 255.255.252.0
+    subnet_mask:
+      - 255.255.255.0
 '''
 
 RETURN = r'''
