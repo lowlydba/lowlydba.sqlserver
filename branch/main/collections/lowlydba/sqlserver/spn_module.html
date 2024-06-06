@@ -256,9 +256,13 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <span class="w">    </span><span class="nt">sql_instance_primary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span>
 <span class="w">    </span><span class="nt">ag_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AG_MyDatabase</span>
 <span class="w">    </span><span class="nt">listener_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aglMyDatabase</span>
-<span class="w">    </span><span class="nt">ip_address</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0.20.20,10.1.77.77</span>
-<span class="w">    </span><span class="nt">subnet_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">255.255.252.0</span>
-<span class="w">    </span><span class="nt">subnet_mask</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">255.255.255.0</span>
+<span class="w">    </span><span class="nt">ip_address</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0.20.20</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.1.77.77</span>
+<span class="w">    </span><span class="nt">subnet_ip</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">255.255.252.0</span>
+<span class="w">    </span><span class="nt">subnet_mask</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">255.255.255.0</span>
 
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Add SPN for new AG listener on port 1433</span>
 <span class="w">  </span><span class="nt">lowlydba.sqlserver.spn</span><span class="p">:</span>

@@ -193,7 +193,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-ip_address"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-ag-listener-module-parameter-ip-address"><strong>ip_address</strong></p>
-<a class="ansibleOptionLink" href="#parameter-ip_address" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+<a class="ansibleOptionLink" href="#parameter-ip_address" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>IP address(es) of the listener. Comma separated if multiple.</p>
 </div></td>
@@ -248,17 +248,17 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-subnet_ip"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-ag-listener-module-parameter-subnet-ip"><strong>subnet_ip</strong></p>
-<a class="ansibleOptionLink" href="#parameter-subnet_ip" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+<a class="ansibleOptionLink" href="#parameter-subnet_ip" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Subnet IP address(es) of the listener. Comma separated if multiple.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-subnet_mask"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-ag-listener-module-parameter-subnet-mask"><strong>subnet_mask</strong></p>
-<a class="ansibleOptionLink" href="#parameter-subnet_mask" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+<a class="ansibleOptionLink" href="#parameter-subnet_mask" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Sets the subnet IP mask(s) of the availability group listener. Comma separated if multiple.</p>
-<p class="ansible-option-line"><strong class="ansible-option-default-bold">Default:</strong> <code class="ansible-option-default docutils literal notranslate"><span class="pre">&quot;255.255.255.0&quot;</span></code></p>
+<p class="ansible-option-line"><strong class="ansible-option-default-bold">Default:</strong> <code class="ansible-option-default docutils literal notranslate"><span class="pre">[&quot;255.255.255.0&quot;]</span></code></p>
 </div></td>
 </tr>
 </tbody>
@@ -305,9 +305,13 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <span class="w">    </span><span class="nt">sql_instance_primary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span>
 <span class="w">    </span><span class="nt">ag_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AG_MyDatabase</span>
 <span class="w">    </span><span class="nt">listener_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aglMyDatabase</span>
-<span class="w">    </span><span class="nt">ip_address</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0.20.20,10.1.77.77</span>
-<span class="w">    </span><span class="nt">subnet_ip</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">255.255.252.0</span>
-<span class="w">    </span><span class="nt">subnet_mask</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">255.255.255.0</span>
+<span class="w">    </span><span class="nt">ip_address</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0.20.20</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.1.77.77</span>
+<span class="w">    </span><span class="nt">subnet_ip</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">255.255.252.0</span>
+<span class="w">    </span><span class="nt">subnet_mask</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">255.255.255.0</span>
 </pre></div>
 </div>
 </section>
