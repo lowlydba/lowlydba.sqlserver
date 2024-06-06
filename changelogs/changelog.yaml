@@ -494,3 +494,14 @@ releases:
     - 2-3-2-release-summary.yml
     - 229-docs-update.yml
     release_date: '2024-03-09'
+  2.3.3:
+    changes:
+      bugfixes:
+      - fixed the expected type of the ip_address, subnet_ip, and subnet_mask parameters
+        to be lists instead of strings (lowlydba.sqlserver.ag_listener)
+      release_summary: Minor bugfix for ag listener input types, thanks @daarrn for
+        the contribution!
+    fragments:
+    - 2-3-3-release-summary.yml
+    - 245-ag_listener-ip_address-fix.yml
+    release_date: '2024-06-06'
