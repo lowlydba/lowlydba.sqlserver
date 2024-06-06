@@ -25,8 +25,10 @@
       ag_name: "{{ ag_name }}"
       listener_name: "{{ listener_name }}"
       port: "{{ port }}"
-      ip_address: "192.168.6.9"
-      subnet_mask: "255.255.255.0"
+      ip_address:
+        - "192.168.6.9"
+      subnet_mask:
+        - "255.255.255.0"
   tags: ["ag_listener"]
   block:
     - name: Enable hadr
