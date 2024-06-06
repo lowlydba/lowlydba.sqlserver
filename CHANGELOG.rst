@@ -4,6 +4,18 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
+v2.3.3
+======
+
+Release Summary
+---------------
+
+Minor bugfix for ag listener input types, thanks @daarrn for the contribution!
+
+Bugfixes
+--------
+
+- fixed the expected type of the ip_address, subnet_ip, and subnet_mask parameters to be lists instead of strings (lowlydba.sqlserver.ag_listener)
 
 v2.3.2
 ======

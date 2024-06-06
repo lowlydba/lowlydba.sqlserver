@@ -1,2 +1,0 @@
-bugfixes:
-  - fixed the expected type of the ip_address, subnet_ip, and subnet_mask parameters to be lists instead of strings (lowlydba.sqlserver.ag_listener)
