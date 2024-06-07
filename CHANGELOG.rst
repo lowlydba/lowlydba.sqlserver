@@ -4,11 +4,24 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
-v2.3.3
+v2.3.4
 ===
 Release Summary
 --------------
 Added support for contained Availability Groups using dbatools 2.1.15
+
+v2.3.3
+======
+
+Release Summary
+---------------
+
+Minor bugfix for ag listener input types, thanks @daarrn for the contribution!
+
+Bugfixes
+--------
+
+- fixed the expected type of the ip_address, subnet_ip, and subnet_mask parameters to be lists instead of strings (lowlydba.sqlserver.ag_listener)
 
 v2.3.2
 ======
