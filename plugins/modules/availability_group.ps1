@@ -22,7 +22,7 @@ $spec = @{
         shared_path = @{type = "str"; required = $false; default = $null }
         dtc_support_enabled = @{type = "bool"; required = $false; }
         basic_availability_group = @{type = "bool"; required = $false; }
-        contained_availability_group = @{type = "bool"; required = $false;}
+        contained_availability_group = @{type = "bool"; required = $false; }
         database_health_trigger = @{type = "bool"; required = $false; }
         is_distributed_ag = @{type = "bool"; required = $false; }
         use_last_backup = @{type = "bool"; required = $false; }
