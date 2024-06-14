@@ -210,7 +210,9 @@ try {
                 $setAgSplat.Add("IsDistributedAvailabilityGroup", $isDistributedAg)
             }
             $compareProperty = ($existingAG.Properties | Where-Object Name -in $setAgSplat.Keys).Name
-            $agDiff = Compare-Object -ReferenceObject $existingAG -DifferenceObject $setAgSplat -Property $compareProperty
+            $existingAGHT = @{}
+            $existingAG.psobject.Properties | ForEach-Object { $existingAGHT[$_.Name] = $_.Value }
+            $agDiff = Compare-Object -ReferenceObject $existingAGHT -DifferenceObject $setAgSplat -Property $compareProperty
             if ($null -ne $agDiff) {
                 $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat
                 $module.Result.changed = $true
