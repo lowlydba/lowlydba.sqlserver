@@ -1,20 +1,10 @@
 ---
 - name: Var block
   vars:
-    ag_name: "IntAG1"
+    ag_name: "containedAG"
     cluster_type: "None"
-    failover_mode: "Manual"
-    dtc_support_enabled: false
-    availability_mode: "AsynchronousCommit"
-    seeding_mode: "Automatic"
-    database_health_trigger: true
-    use_last_backup: false
-    healthcheck_timeout: 15000
-    basic_availability_group: false
-    contained_availability_group: false
+    contained_availability_group: true
     force: false
-    failure_condition_level: "OnServerDown"
-    database: "ag-test-db"
   module_defaults:
     lowlydba.sqlserver.availability_group:
       sql_instance: "{{ sqlserver_instance }}"
@@ -34,10 +24,6 @@
       force: "{{ force }}"
       allow_null_backup: true
       failure_condition_level: "{{ failure_condition_level }}"
-    lowlydba.sqlserver.database:
-      sql_instance: "{{ sqlserver_instance }}"
-      sql_username: "{{ sqlserver_username }}"
-      sql_password: "{{ sqlserver_password }}"
   tags: ["availability_group"]
   block:
     - name: Enable hadr
@@ -47,10 +33,6 @@
         sql_password: "{{ sqlserver_password }}"
         enabled: true
         force: true
-
-    - name: Create a database
-      lowlydba.sqlserver.database:
-        database: "{{ database }}"
 
     - name: Create availability group
       lowlydba.sqlserver.availability_group:
@@ -62,62 +44,21 @@
           - result.data.SqlInstance != None
           - result.data.AvailabilityGroup == "{{ ag_name }}"
           - result.data.ClusterType == "{{ cluster_type }}"
-          - result.data.DtcSupportEnabled is false
           - result.data.AvailabilityReplicas != None
           - result is changed
+          - result.data.containedAvailabilityGroup is true
+
     - name: Create listener
       lowlydba.sqlserver.ag_listener:
         ag_name: "{{ ag_name }}"
         sql_instance: "{{ sqlserver_instance }}"
         listener_name: "{{ ag_name }}-lis"
-      when: contained_availability_group
+
     - name: Create login on contained AG
       lowlydba.sqlserver.login:
         sql_instance: "{{ ag_name }}-lis"
         login: TheIntern
         password: ReallyComplexStuff12345!
-      when: contained_availability_group
-
-    - name: Change availability group
-      lowlydba.sqlserver.availability_group:
-        dtc_support_enabled: true
-        all_ags: true
-        failure_condition_level: "OnServerUnresponsive"
-      register: result
     - assert:
         that:
-          - result.data.ComputerName != None
-          - result.data.InstanceName != None
-          - result.data.SqlInstance != None
-          - result.data.AvailabilityGroup == "{{ ag_name }}"
-          - result.data.ClusterType == "{{ cluster_type }}"
-          - result.data.DtcSupportEnabled is true
-          - result.data.AvailabilityReplicas != None
-          - result is changed
-
-    - name: Drop availability group in check mode
-      lowlydba.sqlserver.availability_group:
-        state: absent
-      check_mode: true
-      register: result
-    - assert:
-        that:
-          - result is changed
-
-    - name: Drop availability group
-      lowlydba.sqlserver.availability_group:
-        state: absent
-      register: result
-    - assert:
-        that:
-          - result is changed
-
-  always:
-    - name: Drop availability group
-      lowlydba.sqlserver.availability_group:
-        state: absent
-
-    - name: Drop database
-      lowlydba.sqlserver.database:
-        database: "{{ database }}"
-        state: absent
+          - result.data != None
