@@ -112,6 +112,23 @@
         that:
           - result is changed
 
+    - name: Create Contained availability group
+      lowlydba.sqlserver.availability_group:
+        contained_availability_group: true
+        ag_name: "{{ ag_name}}-contained"
+
+    - name: create Listenr on contained
+      lowlydba.sqlserver.ag_listener:
+        ag_name: "{{ ag_name }}-contained"
+        sql_instance: "{{ sqlserver_instance }}"
+        listener_name: "{{ ag_name }}-lis-contained"
+
+    - name: Create login on contained availability group
+      lowlydba.sqlserver.login:
+        sql_instance: "{{ ag_name }}-lis-contained"
+        login: TheIntern
+        password: ReallyComplexStuff12345!
+
   always:
     - name: Drop availability group
       lowlydba.sqlserver.availability_group:
