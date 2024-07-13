@@ -61,11 +61,11 @@ jobs:
           #- '3'
         exclude:
           - ansible: stable-2.13
-            python: python3.10
+            python: python3.11
           - ansible: stable-2.14
-            python: python3.10
+            python: python3.11
           - ansible: stable-2.15
-            python: python3.10
+            python: python3.11
           - ansible: devel
             python: python3
     defaults:
