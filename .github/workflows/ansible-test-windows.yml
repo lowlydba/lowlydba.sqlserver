@@ -54,7 +54,7 @@ jobs:
           - devel
         python:
           - python3
-          - python3.10
+          - python3.11
         group: # windows/group/#/
           - "1"
           - "2"
