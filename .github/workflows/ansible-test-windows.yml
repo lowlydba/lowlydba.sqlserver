@@ -107,7 +107,7 @@ jobs:
 
       - uses: Vampire/setup-wsl@v3.1.1
         with:
-          distribution: Ubuntu-22.04
+          distribution: Ubuntu-24.04
           update: "true"
           use-cache: "true"
           additional-packages: |
