@@ -213,10 +213,8 @@ try {
             $existingAGHT = @{}
             $existingAG.psobject.Properties | ForEach-Object { $existingAGHT[$_.Name] = $_.Value }
             $agDiff = Compare-Object -ReferenceObject $existingAGHT -DifferenceObject $setAgSplat -Property $compareProperty
-            if ($null -ne $agDiff) {
-                $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat
-                $module.Result.changed = $true
-            }
+            $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat
+            $module.Result.changed = $true
         }
     }
     elseif ($state -eq "absent") {
