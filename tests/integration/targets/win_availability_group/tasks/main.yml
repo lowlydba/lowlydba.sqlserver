@@ -125,9 +125,18 @@
 
     - name: Create login on contained availability group
       lowlydba.sqlserver.login:
-        listener_name: "contained"
+        sql_instance: "contained"
         login: TheIntern
         password: ReallyComplexStuff12345!
+
+    - name: Drop contained availability group
+      lowlydba.sqlserver.availability_group:
+        state: absent
+        ag_name: "contained-ag"
+        register: result
+    - assert:
+        that:
+          - result is changed
 
   always:
     - name: Drop availability group
