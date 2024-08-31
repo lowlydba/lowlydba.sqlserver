@@ -217,7 +217,7 @@ try {
                 $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat
                 $module.Result.changed = $true
             } else {
-                $output = $existingAG | Get-DbaAvailabilityGroup 
+                $output = $existingAG 
                 $module.Result.changed = $false
             }
         }
