@@ -117,7 +117,7 @@
         contained_availability_group: true
         ag_name: "contained-ag"
 
-    - name: create Listenr on contained
+    - name: create Listener on contained
       lowlydba.sqlserver.ag_listener:
         ag_name: "contained-ag"
         sql_instance: "{{ sqlserver_instance }}"
