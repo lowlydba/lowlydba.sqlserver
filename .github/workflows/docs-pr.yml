@@ -29,6 +29,8 @@ jobs:
   build-docs:
     permissions:
       contents: read
+      pages: write
+      id-token: write
     name: Build Ansible Docs
     uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-pr.yml@main
     with:
