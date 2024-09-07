@@ -46,28 +46,18 @@ jobs:
       matrix:
         os:
           - windows-2022
+        wsl:
+          - Ubuntu-24.04
         ansible:
-          - stable-2.13
-          - stable-2.14
-          - stable-2.15
           - stable-2.16
+          - stable-2.17
           - devel
         python:
           - python3
-          - python3.10
         group: # windows/group/#/
           - "1"
           - "2"
           #- '3'
-        exclude:
-          - ansible: stable-2.13
-            python: python3.10
-          - ansible: stable-2.14
-            python: python3.10
-          - ansible: stable-2.15
-            python: python3.10
-          - ansible: devel
-            python: python3
     defaults:
       run:
         shell: wsl-bash {0}
@@ -106,8 +96,8 @@ jobs:
 
       - uses: Vampire/setup-wsl@v3.1.1
         with:
-          distribution: Ubuntu-22.04
-          update: "true"
+          distribution: ${{ matrix.wsl }}
+          update: "false"
           use-cache: "true"
           additional-packages: |
             git
@@ -141,9 +131,11 @@ jobs:
           $ws = ConvertTo-LinuxPathCrappy -LiteralPath "${{ github.workspace }}"
           Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$ws"
 
+      # Override break-sys-pkg defaults, because we don't need to bother with python venv for CI
       - name: Install ansible-base (${{ matrix.ansible }})
         run: |
-          ${{ matrix.python }} -m pip install --upgrade pip setuptools pypsrp --disable-pip-version-check --retries 10
+          ${{ matrix.python }} -m pip config set global.break-system-packages true
+          ${{ matrix.python }} -m pip install --upgrade setuptools pypsrp --disable-pip-version-check --retries 10
           ${{ matrix.python }} -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
 
       - name: Install collection dependencies
