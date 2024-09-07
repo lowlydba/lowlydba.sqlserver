@@ -11,6 +11,10 @@ on:
   schedule:
     - cron: '0 13 * * *'
 
+permissions:
+  pages: write
+  id-token: write
+
 jobs:
   build-docs:
     permissions:
