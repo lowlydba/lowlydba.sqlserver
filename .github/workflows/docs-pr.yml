@@ -9,6 +9,10 @@ on:
 env:
   GHP_BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
 
+permissions:
+  pages: write
+  id-token: write
+
 jobs:
   validate-docs:
     permissions:
@@ -25,6 +29,8 @@ jobs:
   build-docs:
     permissions:
       contents: read
+      pages: write
+      id-token: write
     name: Build Ansible Docs
     uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-pr.yml@main
     with:
