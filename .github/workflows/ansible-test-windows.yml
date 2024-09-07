@@ -54,20 +54,10 @@ jobs:
           - devel
         python:
           - python3
-          #- python3.10
         group: # windows/group/#/
           - "1"
           - "2"
           #- '3'
-        # exclude:
-        #   - ansible: stable-2.13
-        #     python: python3.10
-        #   - ansible: stable-2.14
-        #     python: python3.10
-        #   - ansible: stable-2.15
-        #     python: python3.10
-        #   - ansible: devel
-        #     python: python3
     defaults:
       run:
         shell: wsl-bash {0}
