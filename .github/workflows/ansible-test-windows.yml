@@ -141,6 +141,9 @@ jobs:
           $ws = ConvertTo-LinuxPathCrappy -LiteralPath "${{ github.workspace }}"
           Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$ws"
 
+      - name: Allow system breaking pip installs
+        run: python3 -m pip config set global.break-system-packages true
+
       - name: Install ansible-base (${{ matrix.ansible }})
         run: |
           ${{ matrix.python }} -m pip install --upgrade setuptools pypsrp --disable-pip-version-check --retries 10 --break-system-packages
