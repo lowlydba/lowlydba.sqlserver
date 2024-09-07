@@ -4,6 +4,31 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
+v2.3.3
+======
+
+Release Summary
+---------------
+
+Minor bugfix for ag listener input types, thanks @daarrn for the contribution!
+
+Bugfixes
+--------
+
+- fixed the expected type of the ip_address, subnet_ip, and subnet_mask parameters to be lists instead of strings (lowlydba.sqlserver.ag_listener)
+
+v2.3.2
+======
+
+Release Summary
+---------------
+
+Small fix for documentation and upstream fix available in dbatools v2.1.9.
+
+Bugfixes
+--------
+
+- Update documentation for agent_job_schedule to reflect proper input formatting. (https://github.com/lowlydba/lowlydba.sqlserver/pull/229)
 
 v2.3.2
 ======
