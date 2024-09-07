@@ -183,11 +183,15 @@ jobs:
         run: |
           pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
           ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements windows/group/${{ matrix.group }}/
+        env:
+          PIP_BREAK_SYSTEM_PACKAGES: 1
 
       - name: Generate coverage report
         run: |
           pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
           ansible-test coverage xml -v --requirements
+        env:
+          PIP_BREAK_SYSTEM_PACKAGES: 1
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
       - uses: codecov/codecov-action@v4.5.0
