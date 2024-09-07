@@ -131,9 +131,6 @@ jobs:
           $ws = ConvertTo-LinuxPathCrappy -LiteralPath "${{ github.workspace }}"
           Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$ws"
 
-      - name: Allow system breaking pip installs
-        run:
-
       # Override break-sys-pkg defaults, because we don't need to bother with python venv for CI
       - name: Install ansible-base (${{ matrix.ansible }})
         run: |
