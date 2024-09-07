@@ -141,13 +141,16 @@ jobs:
           $ws = ConvertTo-LinuxPathCrappy -LiteralPath "${{ github.workspace }}"
           Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$ws"
 
-      - name: Allow system breaking pip installs
-        run: python3 -m pip config set global.break-system-packages true
 
+      - name: Allow system breaking pip installs
+        run:
+
+      # Override break-sys-pkg defaults, because we don't need to bother with python venv for CI
       - name: Install ansible-base (${{ matrix.ansible }})
         run: |
-          ${{ matrix.python }} -m pip install --upgrade setuptools pypsrp --disable-pip-version-check --retries 10 --break-system-packages
-          ${{ matrix.python }} -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10 --break-system-packages
+          ${{ matrix.python }} -m pip config set global.break-system-packages true
+          ${{ matrix.python }} -m pip install --upgrade setuptools pypsrp --disable-pip-version-check --retries 10
+          ${{ matrix.python }} -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
 
       - name: Install collection dependencies
         id: collection-dependency
