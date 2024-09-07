@@ -143,8 +143,8 @@ jobs:
 
       - name: Install ansible-base (${{ matrix.ansible }})
         run: |
-          ${{ matrix.python }} -m pip install --upgrade pip setuptools pypsrp --disable-pip-version-check --retries 10
-          ${{ matrix.python }} -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
+          sudo ${{ matrix.python }} -m pip install --upgrade pip setuptools pypsrp --disable-pip-version-check --retries 10
+          sudo ${{ matrix.python }} -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
 
       - name: Install collection dependencies
         id: collection-dependency
