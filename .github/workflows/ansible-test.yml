@@ -68,7 +68,7 @@ jobs:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       - name: Run confidence tests
-        uses: ansible-community/ansible-test-gh-action@v1.15.0
+        uses: ansible-community/ansible-test-gh-action@v1.16.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: sanity
@@ -128,7 +128,7 @@ jobs:
       # Prevent dbatools v2+ issues with newer docker image for 2.13
       - name: Run integration tests - v2.13 workaround
         if: ${{ matrix.ansible == 'stable-2.13' }}
-        uses: ansible-community/ansible-test-gh-action@v1.15.0
+        uses: ansible-community/ansible-test-gh-action@v1.16.0
         with:
           docker-image: 'quay.io/ansible/default-test-container:6.13.0'
           ansible-core-version: ${{ matrix.ansible }}
@@ -139,7 +139,7 @@ jobs:
 
       - name: Run integration tests
         if: ${{ matrix.ansible != 'stable-2.13'}}
-        uses: ansible-community/ansible-test-gh-action@v1.15.0
+        uses: ansible-community/ansible-test-gh-action@v1.16.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
           #target-python-version: ${{ matrix.python }}
