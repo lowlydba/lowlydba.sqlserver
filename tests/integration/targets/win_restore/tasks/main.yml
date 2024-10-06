@@ -48,4 +48,4 @@
         that:
           - error_result.failed == true
           - "'already exists' in error_result.msg"
-          - error_result.msg is not None
+          - error_result.msg != None
