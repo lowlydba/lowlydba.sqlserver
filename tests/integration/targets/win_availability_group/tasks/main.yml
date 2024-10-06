@@ -11,6 +11,7 @@
     use_last_backup: false
     healthcheck_timeout: 15000
     basic_availability_group: false
+    contained_availability_group: false
     force: false
     failure_condition_level: "OnServerDown"
     database: "ag-test-db"
@@ -29,6 +30,7 @@
       database: "{{ database }}"
       healthcheck_timeout: "{{ healthcheck_timeout }}"
       basic_availability_group: "{{ basic_availability_group }}"
+      contained_availability_group: "{{ contained_availability_group }}"
       force: "{{ force }}"
       allow_null_backup: true
       failure_condition_level: "{{ failure_condition_level }}"
@@ -63,6 +65,18 @@
           - result.data.DtcSupportEnabled is false
           - result.data.AvailabilityReplicas != None
           - result is changed
+    - name: Create listener
+      lowlydba.sqlserver.ag_listener:
+        ag_name: "{{ ag_name }}"
+        sql_instance: "{{ sqlserver_instance }}"
+        listener_name: "{{ ag_name }}-lis"
+      when: contained_availability_group
+    - name: Create login on contained AG
+      lowlydba.sqlserver.login:
+        sql_instance: "{{ ag_name }}-lis"
+        login: TheIntern
+        password: ReallyComplexStuff12345!
+      when: contained_availability_group
 
     - name: Change availability group
       lowlydba.sqlserver.availability_group:
@@ -98,10 +112,41 @@
         that:
           - result is changed
 
+    - name: Create Contained availability group
+      lowlydba.sqlserver.availability_group:
+        contained_availability_group: true
+        ag_name: "contained-ag"
+
+    - name: create Listener on contained
+      lowlydba.sqlserver.ag_listener:
+        ag_name: "contained-ag"
+        sql_instance: "{{ sqlserver_instance }}"
+        listener_name: "contained"
+
+    - name: Create login on contained availability group
+      lowlydba.sqlserver.login:
+        sql_instance: "contained"
+        login: TheIntern
+        password: ReallyComplexStuff12345!
+
+    - name: Drop contained availability group
+      lowlydba.sqlserver.availability_group:
+        state: absent
+        ag_name: "contained-ag"
+        register: result
+    - assert:
+        that:
+          - result is changed
+
   always:
     - name: Drop availability group
       lowlydba.sqlserver.availability_group:
         state: absent
+
+    - name: Drop contained availability group
+      lowlydba.sqlserver.availability_group:
+        state: absent
+        ag_name: "contained-ag"
 
     - name: Drop database
       lowlydba.sqlserver.database:
