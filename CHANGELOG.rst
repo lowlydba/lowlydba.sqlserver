@@ -4,6 +4,19 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
+v2.3.4
+======
+
+Release Summary
+---------------
+
+Minor bugfix for failed database restores.
+
+Bugfixes
+--------
+
+- Include warning logs in failure output for the restore module to indicate root causes (https://github.com/lowlydba/lowlydba.sqlserver/pull/266).
+
 v2.3.3
 ======
 

@@ -156,7 +156,7 @@ try {
     if ($null -ne $keepCDC) {
         $restoreSplat.Add("KeepCDC", $keepCDC)
     }
-    $output = Restore-DbaDatabase @restoreSplat
+    $output = Restore-DbaDatabase @restoreSplat -WarningVariable warnings
 
     if ($null -ne $output) {
         $resultData = ConvertTo-SerializableObject -InputObject $output
@@ -166,5 +166,10 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Error restoring database: $($_.Exception.Message).", $_)
+    # Restore command hides relevant error info as warnings, so append warning logs to any failures
+    $warningMessage = ""
+    if ($warnings) {
+        $warningMessage = " Additional warnings: $warnings."
+    }
+    $module.FailJson("Error restoring database: $($_.Exception.Message).$warningMessage", $_)
 }
