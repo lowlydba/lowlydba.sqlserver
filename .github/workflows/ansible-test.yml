@@ -79,7 +79,7 @@ jobs:
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
-      - uses: codecov/codecov-action@v4.5.0
+      - uses: codecov/codecov-action@v4.6.0
         with:
           fail_ci_if_error: false
 
@@ -153,6 +153,6 @@ jobs:
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
-      - uses: codecov/codecov-action@v4.5.0
+      - uses: codecov/codecov-action@v4.6.0
         with:
           fail_ci_if_error: false
