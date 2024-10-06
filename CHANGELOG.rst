@@ -7,6 +7,11 @@ lowlydba.sqlserver Release Notes
 v2.3.4
 ======
 
+Release Summary
+---------------
+
+Minor bugfix for failed database restores.
+
 Bugfixes
 --------
 
