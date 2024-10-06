@@ -167,9 +167,9 @@ try {
 }
 catch {
     # Restore command hides relevant error info as warnings, so append warning logs to any failures
-    $warningMessage = "";
+    $warningMessage = ""
     if ($warnings) {
-        $warningMessage = "Additional warnings: $warnings."
+        $warningMessage = " Additional warnings: $warnings."
     }
-    $module.FailJson("Error restoring database: $($_.Exception.Message). $warningMessage", $_)
+    $module.FailJson("Error restoring database: $($_.Exception.Message).$warningMessage", $_)
 }
