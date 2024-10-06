@@ -37,6 +37,7 @@
     - name: Modify login
       lowlydba.sqlserver.login:
         default_database: "model"
+        password: "new_password"
         enabled: true
       register: result
     - assert:
@@ -45,6 +46,21 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
+          - result.data.IsDisabled is false
+          - result.data.Name == "{{ login_name }}"
+          - result.data.DefaultDatabase == "model"
+          - result.data.PasswordChanged is true
+
+    - name: Don't modify login
+      lowlydba.sqlserver.login:
+        default_database: "model"
+        password: "new_password"
+        enabled: true
+      register: result
+    - assert:
+        that:
+          - result is not changed
+          - result.data.PasswordChanged is false
           - result.data.IsDisabled is false
           - result.data.Name == "{{ login_name }}"
           - result.data.DefaultDatabase == "model"

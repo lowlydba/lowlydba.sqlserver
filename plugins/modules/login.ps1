@@ -100,7 +100,6 @@ try {
         }
         if (($null -ne $secPassword) -and ($skip_password_reset -eq $false)) {
             $setLoginSplat.add("SecurePassword", $secPassword)
-            $changed = $true
         }
 
         # Login already exists
@@ -114,10 +113,15 @@ try {
                 $disabled = $false
                 $setLoginSplat.add("Enable", $true)
             }
-            # Login needs to be modified
-            if (($changed -eq $true) -or ($disabled -ne $existingLogin.IsDisabled) -or ($setLoginSplat.ContainsKey("SecurePassword"))) {
+            if ($disabled -ne $existingLogin.IsDisabled) {
+                $changed = $true
+            }
+            # Login needs to be modified (or password *may* be changed)
+            if (($changed -eq $true) -or ($setLoginSplat.ContainsKey("SecurePassword"))) {
                 $output = Set-DbaLogin @setLoginSplat
-                $module.result.changed = $true
+                if (($output.PasswordChanged) -eq $true -or ($changed -eq $true)) {
+                    $module.result.changed = $true
+                }
             }
         }
         # New login
