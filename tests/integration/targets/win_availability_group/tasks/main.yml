@@ -107,7 +107,7 @@
       lowlydba.sqlserver.availability_group:
         contained_availability_group: true
         ag_name: "contained-ag"
-        database: "{{ default(omit) }}"
+        database: "{{ omit }}"
 
     - name: create Listener on contained
       lowlydba.sqlserver.ag_listener:
