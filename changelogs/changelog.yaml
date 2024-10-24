@@ -505,3 +505,12 @@ releases:
     - 2-3-3-release-summary.yml
     - 245-ag_listener-ip_address-fix.yml
     release_date: '2024-06-06'
+  2.3.4:
+    changes:
+      bugfixes:
+      - Include warning logs in failure output for the restore module to indicate
+        root causes (https://github.com/lowlydba/lowlydba.sqlserver/pull/266).
+      release_summary: Minor bugfix for failed database restores.
+    fragments:
+    - 266-restore-warnings.yaml
+    release_date: '2024-10-06'

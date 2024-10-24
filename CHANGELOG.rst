@@ -4,11 +4,25 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
-v2.3.4
+v2.3.5
 ===
 Release Summary
 --------------
 Added support for contained Availability Groups using dbatools 2.1.15
+
+=======
+v2.3.34
+======
+
+Release Summary
+---------------
+
+Minor bugfix for failed database restores.
+
+Bugfixes
+--------
+
+- Include warning logs in failure output for the restore module to indicate root causes (https://github.com/lowlydba/lowlydba.sqlserver/pull/266).
 
 v2.3.3
 ======
