@@ -52,10 +52,8 @@ jobs:
         ansible:
           # It's important that Sanity is tested against all stable-X.Y branches
           # Testing against `devel` may fail as new tests are added.
-          - stable-2.13
-          - stable-2.14
-          - stable-2.15
           - stable-2.16
+          - stable-2.17
           - devel
     runs-on: ubuntu-latest
     steps:
