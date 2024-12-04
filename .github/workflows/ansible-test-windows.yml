@@ -94,7 +94,7 @@ jobs:
         shell: cmd
         run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
 
-      - uses: Vampire/setup-wsl@v3.1.3
+      - uses: Vampire/setup-wsl@v4.0.0
         with:
           distribution: ${{ matrix.wsl }}
           update: "false"
