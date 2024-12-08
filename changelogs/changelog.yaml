@@ -514,3 +514,20 @@ releases:
     fragments:
     - 266-restore-warnings.yaml
     release_date: '2024-10-06'
+  2.3.5:
+    changes:
+      bugfixes:
+      - Fix error that occurred when creating a login with `skip_password_reset` as
+        true. (https://github.com/lowlydba/lowlydba.sqlserver/pull/287)
+      release_summary: Bugfix for login module when creating new logins.
+    fragments:
+    - 287-login-bugfix.yml
+    release_date: '2024-12-08'
+  2.3.6:
+    changes:
+      bugfixes:
+      - Fix error when creating an agent job schedule with `enabled` as true. (https://github.com/lowlydba/lowlydba.sqlserver/pull/288)
+      release_summary: Bugfix for creating agent job schedules as explicitly enabled.
+    fragments:
+    - 288-fix-agent-schedule.yml
+    release_date: '2024-12-08'

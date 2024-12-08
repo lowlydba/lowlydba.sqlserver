@@ -4,6 +4,32 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
+v2.3.6
+======
+
+Release Summary
+---------------
+
+Bugfix for creating agent job schedules as explicitly enabled.
+
+Bugfixes
+--------
+
+- Fix error when creating an agent job schedule with `enabled` as true. (https://github.com/lowlydba/lowlydba.sqlserver/pull/288)
+
+v2.3.5
+======
+
+Release Summary
+---------------
+
+Bugfix for login module when creating new logins.
+
+Bugfixes
+--------
+
+- Fix error that occurred when creating a login with `skip_password_reset` as true. (https://github.com/lowlydba/lowlydba.sqlserver/pull/287)
+
 v2.3.4
 ======
 

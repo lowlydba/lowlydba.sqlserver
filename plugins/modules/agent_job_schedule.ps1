@@ -101,11 +101,11 @@ if ($null -ne $frequencyRecurrenceFactor) {
 try {
     $existingSchedule = Get-DbaAgentSchedule -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Schedule $schedule
     if ($state -eq "present") {
-        if ($enabled -eq $true) {
-            $scheduleParams.Add("Enabled", $true)
-        }
         # Update schedule
         if ($null -ne $existingSchedule) {
+            if ($enabled -eq $true) {
+                $scheduleParams.Add("Enabled", $true)
+            }
             # Need to serialize to prevent SMO auto refreshing
             $old = ConvertTo-SerializableObject -InputObject $existingSchedule -UseDefaultProperty $false
             $output = Set-DbaAgentSchedule @scheduleParams
