@@ -4,6 +4,19 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
+v2.3.6
+======
+
+Release Summary
+---------------
+
+Bugfix for creating agent job schedules as explicitly enabled.
+
+Bugfixes
+--------
+
+- Fix error when creating an agent job schedule with `enabled` as true. (https://github.com/lowlydba/lowlydba.sqlserver/pull/288)
+
 v2.3.5
 ======
 
