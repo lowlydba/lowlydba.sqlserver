@@ -29,6 +29,7 @@
     - name: Create login
       lowlydba.sqlserver.login:
         password_policy_enforced: "{{ password_policy_enforced }}"
+        skip_password_reset: true
       register: result
     - assert:
         that:
