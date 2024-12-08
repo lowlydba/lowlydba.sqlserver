@@ -1,3 +1,0 @@
-bugfixes:
-  - Fix error when creating an agent job schedule with `enabled` as true. (https://github.com/lowlydba/lowlydba.sqlserver/pull/288)
-release_summary: Bugfix for creating agent job schedules as explicitly enabled.
