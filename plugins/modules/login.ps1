@@ -123,6 +123,7 @@ try {
         }
         # New login
         else {
+            $setLoginSplat.add("SecurePassword", $secPassword)
             if ($null -ne $language) {
                 $setLoginSplat.add("Language", $language)
             }
@@ -140,7 +141,6 @@ try {
             $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("DefaultDatabase")
             $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("Language")
         }
-
     }
 
     if ($null -ne $output) {
