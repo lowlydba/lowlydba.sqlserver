@@ -42,14 +42,12 @@ EXAMPLES = r'''
 - name: Remove a user from a fixed server role
   lowlydba.sqlserver.login_role:
     sql_instance: sql-01.myco.io
-    sql_instance: sql-01.myco.io
     login: TheIntern
     server_role: sysadmin
     state: absent
 
 - name: Add a user to a custom server role
   lowlydba.sqlserver.login_role:
-    sql_instance: sql-01.myco.io
     sql_instance: sql-01.myco.io
     login: TheIntern
     server_role: demi-admin
