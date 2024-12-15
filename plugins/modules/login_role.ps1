@@ -77,7 +77,7 @@ if ($state -eq "absent") {
             $module.Result.changed = $true
         }
         catch {
-            $module.FailJson("Removing login [$login] from server role [$role] failed: $($_.Exception.Message)", $_)
+            $module.FailJson("Removing login [$login] from server role [$serverRole] failed: $($_.Exception.Message)", $_)
         }
     }
 }
