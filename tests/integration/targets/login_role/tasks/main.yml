@@ -1,7 +1,7 @@
 ---
 - name: Var block
   vars:
-    login_name: "PhillipJFry"
+    login_name: "PhillipJFryDeuce"
     plain_password: "P0pS3cret!23$%"
     password_expiration_enabled: false
     password_policy_enforced: false
@@ -11,7 +11,7 @@
     language: "us_english"
     default_schema: "dbo"
     database: "master"
-    server_role: "sysadmin"
+    server_role: "dbcreator"
   module_defaults:
     lowlydba.sqlserver.login:
       sql_instance: "{{ sqlserver_instance }}"
