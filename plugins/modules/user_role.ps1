@@ -77,7 +77,6 @@ if ($state -eq "absent") {
                 Role = $role
                 EnableException = $true
                 WhatIf = $checkMode
-                Force = $true
                 Confirm = $false
             }
             $output = Remove-DbaDbRoleMember @removeRoleMemberSplat
@@ -100,7 +99,6 @@ elseif ($state -eq "present") {
                 Role = $role
                 EnableException = $true
                 WhatIf = $checkMode
-                Force = $true
                 Confirm = $false
             }
             $output = Add-DbaDbRoleMember @addRoleMemberSplat
