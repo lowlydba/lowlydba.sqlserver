@@ -29,7 +29,7 @@
       sql_instance: "{{ sqlserver_instance }}"
       sql_username: "{{ sqlserver_username }}"
       sql_password: "{{ sqlserver_password }}"
-      server_role: "{{ database }}"
+      server_role: "{{ server_role }}"
       login: "{{ login_name }}"
       state: present
   tags: ["sqlserver.user"]
