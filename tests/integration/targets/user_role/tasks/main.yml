@@ -104,6 +104,7 @@
 
     - name: Remove user from database role
       lowlydba.sqlserver.user_role:
+        state: "absent"
       register: result
     - assert:
         that:
