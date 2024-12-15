@@ -57,7 +57,7 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from the C(Remove-DbaDbRoleMember), (Get-DbaDbRoleMember), or C(Add-DbaDbRoleMember) functions.
+  description: Output from the C(Remove-DbaServerRoleMember), (Get-DbaServerRoleMember), or C(Add-DbaServerRoleMember) functions.
   returned: success, but not in check_mode.
   type: dict
 '''

@@ -83,7 +83,7 @@ if ($state -eq "absent") {
 }
 elseif ($state -eq "present") {
     # Add user to role
-    if ($null -eq $existingRoleMembers) {
+    if ($null -eq $existingRoleMember) {
         try {
             $addRoleMemberSplat = @{
                 SqlInstance = $sqlInstance
