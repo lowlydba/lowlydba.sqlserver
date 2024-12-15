@@ -76,20 +76,24 @@
     - name: Add user to non-existent database role
       lowlydba.sqlserver.user_role:
         role: db_IMadeThisOneUp
-      register: result
+      register: error_result
+      failed_when: error_result.failed
+      ignore_errors: true
     - assert:
         that:
-          - result.failed == true
-          - "'Role [db_IMadeThisOneUp] does not exist in database' in result.msg"
+          - error_result.failed == true
+          - "'Role [db_IMadeThisOneUp] does not exist in database' in error_result.msg"
 
     - name: Add non-existent user to database role
       lowlydba.sqlserver.user_role:
         username: NewUserWhoThis
-      register: result
+      register: error_result
+      failed_when: error_result.failed
+      ignore_errors: true
     - assert:
         that:
-          - result.failed == true
-          - "'User [NewUserWhoThis] does not exist in database' in result.msg"
+          - error_result.failed == true
+          - "'User [NewUserWhoThis] does not exist in database' in error_result.msg"
 
     - name: Add user again to database role
       lowlydba.sqlserver.user_role:
