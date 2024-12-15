@@ -1,0 +1,119 @@
+---
+- name: Var block
+  vars:
+    login_name: "PhillipJFry"
+    plain_password: "P0pS3cret!23$%"
+    password_expiration_enabled: false
+    password_policy_enforced: false
+    password_must_change: false
+    enabled: false
+    default_database: "master"
+    language: "us_english"
+    default_schema: "dbo"
+    username: "PhillipJFry"
+    database: "master"
+    role: "db_owner"
+  module_defaults:
+    lowlydba.sqlserver.login:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      default_database: "{{ default_database }}"
+      login: "{{ login_name }}"
+      password: "{{ plain_password }}"
+      password_expiration_enabled: "{{ password_expiration_enabled }}"
+      password_must_change: "{{ password_must_change }}"
+      enabled: "{{ enabled }}"
+      language: "{{ language }}"
+      state: present
+    lowlydba.sqlserver.user:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      database: "{{ database }}"
+      login: "{{ login_name }}"
+      username: "{{ username }}"
+      default_schema: "{{ default_schema }}"
+      state: present
+    lowlydba.sqlserver.user_role:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      database: "{{ database }}"
+      username: "{{ username }}"
+      role: "{{ role }}"
+      state: present
+  tags: ["sqlserver.user"]
+  block:
+    - name: Create login
+      lowlydba.sqlserver.login:
+      register: result
+    - assert:
+        that:
+          - result.data != None
+
+    - name: Create user
+      lowlydba.sqlserver.user:
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.ComputerName != None
+          - result.data.InstanceName != None
+          - result.data.SqlInstance != None
+          - result.data.Database == "{{ database }}"
+          - result.data.DefaultSchema == "{{ default_schema }}"
+          - result.data.Login == "{{ login_name }}"
+          - result.data.Name == "{{ username }}"
+
+    - name: Add user to database role
+      lowlydba.sqlserver.user_role:
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Add user to non-existent database role
+      lowlydba.sqlserver.user_role:
+        role: db_IMadeThisOneUp
+      register: error_result
+      failed_when: error_result.failed
+      ignore_errors: true
+    - assert:
+        that:
+          - error_result.failed == true
+          - "'Role [db_IMadeThisOneUp] does not exist in database' in error_result.msg"
+
+    - name: Add non-existent user to database role
+      lowlydba.sqlserver.user_role:
+        username: NewUserWhoThis
+      register: error_result
+      failed_when: error_result.failed
+      ignore_errors: true
+    - assert:
+        that:
+          - error_result.failed == true
+          - "'User [NewUserWhoThis] does not exist in database' in error_result.msg"
+
+    - name: Add user again to database role
+      lowlydba.sqlserver.user_role:
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Remove user from database role
+      lowlydba.sqlserver.user_role:
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+  always:
+    - name: Drop user
+      lowlydba.sqlserver.user:
+        state: "absent"
+    - name: Drop login
+      lowlydba.sqlserver.login:
+        state: "absent"
