@@ -45,7 +45,6 @@ $getRoleMemberSplat = @{
     SqlCredential = $sqlCredential
     Login = $login
     ServerRole = $serverRole
-    IncludeSystemUser = $true
     EnableException = $true
 }
 
