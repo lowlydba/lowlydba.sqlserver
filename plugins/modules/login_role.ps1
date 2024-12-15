@@ -21,7 +21,7 @@ $spec = @{
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
-$login = $module.Params.database
+$login = $module.Params.login
 $serverRole = $module.Params.server_role
 $state = $module.Params.state
 $checkMode = $module.CheckMode
