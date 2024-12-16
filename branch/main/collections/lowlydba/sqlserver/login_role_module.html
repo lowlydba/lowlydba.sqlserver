@@ -7,7 +7,7 @@
 <meta content="2.16.1" name="antsibull-docs" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lowlydba.sqlserver.tcp_port module – Sets the TCP port for the instance &mdash; Ansible collections  documentation</title>
+  <title>lowlydba.sqlserver.login_role module – Configures a login’s server roles. &mdash; Ansible collections  documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5707b69d" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/ansible.css?v=c5b67dd2" />
       <link rel="stylesheet" type="text/css" href="../../../_static/antsibull-minimal.css" />
@@ -22,8 +22,8 @@
       <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="lowlydba.sqlserver.traceflag module – Enable or disable global trace flags on a SQL Server instance" href="traceflag_module.html" />
-    <link rel="prev" title="lowlydba.sqlserver.spn module – Configures SPNs for SQL Server" href="spn_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
+    <link rel="next" title="lowlydba.sqlserver.maintenance_solution module – Install/update Maintenance Solution by Ola Hallengren" href="maintenance_solution_module.html" />
+    <link rel="prev" title="lowlydba.sqlserver.login module – Configures a login for the target SQL Server instance" href="login_module.html" /><!-- extra head elements for Ansible beyond RTD Sphinx Theme -->
 
 
 
@@ -114,7 +114,7 @@
           <li class="breadcrumb-item"><a href="../../index.html">Collection Index</a></li>
           <li class="breadcrumb-item"><a href="../index.html">Collections in the Lowlydba Namespace</a></li>
           <li class="breadcrumb-item"><a href="index.html">Lowlydba.Sqlserver</a></li>
-      <li class="breadcrumb-item active">lowlydba.sqlserver.tcp_port module – Sets the TCP port for the instance</li>
+      <li class="breadcrumb-item active">lowlydba.sqlserver.login_role module – Configures a login’s server roles.</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -125,8 +125,8 @@
   
            <div itemprop="articleBody">
              
-  <span class="target" id="ansible-collections-lowlydba-sqlserver-tcp-port-module"></span><section id="lowlydba-sqlserver-tcp-port-module-sets-the-tcp-port-for-the-instance">
-<h1>lowlydba.sqlserver.tcp_port module – Sets the TCP port for the instance<a class="headerlink" href="#lowlydba-sqlserver-tcp-port-module-sets-the-tcp-port-for-the-instance" title="Link to this heading"></a></h1>
+  <span class="target" id="ansible-collections-lowlydba-sqlserver-login-role-module"></span><section id="lowlydba-sqlserver-login-role-module-configures-a-login-s-server-roles">
+<h1>lowlydba.sqlserver.login_role module – Configures a login’s server roles.<a class="headerlink" href="#lowlydba-sqlserver-login-role-module-configures-a-login-s-server-roles" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/lowlydba/sqlserver/">lowlydba.sqlserver collection</a> (version 2.5.0).</p>
@@ -134,10 +134,10 @@
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">lowlydba.sqlserver</span></code>.
 You need further requirements to be able to use this module,
-see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-tcp-port-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
-<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">lowlydba.sqlserver.tcp_port</span></code>.</p>
+see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-login-role-module-requirements"><span class="std std-ref">Requirements</span></a> for details.</p>
+<p>To use it in a playbook, specify: <code class="code docutils literal notranslate"><span class="pre">lowlydba.sqlserver.login_role</span></code>.</p>
 </div>
-<p class="ansible-version-added">New in lowlydba.sqlserver 0.10.0</p>
+<p class="ansible-version-added">New in lowlydba.sqlserver 2.5.0</p>
 <nav class="contents local" id="contents">
 <ul class="simple">
 <li><p><a class="reference internal" href="#synopsis" id="id1">Synopsis</a></p></li>
@@ -151,11 +151,11 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <section id="synopsis">
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Synopsis</a><a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>Sets the TCP port for a SQL Server instance.</p></li>
+<li><p>Adds or removes a login’s server role.</p></li>
 </ul>
 </section>
 <section id="requirements">
-<span id="ansible-collections-lowlydba-sqlserver-tcp-port-module-requirements"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Requirements</a><a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
+<span id="ansible-collections-lowlydba-sqlserver-login-role-module-requirements"></span><h2><a class="toc-backref" href="#id2" role="doc-backlink">Requirements</a><a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
 <p>The below requirements are needed on the host that executes this module.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://www.powershellgallery.com/packages/dbatools/">dbatools</a> PowerShell module</p></li>
@@ -171,65 +171,50 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-force"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-force"><strong>force</strong></p>
-<a class="ansibleOptionLink" href="#parameter-force" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
-<p><em class="ansible-option-versionadded">added in lowlydba.sqlserver 1.2.0</em></p>
+<div class="ansibleOptionAnchor" id="parameter-login"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-login-role-module-parameter-login"><strong>login</strong></p>
+<a class="ansibleOptionLink" href="#parameter-login" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Restart SQL Server and SQL Agent services automatically.</p>
-<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
-<ul class="simple">
-<li><p><code class="ansible-option-default-bold docutils literal notranslate"><strong><span class="pre">false</span></strong></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
-<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
-</ul>
+<td><div class="ansible-option-cell"><p>Name of the login.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-ip_address"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-ip-address"><strong>ip_address</strong></p>
-<a class="ansibleOptionLink" href="#parameter-ip_address" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+<div class="ansibleOptionAnchor" id="parameter-server_role"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-login-role-module-parameter-server-role"><strong>server_role</strong></p>
+<a class="ansibleOptionLink" href="#parameter-server_role" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>IPv4 address.</p>
-</div></td>
-</tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-password"><strong>password</strong></p>
-<a class="ansibleOptionLink" href="#parameter-password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Password for alternative credential to authenticate with Windows.</p>
-</div></td>
-</tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-port"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-port"><strong>port</strong></p>
-<a class="ansibleOptionLink" href="#parameter-port" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span> / <span class="ansible-option-required">required</span></p>
-</div></td>
-<td><div class="ansible-option-cell"><p>Port for SQL Server to listen on.</p>
+<td><div class="ansible-option-cell"><p>The server role for the login to be modified.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_instance"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-sql-instance"><strong>sql_instance</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-sql_instance"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-login-role-module-parameter-sql-instance"><strong>sql_instance</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_instance" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The SQL Server instance to modify.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-sql-password"><strong>sql_password</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-sql_password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-login-role-module-parameter-sql-password"><strong>sql_password</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Password for SQL Authentication.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-sql_username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-sql-username"><strong>sql_username</strong></p>
+<div class="ansibleOptionAnchor" id="parameter-sql_username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-login-role-module-parameter-sql-username"><strong>sql_username</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Username for SQL Authentication.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="parameter-username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-parameter-username"><strong>username</strong></p>
-<a class="ansibleOptionLink" href="#parameter-username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+<div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-login-role-module-parameter-state"><strong>state</strong></p>
+<a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Username for alternative credential to authenticate with Windows.</p>
+<td><div class="ansible-option-cell"><p>Whether or not the object should be <code class="docutils literal notranslate"><span class="pre">present</span></code> or <code class="docutils literal notranslate"><span class="pre">absent</span></code>.</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-default-bold docutils literal notranslate"><strong><span class="pre">&quot;present&quot;</span></strong></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;absent&quot;</span></code></p></li>
+</ul>
 </div></td>
 </tr>
 </tbody>
@@ -246,7 +231,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="attribute-check_mode"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-attribute-check-mode"><strong>check_mode</strong></p>
+<div class="ansibleOptionAnchor" id="attribute-check_mode"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-login-role-module-attribute-check-mode"><strong>check_mode</strong></p>
 <a class="ansibleOptionLink" href="#attribute-check_mode" title="Permalink to this attribute"></a></div></td>
 <td><div class="ansible-option-cell"><p><strong class="ansible-attribute-support-label">Support: </strong><strong class="ansible-attribute-support-full">full</strong></p>
 </div></td>
@@ -254,9 +239,9 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="attribute-platform"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-attribute-platform"><strong>platform</strong></p>
+<div class="ansibleOptionAnchor" id="attribute-platform"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-login-role-module-attribute-platform"><strong>platform</strong></p>
 <a class="ansibleOptionLink" href="#attribute-platform" title="Permalink to this attribute"></a></div></td>
-<td><div class="ansible-option-cell"><p><strong class="ansible-attribute-support-property">Platform:</strong> <strong class="ansible-attribute-support-full">Windows</strong></p>
+<td><div class="ansible-option-cell"><p><strong class="ansible-attribute-support-property">Platforms:</strong> <strong class="ansible-attribute-support-full">all</strong></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Target OS/families that can be operated against.</p>
 </div></td>
@@ -266,15 +251,24 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </section>
 <section id="examples">
 <h2><a class="toc-backref" href="#id5" role="doc-backlink">Examples</a><a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
-<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set the default port</span>
-<span class="w">  </span><span class="nt">lowlydba.sqlserver.tcp_port</span><span class="p">:</span>
+<div class="highlight-yaml+jinja notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Add a user to a fixed server role</span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.login_role</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span>
-<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1433</span>
+<span class="w">    </span><span class="nt">login</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TheIntern</span>
+<span class="w">    </span><span class="nt">server_role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sysadmin</span>
 
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set a non-standard default port</span>
-<span class="w">  </span><span class="nt">lowlydba.sqlserver.tcp_port</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Remove a user from a fixed server role</span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.login_role</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span>
-<span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1933</span>
+<span class="w">    </span><span class="nt">login</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TheIntern</span>
+<span class="w">    </span><span class="nt">server_role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sysadmin</span>
+<span class="w">    </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">absent</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Add a user to a custom server role</span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.login_role</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span>
+<span class="w">    </span><span class="nt">login</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TheIntern</span>
+<span class="w">    </span><span class="nt">server_role</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">demi-admin</span>
 </pre></div>
 </div>
 </section>
@@ -289,11 +283,10 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </thead>
 <tbody>
 <tr class="row-even"><td><div class="ansible-option-cell">
-<div class="ansibleOptionAnchor" id="return-data"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-tcp-port-module-return-data"><strong>data</strong></p>
+<div class="ansibleOptionAnchor" id="return-data"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-login-role-module-return-data"><strong>data</strong></p>
 <a class="ansibleOptionLink" href="#return-data" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Output from the <code class="docutils literal notranslate"><span class="pre">Set-DbaTcpPort</span></code> function.</p>
-<p>RestartRequired returned if the change requires a service restart to take effect.</p>
+<td><div class="ansible-option-cell"><p>Output from the <code class="docutils literal notranslate"><span class="pre">Remove-DbaServerRoleMember</span></code>, (Get-DbaServerRoleMember), or <code class="docutils literal notranslate"><span class="pre">Add-DbaServerRoleMember</span></code> functions.</p>
 <p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> success, but not in check_mode.</p>
 </div></td>
 </tr>
@@ -321,8 +314,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
           
 
 <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="spn_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.spn module – Configures SPNs for SQL Server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="traceflag_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.traceflag module – Enable or disable global trace flags on a SQL Server instance" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="login_module.html" class="btn btn-neutral float-left" title="lowlydba.sqlserver.login module – Configures a login for the target SQL Server instance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="maintenance_solution_module.html" class="btn btn-neutral float-right" title="lowlydba.sqlserver.maintenance_solution module – Install/update Maintenance Solution by Ola Hallengren" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
