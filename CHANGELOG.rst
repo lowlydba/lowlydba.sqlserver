@@ -4,6 +4,24 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
+v2.5.0
+======
+
+Release Summary
+---------------
+
+New login_role module for managing server role members!
+
+Minor Changes
+-------------
+
+- Add new `login_role` module to add/remove server roles for logins (https://github.com/lowlydba/lowlydba.sqlserver/pull/293).
+
+New Modules
+-----------
+
+- login_role - Configures a login's  server roles.
+
 v2.4.0
 ======
 
