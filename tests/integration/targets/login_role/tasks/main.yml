@@ -1,0 +1,91 @@
+---
+- name: Var block
+  vars:
+    login_name: "PhillipJFryDeuce"
+    plain_password: "P0pS3cret!23$%"
+    password_expiration_enabled: false
+    password_policy_enforced: false
+    password_must_change: false
+    enabled: false
+    default_database: "master"
+    language: "us_english"
+    default_schema: "dbo"
+    database: "master"
+    server_role: "dbcreator"
+  module_defaults:
+    lowlydba.sqlserver.login:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      default_database: "{{ default_database }}"
+      login: "{{ login_name }}"
+      password: "{{ plain_password }}"
+      password_expiration_enabled: "{{ password_expiration_enabled }}"
+      password_must_change: "{{ password_must_change }}"
+      enabled: "{{ enabled }}"
+      language: "{{ language }}"
+      state: present
+    lowlydba.sqlserver.login_role:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+      server_role: "{{ server_role }}"
+      login: "{{ login_name }}"
+      state: present
+  tags: ["sqlserver.user"]
+  block:
+    - name: Create login
+      lowlydba.sqlserver.login:
+      register: result
+    - assert:
+        that:
+          - result.data != None
+
+    - name: Add login to server role
+      lowlydba.sqlserver.login_role:
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Add login to non-existent server role
+      lowlydba.sqlserver.login_role:
+        server_role: IMadeThisOneUp
+      register: error_result
+      failed_when: error_result.failed
+      ignore_errors: true
+    - assert:
+        that:
+          - error_result.failed == true
+          - "'Server role [IMadeThisOneUp] does not exist' in error_result.msg"
+
+    - name: Add non-existent login to server role
+      lowlydba.sqlserver.login_role:
+        login: NewUserWhoThis
+      register: error_result
+      failed_when: error_result.failed
+      ignore_errors: true
+    - assert:
+        that:
+          - error_result.failed == true
+          - "'Login [NewUserWhoThis] does not exist' in error_result.msg"
+
+    - name: Add Login again to database role
+      lowlydba.sqlserver.login_role:
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Remove login from server role
+      lowlydba.sqlserver.login_role:
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+  always:
+    - name: Drop login
+      lowlydba.sqlserver.login:
+        state: "absent"

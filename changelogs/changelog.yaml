@@ -544,3 +544,15 @@ releases:
       name: user_role
       namespace: ''
     release_date: '2024-12-15'
+  2.5.0:
+    changes:
+      minor_changes:
+      - Add new `login_role` module to add/remove server roles for logins (https://github.com/lowlydba/lowlydba.sqlserver/pull/293).
+      release_summary: New login_role module for managing server role members!
+    fragments:
+    - 293-login-role-module.yml
+    modules:
+    - description: Configures a login's  server roles.
+      name: login_role
+      namespace: ''
+    release_date: '2024-12-15'
