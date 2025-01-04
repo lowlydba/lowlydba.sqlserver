@@ -142,6 +142,23 @@ jobs:
           # Verify port forwarding
           netsh interface portproxy show v4tov4
         shell: powershell
+        
+      - name: Allow WinRM Port in Firewall
+        run: |
+          netsh advfirewall firewall add rule name="Allow WinRM" dir=in action=allow protocol=TCP localport=5986
+        shell: pwsh
+
+      - name: Test WSL2 Connection
+        run: |
+          curl -k https://127.0.0.1:5986/wsman
+        shell: pwsh
+
+      - name: Validate WinRM Configuration
+        run: |
+          wsl -e powershell.exe -Command "
+          Get-WSManInstance -ResourceURI winrm/config/listener | Select-Object -Property Address,Transport,Enabled
+          "
+        shell: pwsh
 
       # Override break-sys-pkg defaults, because we don't need to bother with python venv for CI
       - name: Install ansible-base (${{ matrix.ansible }})
