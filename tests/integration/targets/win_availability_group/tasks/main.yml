@@ -109,18 +109,6 @@
         ag_name: "contained-ag"
         database: "{{ omit }}"
 
-    - name: create Listener on contained
-      lowlydba.sqlserver.ag_listener:
-        ag_name: "contained-ag"
-        sql_instance: "{{ sqlserver_instance }}"
-        listener_name: "contained"
-
-    - name: Create login on contained availability group
-      lowlydba.sqlserver.login:
-        sql_instance: "contained"
-        login: TheIntern
-        password: ReallyComplexStuff12345!
-
     - name: Drop contained availability group
       lowlydba.sqlserver.availability_group:
         state: absent
