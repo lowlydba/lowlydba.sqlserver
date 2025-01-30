@@ -86,6 +86,9 @@
         that:
           - result is changed
 
+    - name: Gather listener info
+      lowlydba.sqlserver.instance_info:
+          sql_instance: "{{ listener_name}}"
   always:
     - name: Drop availability group
       lowlydba.sqlserver.availability_group:
