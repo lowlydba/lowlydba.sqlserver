@@ -10,9 +10,6 @@ Release Summary
 --------------
 Added support for contained Availability Groups using dbatools 2.1.15
 
-=======
-v2.3.34
-=======
 v2.5.0
 ======
 
