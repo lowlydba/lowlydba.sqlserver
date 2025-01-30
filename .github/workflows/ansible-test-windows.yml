@@ -49,8 +49,9 @@ jobs:
         wsl:
           - Ubuntu-24.04
         ansible:
-          - stable-2.16
-          - stable-2.17
+          - stable-2.16 # May 2025 EOL
+          - stable-2.17 # November 2025 EOL
+          - stable-2.18
           - devel
         python:
           - python3
@@ -94,11 +95,12 @@ jobs:
         shell: cmd
         run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
 
-      - uses: Vampire/setup-wsl@v3.1.1
+      - uses: Vampire/setup-wsl@v4.1.0
         with:
           distribution: ${{ matrix.wsl }}
           update: "false"
           use-cache: "true"
+          wsl-version: 1
           additional-packages: |
             git
             ${{ matrix.python }}
@@ -156,7 +158,7 @@ jobs:
       - name: Install SQL Server
         continue-on-error: true
         id: mssqlsuite
-        uses: potatoqualitee/mssqlsuite@v1.7
+        uses: potatoqualitee/mssqlsuite@v1.8
         with:
           install: sqlengine
           sa-password: L0wlydb4
@@ -165,7 +167,7 @@ jobs:
       - name: Retry SQL Server install
         id: retry1
         if: steps.mssqlsuite.outcome == 'failure'
-        uses: potatoqualitee/mssqlsuite@v1.7
+        uses: potatoqualitee/mssqlsuite@v1.8
         with:
           install: sqlengine
           sa-password: L0wlydb4
@@ -182,6 +184,6 @@ jobs:
           ansible-test coverage xml -v --requirements
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
-      - uses: codecov/codecov-action@v4.6.0
+      - uses: codecov/codecov-action@v5.3.1
         with:
           fail_ci_if_error: false

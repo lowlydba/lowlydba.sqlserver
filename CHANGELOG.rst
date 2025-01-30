@@ -4,7 +4,7 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
-v2.3.5
+v2.5.1
 ===
 Release Summary
 --------------
@@ -12,6 +12,70 @@ Added support for contained Availability Groups using dbatools 2.1.15
 
 =======
 v2.3.34
+=======
+v2.5.0
+======
+
+Release Summary
+---------------
+
+New login_role module for managing server role members!
+
+Minor Changes
+-------------
+
+- Add new `login_role` module to add/remove server roles for logins (https://github.com/lowlydba/lowlydba.sqlserver/pull/293).
+
+New Modules
+-----------
+
+- login_role - Configures a login's  server roles.
+
+v2.4.0
+======
+
+Release Summary
+---------------
+
+New role user_role added to allow adding/removing database roles for users!
+
+Minor Changes
+-------------
+
+- Add new user_role module to manage users' membership to database roles (https://github.com/lowlydba/lowlydba.sqlserver/pull/292).
+
+New Modules
+-----------
+
+- user_role - Configures a user's role in a database.
+
+v2.3.6
+======
+
+Release Summary
+---------------
+
+Bugfix for creating agent job schedules as explicitly enabled.
+
+Bugfixes
+--------
+
+- Fix error when creating an agent job schedule with `enabled` as true. (https://github.com/lowlydba/lowlydba.sqlserver/pull/288)
+
+v2.3.5
+======
+
+Release Summary
+---------------
+
+Bugfix for login module when creating new logins.
+
+Bugfixes
+--------
+
+- Fix error that occurred when creating a login with `skip_password_reset` as true. (https://github.com/lowlydba/lowlydba.sqlserver/pull/287)
+
+v2.3.4
 ======
 
 Release Summary

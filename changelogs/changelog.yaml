@@ -514,3 +514,45 @@ releases:
     fragments:
     - 266-restore-warnings.yaml
     release_date: '2024-10-06'
+  2.3.5:
+    changes:
+      bugfixes:
+      - Fix error that occurred when creating a login with `skip_password_reset` as
+        true. (https://github.com/lowlydba/lowlydba.sqlserver/pull/287)
+      release_summary: Bugfix for login module when creating new logins.
+    fragments:
+    - 287-login-bugfix.yml
+    release_date: '2024-12-08'
+  2.3.6:
+    changes:
+      bugfixes:
+      - Fix error when creating an agent job schedule with `enabled` as true. (https://github.com/lowlydba/lowlydba.sqlserver/pull/288)
+      release_summary: Bugfix for creating agent job schedules as explicitly enabled.
+    fragments:
+    - 288-fix-agent-schedule.yml
+    release_date: '2024-12-08'
+  2.4.0:
+    changes:
+      minor_changes:
+      - Add new user_role module to manage users' membership to database roles (https://github.com/lowlydba/lowlydba.sqlserver/pull/292).
+      release_summary: New role user_role added to allow adding/removing database
+        roles for users!
+    fragments:
+    - 292-add-user-role-module.yml
+    modules:
+    - description: Configures a user's role in a database.
+      name: user_role
+      namespace: ''
+    release_date: '2024-12-15'
+  2.5.0:
+    changes:
+      minor_changes:
+      - Add new `login_role` module to add/remove server roles for logins (https://github.com/lowlydba/lowlydba.sqlserver/pull/293).
+      release_summary: New login_role module for managing server role members!
+    fragments:
+    - 293-login-role-module.yml
+    modules:
+    - description: Configures a login's  server roles.
+      name: login_role
+      namespace: ''
+    release_date: '2024-12-15'

@@ -49,6 +49,7 @@
       lowlydba.sqlserver.agent_job_schedule:
         schedule: "{{ forced_schedule_name }}"
         force: true
+        enabled: true
         state: present
       register: result
     - assert:
