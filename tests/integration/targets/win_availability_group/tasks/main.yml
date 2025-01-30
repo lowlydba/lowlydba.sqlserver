@@ -113,7 +113,7 @@
       lowlydba.sqlserver.availability_group:
         state: absent
         ag_name: "contained-ag"
-        register: result
+      register: result
     - assert:
         that:
           - result is changed
