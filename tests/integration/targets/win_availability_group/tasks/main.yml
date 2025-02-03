@@ -15,11 +15,6 @@
     failure_condition_level: "OnServerDown"
     database: "ag-test-db"
   module_defaults:
-    lowlydba.sqlserver.ag_listener:
-      ip_address:
-        - "192.168.6.9"
-      subnet_mask:
-        - "255.255.255.0"
     lowlydba.sqlserver.availability_group:
       sql_instance: "{{ sqlserver_instance }}"
       sql_username: "{{ sqlserver_username }}"
