@@ -254,6 +254,18 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-contained_availability_group"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-contained-availability-group"><strong>contained_availability_group</strong></p>
+<a class="ansibleOptionLink" href="#parameter-contained_availability_group" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>Indicates whether the availability group is Contained. Requires DBATools &gt;= 2.1.15</p>
+<p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
+<ul class="simple">
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
+<li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">true</span></code></p></li>
+</ul>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-database"></div>
 <div class="ansibleOptionAnchor" id="parameter-database_name"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-database-name"><span id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-database"></span><strong>database</strong></p>
 <a class="ansibleOptionLink" href="#parameter-database" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-aliases">aliases: database_name</span></p>
@@ -262,7 +274,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <td><div class="ansible-option-cell"><p>Name of the database to create the Availability Group for.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-database_health_trigger"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-database-health-trigger"><strong>database_health_trigger</strong></p>
 <a class="ansibleOptionLink" href="#parameter-database_health_trigger" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -274,7 +286,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-dtc_support_enabled"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-dtc-support-enabled"><strong>dtc_support_enabled</strong></p>
 <a class="ansibleOptionLink" href="#parameter-dtc_support_enabled" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -286,7 +298,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-failover_mode"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-failover-mode"><strong>failover_mode</strong></p>
 <a class="ansibleOptionLink" href="#parameter-failover_mode" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
@@ -298,7 +310,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-failure_condition_level"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-failure-condition-level"><strong>failure_condition_level</strong></p>
 <a class="ansibleOptionLink" href="#parameter-failure_condition_level" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
@@ -313,7 +325,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-force"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-force"><strong>force</strong></p>
 <a class="ansibleOptionLink" href="#parameter-force" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -325,7 +337,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-healthcheck_timeout"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-healthcheck-timeout"><strong>healthcheck_timeout</strong></p>
 <a class="ansibleOptionLink" href="#parameter-healthcheck_timeout" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
@@ -333,7 +345,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <p>Changes that are made to the timeout settings are effective immediately and do not require a restart of the SQL Server resource.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-is_distributed_ag"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-is-distributed-ag"><strong>is_distributed_ag</strong></p>
 <a class="ansibleOptionLink" href="#parameter-is_distributed_ag" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
@@ -345,7 +357,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-seeding_mode"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-seeding-mode"><strong>seeding_mode</strong></p>
 <a class="ansibleOptionLink" href="#parameter-seeding_mode" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
@@ -357,56 +369,56 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-shared_path"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-shared-path"><strong>shared_path</strong></p>
 <a class="ansibleOptionLink" href="#parameter-shared_path" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The network share where the backups will be backed up and restored from.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_instance"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-sql-instance"><strong>sql_instance</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_instance" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The SQL Server instance to modify.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_instance_secondary"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-sql-instance-secondary"><strong>sql_instance_secondary</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_instance_secondary" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The secondary SQL Server instance for the new Availability Group.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-sql-password"><strong>sql_password</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Password for SQL Authentication.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_password_secondary"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-sql-password-secondary"><strong>sql_password_secondary</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_password_secondary" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Password for SQL Authentication for the secondary replica.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-sql-username"><strong>sql_username</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Username for SQL Authentication.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_username_secondary"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-sql-username-secondary"><strong>sql_username_secondary</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_username_secondary" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Username for SQL Authentication for the secondary replica.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-state"><strong>state</strong></p>
 <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
@@ -418,7 +430,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </ul>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-use_last_backup"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-parameter-use-last-backup"><strong>use_last_backup</strong></p>
 <a class="ansibleOptionLink" href="#parameter-use_last_backup" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
