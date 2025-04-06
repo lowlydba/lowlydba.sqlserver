@@ -4,11 +4,17 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
-v2.5.1
-===
+v2.6.0
+======
+
 Release Summary
 --------------
-Added support for contained Availability Groups using dbatools 2.1.15
+Added support for contained Availability Groups using dbatools 2.1.15 - thanks @DorBreger!
+
+Minor Changes
+-------------
+
+- Added support for contained Availability Groups using dbatools 2.1.15 (https://github.com/lowlydba/lowlydba.sqlserver/pull/249).
 
 v2.5.0
 ======
