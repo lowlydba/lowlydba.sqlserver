@@ -81,6 +81,8 @@ jobs:
       - uses: codecov/codecov-action@v5.4.0
         with:
           fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   ###
   # Integration tests (RECOMMENDED)
@@ -154,3 +156,5 @@ jobs:
       - uses: codecov/codecov-action@v5.4.0
         with:
           fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
