@@ -61,10 +61,10 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
-          - result.data.Database == "{{ database }}"
-          - result.data.DefaultSchema == "{{ default_schema }}"
-          - result.data.Login == "{{ login_name }}"
-          - result.data.Name == "{{ username }}"
+          - result.data.Database == database
+          - result.data.DefaultSchema == default_schema
+          - result.data.Login == login_name
+          - result.data.Name == username
 
     - name: Add user to database role
       lowlydba.sqlserver.user_role:

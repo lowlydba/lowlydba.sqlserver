@@ -556,3 +556,20 @@ releases:
       name: login_role
       namespace: ''
     release_date: '2024-12-15'
+  2.6.0:
+    changes:
+      minor_changes:
+      - Added support for contained Availability Groups using dbatools 2.1.15 (https://github.com/lowlydba/lowlydba.sqlserver/pull/249).
+      release_summary: Added support for contained Availability Groups using dbatools 2.1.15 - thanks @DorBreger!
+    fragments:
+    - noop.yml
+    release_date: '2025-04-06'
+  2.6.1:
+    changes:
+      minor_changes:
+      - Added support for Ansible 2.19
+      - Updated the test matrix to include Ansible 2.19 and remove Ansible 2.16
+      release_summary: Testing updates for Ansible 2.19 compatibility.
+    fragments:
+    - 314-ansible-2-19-compatibility.yml
+    release_date: '2025-05-03'

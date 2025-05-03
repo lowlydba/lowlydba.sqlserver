@@ -19,7 +19,7 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
-          - result.data.Name == "{{ category_name }}"
+          - result.data.Name == category_name
           - result.data.ID != None
           - result.data.CategoryType == "LocalJob"
           - result.data.JobCount == 0
@@ -57,7 +57,7 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
-          - result.data.Name == "{{ category_name }}"
+          - result.data.Name == category_name
           - result.data.ID != None
           - result.data.CategoryType == "LocalJob"
           - result.data.JobCount == 0

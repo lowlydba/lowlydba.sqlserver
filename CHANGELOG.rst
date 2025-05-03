@@ -4,6 +4,15 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
+v2.6.1
+======
+
+Minor Changes
+-------------
+
+- Added support for Ansible 2.19
+- Updated the test matrix to include Ansible 2.19 and remove Ansible 2.16
+
 v2.6.0
 ======
 

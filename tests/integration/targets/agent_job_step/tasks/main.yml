@@ -25,7 +25,7 @@
       register: result
     - assert:
         that:
-          - result.data.Name == "{{ job_name }}"
+          - result.data.Name == job_name
 
     - name: Create agent job step one
       lowlydba.sqlserver.agent_job_step:
@@ -35,7 +35,7 @@
     - assert:
         that:
           - result.data != None
-          - result.data.Name == "{{ job_step1 }}"
+          - result.data.Name == job_step1
           - result.data.ID == 1
           - result.data.DatabaseName == "master"
           - result.data.State == "Existing"
@@ -59,7 +59,7 @@
     - assert:
         that:
           - result.data != None
-          - result.data.Name == "{{ job_step2 }}"
+          - result.data.Name == job_step2
           - result.data.ID == 2
           - result.data.DatabaseName == "master"
           - result.data.State == "Existing"
@@ -73,7 +73,7 @@
     - assert:
         that:
           - result.data != None
-          - result.data.Name == "{{ job_step3 }}"
+          - result.data.Name == job_step3
           - result.data.ID == 3
           - result.data.DatabaseName == "master"
           - result.data.State == "Existing"
@@ -108,7 +108,7 @@
     - assert:
         that:
           - result.data != None
-          - result.data.Name == "{{ job_step3 }}"
+          - result.data.Name == job_step3
           - result.data.ID == 3
           - result.data.DatabaseName == "model"
           - result.data.State == "Existing"
@@ -123,7 +123,7 @@
     - assert:
         that:
           - result.data != None
-          - result.data.Name == "{{ job_step3 }}"
+          - result.data.Name == job_step3
           - result.data.ID == 3
           - result.data.DatabaseName == "model"
           - result.data.State == "Existing"
