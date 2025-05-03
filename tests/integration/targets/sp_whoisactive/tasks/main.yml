@@ -19,7 +19,7 @@
           - result.data.SqlInstance != None
           - result.data.ComputerName != None
           - result.data.InstanceName != None
-          - result.data.Database == "{{ target_database }}"
+          - result.data.Database == target_database
           - result.data.Version != None
           - result.data.Status in ('Installed', 'Updated')
           - result is changed
@@ -32,7 +32,7 @@
           - result.data.SqlInstance != None
           - result.data.ComputerName != None
           - result.data.InstanceName != None
-          - result.data.Database == "{{ target_database }}"
+          - result.data.Database == target_database
           - result.data.Version != None
           - result.data.Status == 'Updated'
           - result is changed

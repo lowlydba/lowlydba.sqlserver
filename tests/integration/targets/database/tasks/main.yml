@@ -27,12 +27,12 @@
       register: result
     - assert:
         that:
-          - result.data.Name == "{{ database_name }}"
+          - result.data.Name == database_name
           - result.data.RCSI is true
-          - result.data.Owner == "{{ sqlserver_username }}"
-          - result.data.RecoveryModel == "{{ recovery_model }}"
-          - result.data.MaxDop == "{{ maxdop }}""
-          - result.data.Compatibility == "{{ compatibility_low }}"
+          - result.data.Owner == sqlserver_username
+          - result.data.RecoveryModel == recovery_model
+          - result.data.MaxDop == maxdop"
+          - result.data.Compatibility == compatibility_low
 
     - name: Change a database
       lowlydba.sqlserver.database:
@@ -43,8 +43,8 @@
     - assert:
         that:
           - result is changed
-          - result.data.Compatibility =="{{ compatibility_high }}"
-          - result.data.Owner == "{{ owner_name }}"
+          - result.data.Compatibility == compatibility_high
+          - result.data.Owner == owner_name
           - result.data.SecondaryMaxDop == {{ secondary_maxdop }}
 
     - name: Change a database in checkmode
@@ -83,7 +83,7 @@
     - assert:
         that:
           - result is changed
-          - result.data.Name == "{{ database_name }}"
+          - result.data.Name == database_name
 
   always:
     - name: Drop a database

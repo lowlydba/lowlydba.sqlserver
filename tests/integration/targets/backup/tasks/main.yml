@@ -15,7 +15,7 @@
     - assert:
         that:
           - result.data.SqlInstance != None
-          - result.data.Database == "{{ database_name }}"
+          - result.data.Database == database_name
           - result.data.Type == "Full"
           - result.data.TotalSize != None
           - result.data.DeviceType == "Disk"

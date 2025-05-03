@@ -23,7 +23,7 @@
       register: result
     - assert:
         that:
-          - result.data.Database == "{{ database_name }}"
+          - result.data.Database == database_name
           - result.data.Successful == true
           - result is changed
 
@@ -40,7 +40,7 @@
       register: result
     - assert:
         that:
-          - result.data.Database == "{{ database_name }}"
+          - result.data.Database == database_name
           - result.data.Successful == true
           - result is changed
 

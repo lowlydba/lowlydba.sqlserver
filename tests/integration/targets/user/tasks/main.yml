@@ -52,10 +52,10 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
-          - result.data.Database == "{{ database }}"
-          - result.data.DefaultSchema == "{{ default_schema }}"
-          - result.data.Login == "{{ login_name }}"
-          - result.data.Name == "{{ username }}"
+          - result.data.Database == database
+          - result.data.DefaultSchema == default_schema
+          - result.data.Login == login_name
+          - result.data.Name == username
 
     - name: Modify user's schema
       lowlydba.sqlserver.user:
@@ -67,10 +67,10 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
-          - result.data.Database == "{{ database }}"
+          - result.data.Database == database
           - result.data.DefaultSchema == "INFORMATION_SCHEMA"
-          - result.data.Login == "{{ login_name }}"
-          - result.data.Name == "{{ username }}"
+          - result.data.Login == login_name
+          - result.data.Name == username
 
     - name: Drop a user
       lowlydba.sqlserver.user:
@@ -101,10 +101,10 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
-          - result.data.Database == "{{ database }}"
-          - result.data.DefaultSchema == "{{ default_schema }}"
-          - result.data.Login == "{{ login_name }}"
-          - result.data.Name == "{{ username }}"
+          - result.data.Database == database
+          - result.data.DefaultSchema == default_schema
+          - result.data.Login == login_name
+          - result.data.Name == username
 
   always:
     - name: Drop user

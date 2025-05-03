@@ -33,13 +33,13 @@
           - result.data != None
           - result.data.ComputerName != None
           - result.data.SqlInstance != None
-          - result.data.MaximumCpuPercentage == "{{ max_cpu_perc }}"
-          - result.data.MinimumCpuPercentage == "{{ min_cpu_perc }}"
-          - result.data.MaximumIopsPerVolume == "{{ max_iops_per_vol }}"
-          - result.data.MinimumIopsPerVolume == "{{ min_iops_per_vol }}"
-          - result.data.MaximumMemoryPercentage == "{{ max_mem_perc }}"
-          - result.data.MinimumMemoryPercentage == "{{ min_mem_perc }}"
-          - result.data.Name == "{{ resource_pool }}"
+          - result.data.MaximumCpuPercentage == max_cpu_perc
+          - result.data.MinimumCpuPercentage == min_cpu_perc
+          - result.data.MaximumIopsPerVolume == max_iops_per_vol
+          - result.data.MinimumIopsPerVolume == min_iops_per_vol
+          - result.data.MaximumMemoryPercentage == max_mem_perc
+          - result.data.MinimumMemoryPercentage == min_mem_perc
+          - result.data.Name == resource_pool
 
     - name: Modify resource pool
       lowlydba.sqlserver.rg_resource_pool:

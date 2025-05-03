@@ -43,13 +43,13 @@
           - result.data != None
           - result.data.ComputerName != None
           - result.data.SqlInstance != None
-          - result.data.Importance ==  "{{ importance }}"
-          - result.data.Name == "{{ workload_group }}"
-          - result.data.MaximumDegreeOfParallelism == "{{ max_dop }}""
-          - result.data.RequestMaximumCpuTimeInSeconds == "{{ request_max_cpu_time }}"
-          - result.data.RequestMemoryGrantTimeoutInSeconds == "{{ request_mem_grant_timeout_sec }}"
+          - result.data.Importance == importance
+          - result.data.Name == workload_group
+          - result.data.MaximumDegreeOfParallelism == max_dop"
+          - result.data.RequestMaximumCpuTimeInSeconds == request_max_cpu_time
+          - result.data.RequestMemoryGrantTimeoutInSeconds == request_mem_grant_timeout_sec
           - result.data.GroupMaximumRequests == 0
-          - result.data.RequestMaximumMemoryGrantPercentage == "{{ request_max_mem_grant_perc }}"
+          - result.data.RequestMaximumMemoryGrantPercentage == request_max_mem_grant_perc
 
     - name: Modify workload group
       lowlydba.sqlserver.rg_workload_group:
@@ -61,13 +61,13 @@
           - result.data != None
           - result.data.ComputerName != None
           - result.data.SqlInstance != None
-          - result.data.MaximumDegreeOfParallelism == "{{ max_dop }}"
-          - result.data.Importance ==  "{{ importance }}"
-          - result.data.Name == "{{ workload_group }}"
+          - result.data.MaximumDegreeOfParallelism == max_dop
+          - result.data.Importance == importance
+          - result.data.Name == workload_group
           - result.data.RequestMaximumCpuTimeInSeconds == {{ request_max_cpu_time }}
-          - result.data.RequestMemoryGrantTimeoutInSeconds == "{{ request_mem_grant_timeout_sec }}"
+          - result.data.RequestMemoryGrantTimeoutInSeconds == request_mem_grant_timeout_sec
           - result.data.GroupMaximumRequests == 4
-          - result.data.RequestMaximumMemoryGrantPercentage == "{{ request_max_mem_grant_perc }}"
+          - result.data.RequestMaximumMemoryGrantPercentage == request_max_mem_grant_perc
 
     - name: Drop workload group in checkmode
       lowlydba.sqlserver.rg_workload_group:
@@ -87,7 +87,7 @@
           - result.data != None
           - result.data.ComputerName != None
           - result.data.SqlInstance != None
-          - result.data.Name == "{{ workload_group }}"
+          - result.data.Name == workload_group
           - result.data.Status == "Dropped"
           - result is changed
 

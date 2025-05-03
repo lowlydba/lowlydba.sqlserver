@@ -32,10 +32,10 @@
     - assert:
         that:
           - result.data != None
-          - result.data.Category == "{{ category_name }}"
+          - result.data.Category == category_name
           - result.data.Enabled is true
-          - result.data.Name == "{{ job_name }}"
-          - result.data.OwnerLoginName == "{{ sqlserver_username }}"
+          - result.data.Name == job_name
+          - result.data.OwnerLoginName == sqlserver_username
           - result.data.HasSchedule is false
 
     - name: Create agent job step one
@@ -99,9 +99,9 @@
     - assert:
         that:
           - result.data != None
-          - result.data.Category == "{{ category_name }}"
+          - result.data.Category == category_name
           - result.data.Enabled is true
-          - result.data.OwnerLoginName == "{{ sqlserver_username }}"
+          - result.data.OwnerLoginName == sqlserver_username
           - result.data.HasSchedule is false
           - result is changed
 
@@ -113,9 +113,9 @@
     - assert:
         that:
           - result.data != None
-          - result.data.Category == "{{ category_name }}"
+          - result.data.Category == category_name
           - result.data.Enabled is false
-          - result.data.Name == "{{ job_name }}"
+          - result.data.Name == job_name
           - result.data.OwnerLoginName == "sa"
           - result.data.HasSchedule is false
           - result is changed
@@ -127,9 +127,9 @@
     - assert:
         that:
           - result.data != None
-          - result.data.Category == "{{ category_name }}"
+          - result.data.Category == category_name
           - result.data.Enabled is true
-          - result.data.Name == "{{ job_name }}"
+          - result.data.Name == job_name
           - result is changed
 
   always:

@@ -47,7 +47,7 @@
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
           - result.data.IsDisabled is false
-          - result.data.Name == "{{ login_name }}"
+          - result.data.Name == login_name
           - result.data.DefaultDatabase == "model"
 
     - name: Skip pwd reset
@@ -71,7 +71,7 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
-          - result.data.Login == "{{ login_name }}"
+          - result.data.Login == login_name
           - result.data.Status == "Dropped"
           - result is changed
 
@@ -100,9 +100,9 @@
           - result.data.MustChangePassword is false
           - result.data.IsDisabled is true
           - result.data.IsLocked is false
-          - result.data.Name == "{{ login_name }}"
-          - result.data.DefaultDatabase == "{{ default_database }}"
-          - result.data.Language == "{{ language }}"
+          - result.data.Name == login_name
+          - result.data.DefaultDatabase == default_database
+          - result.data.Language == language
           - result is changed
 
   always:

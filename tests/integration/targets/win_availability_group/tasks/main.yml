@@ -58,8 +58,8 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
-          - result.data.AvailabilityGroup == "{{ ag_name }}"
-          - result.data.ClusterType == "{{ cluster_type }}"
+          - result.data.AvailabilityGroup == ag_name
+          - result.data.ClusterType == cluster_type
           - result.data.DtcSupportEnabled is false
           - result.data.AvailabilityReplicas != None
           - result is changed
@@ -75,8 +75,8 @@
           - result.data.ComputerName != None
           - result.data.InstanceName != None
           - result.data.SqlInstance != None
-          - result.data.AvailabilityGroup == "{{ ag_name }}"
-          - result.data.ClusterType == "{{ cluster_type }}"
+          - result.data.AvailabilityGroup == ag_name
+          - result.data.ClusterType == cluster_type
           - result.data.DtcSupportEnabled is true
           - result.data.AvailabilityReplicas != None
           - result is changed
