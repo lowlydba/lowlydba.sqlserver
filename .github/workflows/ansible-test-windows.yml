@@ -184,7 +184,7 @@ jobs:
           ansible-test coverage xml -v --requirements
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
-      - uses: codecov/codecov-action@v5.4.0
+      - uses: codecov/codecov-action@v5.4.2
         with:
           fail_ci_if_error: false
         env:
