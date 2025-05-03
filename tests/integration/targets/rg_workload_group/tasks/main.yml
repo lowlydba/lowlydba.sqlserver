@@ -45,7 +45,7 @@
           - result.data.SqlInstance != None
           - result.data.Importance == importance
           - result.data.Name == workload_group
-          - result.data.MaximumDegreeOfParallelism == max_dop"
+          - result.data.MaximumDegreeOfParallelism == max_dop
           - result.data.RequestMaximumCpuTimeInSeconds == request_max_cpu_time
           - result.data.RequestMemoryGrantTimeoutInSeconds == request_mem_grant_timeout_sec
           - result.data.GroupMaximumRequests == 0
@@ -64,7 +64,7 @@
           - result.data.MaximumDegreeOfParallelism == max_dop
           - result.data.Importance == importance
           - result.data.Name == workload_group
-          - result.data.RequestMaximumCpuTimeInSeconds == {{ request_max_cpu_time }}
+          - result.data.RequestMaximumCpuTimeInSeconds == request_max_cpu_time
           - result.data.RequestMemoryGrantTimeoutInSeconds == request_mem_grant_timeout_sec
           - result.data.GroupMaximumRequests == 4
           - result.data.RequestMaximumMemoryGrantPercentage == request_max_mem_grant_perc

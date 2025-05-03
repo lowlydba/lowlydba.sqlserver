@@ -31,7 +31,7 @@
           - result.data.RCSI is true
           - result.data.Owner == sqlserver_username
           - result.data.RecoveryModel == recovery_model
-          - result.data.MaxDop == maxdop"
+          - result.data.MaxDop == maxdop
           - result.data.Compatibility == compatibility_low
 
     - name: Change a database
@@ -45,7 +45,7 @@
           - result is changed
           - result.data.Compatibility == compatibility_high
           - result.data.Owner == owner_name
-          - result.data.SecondaryMaxDop == {{ secondary_maxdop }}
+          - result.data.SecondaryMaxDop == secondary_maxdop
 
     - name: Change a database in checkmode
       lowlydba.sqlserver.database:
