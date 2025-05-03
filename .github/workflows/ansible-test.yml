@@ -49,12 +49,13 @@ jobs:
     name: Sanity (Ⓐ${{ matrix.ansible }})
     strategy:
       matrix:
+        # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
         ansible:
           # It's important that Sanity is tested against all stable-X.Y branches
           # Testing against `devel` may fail as new tests are added.
-          - stable-2.16 # May 2025 EOL
           - stable-2.17 # November 2025 EOL
-          - stable-2.18
+          - stable-2.18 # May 2026 EOL
+          - stable-2.19
           - devel
     runs-on: ubuntu-latest
     steps:
@@ -108,9 +109,9 @@ jobs:
       fail-fast: false
       matrix:
         ansible:
-          - stable-2.16
           - stable-2.17
           - stable-2.18
+          - stable-2.19
           - devel
         python:
           - 3.10
