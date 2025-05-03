@@ -18,7 +18,7 @@
           - result.data.Total != None
           - result.data.PreviousMaxValue is defined
           - result.data.PreviousMaxValue != None
-          - result.data.MaxValue == {{ max_memory_over_9000 }}
+          - result.data.MaxValue == "{{ max_memory_over_9000 }}"
 
     - name: Don't change max memory
       lowlydba.sqlserver.memory:
@@ -34,8 +34,8 @@
       register: result
     - assert:
         that:
-          - result.data.PreviousMaxValue == {{ max_memory_over_9000 }}
-          - result.data.MaxValue != {{ max_memory_over_9000 }}
+          - result.data.PreviousMaxValue == "{{ max_memory_over_9000 }}"
+          - result.data.MaxValue != "{{ max_memory_over_9000 }}"
           - result.data.Total  > result.data.MaxValue
 
     - name: No change with dynamic memory
@@ -61,8 +61,8 @@
       register: result
     - assert:
         that:
-          - result.data.PreviousMaxValue != {{ max_memory_over_9000 }}
-          - result.data.MaxValue == {{ max_memory_over_9000 }}
+          - result.data.PreviousMaxValue != "{{ max_memory_over_9000 }}"
+          - result.data.MaxValue == "{{ max_memory_over_9000 }}"
           - result is changed
 
   always:

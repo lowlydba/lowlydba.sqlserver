@@ -31,7 +31,7 @@
           - result.data.RCSI is true
           - result.data.Owner == "{{ sqlserver_username }}"
           - result.data.RecoveryModel == "{{ recovery_model }}"
-          - result.data.MaxDop == {{ maxdop }}
+          - result.data.MaxDop == "{{ maxdop }}""
           - result.data.Compatibility == "{{ compatibility_low }}"
 
     - name: Change a database

@@ -18,7 +18,7 @@
         that:
           - result.data.SqlInstance != None
           - result.data.InstanceName != None
-          - result.data.TraceFlag == {{ trace_flag }}
+          - result.data.TraceFlag == "{{ trace_flag }}"
 
     - name: Enable an enabled traceflag
       lowlydba.sqlserver.traceflag:
@@ -28,7 +28,7 @@
         that:
           - result.data.SqlInstance != None
           - result.data.InstanceName != None
-          - result.data.TraceFlag == {{ trace_flag }}
+          - result.data.TraceFlag == "{{ trace_flag }}"
           - result is not changed
 
     - name: Disable a traceflag
@@ -39,7 +39,7 @@
         that:
           - result.data.SqlInstance != None
           - result.data.InstanceName != None
-          - result.data.TraceFlag == {{ trace_flag }}
+          - result.data.TraceFlag == "{{ trace_flag }}"
           - result is changed
 
     - name: Disable a disabled traceflag
