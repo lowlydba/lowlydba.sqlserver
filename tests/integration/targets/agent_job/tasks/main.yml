@@ -158,6 +158,39 @@
           - result.data.OutputFileInfo.OutputFile == 'C:\SQLJobLogs\job1_new.txt'
           - result is changed
 
+    - name: Set initial output file
+      lowlydba.sqlserver.agent_job:
+        output_file: 'C:\SQLJobLogs\job1.txt'
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.OutputFileInfo != None
+          - result.data.OutputFileInfo.OutputFile == 'C:\SQLJobLogs\job1.txt'
+          - result is changed
+
+    - name: Set same output file again (idempotency check)
+      lowlydba.sqlserver.agent_job:
+        output_file: 'C:\SQLJobLogs\job1.txt'
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.OutputFileInfo != None
+          - result.data.OutputFileInfo.OutputFile == 'C:\SQLJobLogs\job1.txt'
+          - result is not changed
+
+    - name: Change to different output file
+      lowlydba.sqlserver.agent_job:
+        output_file: 'C:\SQLJobLogs\job1_new.txt'
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.OutputFileInfo != None
+          - result.data.OutputFileInfo.OutputFile == 'C:\SQLJobLogs\job1_new.txt'
+          - result is changed
+
   always:
     - name: Cleanup agent job
       lowlydba.sqlserver.agent_job:
