@@ -46,7 +46,7 @@ jobs:
   # https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
 
   sanity:
-    name: Sanity (Ⓐ${{ matrix.ansible }})
+    name: Sanity (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
     strategy:
       matrix:
         # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
@@ -57,6 +57,14 @@ jobs:
           - stable-2.18 # May 2026 EOL
           - stable-2.19
           - devel
+        python:
+          - 3.11
+        exclude:
+          - ansible: devel
+            python: 3.11
+        include:
+          - ansible: devel
+            python: 3.12
     runs-on: ubuntu-latest
     steps:
       # ansible-test requires the collection to be in a directory in the form
@@ -71,6 +79,7 @@ jobs:
         uses: ansible-community/ansible-test-gh-action@v1.16.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
+          target-python-version: ${{ matrix.python }}
           testing-type: sanity
           pull-request-change-detection: false
 
@@ -114,7 +123,13 @@ jobs:
           - stable-2.19
           - devel
         python:
-          - 3.10
+          - 3.11
+        exclude:
+          - ansible: devel
+            python: 3.11
+        include:
+          - ansible: devel
+            python: 3.12
 
     steps:
       - name: Check out code
