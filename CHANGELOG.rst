@@ -4,27 +4,13 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
-v2.6.1
+v2.7.0
 ======
 
 Minor Changes
 -------------
 
-- Added support for Ansible 2.19
-- Updated the test matrix to include Ansible 2.19 and remove Ansible 2.16
-
-v2.6.0
-======
-
-Release Summary
---------------
-
-Added support for contained Availability Groups using dbatools 2.1.15 - thanks @DorBreger!
-
-Minor Changes
--------------
-
-- Added support for contained Availability Groups using dbatools 2.1.15 (https://github.com/lowlydba/lowlydba.sqlserver/pull/249).
+- agent_job - Add new parameter ``output_file`` to configure the SQL Agent job output file path (https://github.com/LowlyDBA/lowlydba.sqlserver/pull/323)
 
 v2.5.0
 ======

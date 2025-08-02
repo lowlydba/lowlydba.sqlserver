@@ -1,2 +1,0 @@
-minor_changes:
-  - agent_job - Add new parameter ``output_file`` to configure the SQL Agent job output file path (https://github.com/LowlyDBA/lowlydba.sqlserver/pull/323)
