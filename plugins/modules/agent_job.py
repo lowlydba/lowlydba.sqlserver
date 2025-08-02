@@ -84,7 +84,7 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from the C(New-DbaAgentJob), C(Set-DbaAgentJob), C(Remove-DbaAgentJob), or output file commands (C(Get-DbaAgentJobOutputFile), C(Set-DbaAgentJobOutputFile)).
+  description: Output from the C(New-DbaAgentJob), C(Set-DbaAgentJob), C(Remove-DbaAgentJob), or output file commands (C(Get-DbaAgentJobOutputFile)).
   returned: success, but not in check_mode.
   type: dict
 '''
