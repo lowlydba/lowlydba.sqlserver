@@ -65,6 +65,7 @@ jobs:
         include:
           - ansible: devel
             python: 3.12
+
     runs-on: ubuntu-latest
     steps:
       # ansible-test requires the collection to be in a directory in the form
@@ -140,6 +141,7 @@ jobs:
         uses: ansible-community/ansible-test-gh-action@v1.16.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
+          origin-python-version: ${{ matrix.python }}
           target-python-version: ${{ matrix.python }}
           testing-type: integration
           test-deps: community.general
