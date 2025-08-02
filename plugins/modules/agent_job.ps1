@@ -132,7 +132,8 @@ try {
                     if ($outputFileResult.OutputFile -eq $outputFile) {
                         $module.Result.changed = $true
                     }
-                } else {
+                }
+                else {
                     # Desired output file is already set, no change
                     $outputFileResult = @{ OutputFile = $currentOutputFileInfo }
                 }
