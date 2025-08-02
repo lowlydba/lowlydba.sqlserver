@@ -59,12 +59,7 @@ jobs:
           - devel
         python:
           - 3.11
-        exclude:
-          - ansible: devel
-            python: 3.11
-        include:
-          - ansible: devel
-            python: 3.12
+
     runs-on: ubuntu-latest
     steps:
       # ansible-test requires the collection to be in a directory in the form
@@ -124,12 +119,6 @@ jobs:
           - devel
         python:
           - 3.11
-        exclude:
-          - ansible: devel
-            python: 3.11
-        include:
-          - ansible: devel
-            python: 3.12
 
     steps:
       - name: Check out code
@@ -141,24 +130,11 @@ jobs:
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration
         run: cp integration_config.sample.yml integration_config.yml
 
-      # Prevent dbatools v2+ issues with newer docker image for 2.13
-      - name: Run integration tests - v2.13 workaround
-        if: ${{ matrix.ansible == 'stable-2.13' }}
-        uses: ansible-community/ansible-test-gh-action@v1.16.0
-        with:
-          docker-image: 'quay.io/ansible/default-test-container:6.13.0'
-          ansible-core-version: ${{ matrix.ansible }}
-          target-python-version: 3.9
-          testing-type: integration
-          test-deps: community.general
-          pull-request-change-detection: false
-
       - name: Run integration tests
-        if: ${{ matrix.ansible != 'stable-2.13'}}
         uses: ansible-community/ansible-test-gh-action@v1.16.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
-          #target-python-version: ${{ matrix.python }}
+          target-python-version: ${{ matrix.python }}
           testing-type: integration
           test-deps: community.general
           pull-request-change-detection: false
