@@ -119,13 +119,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
         ansible:
-          - stable-2.17
-          - stable-2.18
+          # It's important that Sanity is tested against all stable-X.Y branches
+          # Testing against `devel` may fail as new tests are added.
+          - stable-2.17 # November 2025 EOL
+          - stable-2.18 # May 2026 EOL
           - stable-2.19
           - devel
         python:
           - 3.11
+        exclude:
+          - ansible: devel
+            python: 3.11
+        include:
+          - ansible: devel
+            python: 3.12
 
     steps:
       - name: Check out code
