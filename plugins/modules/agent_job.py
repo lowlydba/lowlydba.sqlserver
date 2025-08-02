@@ -55,6 +55,12 @@ options:
       - If I(force=true), any job categories will be created if they don't exist already.
     type: bool
     default: false
+  output_file:
+    description:
+      - The path to the output file for the SQL Agent job. The output file will only be updated if the desired value is different from the current value.
+    type: str
+    required: false
+    version_added: '2.7.0'
 author: "John McCall (@lowlydba)"
 notes:
   - On slower hardware, stale job component data may be returned (i.e., a previous or default job category).
@@ -78,7 +84,7 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from the C(New-DbaAgentJob), C(Set-DbaAgentJob), or C(Remove-DbaAgentJob) function.
+  description: Output from the C(New-DbaAgentJob), C(Set-DbaAgentJob), C(Remove-DbaAgentJob), or output file commands (C(Get-DbaAgentJobOutputFile), C(Set-DbaAgentJobOutputFile)).
   returned: success, but not in check_mode.
   type: dict
 '''

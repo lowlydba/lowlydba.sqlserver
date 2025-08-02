@@ -15,15 +15,20 @@
       description: "{{ description }}"
       force: true
       enabled: "{{ enabled }}"
+    lowlydba.sqlserver.agent_job_step:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
+    lowlydba.sqlserver.agent_job_category:
+      sql_instance: "{{ sqlserver_instance }}"
+      sql_username: "{{ sqlserver_username }}"
+      sql_password: "{{ sqlserver_password }}"
   tags: ["agent_job"]
   block:
     # SQL Agent / SMO has delays on returning new data sometimes, and is worse on CI runners -
     # so explicitly pre-create the category to make sure we get timely & accurate results later
     - name: Prep agent job category
       lowlydba.sqlserver.agent_job_category:
-        sql_instance: "{{ sqlserver_instance }}"
-        sql_username: "{{ sqlserver_username }}"
-        sql_password: "{{ sqlserver_password }}"
         category: "{{ category_name }}"
 
     - name: Create agent job
@@ -40,27 +45,18 @@
 
     - name: Create agent job step one
       lowlydba.sqlserver.agent_job_step:
-        sql_instance: "{{ sqlserver_instance }}"
-        sql_username: "{{ sqlserver_username }}"
-        sql_password: "{{ sqlserver_password }}"
         job: "{{ job_name }}"
         step_name: "Step 1"
         step_id: 1
 
     - name: Create agent job step two
       lowlydba.sqlserver.agent_job_step:
-        sql_instance: "{{ sqlserver_instance }}"
-        sql_username: "{{ sqlserver_username }}"
-        sql_password: "{{ sqlserver_password }}"
         job: "{{ job_name }}"
         step_name: "Step 2"
         step_id: 2
 
     - name: Set start job step id
       lowlydba.sqlserver.agent_job:
-        sql_instance: "{{ sqlserver_instance }}"
-        sql_username: "{{ sqlserver_username }}"
-        sql_password: "{{ sqlserver_password }}"
         job: "{{ job_name }}"
         start_step_id: 2
       register: result
@@ -71,9 +67,6 @@
 
     - name: No change
       lowlydba.sqlserver.agent_job:
-        sql_instance: "{{ sqlserver_instance }}"
-        sql_username: "{{ sqlserver_username }}"
-        sql_password: "{{ sqlserver_password }}"
         job: "{{ job_name }}"
         start_step_id: 2
       register: result
@@ -132,6 +125,39 @@
           - result.data.Name == job_name
           - result is changed
 
+    - name: Set initial output file
+      lowlydba.sqlserver.agent_job:
+        output_file: 'C:\SQLJobLogs\job1.txt'
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.OutputFileInfo != None
+          - result.data.OutputFileInfo.OutputFile == 'C:\SQLJobLogs\job1.txt'
+          - result is changed
+
+    - name: Set same output file again (idempotency check)
+      lowlydba.sqlserver.agent_job:
+        output_file: 'C:\SQLJobLogs\job1.txt'
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.OutputFileInfo != None
+          - result.data.OutputFileInfo.OutputFile == 'C:\SQLJobLogs\job1.txt'
+          - result is not changed
+
+    - name: Change to different output file
+      lowlydba.sqlserver.agent_job:
+        output_file: 'C:\SQLJobLogs\job1_new.txt'
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.OutputFileInfo != None
+          - result.data.OutputFileInfo.OutputFile == 'C:\SQLJobLogs\job1_new.txt'
+          - result is changed
+
   always:
     - name: Cleanup agent job
       lowlydba.sqlserver.agent_job:
@@ -139,8 +165,5 @@
 
     - name: Cleanup agent job category
       lowlydba.sqlserver.agent_job_category:
-        sql_instance: "{{ sqlserver_instance }}"
-        sql_username: "{{ sqlserver_username }}"
-        sql_password: "{{ sqlserver_password }}"
         category: "{{ category_name }}"
         state: absent

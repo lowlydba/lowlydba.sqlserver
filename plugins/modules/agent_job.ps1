@@ -22,6 +22,7 @@ $spec = @{
         schedule = @{type = 'str'; required = $false; }
         force = @{type = 'bool'; required = $false; default = $false }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
+        output_file = @{type = 'str'; required = $false; }
     }
 }
 
@@ -36,8 +37,10 @@ $schedule = $module.Params.schedule
 [nullable[int]]$startStepId = $module.Params.start_step_id
 $force = $module.Params.force
 $state = $module.Params.state
+$outputFile = $module.Params.output_file
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
+$PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 # Configure Agent job
 try {
@@ -46,7 +49,7 @@ try {
 
     if ($state -eq "absent") {
         if ($null -ne $existingJob) {
-            $output = $existingJob | Remove-DbaAgentJob -Confirm:$false -WhatIf:$checkMode -EnableException
+            $output = $existingJob | Remove-DbaAgentJob
             $module.Result.changed = $true
         }
     }
@@ -55,9 +58,7 @@ try {
             SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential
             Job = $job
-            WhatIf = $checkMode
             Force = $force
-            EnableException = $true
         }
 
         if ($enabled -eq $false) {
@@ -89,7 +90,7 @@ try {
             try {
                 $null = New-DbaAgentJob @jobParams
                 # Explicitly fetch the new job to make sure results don't suffer from SMO / Agent stale data bugs
-                $output = Get-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -EnableException
+                $output = Get-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
             }
             catch {
                 $module.FailJson("Failed creating new agent job: $($_.Exception.Message)", $_)
@@ -118,6 +119,29 @@ try {
                 if ($diff -or $checkMode) {
                     $module.Result.changed = $true
                 }
+            }
+        }
+
+        # Set output file if specified
+        if ($null -ne $outputFile) {
+            try {
+                $currentOutputFileObj = Get-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
+                $currentOutputFileInfo = $currentOutputFileObj.OutputFile
+                if ($currentOutputFileInfo -ne $outputFile) {
+                    $outputFileResult = Set-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -Path $outputFile
+                    if ($outputFileResult.OutputFile -eq $outputFile) {
+                        $module.Result.changed = $true
+                    }
+                } else {
+                    # Desired output file is already set, no change
+                    $outputFileResult = @{ OutputFile = $currentOutputFileInfo }
+                }
+                # Refresh job info after setting output file
+                $output = Get-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
+                $output | Add-Member -MemberType NoteProperty -Name OutputFileInfo -Value $outputFileResult -Force
+            }
+            catch {
+                $module.FailJson("Failed setting agent job output file: $($_.Exception.Message)", $_)
             }
         }
     }
