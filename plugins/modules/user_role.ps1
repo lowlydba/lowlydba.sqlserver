@@ -15,8 +15,9 @@ $spec = @{
     options = @{
         database = @{type = 'str'; required = $true }
         username = @{type = 'str'; required = $true }
-        role = @{type = 'str'; required = $true }
+        roles = @{type = 'list'; elements = 'str'; required = $true; aliases = 'role' }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
+        remove_unlisted = @{type = 'bool'; required = $false; default = 'false' }
     }
 }
 
@@ -24,8 +25,9 @@ $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlS
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $username = $module.Params.username
 $database = $module.Params.database
-$role = $module.Params.role
+$roles = $module.Params.roles
 $state = $module.Params.state
+$remove_unlisted = $module.Params.remove_unlisted
 $checkMode = $module.CheckMode
 
 $module.Result.changed = $false
@@ -37,78 +39,114 @@ $getUserSplat = @{
     User = $username
     EnableException = $true
 }
-$getRoleSplat = @{
-    SqlInstance = $sqlInstance
-    SqlCredential = $sqlCredential
-    Database = $database
-    Role = $role
-    EnableException = $true
-}
-$getRoleMemberSplat = @{
-    SqlInstance = $sqlInstance
-    SqlCredential = $sqlCredential
-    Database = $database
-    Role = $role
-    IncludeSystemUser = $true
-    EnableException = $true
-}
 
-# Verify user and role exist, DBATools currently fails silently
+
+# Verify user and role(s) exist, DBATools currently fails silently
 $existingUser = Get-DbaDbUser @getUserSplat
 if ($null -eq $existingUser) {
     $module.FailJson("User [$username] does not exist in database [$database].")
 }
-$existingRole = Get-DbaDbRole @getRoleSplat
-if ($null -eq $existingRole) {
-    $module.FailJson("Role [$role] does not exist in database [$database].")
+
+$roles | ForEach-Object {
+    $thisRole = $_
+    $getRoleSplat = @{
+        SqlInstance = $sqlInstance
+        SqlCredential = $sqlCredential
+        Database = $database
+        Role = $thisrole
+        EnableException = $true
+    }
+    $existingRole = Get-DbaDbRole @getRoleSplat
+    if ($null -eq $existingRole) {
+        $module.FailJson("Role [$thisRole] does not exist in database [$database].")
+    }
 }
 
-# Get role members
-$existingRoleMembers = Get-DbaDbRoleMember @getRoleMemberSplat
+# Get role members of all roles we care about to compare against later
+$getRoleMemberSplat = @{
+    SqlInstance = $sqlInstance
+    SqlCredential = $sqlCredential
+    Database = $database
+    # Role = $role
+    IncludeSystemUser = $true
+    EnableException = $true
+}
+$existingRoleMembership = Get-DbaDbRoleMember @getRoleMemberSplat | Where-Object {$_.UserName -eq $username} | Select -ExpandProperty role
 
 if ($state -eq "absent") {
-    if ($existingRoleMembers.username -contains $username) {
-        try {
-            $removeRoleMemberSplat = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                User = $username
-                Database = $database
-                Role = $role
-                EnableException = $true
-                WhatIf = $checkMode
-                Confirm = $false
+    $roles | ForEach-Object {
+        $thisRole = $_
+        if ( $existingRoleMembership -contains $thisRole ) {
+            try {
+                $removeRoleMemberSplat = @{
+                    SqlInstance = $sqlInstance
+                    SqlCredential = $sqlCredential
+                    User = $username
+                    Database = $database
+                    Role = $thisRole
+                    EnableException = $true
+                    WhatIf = $checkMode
+                    Confirm = $false
+                }
+                $output = Remove-DbaDbRoleMember @removeRoleMemberSplat
+                $module.Result.changed = $true
             }
-            $output = Remove-DbaDbRoleMember @removeRoleMemberSplat
-            $module.Result.changed = $true
-        }
-        catch {
-            $module.FailJson("Removing user [$username] from database role [$role] failed: $($_.Exception.Message)", $_)
+            catch {
+                $module.FailJson("Removing user [$username] from database role [$thisRole] failed: $($_.Exception.Message)", $_)
+            }
         }
     }
 }
 elseif ($state -eq "present") {
     # Add user to role
-    if ($existingRoleMembers.username -notcontains $username) {
-        try {
-            $addRoleMemberSplat = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                User = $username
-                Database = $database
-                Role = $role
-                EnableException = $true
-                WhatIf = $checkMode
-                Confirm = $false
+    $roles | ForEach-Object {
+        $thisRole = $_
+        if ($existingRoleMembership -notcontains $thisRole) {
+            try {
+                $addRoleMemberSplat = @{
+                    SqlInstance = $sqlInstance
+                    SqlCredential = $sqlCredential
+                    User = $username
+                    Database = $database
+                    Role = $thisRole
+                    EnableException = $true
+                    WhatIf = $checkMode
+                    Confirm = $false
+                }
+                $output = Add-DbaDbRoleMember @addRoleMemberSplat
+                $module.Result.changed = $true
             }
-            $output = Add-DbaDbRoleMember @addRoleMemberSplat
-            $module.Result.changed = $true
-        }
-        catch {
-            $module.FailJson("Adding user [$username] to database role [$role] failed: $($_.Exception.Message)", $_)
+            catch {
+                $module.FailJson("Adding user [$username] to database role [$thisRole] failed: $($_.Exception.Message)", $_)
+            }
         }
     }
 }
+if ($state -eq "present" -and $remove_unlisted -eq $true) {
+    $existingRoleMembership | ForEach-Object {
+        $thisRole = $_
+        if ($roles -notcontains $thisRole) {
+            try {
+                $removeRoleMemberSplat = @{
+                    SqlInstance = $sqlInstance
+                    SqlCredential = $sqlCredential
+                    User = $username
+                    Database = $database
+                    Role = $thisRole
+                    EnableException = $true
+                    WhatIf = $checkMode
+                    Confirm = $false
+                }
+                $output = Remove-DbaDbRoleMember @removeRoleMemberSplat
+                $module.Result.changed = $true
+            }
+            catch {
+                $module.FailJson("Removing user [$username] from extra unlisted database role [$thisRole] failed: $($_.Exception.Message)", $_)
+            }
+        }
+    }
+}
+
 try {
     if ($null -ne $output) {
         $resultData = ConvertTo-SerializableObject -InputObject $output
