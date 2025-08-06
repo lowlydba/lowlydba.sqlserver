@@ -573,3 +573,7 @@ releases:
     fragments:
     - 314-ansible-2-19-compatibility.yml
     release_date: '2025-05-03'
+  2.6.2:
+    changes:
+      minor_changes:
+      - Added ability for user_role module to take a list of roles. Optionally can also remove unlisted roles.

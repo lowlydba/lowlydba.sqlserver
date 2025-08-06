@@ -22,11 +22,18 @@ options:
       - Name of the user.
     type: str
     required: true
-  role:
+  roles:
     description:
       - The database role for the user to be modified.
-    type: str
+    type: list
     required: true
+  remove_unlisted:
+    description:
+      - When set to true, will remove any other roles that aren't listed in roles.
+    type: boolean
+    required: false
+    default: false
+    version_added: 2.6.2
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
@@ -45,6 +52,15 @@ EXAMPLES = r'''
     database: InternProject1
     role: db_owner
 
+- name: Add a user to a list of db roles
+  lowlydba.sqlserver.user_role:
+    sql_instance: sql-01.myco.io
+    username: TheIntern
+    database: InternProject1
+    role:
+      - db_datareader
+      - db_datawriter
+
 - name: Remove a user from a fixed db role
   lowlydba.sqlserver.login:
     sql_instance: sql-01.myco.io
@@ -60,6 +76,18 @@ EXAMPLES = r'''
     database: InternProject1
     role: db_intern
     state: absent
+
+- name: Specify a list of roles that user should be in and remove all others
+  lowlydba.sqlserver.login:
+    sql_instance: sql-01.myco.io
+    username: TheIntern
+    database: InternProject1
+    role:
+      - db_datareader
+      - db_datawriter
+    state: present
+    remove_unlisted: true
+
 '''
 
 RETURN = r'''
