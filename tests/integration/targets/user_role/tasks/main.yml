@@ -72,6 +72,7 @@
     - assert:
         that:
           - result is changed
+          - result.newRoleMembership == ["db_owner"]
 
     - name: Add user to non-existent database role
       lowlydba.sqlserver.user_role:
@@ -102,13 +103,48 @@
         that:
           - result is not changed
 
-    - name: Remove user from database role
+    - name: Add user to list of database roles
       lowlydba.sqlserver.user_role:
-        state: "absent"
+        role:
+          - db_datareader
+          - db_datawriter
       register: result
     - assert:
         that:
           - result is changed
+          - result.newRoleMembership == ["db_datareader", "db_datawriter", "db_owner"]
+
+    - name: Add user to list of database roles again
+      lowlydba.sqlserver.user_role:
+        role:
+          - db_datareader
+          - db_datawriter
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Add user to list of database roles, and remove unlisted roles
+      lowlydba.sqlserver.user_role:
+        role:
+          - db_datareader
+          - db_datawriter
+        remove_unlisted: true
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.newRoleMembership == ["db_datareader", "db_datawriter"]
+
+    - name: Remove user from database role
+      lowlydba.sqlserver.user_role:
+        state: "absent"
+        role: db_datawriter
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.newRoleMembership == ["db_datareader"]
 
   always:
     - name: Drop user

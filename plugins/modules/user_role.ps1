@@ -40,6 +40,7 @@ $getUserSplat = @{
     EnableException = $true
 }
 
+$outputProps = @{}
 
 # Verify user and role(s) exist, DBATools currently fails silently
 $existingUser = Get-DbaDbUser @getUserSplat
@@ -67,11 +68,10 @@ $getRoleMemberSplat = @{
     SqlInstance = $sqlInstance
     SqlCredential = $sqlCredential
     Database = $database
-    # Role = $role
     IncludeSystemUser = $true
     EnableException = $true
 }
-$existingRoleMembership = Get-DbaDbRoleMember @getRoleMemberSplat | Where-Object {$_.UserName -eq $username} | Select -ExpandProperty role
+$existingRoleMembership = Get-DbaDbRoleMember @getRoleMemberSplat | Where-Object {$_.UserName -eq $username} | Select -ExpandProperty role | Sort-Object
 
 if ($state -eq "absent") {
     $roles | ForEach-Object {
@@ -88,7 +88,7 @@ if ($state -eq "absent") {
                     WhatIf = $checkMode
                     Confirm = $false
                 }
-                $output = Remove-DbaDbRoleMember @removeRoleMemberSplat
+                Remove-DbaDbRoleMember @removeRoleMemberSplat
                 $module.Result.changed = $true
             }
             catch {
@@ -113,7 +113,7 @@ elseif ($state -eq "present") {
                     WhatIf = $checkMode
                     Confirm = $false
                 }
-                $output = Add-DbaDbRoleMember @addRoleMemberSplat
+                Add-DbaDbRoleMember @addRoleMemberSplat
                 $module.Result.changed = $true
             }
             catch {
@@ -123,6 +123,7 @@ elseif ($state -eq "present") {
     }
 }
 if ($state -eq "present" -and $remove_unlisted -eq $true) {
+    #remove users from roles that weren't listed (if we got the remove_unlisted option set to true)
     $existingRoleMembership | ForEach-Object {
         $thisRole = $_
         if ($roles -notcontains $thisRole) {
@@ -137,7 +138,7 @@ if ($state -eq "present" -and $remove_unlisted -eq $true) {
                     WhatIf = $checkMode
                     Confirm = $false
                 }
-                $output = Remove-DbaDbRoleMember @removeRoleMemberSplat
+                Remove-DbaDbRoleMember @removeRoleMemberSplat
                 $module.Result.changed = $true
             }
             catch {
@@ -146,6 +147,17 @@ if ($state -eq "present" -and $remove_unlisted -eq $true) {
         }
     }
 }
+
+try {
+    #after changing any roles above, see what our new membership is and report it back
+    $newRoleMembership = Get-DbaDbRoleMember @getRoleMemberSplat | Where-Object {$_.UserName -eq $username} | Select -ExpandProperty role | Sort-Object
+}
+catch {
+    $module.FailJson("Failure getting new role membership: $($_.Exception.Message)", $_)
+}
+$outputProps.newRoleMembership = [array]$newRoleMembership
+$outputProps.oldRoleMembership = [array]$existingRoleMembership
+$output = New-Object -TypeName PSCustomObject -Property $outputProps
 
 try {
     if ($null -ne $output) {
