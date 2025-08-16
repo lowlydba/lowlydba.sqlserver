@@ -125,22 +125,28 @@ try {
         # Set output file if specified
         if ($null -ne $outputFile) {
             try {
-                # Get the current value
+                # Read current configured output file
                 $beforeObj = Get-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
                 $beforeValue = $beforeObj.OutputFile
 
                 if (-not $checkMode) {
-                    # Set the new value
+                    # Set the requested output file
                     $null = Set-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -OutputFile $outputFile
-                    # Get the actual value that was set
+
+                    # Refresh the job object to ensure SMO reflects the change
+                    $jobObj = Get-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -EnableException
+                    if ($jobObj -is [System.Collections.IEnumerable] -and -not ($jobObj -is [string])) { $jobObj = $jobObj | Select-Object -First 1 }
+                    try { $jobObj.Refresh() } catch { }
+
+                    # Re-read the output-file value reported by dbatools
                     $afterObj = Get-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
                     $afterValue = $afterObj.OutputFile
+
                     $outputFileResult = @{ OutputFile = $afterValue }
-                    # Compare before and after values to determine if it changed
                     $module.Result.changed = $beforeValue -ne $afterValue
                 }
                 else {
-                    # In check mode, assume it would change
+                    # Check mode: predict change without making it
                     $outputFileResult = @{ OutputFile = $outputFile }
                     $module.Result.changed = $beforeValue -ne $outputFile
                 }
