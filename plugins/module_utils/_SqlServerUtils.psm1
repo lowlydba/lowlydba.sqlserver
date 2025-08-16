@@ -137,12 +137,25 @@ function ConvertTo-SerializableObject {
                     @{ Name = $pName; Expression = { $pValue.ToString() }.GetNewClosure() }
                     break
                 }
-                { $pValue -ne $null -and $pValue.GetType().Name -like '*Collection' } {
+                { $null -ne $pValue -and $pValue.GetType().Name -like '*Collection' } {
                     @{ Name = $pName; Expression = { [string[]]($pValue.Name) }.GetNewClosure() }
                     break
                 }
-                { $pValue -ne $null -and $pValue.GetType().Name -eq 'User' } {
+                { $null -ne $pValue -and $pValue.GetType().Name -eq 'User' } {
                     @{ Name = $pName; Expression = { [string[]]($pValue.Name) }.GetNewClosure() }
+                    break
+                }
+                # Handle any complex object that might cause serialization issues
+                { $null -ne $pValue -and -not ($pValue -is [string] -or $pValue -is [int] -or $pValue -is [bool] -or $pValue -is [double]) } {
+                    @{ Name = $pName; Expression = {
+                        try {
+                            if ($pValue.PSObject.Properties['Name']) { return $pValue.Name }
+                            return $pValue.ToString()
+                        }
+                        catch {
+                            return $pValue.ToString()
+                        }
+                    }.GetNewClosure() }
                     break
                 }
                 default { $pName }
