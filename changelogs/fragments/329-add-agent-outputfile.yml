@@ -1,3 +1,0 @@
-release_summary: Added output file support for SQL Agent job steps.
-minor_changes:
-  - agent_job_step - Added ``output_file`` parameter to specify the output file path for SQL Agent job steps (https://github.com/lowlydba/lowlydba.sqlserver/pull/329).

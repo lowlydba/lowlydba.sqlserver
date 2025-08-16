@@ -41,7 +41,7 @@
           - result.data.State == "Existing"
           - result is changed
 
-    - name: Create agent job step two in checkmode
+    - name: Create agent job step two (in checkmode)
       lowlydba.sqlserver.agent_job_step:
         step_name: "{{ job_step2 }}"
         step_id: 2
@@ -51,7 +51,7 @@
         that:
           - result is changed
 
-    - name: Verify create agent job step two in checkmode works
+    - name: Verify 'create agent job step two (in checkmode)' works
       lowlydba.sqlserver.agent_job_step:
         step_name: "{{ job_step2 }}"
         step_id: 2
@@ -88,7 +88,7 @@
         that:
           - result is not changed
 
-    - name: Change agent job step in checkmode
+    - name: Change agent job step (in checkmode)
       lowlydba.sqlserver.agent_job_step:
         step_name: "{{ job_step3 }}"
         step_id: 3
@@ -99,7 +99,7 @@
         that:
           - result is changed
 
-    - name: Verify change agent job step in checkmode works
+    - name: Verify 'change agent job step (in checkmode)' works
       lowlydba.sqlserver.agent_job_step:
         step_name: "{{ job_step3 }}"
         step_id: 3
@@ -159,7 +159,7 @@
           - result.data.OutputFileName == "C:\\temp\\test_output_updated.log"
           - result is changed
 
-    - name: Verify output file unchanged when same
+    - name: Verify 'output file unchanged when same'
       lowlydba.sqlserver.agent_job_step:
         step_name: "Step with output file"
         step_id: 4
@@ -183,7 +183,7 @@
         that:
           - result is changed
 
-    - name: Remove agent job step in checkmode
+    - name: Remove agent job step (in checkmode)
       lowlydba.sqlserver.agent_job_step:
         step_id: 2
         state: "absent"
@@ -193,7 +193,7 @@
         that:
           - result is changed
 
-    - name: Verify remove agent job step in checkmode works
+    - name: Verify 'remove agent job step (in checkmode)' works
       lowlydba.sqlserver.agent_job_step:
         step_id: 2
         state: "absent"
