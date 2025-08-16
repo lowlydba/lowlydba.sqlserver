@@ -7,3 +7,11 @@
     - "{{ dbops_install_cmd }}"
     - "{{ dbatools_install_cmd }}"
     - "{{ bypass_cmd}}"
+- name: Apply SystemPolicy fix for Linux
+  ansible.builtin.shell: |
+    pwsh -Command "
+    if (-not ('SystemPolicy' -as [Type])) {
+      Add-Type -TypeDefinition 'public class SystemPolicy { public static bool IsCodeExecutionAllowed() { return true; } }' -ErrorAction SilentlyContinue
+    }
+    "
+  when: ansible_system == 'Linux'

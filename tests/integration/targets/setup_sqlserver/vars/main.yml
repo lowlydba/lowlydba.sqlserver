@@ -11,18 +11,3 @@ dbops_install_cmd: >
   if (-not(Get-Module -FullyQualifiedName @{ModuleName='dbops';ModuleVersion='{{ dbops_min_version }}'} -ListAvailable)) {
       Install-Module dbops -MinimumVersion {{ dbops_min_version }} -Force -SkipPublisherCheck -AllowClobber
   }
-bypass_cmd: >
-  if (\$PSVersionTable.Platform -eq 'Unix' -and -not ('SystemPolicy' -as [Type])) {
-    try {
-      Add-Type -TypeDefinition @'
-  public class SystemPolicy {
-      public static bool IsCodeExecutionAllowed() { return true; }
-  }
-  '@ -ErrorAction SilentlyContinue
-      echo 'SystemPolicy class created successfully'
-    } catch {
-      echo \"Failed to create SystemPolicy class: \$(\$_.Exception.Message)\"
-    }
-  } else {
-    echo 'SystemPolicy class already exists or not needed'
-  }
