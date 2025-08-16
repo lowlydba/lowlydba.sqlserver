@@ -125,21 +125,11 @@ try {
         # Set output file if specified
         if ($null -ne $outputFile) {
             try {
-                # Read current configured output file
-                $beforeObj = Get-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
-                $beforeValue = $beforeObj.OutputFile
-
                 if (-not $checkMode) {
                     # Set the requested output file
-                    $null = Set-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -OutputFile $outputFile
-
-                    # Re-read the output-file value reported by dbatools
-                    $afterObj = Get-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
-                    $afterObj.Refresh()
-                    $afterValue = $afterObj.OutputFile
-
-                    $outputFileResult = @{ OutputFile = $afterValue }
-                    $module.Result.changed = $beforeValue -ne $afterValue
+                    $newObj = Set-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -OutputFile $outputFile
+                    $outputFileResult = @{ OutputFile = $newObj.OutputFile }
+                    $module.Result.changed = $newObj.OldOutputFileName -ne $newObj.OutputFile
                 }
                 else {
                     # Check mode: predict change without making it
