@@ -31,6 +31,7 @@ $spec = @{
         on_fail_step_id = @{type = 'int'; required = $false; default = 0 }
         retry_attempts = @{type = 'int'; required = $false; default = 0 }
         retry_interval = @{type = 'int'; required = $false; default = 0 }
+        output_file = @{type = 'str'; required = $false }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
     required_together = @(
@@ -55,6 +56,7 @@ $onFailAction = $module.Params.on_fail_action
 [nullable[int]]$onFailStepId = $module.Params.on_fail_step_id
 [int]$retryAttempts = $module.Params.retry_attempts
 [nullable[int]]$retryInterval = $module.Params.retry_interval
+$outputFile = $module.Params.output_file
 $state = $module.Params.state
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
@@ -84,7 +86,7 @@ try {
     }
     elseif ($state -eq "present") {
         if (!($stepName) -or !($stepId)) {
-            $module.FailJson("Step name must be specified when state=present.")
+            $module.FailJson("Step name and step_id must be specified when state=present.")
         }
         $jobStepParams = @{
             SqlInstance = $sqlInstance
@@ -99,7 +101,6 @@ try {
             OnFailStepId = $onFailStepId
             RetryAttempts = $retryAttempts
             RetryInterval = $retryInterval
-            WhatIf = $checkMode
         }
         if ($null -ne $command) {
             $jobStepParams.Add("Command", $command)
@@ -110,6 +111,30 @@ try {
             $jobStepParams.Add("StepId", $stepId)
             $output = New-DbaAgentJobStep @jobStepParams
             $module.Result.changed = $true
+
+            # Set output file if specified
+            if ($null -ne $outputFile -and $outputFile -ne "") {
+                $setOutputFileSplat = @{
+                    SqlInstance = $sqlInstance
+                    SqlCredential = $sqlCredential
+                    Job = $job
+                    Step = $stepName
+                    OutputFile = $outputFile
+                }
+                $outputFileResult = Set-DbaAgentJobOutputFile @setOutputFileSplat
+                if ($null -ne $outputFileResult) {
+                    $module.Result.changed = $true
+                    # Add the OutputFileName property from the Set-DbaAgentJobOutputFile result
+                    if ($null -ne $outputFileResult.OutputFileName) {
+                        Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $outputFileResult.OutputFileName -Force
+                    }
+                }
+            }
+
+            # Ensure OutputFileName property is always available for consistency
+            if ($null -ne $output -and -not ($output.PSObject.Properties.Name -contains "OutputFileName")) {
+                Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $output.OutputFileName -Force
+            }
         }
         # Update existing
         else {
@@ -137,9 +162,35 @@ try {
                     "OnSuccessActionStep"
                     "RetryAttempts"
                     "RetryInterval"
+                    "OutputFileName"
                 )
                 $diff = Compare-Object -ReferenceObject $output -DifferenceObject $old -Property $compareProperty
             }
+
+            # Set output file if specified and different from current
+            if ($null -ne $outputFile -and $outputFile -ne "" -and $existingJobStep.OutputFileName -ne $outputFile) {
+                $setOutputFileSplat = @{
+                    SqlInstance = $sqlInstance
+                    SqlCredential = $sqlCredential
+                    Job = $job
+                    Step = $stepName  # Use the new step name since Set-DbaAgentJobStep already renamed it
+                    OutputFile = $outputFile
+                }
+                $outputFileResult = Set-DbaAgentJobOutputFile @setOutputFileSplat
+                if ($null -ne $outputFileResult) {
+                    $module.Result.changed = $true
+                    # Add the OutputFileName property from the Set-DbaAgentJobOutputFile result
+                    if ($null -ne $outputFileResult.OutputFileName) {
+                        Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $outputFileResult.OutputFileName -Force
+                    }
+                }
+            }
+
+            # Ensure OutputFileName property is always available
+            if ($null -ne $output -and -not ($output.PSObject.Properties.Name -contains "OutputFileName")) {
+                Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $output.OutputFileName -Force
+            }
+
             if ($diff -or $checkMode) {
                 $module.Result.changed = $true
             }
