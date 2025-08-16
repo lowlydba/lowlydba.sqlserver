@@ -129,9 +129,12 @@ try {
                 $currentOutputFileInfo = $currentOutputFileObj.OutputFile
                 if ($currentOutputFileInfo -ne $outputFile) {
                     $outputFileResult = Set-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -OutputFile $outputFile
+                    $outputFileResult = @{ OutputFile = $outputFile }
                     $module.Result.changed = $true
                 }
-                $outputFileResult = @{ OutputFile = $outputFile }
+                else {
+                    $outputFileResult = @{ OutputFile = $currentOutputFileInfo }
+                }
             }
             catch {
                 $module.FailJson("Failed setting agent job output file: $($_.Exception.Message)", $_)
