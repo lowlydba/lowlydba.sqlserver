@@ -32,6 +32,10 @@ Testing guidance
 - Add/adjust unit tests for any helper logic in `plugins/module_utils` if you change normalization/serialization.
 - Keep tests deterministic: avoid brittle timing assumptions; use short retries for SMO refresh instead of fixed long sleeps.
 
+Documentation
+
+- Create antsibull changelog frament files under `changelogs/fragments/` for any changes that affect module behavior or parameters.
+
 PR reviewer checklist (help Copilot produce PRs that pass CI)
 
 - Ensure modules are idempotent and `changed` is correct.

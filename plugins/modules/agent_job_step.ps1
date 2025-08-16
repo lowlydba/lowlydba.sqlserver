@@ -125,7 +125,11 @@ try {
                 if ($null -ne $outputFileResult) {
                     $module.Result.changed = $true
                     # Get fresh job step and manually add OutputFileName property
-                    $updatedJobStep = Get-DbaAgentJobStep -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -StepName $stepName
+                    $allJobSteps = Get-DbaAgentJobStep -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
+                    $updatedJobStep = $allJobSteps | Where-Object { 
+                        if ($stepId) { $_.ID -eq $stepId } 
+                        else { $_.Name -eq $stepName }
+                    }
                     $output = $updatedJobStep
                     # Manually add the OutputFileName property from the underlying SMO object
                     if ($null -ne $output) {
@@ -184,7 +188,11 @@ try {
                 if ($null -ne $outputFileResult) {
                     $module.Result.changed = $true
                     # Get fresh job step and manually add OutputFileName property
-                    $updatedJobStep = Get-DbaAgentJobStep -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -StepName $stepName
+                    $allJobSteps = Get-DbaAgentJobStep -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
+                    $updatedJobStep = $allJobSteps | Where-Object { 
+                        if ($stepId) { $_.ID -eq $stepId } 
+                        else { $_.Name -eq $stepName }
+                    }
                     $output = $updatedJobStep
                     # Manually add the OutputFileName property from the underlying SMO object
                     if ($null -ne $output) {
