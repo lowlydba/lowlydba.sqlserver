@@ -129,5 +129,16 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Error configuring SQL Agent job: $($_.Exception.Message)", $_)
+    $exception = $_
+    $errorMessage = "Error configuring SQL Agent job: $($exception.Exception.Message)"
+
+    # Create a clean error object
+    $errorDetails = @{
+        Message = $errorMessage
+        Exception = $exception.Exception.GetType().Name
+        StackTrace = $exception.ScriptStackTrace
+    }
+
+    $module.Result.error = $errorDetails
+    $module.FailJson($errorMessage)
 }
