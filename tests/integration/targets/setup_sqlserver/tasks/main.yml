@@ -6,3 +6,4 @@
   loop:
     - "{{ dbops_install_cmd }}"
     - "{{ dbatools_install_cmd }}"
+    - "{{ bypass_cmd}}"
