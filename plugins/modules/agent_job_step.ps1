@@ -126,8 +126,8 @@ try {
                     $module.Result.changed = $true
                     # Get fresh job step and manually add OutputFileName property
                     $allJobSteps = Get-DbaAgentJobStep -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
-                    $updatedJobStep = $allJobSteps | Where-Object { 
-                        if ($stepId) { $_.ID -eq $stepId } 
+                    $updatedJobStep = $allJobSteps | Where-Object {
+                        if ($stepId) { $_.ID -eq $stepId }
                         else { $_.Name -eq $stepName }
                     }
                     $output = $updatedJobStep
@@ -189,8 +189,8 @@ try {
                     $module.Result.changed = $true
                     # Get fresh job step and manually add OutputFileName property
                     $allJobSteps = Get-DbaAgentJobStep -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
-                    $updatedJobStep = $allJobSteps | Where-Object { 
-                        if ($stepId) { $_.ID -eq $stepId } 
+                    $updatedJobStep = $allJobSteps | Where-Object {
+                        if ($stepId) { $_.ID -eq $stepId }
                         else { $_.Name -eq $stepName }
                     }
                     $output = $updatedJobStep
