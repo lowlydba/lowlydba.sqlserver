@@ -155,6 +155,7 @@ jobs:
           testing-type: integration
           test-deps: community.general
           pull-request-change-detection: false
+          docker-image: 'quay.io/ansible/default-test-container:6.4.0'
 
       # ansible-test support producing code coverage date
       - name: Generate coverage report
