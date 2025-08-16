@@ -46,7 +46,7 @@ jobs:
   # https://docs.ansible.com/ansible/latest/dev_guide/testing_sanity.html
 
   sanity:
-    name: Sanity (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
+    name: Sanity (Ⓐ${{ matrix.ansible }})
     strategy:
       matrix:
         # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
@@ -57,31 +57,20 @@ jobs:
           - stable-2.18 # May 2026 EOL
           - stable-2.19
           - devel
-        python:
-          - 3.11
-        exclude:
-          - ansible: devel
-            python: 3.11
-        include:
-          - ansible: devel
-            python: 3.12
-
     runs-on: ubuntu-latest
     steps:
       # ansible-test requires the collection to be in a directory in the form
       # .../ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/
 
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       - name: Run confidence tests
-        uses: ansible-community/ansible-test-gh-action@v1.16.0
+        uses: ansible-community/ansible-test-gh-action@v1.17.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
-          origin-python-version: ${{ matrix.python }}
-          target-python-version: ${{ matrix.python }}
           testing-type: sanity
           pull-request-change-detection: false
 
@@ -119,26 +108,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
         ansible:
-          # It's important that Sanity is tested against all stable-X.Y branches
-          # Testing against `devel` may fail as new tests are added.
-          - stable-2.17 # November 2025 EOL
-          - stable-2.18 # May 2026 EOL
+          - stable-2.17
+          - stable-2.18
           - stable-2.19
           - devel
         python:
-          - 3.11
-        exclude:
-          - ansible: devel
-            python: 3.11
-        include:
-          - ansible: devel
-            python: 3.12
+          - 3.10
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
@@ -146,12 +126,24 @@ jobs:
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration
         run: cp integration_config.sample.yml integration_config.yml
 
+      # Prevent dbatools v2+ issues with newer docker image for 2.13
+      - name: Run integration tests - v2.13 workaround
+        if: ${{ matrix.ansible == 'stable-2.13' }}
+        uses: ansible-community/ansible-test-gh-action@v1.17.0
+        with:
+          docker-image: 'quay.io/ansible/default-test-container:6.13.0'
+          ansible-core-version: ${{ matrix.ansible }}
+          target-python-version: 3.9
+          testing-type: integration
+          test-deps: community.general
+          pull-request-change-detection: false
+
       - name: Run integration tests
-        uses: ansible-community/ansible-test-gh-action@v1.16.0
+        if: ${{ matrix.ansible != 'stable-2.13'}}
+        uses: ansible-community/ansible-test-gh-action@v1.17.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
-          origin-python-version: ${{ matrix.python }}
-          target-python-version: ${{ matrix.python }}
+          #target-python-version: ${{ matrix.python }}
           testing-type: integration
           test-deps: community.general
           pull-request-change-detection: false
