@@ -84,22 +84,26 @@ class Connection(ConnectionBase):
         display.vvv(u"EXEC {0}".format(to_text(cmd)), host=self._play_context.remote_addr)
         display.debug("opening command with Popen()")
 
+        # Add SystemPolicy fix for Linux environments before converting to bytes
+        if platform.system() != 'Windows':
+            # Insert SystemPolicy definition for Linux environments
+            systempolicy_fix = "if (-not ('SystemPolicy' -as [Type])) { Add-Type -TypeDefinition 'public class SystemPolicy { public static bool IsCodeExecutionAllowed() { return true; } }' -ErrorAction SilentlyContinue }; "
+            
+            # Prepend the fix to the command while it's still a string
+            if isinstance(cmd, (text_type, binary_type)):
+                cmd_str = to_text(cmd)
+                cmd = systempolicy_fix + cmd_str
+            else:
+                # For command lists, prepend to the first command element
+                cmd_list = list(cmd)
+                if cmd_list:
+                    cmd_list[0] = systempolicy_fix + to_text(cmd_list[0])
+                    cmd = cmd_list
+
         if isinstance(cmd, (text_type, binary_type)):
             cmd = to_bytes(cmd)
         else:
             cmd = map(to_bytes, cmd)
-
-        # Add SystemPolicy fix for Linux environments
-        if platform.system() != 'Windows':
-            # Insert SystemPolicy definition for Linux environments
-            systempolicy_fix = "if (-not ('SystemPolicy' -as [Type])) { Add-Type -TypeDefinition 'public class SystemPolicy { public static bool IsCodeExecutionAllowed() { return true; } }' -ErrorAction SilentlyContinue }; "
-
-            # Prepend the fix to the command
-            if isinstance(cmd, (text_type, binary_type)):
-                cmd = to_bytes(systempolicy_fix) + cmd
-            else:
-                # For command arrays, we need to modify the command string
-                cmd = [to_bytes(systempolicy_fix + " " + to_text(c)) for c in cmd]
 
         master = None
         stdin = subprocess.PIPE
