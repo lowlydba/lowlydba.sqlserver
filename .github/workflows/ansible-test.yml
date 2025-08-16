@@ -77,7 +77,7 @@ jobs:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       - name: Run confidence tests
-        uses: ansible-community/ansible-test-gh-action@v1.17.0
+        uses: ansible-community/ansible-test-gh-action@v1.16.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
           origin-python-version: ${{ matrix.python }}
@@ -147,7 +147,7 @@ jobs:
         run: cp integration_config.sample.yml integration_config.yml
 
       - name: Run integration tests
-        uses: ansible-community/ansible-test-gh-action@v1.17.0
+        uses: ansible-community/ansible-test-gh-action@v1.16.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
           origin-python-version: ${{ matrix.python }}
