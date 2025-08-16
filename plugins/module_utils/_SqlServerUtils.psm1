@@ -14,14 +14,16 @@ function Get-LowlyDbaSqlServerAuthSpec {
         Standardized way to access the common auth spec for modules.
         Uses the recommended Ansible naming convention.
     #>
-    @{
-        options = @{
-            sql_instance = @{type = 'str'; required = $true }
-            sql_username = @{type = 'str'; required = $false }
-            sql_password = @{type = 'str'; required = $false; no_log = $true }
+    @(
+        @{
+            options = @{
+                sql_instance = @{type = 'str'; required = $true }
+                sql_username = @{type = 'str'; required = $false }
+                sql_password = @{type = 'str'; required = $false; no_log = $true }
+            }
+            required_together = @(@('sql_username', 'sql_password'))
         }
-        required_together = @(@('sql_username', 'sql_password'))
-    }
+    )
 }
 
 function Get-SqlCredential {
