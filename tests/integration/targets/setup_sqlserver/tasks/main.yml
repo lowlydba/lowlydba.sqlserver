@@ -6,7 +6,6 @@
   loop:
     - "{{ dbops_install_cmd }}"
     - "{{ dbatools_install_cmd }}"
-    - "{{ bypass_cmd}}"
 - name: Apply SystemPolicy fix for Linux
   ansible.builtin.shell: |
     pwsh -Command "
