@@ -237,6 +237,15 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
+<div class="ansibleOptionAnchor" id="parameter-output_file"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-step-module-parameter-output-file"><strong>output_file</strong></p>
+<a class="ansibleOptionLink" href="#parameter-output_file" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
+<p><em class="ansible-option-versionadded">added in lowlydba.sqlserver 2.7.0</em></p>
+</div></td>
+<td><div class="ansible-option-cell"><p>The full path to the output file for the job step.</p>
+<p>This specifies where the output of the job step will be written.</p>
+</div></td>
+</tr>
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-retry_attempts"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-step-module-parameter-retry-attempts"><strong>retry_attempts</strong></p>
 <a class="ansibleOptionLink" href="#parameter-retry_attempts" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
@@ -244,7 +253,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <p class="ansible-option-line"><strong class="ansible-option-default-bold">Default:</strong> <code class="ansible-option-default docutils literal notranslate"><span class="pre">0</span></code></p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-retry_interval"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-step-module-parameter-retry-interval"><strong>retry_interval</strong></p>
 <a class="ansibleOptionLink" href="#parameter-retry_interval" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
@@ -252,28 +261,28 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <p class="ansible-option-line"><strong class="ansible-option-default-bold">Default:</strong> <code class="ansible-option-default docutils literal notranslate"><span class="pre">0</span></code></p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_instance"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-step-module-parameter-sql-instance"><strong>sql_instance</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_instance" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span> / <span class="ansible-option-required">required</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The SQL Server instance to modify.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_password"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-step-module-parameter-sql-password"><strong>sql_password</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_password" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Password for SQL Authentication.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-sql_username"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-step-module-parameter-sql-username"><strong>sql_username</strong></p>
 <a class="ansibleOptionLink" href="#parameter-sql_username" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Username for SQL Authentication.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-state"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-step-module-parameter-state"><strong>state</strong></p>
 <a class="ansibleOptionLink" href="#parameter-state" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
@@ -285,7 +294,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </ul>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-step_id"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-step-module-parameter-step-id"><strong>step_id</strong></p>
 <a class="ansibleOptionLink" href="#parameter-step_id" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">integer</span></p>
 </div></td>
@@ -293,14 +302,14 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <p>Required if <em>state=present</em>.</p>
 </div></td>
 </tr>
-<tr class="row-even"><td><div class="ansible-option-cell">
+<tr class="row-odd"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-step_name"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-step-module-parameter-step-name"><strong>step_name</strong></p>
 <a class="ansibleOptionLink" href="#parameter-step_name" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The name of the step. Required if <em>state=present</em>.</p>
 </div></td>
 </tr>
-<tr class="row-odd"><td><div class="ansible-option-cell">
+<tr class="row-even"><td><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-subsystem"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-agent-job-step-module-parameter-subsystem"><strong>subsystem</strong></p>
 <a class="ansibleOptionLink" href="#parameter-subsystem" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
@@ -366,6 +375,15 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <span class="w">    </span><span class="nt">step_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Step1</span>
 <span class="w">    </span><span class="nt">step_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;TRUNCATE</span><span class="nv"> </span><span class="s">TABLE</span><span class="nv"> </span><span class="s">dbo.TestData;&quot;</span>
+
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a job step with output file</span>
+<span class="w">  </span><span class="nt">lowlydba.sqlserver.agent_job_step</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql-01.myco.io</span>
+<span class="w">    </span><span class="nt">job</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MyJob</span>
+<span class="w">    </span><span class="nt">step_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Step2</span>
+<span class="w">    </span><span class="nt">step_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SELECT</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">FROM</span><span class="nv"> </span><span class="s">sys.databases;&quot;</span>
+<span class="w">    </span><span class="nt">output_file</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;C:\\Logs\\MyJob_Step2.log&quot;</span>
 </pre></div>
 </div>
 </section>
