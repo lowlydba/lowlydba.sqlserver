@@ -560,7 +560,8 @@ releases:
     changes:
       minor_changes:
       - Added support for contained Availability Groups using dbatools 2.1.15 (https://github.com/lowlydba/lowlydba.sqlserver/pull/249).
-      release_summary: Added support for contained Availability Groups using dbatools 2.1.15 - thanks @DorBreger!
+      release_summary: Added support for contained Availability Groups using dbatools
+        2.1.15 - thanks @DorBreger!
     fragments:
     - noop.yml
     release_date: '2025-04-06'
@@ -573,3 +574,12 @@ releases:
     fragments:
     - 314-ansible-2-19-compatibility.yml
     release_date: '2025-05-03'
+  2.7.0:
+    changes:
+      minor_changes:
+      - agent_job_step - Added ``output_file`` parameter to specify the output file
+        path for SQL Agent job steps (https://github.com/lowlydba/lowlydba.sqlserver/pull/329).
+      release_summary: Added output file support for SQL Agent job steps.
+    fragments:
+    - 329-add-agent-outputfile.yml
+    release_date: '2025-08-16'
