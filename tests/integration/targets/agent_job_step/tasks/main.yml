@@ -129,6 +129,51 @@
           - result.data.State == "Existing"
           - result is not changed
 
+    - name: Create agent job step with output file
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "Step with output file"
+        step_id: 4
+        command: "SELECT * FROM sys.databases;"
+        output_file: "C:\\temp\\test_output.log"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.Name == "Step with output file"
+          - result.data.ID == 4
+          - result.data.OutputFileName == "C:\\temp\\test_output.log"
+          - result is changed
+
+    - name: Update agent job step output file
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "Step with output file"
+        step_id: 4
+        command: "SELECT * FROM sys.databases;"
+        output_file: "C:\\temp\\test_output_updated.log"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.Name == "Step with output file"
+          - result.data.ID == 4
+          - result.data.OutputFileName == "C:\\temp\\test_output_updated.log"
+          - result is changed
+
+    - name: Verify output file unchanged when same
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "Step with output file"
+        step_id: 4
+        command: "SELECT * FROM sys.databases;"
+        output_file: "C:\\temp\\test_output_updated.log"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.Name == "Step with output file"
+          - result.data.ID == 4
+          - result.data.OutputFileName == "C:\\temp\\test_output_updated.log"
+          - result is not changed
+
     - name: Remove agent job step
       lowlydba.sqlserver.agent_job_step:
         step_name: "{{ job_step1 }}"

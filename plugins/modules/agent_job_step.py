@@ -84,6 +84,12 @@ options:
     required: false
     type: int
     default: 0
+  output_file:
+    description:
+      - The full path to the output file for the job step.
+      - This specifies where the output of the job step will be written.
+    required: false
+    type: str
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
@@ -108,6 +114,15 @@ EXAMPLES = r'''
     step_name: Step1
     step_id: 1
     command: "TRUNCATE TABLE dbo.TestData;"
+
+- name: Create a job step with output file
+  lowlydba.sqlserver.agent_job_step:
+    sql_instance: sql-01.myco.io
+    job: MyJob
+    step_name: Step2
+    step_id: 2
+    command: "SELECT * FROM sys.databases;"
+    output_file: "C:\\Logs\\MyJob_Step2.log"
 '''
 
 RETURN = r'''
