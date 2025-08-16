@@ -137,9 +137,6 @@ try {
                     # Desired output file is already set, no change
                     $outputFileResult = @{ OutputFile = $currentOutputFileInfo }
                 }
-                # Refresh job info after setting output file
-                $output = Get-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
-                $output | Add-Member -MemberType NoteProperty -Name OutputFileInfo -Value $outputFileResult -Force
             }
             catch {
                 $module.FailJson("Failed setting agent job output file: $($_.Exception.Message)", $_)
@@ -151,15 +148,10 @@ try {
         # Convert to serializable first
         $resultData = ConvertTo-SerializableObject -InputObject $output
 
-        # Ensure OutputFileInfo is always present in the result data
-        if (-not ($resultData.Contains('OutputFileInfo'))) {
-            $resultData.Add('OutputFileInfo', $null)
-        }
-
-        # If we have output file info, add it to result data
-        if ($output.PSObject.Properties.Name -contains 'OutputFileInfo') {
-            $resultData['OutputFileInfo'] = $output.OutputFileInfo
-        }
+        # Add output file info to result data
+        $resultData | Add-Member -MemberType NoteProperty -Name 'OutputFileInfo' -Value $(
+            if ($null -ne $outputFile) { $outputFileResult } else { $null }
+        ) -Force
 
         $module.Result.data = $resultData
     }
