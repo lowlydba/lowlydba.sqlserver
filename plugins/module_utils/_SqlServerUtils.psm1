@@ -5,6 +5,25 @@
 
 # Private
 
+# Begin Hack section
+# Fix for SystemPolicy issue in Ansible 2.19+ on Linux
+if ($PSVersionTable.Platform -eq 'Unix' -and -not ("SystemPolicy" -as [Type])) {
+    try {
+        # Create a minimal implementation of SystemPolicy to satisfy reflection checks
+        # This addresses a breaking change in Ansible 2.19+ on Linux
+        Add-Type -TypeDefinition @"
+public class SystemPolicy {
+    public static bool IsCodeExecutionAllowed() { return true; }
+}
+"@ -ErrorAction SilentlyContinue
+    } catch {
+        # Log but continue if type creation fails
+        # We still want modules to attempt to run even if this fix cannot be applied
+        Write-Verbose -Message "SystemPolicy compatibility fix could not be applied: $($_.Exception.Message)" -Verbose:$false
+    }
+}
+# End Hack section
+
 function Get-LowlyDbaSqlServerAuthSpec {
     <#
         .SYNOPSIS
