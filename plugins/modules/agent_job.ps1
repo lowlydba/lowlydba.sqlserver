@@ -148,6 +148,10 @@ try {
     }
 
     if ($output) {
+        # Ensure OutputFileInfo is always present so callers can safely check it
+        if (-not ($output.PSObject.Properties.Name -contains 'OutputFileInfo')) {
+            $output | Add-Member -MemberType NoteProperty -Name OutputFileInfo -Value $null -Force
+        }
         $resultData = ConvertTo-SerializableObject -InputObject $output
         $module.Result.data = $resultData
     }
