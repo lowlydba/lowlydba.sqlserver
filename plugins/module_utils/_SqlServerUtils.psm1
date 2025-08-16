@@ -153,7 +153,17 @@ function ConvertTo-SerializableObject {
                 { $null -ne $pValue -and -not ($pValue -is [string] -or $pValue -is [int] -or $pValue -is [bool] -or $pValue -is [double]) } {
                     @{ Name = $pName; Expression = {
                             try {
-                                if ($pValue.PSObject.Properties['Name']) { return $pValue.Name }
+                                # Handle SystemPolicy objects regardless of where they appear
+                                if ($pValue.GetType().Name -eq 'SystemPolicy') {
+                                    return [PSCustomObject]@{ Value = $pValue.ToString() }
+                                }
+                                # Check for nested SystemPolicy
+                                if ($pValue.PSObject.Properties['SystemPolicy']) {
+                                    return [PSCustomObject]@{ Value = $pValue.SystemPolicy.ToString() }
+                                }
+                                if ($pValue.PSObject.Properties['Name']) {
+                                    return $pValue.Name
+                                }
                                 return $pValue.ToString()
                             }
                             catch {
