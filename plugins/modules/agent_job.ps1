@@ -125,15 +125,24 @@ try {
         # Set output file if specified
         if ($null -ne $outputFile) {
             try {
-                $currentOutputFileObj = Get-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
-                $currentOutputFileInfo = $currentOutputFileObj.OutputFile
-                if ($currentOutputFileInfo -ne $outputFile) {
-                    $outputFileResult = Set-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -OutputFile $outputFile
-                    $outputFileResult = @{ OutputFile = $outputFile }
-                    $module.Result.changed = $true
+                # Get the current value
+                $beforeObj = Get-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
+                $beforeValue = $beforeObj.OutputFile
+
+                if (-not $checkMode) {
+                    # Set the new value
+                    $null = Set-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -OutputFile $outputFile
+                    # Get the actual value that was set
+                    $afterObj = Get-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
+                    $afterValue = $afterObj.OutputFile
+                    $outputFileResult = @{ OutputFile = $afterValue }
+                    # Compare before and after values to determine if it changed
+                    $module.Result.changed = $beforeValue -ne $afterValue
                 }
                 else {
-                    $outputFileResult = @{ OutputFile = $currentOutputFileInfo }
+                    # In check mode, assume it would change
+                    $outputFileResult = @{ OutputFile = $outputFile }
+                    $module.Result.changed = $beforeValue -ne $outputFile
                 }
             }
             catch {
