@@ -101,7 +101,6 @@ try {
             OnFailStepId = $onFailStepId
             RetryAttempts = $retryAttempts
             RetryInterval = $retryInterval
-            WhatIf = $checkMode
         }
         if ($null -ne $command) {
             $jobStepParams.Add("Command", $command)
@@ -121,7 +120,6 @@ try {
                     Job = $job
                     Step = $stepName
                     OutputFile = $outputFile
-                    WhatIf = $checkMode
                 }
                 $outputFileResult = Set-DbaAgentJobOutputFile @setOutputFileSplat
                 if ($null -ne $outputFileResult) {
@@ -130,12 +128,16 @@ try {
                     $updatedJobStep = Get-DbaAgentJobStep -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -StepName $stepName
                     $output = $updatedJobStep
                     # Manually add the OutputFileName property from the underlying SMO object
-                    Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $updatedJobStep.OutputFileName -Force
+                    if ($null -ne $output) {
+                        Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $updatedJobStep.OutputFileName -Force
+                    }
                 }
             }
             else {
                 # Even if no output file is set, add the OutputFileName property for consistency
-                Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $output.OutputFileName -Force
+                if ($null -ne $output) {
+                    Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $output.OutputFileName -Force
+                }
             }
         }
         # Update existing
@@ -177,7 +179,6 @@ try {
                     Job = $job
                     Step = $stepName
                     OutputFile = $outputFile
-                    WhatIf = $checkMode
                 }
                 $outputFileResult = Set-DbaAgentJobOutputFile @setOutputFileSplat
                 if ($null -ne $outputFileResult) {
@@ -186,7 +187,9 @@ try {
                     $updatedJobStep = Get-DbaAgentJobStep -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -StepName $stepName
                     $output = $updatedJobStep
                     # Manually add the OutputFileName property from the underlying SMO object
-                    Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $updatedJobStep.OutputFileName -Force
+                    if ($null -ne $output) {
+                        Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $updatedJobStep.OutputFileName -Force
+                    }
                 }
             }
 

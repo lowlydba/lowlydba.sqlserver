@@ -88,6 +88,7 @@ options:
     description:
       - The full path to the output file for the job step.
       - This specifies where the output of the job step will be written.
+    version_added: 2.7.0
     required: false
     type: str
 author: "John McCall (@lowlydba)"
