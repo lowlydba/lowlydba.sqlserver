@@ -20,7 +20,7 @@ $spec = @{
     }
 }
 
-$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, Get-LowlyDbaSqlServerAuthSpec)
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $traceFlag = $module.Params.trace_flag
 $enabled = $module.Params.enabled

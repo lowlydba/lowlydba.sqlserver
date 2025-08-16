@@ -23,7 +23,7 @@ $spec = @{
         state = @{type = "str"; required = $false; default = "present"; choices = @("present", "absent") }
     }
 }
-$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, Get-LowlyDbaSqlServerAuthSpec)
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $agName = $module.Params.ag_name
 $listenerName = $module.Params.listener_name

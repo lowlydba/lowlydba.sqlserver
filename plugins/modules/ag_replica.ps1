@@ -71,7 +71,7 @@ $spec = @{
         , @('sql_username_replica', 'sql_password_replica')
     )
 }
-$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, Get-LowlyDbaSqlServerAuthSpec)
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $readOnlyRoutingConnectionUrl = $module.params.read_only_routing_connection_url
 $readOnlyRoutingList = $module.Params.read_only_routing_list

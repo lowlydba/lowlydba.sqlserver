@@ -78,7 +78,7 @@ $spec = @{
 }
 
 # Setup var
-$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, Get-LowlyDbaSqlServerAuthSpec)
 $ProgressPreference = "SilentlyContinue"
 
 # Var

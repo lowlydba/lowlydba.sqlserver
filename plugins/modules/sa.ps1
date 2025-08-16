@@ -21,7 +21,7 @@ $spec = @{
         password_expiration_enabled = @{type = 'bool'; required = $false }
     }
 }
-$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, Get-LowlyDbaSqlServerAuthSpec)
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $newName = $module.Params.new_name
 if ($null -ne $module.Params.password) {

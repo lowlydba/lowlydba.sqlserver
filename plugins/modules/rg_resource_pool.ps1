@@ -26,7 +26,7 @@ $spec = @{
     }
 }
 
-$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
+$module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, Get-LowlyDbaSqlServerAuthSpec)
 $state = $module.Params.state
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $options = @{
