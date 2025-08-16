@@ -133,15 +133,7 @@ try {
                         $module.Result.changed = $true
                     }
                 }
-                else {
-                    # Desired output file is already set, no change
-                    $outputFileResult = @{ OutputFile = $currentOutputFileInfo }
-                }
-            }
-            catch {
-                $module.FailJson("Failed setting agent job output file: $($_.Exception.Message)", $_)
-            }
-        }
+                $outputFileResult = @{ OutputFile = $outputFile }
     }
 
     if ($output) {
