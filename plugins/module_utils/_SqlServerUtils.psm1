@@ -72,46 +72,8 @@ function ConvertTo-SerializableObject {
         [Parameter()]
         [string[]]
         $ExcludeProperty = @(
-            <#
-                Returning a list of properties as a property is redundant.
-            #>
-            'Properties',
-            <#
-                Urn is not useful.
-            #>
-            'Urn',
-            <#
-                ExecutionManager can contain a login password in plain text.
-            #>
-            'ExecutionManager',
-            <#
-                UserData is not useful.
-            #>
-            'UserData',
-            <#
-                ParentCollection is redundant.
-            #>
-            'ParentCollection',
-            <#
-                DatabaseEngineEdition is not useful.
-            #>
-            'DatabaseEngineEdition',
-            <#
-                DatabaseEngineType is not useful.
-            #>
-            'DatabaseEngineType',
-            <#
-                ServerVersion is not useful.
-            #>
-            'ServerVersion',
-            <#
-                Server is redundant.
-            #>
-            'Server',
-            <#
-                Parent is not useful.
-            #>
-            'Parent'
+            'Properties', 'Urn', 'ExecutionManager', 'UserData', 'ParentCollection',
+            'DatabaseEngineEdition', 'DatabaseEngineType', 'ServerVersion', 'Server', 'Parent'
         ),
         [bool]$UseDefaultProperty = $true
     )
@@ -128,57 +90,77 @@ function ConvertTo-SerializableObject {
     }
 
     Process {
-        $defaultProperty = $InputObject.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
+        # Defensive guards
+        if ($null -eq $InputObject) { return $null }
+
+        # If this is a collection, recursively convert each item and return an array of serializable objects
+        if ($InputObject -is [System.Collections.IEnumerable] -and -not ($InputObject -is [string])) {
+            $results = @()
+            foreach ($item in $InputObject) {
+                $results += (ConvertTo-SerializableObject -InputObject $item -ExcludeProperty $ExcludeProperty -UseDefaultProperty:$UseDefaultProperty)
+            }
+            return $results
+        }
+
+        # Some objects don't expose DefaultDisplayPropertySet; guard against that
+        try {
+            $defaultProperty = $null
+            if ($InputObject -and $InputObject.PSStandardMembers -and $InputObject.PSStandardMembers.DefaultDisplayPropertySet) {
+                $defaultProperty = $InputObject.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames
+            }
+        }
+        catch {
+            $defaultProperty = $null
+        }
+
         if ($defaultProperty -and $UseDefaultProperty) {
             $objectProperty = $InputObject.PSObject.Properties | Where-Object { $_.Name -in $defaultProperty -and $_.Name -notin $ExcludeProperty }
         }
         else {
             $objectProperty = $InputObject.PSObject.Properties | Where-Object { $_.Name -notin $ExcludeProperty }
         }
+
         $properties = foreach ($p in $objectProperty) {
             $pName = $p.Name
             $pValue = $p.Value
 
             switch ($p) {
                 { $null -eq $pValue } {
-                    @{
-                        Name = $pName
-                        Expression = { $null }.GetNewClosure()
-                    }
+                    @{ Name = $pName; Expression = { $null }.GetNewClosure() }
                     break
                 }
                 { $pValue -is [datetime] } {
-                    @{
-                        Name = $pName
-                        Expression = { $pValue.ToString('o') }.GetNewClosure()
-                    }
+                    @{ Name = $pName; Expression = { $pValue.ToString('o') }.GetNewClosure() }
                     break
                 }
                 { $pValue -is [enum] -or $pValue -is [type] } {
-                    @{
-                        Name = $pName
-                        Expression = { $pValue.ToString() }.GetNewClosure()
-                    }
+                    @{ Name = $pName; Expression = { $pValue.ToString() }.GetNewClosure() }
                     break
                 }
-                { $pValue.GetType().Name -like '*Collection' } {
-                    @{
-                        Name = $pName
-                        Expression = { [string[]]($pValue.Name) }.GetNewClosure()
-                    }
+                { $pValue -ne $null -and $pValue.GetType().Name -like '*Collection' } {
+                    @{ Name = $pName; Expression = { [string[]]($pValue.Name) }.GetNewClosure() }
                     break
                 }
-                { $pValue.GetType().Name -eq 'User' } {
-                    @{
-                        Name = $pName
-                        Expression = { [string[]]($pValue.Name) }.GetNewClosure()
-                    }
+                { $pValue -ne $null -and $pValue.GetType().Name -eq 'User' } {
+                    @{ Name = $pName; Expression = { [string[]]($pValue.Name) }.GetNewClosure() }
                     break
                 }
                 default { $pName }
             }
         }
-        return $InputObject | Select-Object -Property $properties
+
+        # Wrap Select-Object in try to avoid unexpected runtime errors from exotic objects
+        try {
+            return $InputObject | Select-Object -Property $properties
+        }
+        catch {
+            # Fallback: return a hashtable of simple properties
+            $ht = @{}
+            foreach ($p in $objectProperty) {
+                try { $ht[$p.Name] = $p.Value } catch { $ht[$p.Name] = $p.Value.ToString() }
+            }
+            return $ht
+        }
     }
 }
 
