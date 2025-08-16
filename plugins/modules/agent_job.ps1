@@ -128,7 +128,7 @@ try {
                 $currentOutputFileObj = Get-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
                 $currentOutputFileInfo = $currentOutputFileObj.OutputFile
                 if ($currentOutputFileInfo -ne $outputFile) {
-                    $outputFileResult = Set-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -Path $outputFile
+                    $outputFileResult = Set-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -OutputFile $outputFile
                     if ($outputFileResult.OutputFile -eq $outputFile) {
                         $module.Result.changed = $true
                     }
