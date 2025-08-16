@@ -133,13 +133,9 @@ try {
                     # Set the requested output file
                     $null = Set-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -OutputFile $outputFile
 
-                    # Refresh the job object to ensure SMO reflects the change
-                    $jobObj = Get-DbaAgentJob -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job -EnableException
-                    if ($jobObj -is [System.Collections.IEnumerable] -and -not ($jobObj -is [string])) { $jobObj = $jobObj | Select-Object -First 1 }
-                    try { $jobObj.Refresh() } catch { }
-
                     # Re-read the output-file value reported by dbatools
                     $afterObj = Get-DbaAgentJobOutputFile -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
+                    $afterObj.Refresh()
                     $afterValue = $afterObj.OutputFile
 
                     $outputFileResult = @{ OutputFile = $afterValue }
