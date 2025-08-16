@@ -20,9 +20,7 @@ function Get-LowlyDbaSqlServerAuthSpec {
             sql_username = @{type = 'str'; required = $false }
             sql_password = @{type = 'str'; required = $false; no_log = $true }
         }
-        required_together = @(
-            , @('sql_username', 'sql_password')
-        )
+        required_together = @(@('sql_username', 'sql_password'))
     }
 }
 
@@ -41,7 +39,7 @@ function Get-SqlCredential {
         $Module
     )
     try {
-        $sqlInstance = $module.Params.sql_instance
+        $sqlInstance = $Module.Params.sql_instance
         if ($null -ne $Module.Params.sql_username) {
             [securestring]$secPassword = ConvertTo-SecureString $Module.Params.sql_password -AsPlainText -Force
             [pscredential]$sqlCredential = New-Object System.Management.Automation.PSCredential ($Module.Params.sql_username, $secPassword)
@@ -59,19 +57,14 @@ function Get-SqlCredential {
 function ConvertTo-SerializableObject {
     <#
         .SYNOPSIS
-        Transforms some members of a DbaTools result objects to be more serialization-friendly and prevent infinite recursion.
-
-        .DESCRIPTION
-        Stringifies version properties so we don't get serialized [System.Version] objects which aren't very useful.
+        Transforms objects to a serialization-friendly structure, safe for Linux and Windows.
     #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-        [Object]
-        $InputObject,
+        [Object]$InputObject,
         [Parameter()]
-        [string[]]
-        $ExcludeProperty = @(
+        [string[]]$ExcludeProperty = @(
             'Properties', 'Urn', 'ExecutionManager', 'UserData', 'ParentCollection',
             'DatabaseEngineEdition', 'DatabaseEngineType', 'ServerVersion', 'Server', 'Parent'
         ),
@@ -79,30 +72,24 @@ function ConvertTo-SerializableObject {
     )
 
     Begin {
-        # We need to remove this type data so that arrays don't get serialized weirdly.
-        # In some cases, an array gets serialized as an object with a Count and Value property where the value is the actual array.
-        # See: https://stackoverflow.com/a/48858780/3905079
-        # This only affects Windows PowerShell.
-        # This has to come after the AnsibleModule is created, otherwise it will break the sanity tests.
         if (-not $IsLinux) {
             Remove-TypeData -TypeName System.Array -ErrorAction SilentlyContinue
         }
     }
 
     Process {
-        # Defensive guards
         if ($null -eq $InputObject) { return $null }
 
-        # If this is a collection, recursively convert each item and return an array of serializable objects
+        # Handle collections recursively
         if ($InputObject -is [System.Collections.IEnumerable] -and -not ($InputObject -is [string])) {
             $results = @()
             foreach ($item in $InputObject) {
-                $results += (ConvertTo-SerializableObject -InputObject $item -ExcludeProperty $ExcludeProperty -UseDefaultProperty:$UseDefaultProperty)
+                $results += ConvertTo-SerializableObject -InputObject $item -ExcludeProperty $ExcludeProperty -UseDefaultProperty:$UseDefaultProperty
             }
             return $results
         }
 
-        # Some objects don't expose DefaultDisplayPropertySet; guard against that
+        # Determine default display properties
         try {
             $defaultProperty = $null
             if ($InputObject -and $InputObject.PSStandardMembers -and $InputObject.PSStandardMembers.DefaultDisplayPropertySet) {
@@ -120,6 +107,7 @@ function ConvertTo-SerializableObject {
             $objectProperty = $InputObject.PSObject.Properties | Where-Object { $_.Name -notin $ExcludeProperty }
         }
 
+        # Build a sanitized property list
         $properties = foreach ($p in $objectProperty) {
             $pName = $p.Name
             $pValue = $p.Value
@@ -145,45 +133,43 @@ function ConvertTo-SerializableObject {
                     @{ Name = $pName; Expression = { [string[]]($pValue.Name) }.GetNewClosure() }
                     break
                 }
-                { $null -ne $pValue -and $pValue.GetType().Name -eq 'SystemPolicy' } {
-                    @{ Name = $pName; Expression = { [PSCustomObject]@{ Value = $pValue.ToString() } }.GetNewClosure() }
-                    break
-                }
-                # Handle any complex object that might cause serialization issues
                 { $null -ne $pValue -and -not ($pValue -is [string] -or $pValue -is [int] -or $pValue -is [bool] -or $pValue -is [double]) } {
                     @{ Name = $pName; Expression = {
-                            try {
-                                # Handle SystemPolicy objects regardless of where they appear
-                                if ($pValue.GetType().Name -eq 'SystemPolicy') {
-                                    return [PSCustomObject]@{ Value = $pValue.ToString() }
-                                }
-                                # Check for nested SystemPolicy
-                                if ($pValue.PSObject.Properties['SystemPolicy']) {
-                                    return [PSCustomObject]@{ Value = $pValue.SystemPolicy.ToString() }
-                                }
-                                if ($pValue.PSObject.Properties['Name']) {
-                                    return $pValue.Name
-                                }
-                                return $pValue.ToString()
+                        try {
+                            # Check by type name, do not reference [SystemPolicy] directly
+                            if ($pValue.GetType().Name -eq 'SystemPolicy') {
+                                return [PSCustomObject]@{ Value = $pValue.ToString() }
                             }
-                            catch {
-                                return $pValue.ToString()
+
+                            # Safely check for nested SystemPolicy property
+                            $sysPolicyProp = $pValue.PSObject?.Properties.Match('SystemPolicy')
+                            if ($sysPolicyProp -and $sysPolicyProp.Count -gt 0) {
+                                return [PSCustomObject]@{ Value = ($sysPolicyProp[0].Value.ToString()) }
                             }
-                        }.GetNewClosure()
-                    }
+
+                            # Fall back to Name property if exists
+                            $nameProp = $pValue.PSObject?.Properties.Match('Name')
+                            if ($nameProp -and $nameProp.Count -gt 0) {
+                                return $nameProp[0].Value
+                            }
+
+                            return $pValue.ToString()
+                        }
+                        catch {
+                            return $pValue.ToString()
+                        }
+                    }.GetNewClosure() }
                     break
                 }
                 default { $pName }
             }
         }
 
-        # Wrap Select-Object in try to avoid unexpected runtime errors from exotic objects
         try {
             $result = $InputObject | Select-Object -Property $properties
             return [PSCustomObject]$result
         }
         catch {
-            # Fallback: return a hashtable of simple properties
             $ht = @{}
             foreach ($p in $objectProperty) {
                 try { $ht[$p.Name] = $p.Value } catch { $ht[$p.Name] = $p.Value.ToString() }
