@@ -134,6 +134,11 @@ try {
                     }
                 }
                 $outputFileResult = @{ OutputFile = $outputFile }
+            }
+            catch {
+                $module.FailJson("Failed setting agent job output file: $($_.Exception.Message)", $_)
+            }
+        }
     }
 
     if ($output) {
