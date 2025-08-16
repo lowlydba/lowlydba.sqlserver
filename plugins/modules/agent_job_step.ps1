@@ -124,24 +124,16 @@ try {
                 $outputFileResult = Set-DbaAgentJobOutputFile @setOutputFileSplat
                 if ($null -ne $outputFileResult) {
                     $module.Result.changed = $true
-                    # Get fresh job step and manually add OutputFileName property
-                    $allJobSteps = Get-DbaAgentJobStep -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
-                    $updatedJobStep = $allJobSteps | Where-Object {
-                        if ($stepId) { $_.ID -eq $stepId }
-                        else { $_.Name -eq $stepName }
-                    }
-                    $output = $updatedJobStep
-                    # Manually add the OutputFileName property from the underlying SMO object
-                    if ($null -ne $output) {
-                        Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $updatedJobStep.OutputFileName -Force
+                    # Add the OutputFileName property from the Set-DbaAgentJobOutputFile result
+                    if ($null -ne $outputFileResult.OutputFileName) {
+                        Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $outputFileResult.OutputFileName -Force
                     }
                 }
             }
-            else {
-                # Even if no output file is set, add the OutputFileName property for consistency
-                if ($null -ne $output) {
-                    Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $output.OutputFileName -Force
-                }
+
+            # Ensure OutputFileName property is always available for consistency
+            if ($null -ne $output -and -not ($output.PSObject.Properties.Name -contains "OutputFileName")) {
+                Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $output.OutputFileName -Force
             }
         }
         # Update existing
@@ -181,22 +173,15 @@ try {
                     SqlInstance = $sqlInstance
                     SqlCredential = $sqlCredential
                     Job = $job
-                    Step = $stepName
+                    Step = $stepName  # Use the new step name since Set-DbaAgentJobStep already renamed it
                     OutputFile = $outputFile
                 }
                 $outputFileResult = Set-DbaAgentJobOutputFile @setOutputFileSplat
                 if ($null -ne $outputFileResult) {
                     $module.Result.changed = $true
-                    # Get fresh job step and manually add OutputFileName property
-                    $allJobSteps = Get-DbaAgentJobStep -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Job $job
-                    $updatedJobStep = $allJobSteps | Where-Object {
-                        if ($stepId) { $_.ID -eq $stepId }
-                        else { $_.Name -eq $stepName }
-                    }
-                    $output = $updatedJobStep
-                    # Manually add the OutputFileName property from the underlying SMO object
-                    if ($null -ne $output) {
-                        Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $updatedJobStep.OutputFileName -Force
+                    # Add the OutputFileName property from the Set-DbaAgentJobOutputFile result
+                    if ($null -ne $outputFileResult.OutputFileName) {
+                        Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $outputFileResult.OutputFileName -Force
                     }
                 }
             }
