@@ -145,6 +145,10 @@ function ConvertTo-SerializableObject {
                     @{ Name = $pName; Expression = { [string[]]($pValue.Name) }.GetNewClosure() }
                     break
                 }
+                { $null -ne $pValue -and $pValue.GetType().Name -eq 'SystemPolicy' } {
+                    @{ Name = $pName; Expression = { [PSCustomObject]@{ Value = $pValue.ToString() } }.GetNewClosure() }
+                    break
+                }
                 # Handle any complex object that might cause serialization issues
                 { $null -ne $pValue -and -not ($pValue -is [string] -or $pValue -is [int] -or $pValue -is [bool] -or $pValue -is [double]) } {
                     @{ Name = $pName; Expression = {
@@ -165,7 +169,8 @@ function ConvertTo-SerializableObject {
 
         # Wrap Select-Object in try to avoid unexpected runtime errors from exotic objects
         try {
-            return $InputObject | Select-Object -Property $properties
+            $result = $InputObject | Select-Object -Property $properties
+            return [PSCustomObject]$result
         }
         catch {
             # Fallback: return a hashtable of simple properties
@@ -173,7 +178,7 @@ function ConvertTo-SerializableObject {
             foreach ($p in $objectProperty) {
                 try { $ht[$p.Name] = $p.Value } catch { $ht[$p.Name] = $p.Value.ToString() }
             }
-            return $ht
+            return [PSCustomObject]$ht
         }
     }
 }
