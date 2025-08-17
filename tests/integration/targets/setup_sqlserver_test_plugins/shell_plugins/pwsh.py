@@ -393,6 +393,13 @@ public class SystemPolicy {
         AllSigned,
         Restricted
     }
+
+    // Matches usage in ansible-core which compares to string 'Enforce'.
+    // https://github.com/ansible/ansible/blob/c79c2710f4fbda42c60b3dd56aa9a8f7ce85b1b6/lib/ansible/executor/powershell/become_wrapper.ps1#L74
+    public static string GetSystemLockdownPolicy() {
+        // On non-Windows PowerShell Core there is no lockdown policy; simulate 'None'.
+        return "None";
+    }
 }
 "@ -ErrorAction SilentlyContinue
     } catch { }
