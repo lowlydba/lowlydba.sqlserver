@@ -20,7 +20,7 @@ Goal: run collection integration tests that exercise PowerShell modules locally 
 Steps (high level):
 
 - Ensure `pwsh` (PowerShell 7+) is installed on the controller.
-- Run the collection’s integration tests; this target auto-enables the custom plugins in this folder.
+- Run the collection's integration tests; this target auto-enables the custom plugins in this folder.
 - Tests execute PowerShell modules on the controller, while those modules still manage remote SQL Server hosts as usual.
 
 Notes:
@@ -39,7 +39,7 @@ Nothing for you to change: the test shell plugin (`shell_plugins/pwsh.py`) autom
 
 ### Fall back to remote Windows execution
 
-If local controller execution isn’t desired, point your playbooks at a Windows host so modules run remotely as usual.
+If local controller execution isn't desired, point your playbooks at a Windows host so modules run remotely as usual.
 
 ## Reference (what it is)
 
@@ -53,7 +53,7 @@ Components in this target:
 
 Behavior/Options (subset):
 
-- Typical PowerShell shell options such as `async_dir`, `remote_tmp`, `environment` (see the plugin’s `DOCUMENTATION` block).
+- Typical PowerShell shell options such as `async_dir`, `remote_tmp`, `environment` (see the plugin's `DOCUMENTATION` block).
 - No persistent user profiles or global state are modified.
 
 ## Explanation (background, rationale)
