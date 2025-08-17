@@ -426,7 +426,7 @@ public class SystemPolicy {
                     % script
                 )
 
-            # Trim whitespace-only lines to keep the payload small
+            # Strip leading/trailing whitespace from all lines and remove empty lines to keep the payload small
             script = '\n'.join([x.strip() for x in script.splitlines() if x.strip()])
 
             # Encode for -EncodedCommand using UTF-16LE
