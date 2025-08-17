@@ -12,3 +12,5 @@ coverage:
       default:
         # basic
         target: 90%
+  ignore:
+    - "tests/**"
