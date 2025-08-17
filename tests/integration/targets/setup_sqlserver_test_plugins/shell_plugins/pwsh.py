@@ -373,7 +373,13 @@ class ShellModule(ShellBase):
         on non-Windows platforms where the [SystemPolicy] type does not exist. The
         stub is inserted before any other script content (including Ansible's
         bootstrap/become wrappers) so that early references resolve correctly.
-        """
+        '''Convert a PowerShell script to a single base64-encoded command.
+
+        This override prepends a lightweight SystemPolicy stub for PowerShell Core
+        on non-Windows platforms where the [SystemPolicy] type does not exist. The
+        stub is inserted before any other script content (including Ansible's
+        bootstrap/become wrappers) so that early references resolve correctly.
+        '''
         script = to_text(script)
 
         # Pass-through for stdin execution path
