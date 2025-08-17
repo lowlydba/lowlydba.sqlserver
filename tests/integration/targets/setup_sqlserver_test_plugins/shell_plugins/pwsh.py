@@ -367,7 +367,8 @@ class ShellModule(ShellBase):
         return re.compile(u"(['\u2018\u2019\u201a\u201b])").sub(u'\\1\\1', value)
 
     def _encode_script(self, script, as_list=False, strict_mode=True, preserve_rc=True):
-        """Convert a PowerShell script to a single base64-encoded command.
+        '''
+        Convert a PowerShell script to a single base64-encoded command.
 
         This override prepends a lightweight SystemPolicy stub for PowerShell Core
         on non-Windows platforms where the [SystemPolicy] type does not exist. The
