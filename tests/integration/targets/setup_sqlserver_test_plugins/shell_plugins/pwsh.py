@@ -367,21 +367,63 @@ class ShellModule(ShellBase):
         return re.compile(u"(['\u2018\u2019\u201a\u201b])").sub(u'\\1\\1', value)
 
     def _encode_script(self, script, as_list=False, strict_mode=True, preserve_rc=True):
-        '''Convert a PowerShell script to a single base64-encoded command.'''
+        '''Convert a PowerShell script to a single base64-encoded command.
+
+        This override prepends a lightweight SystemPolicy stub for PowerShell Core
+        on non-Windows platforms where the [SystemPolicy] type does not exist. The
+        stub is inserted before any other script content (including Ansible's
+        bootstrap/become wrappers) so that early references resolve correctly.
+        '''
         script = to_text(script)
 
+        # Pass-through for stdin execution path
         if script == u'-':
             cmd_parts = _common_args + ['-Command', '-']
-
         else:
+            # Minimal, safe stub for [SystemPolicy] when missing (e.g., pwsh on Linux/macOS)
+            systempolicy_stub = r'''
+if (-not ("SystemPolicy" -as [Type])) {
+    try {
+        Add-Type -TypeDefinition @"
+public class SystemPolicy {
+    public enum ExecutionPolicy {
+        Bypass,
+        Unrestricted,
+        RemoteSigned,
+        AllSigned,
+        Restricted
+    }
+
+    // Matches usage in ansible-core which compares to string 'Enforce'.
+    // ansible-core may compare the result of this method to the string 'Enforce'.
+    // On non-Windows PowerShell Core, there is no lockdown policy; this stub always returns 'None'.
+    // See: https://github.com/ansible/ansible/blob/c79c2710f4fbda42c60b3dd56aa9a8f7ce85b1b6/lib/ansible/executor/powershell/become_wrapper.ps1#L74
+    public static string GetSystemLockdownPolicy() {
+        // On non-Windows PowerShell Core there is no lockdown policy; simulate 'None'.
+        return "None";
+    }
+}
+"@ -ErrorAction SilentlyContinue
+    } catch { }
+}
+'''
+            # Prepend the stub so it executes before any wrapper code
+            script = systempolicy_stub + script
+
             if strict_mode:
                 script = u'Set-StrictMode -Version Latest\r\n%s' % script
-            # try to propagate exit code if present- won't work with begin/process/end-style scripts (ala put_file)
-            # NB: the exit code returned may be incorrect in the case of a successful command followed by an invalid command
+
+            # Try to propagate a non-zero rc when the last statement failed
             if preserve_rc:
-                script = u'%s\r\nIf (-not $?) { If (Get-Variable LASTEXITCODE -ErrorAction SilentlyContinue) { exit $LASTEXITCODE } Else { exit 1 } }\r\n'\
+                script = (
+                    u"%s\r\nIf (-not $?) { If (Get-Variable LASTEXITCODE -ErrorAction SilentlyContinue) { exit $LASTEXITCODE } Else { exit 1 } }\r\n"
                     % script
+                )
+
+            # Strip leading/trailing whitespace from all lines and remove empty lines to keep the payload small
             script = '\n'.join([x.strip() for x in script.splitlines() if x.strip()])
+
+            # Encode for -EncodedCommand using UTF-16LE
             encoded_script = to_text(base64.b64encode(script.encode('utf-16-le')), 'utf-8')
             cmd_parts = _common_args + ['-EncodedCommand', encoded_script]
 
