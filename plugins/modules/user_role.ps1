@@ -13,10 +13,10 @@ $ErrorActionPreference = "Stop"
 $spec = @{
     supports_check_mode = $true
     options = @{
-        database = @{type = 'str'; required = $true }
-        username = @{type = 'str'; required = $true }
-        state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
-        role = @{type = 'str'; required = $false}
+        database = @{ type = 'str'; required = $true }
+        username = @{ type = 'str'; required = $true }
+        state = @{ type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
+        role = @{ type = 'str'; required = $false }
         roles = @{
             default = @{}
             type = 'dict'
@@ -54,7 +54,6 @@ $database = $module.Params.database
 $role = $module.Params.role
 $roles = $module.Params.roles
 $state = $module.Params.state
-$remove_unlisted = $module.Params.remove_unlisted
 $checkMode = $module.CheckMode
 $compatibilityMode = $false
 
@@ -95,25 +94,29 @@ $combinedRoles | ForEach-Object {
 }
 
 # Sanity check on the add/remove clause not having the same role.
-$sameRoles = Compare-Object $roles['add'] $roles['remove'] -IncludeEqual | Where-Object {$_.SideIndicator -eq '=='} | Select-Object -ExpandProperty InputObject
+$sameRoles = Compare-Object $roles['add'] $roles['remove'] -IncludeEqual | Where-Object { $_.SideIndicator -eq '==' } | Select-Object -ExpandProperty InputObject
 if ( $sameRoles.count -ge 1 ) {
     $module.FailJson("Role [$($sameRoles -join ', ')] exists in both the add and remove lists.")
 }
 
 # Get current role membership of all roles for the user to compare against
 $existingRoleMembership = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true `
-        | Where-Object {$_.UserName -eq $username} `
-        | Select -ExpandProperty role `
-        | Sort-Object
-if ($null -eq $existingRoleMembership) {$existingRoleMembership = @()}
+    | Where-Object { $_.UserName -eq $username } `
+    | Select-Object -ExpandProperty role `
+    | Sort-Object
+if ($null -eq $existingRoleMembership) { $existingRoleMembership = @() }
 
 if ( $null -ne $roles['set'] ) {
     $comparison = Compare-Object $existingRoleMembership $roles['set']
-    $rolesToAdd = $comparison | Where-Object {$_.SideIndicator -eq '=>'} | Select-Object -ExpandProperty InputObject
-    $rolesToRemove = $comparison | Where-Object {$_.SideIndicator -eq '<='} | Select-Object -ExpandProperty InputObject
+    $rolesToAdd = $comparison | Where-Object { $_.SideIndicator -eq '=>' } | Select-Object -ExpandProperty InputObject
+    $rolesToRemove = $comparison | Where-Object { $_.SideIndicator -eq '<=' } | Select-Object -ExpandProperty InputObject
 } else {
-    $rolesToAdd = Compare-Object $existingRoleMembership $roles['add'] | Where-Object {$_.SideIndicator -eq '=>'} | Select-Object -ExpandProperty InputObject
-    $rolesToRemove = Compare-Object $existingRoleMembership $roles['remove'] -IncludeEqual | Where-Object {$_.SideIndicator -eq '=='} | Select-Object -ExpandProperty InputObject
+    $rolesToAdd = Compare-Object $existingRoleMembership $roles['add'] `
+        | Where-Object { $_.SideIndicator -eq '=>' } `
+        | Select-Object -ExpandProperty InputObject
+    $rolesToRemove = Compare-Object $existingRoleMembership $roles['remove'] -IncludeEqual `
+        | Where-Object { $_.SideIndicator -eq '==' } `
+        | Select-Object -ExpandProperty InputObject
 }
 
 # Add user to new roles
@@ -160,9 +163,9 @@ if ($compatibilityMode) {
     try {
         # after changing any roles above, see what our new membership is and report it back
         $newRoleMembership = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true `
-                | Where-Object {$_.UserName -eq $username} `
-                | Select-Object -ExpandProperty role `
-                | Sort-Object
+            | Where-Object { $_.UserName -eq $username } `
+            | Select-Object -ExpandProperty role `
+            | Sort-Object
     }
     catch {
         $module.FailJson("Failure getting new role membership: $($_.Exception.Message)", $_)
