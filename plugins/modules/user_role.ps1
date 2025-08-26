@@ -94,7 +94,7 @@ $combinedRoles | ForEach-Object {
 }
 
 # Sanity check on the add/remove clause not having the same role.
-$sameRoles = ( Compare-Object $roles['add'] $roles['remove'] -IncludeEqual Where-Object { $_.SideIndicator -eq '==' } ).InputObject
+$sameRoles = ( Compare-Object $roles['add'] $roles['remove'] -IncludeEqual | Where-Object { $_.SideIndicator -eq '==' } ).InputObject
 if ($sameRoles.count -ge 1) {
     $module.FailJson("Role [$($sameRoles -join ', ')] exists in both the add and remove lists.")
 }
