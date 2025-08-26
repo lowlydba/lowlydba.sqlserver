@@ -41,7 +41,6 @@
       sql_password: "{{ sqlserver_password }}"
       database: "{{ database }}"
       username: "{{ username }}"
-      role: "{{ role }}"
       state: present
   tags: ["sqlserver.user"]
   block:
@@ -68,6 +67,9 @@
 
     - name: Add user to database role
       lowlydba.sqlserver.user_role:
+        roles:
+          add:
+            - db_owner
       register: result
     - assert:
         that:
@@ -76,7 +78,9 @@
 
     - name: Add user to non-existent database role
       lowlydba.sqlserver.user_role:
-        role: db_IMadeThisOneUp
+        roles:
+          add:
+          - db_IMadeThisOneUp
       register: error_result
       failed_when: error_result.failed
       ignore_errors: true
@@ -88,6 +92,9 @@
     - name: Add non-existent user to database role
       lowlydba.sqlserver.user_role:
         username: NewUserWhoThis
+        roles:
+          add:
+          - db_owner
       register: error_result
       failed_when: error_result.failed
       ignore_errors: true
@@ -98,6 +105,9 @@
 
     - name: Add user again to database role
       lowlydba.sqlserver.user_role:
+        roles:
+          add:
+            - db_owner
       register: result
     - assert:
         that:
@@ -105,46 +115,118 @@
 
     - name: Add user to list of database roles
       lowlydba.sqlserver.user_role:
-        role:
-          - db_datareader
-          - db_datawriter
+        roles:
+          add:
+            - db_datareader
+            - db_datawriter
       register: result
     - assert:
         that:
           - result is changed
-          - result.data.newRoleMembership == ["db_datareader", "db_datawriter", "db_owner"]
+          - result.data.roleMembership == ["db_datareader", "db_datawriter", "db_owner"]
 
     - name: Add user to list of database roles again
       lowlydba.sqlserver.user_role:
-        role:
-          - db_datareader
-          - db_datawriter
+        roles:
+          add:
+            - db_datareader
+            - db_datawriter
       register: result
     - assert:
         that:
           - result is not changed
 
-    - name: Add user to list of database roles, and remove unlisted roles
+    - name: Add user to list of database roles using set, to remove unlisted roles
       lowlydba.sqlserver.user_role:
-        role:
-          - db_datareader
-          - db_datawriter
-        remove_unlisted: true
+        roles:
+          set:
+            - db_datareader
+            - db_owner
       register: result
     - assert:
         that:
           - result is changed
-          - result.data.newRoleMembership == ["db_datareader", "db_datawriter"]
+          - result.data.roleMembership == ["db_datareader", "db_owner"]
 
-    - name: Remove user from database role
+    - name: Add user to list of database roles using set again
+      lowlydba.sqlserver.user_role:
+        roles:
+          set:
+            - db_datareader
+            - db_owner
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Remove user from all roles using set with blank array
+      lowlydba.sqlserver.user_role:
+        roles:
+          set: []
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.roleMembership == null
+
+    - name: Remove user from all roles using set with blank array again
+      lowlydba.sqlserver.user_role:
+        roles:
+          set: []
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Add user to database role (old method)
+      lowlydba.sqlserver.user_role:
+        role: "db_datareader"
+      register: result
+    - assert:
+        that:
+          - result is changed
+
+    - name: Add user to database role (old method) again
+      lowlydba.sqlserver.user_role:
+        role: "db_datareader"
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Get user rolelist to check if old method task worked (old method doesn't return membershipList)
+      lowlydba.sqlserver.user_role:
+      register: result
+    - assert:
+        that:
+          - result is not changed
+          - result.data.roleMembership == ["db_datareader"]
+
+    - name: Remove user from database role (old method)
       lowlydba.sqlserver.user_role:
         state: "absent"
-        role: db_datawriter
+        role: "db_datareader"
       register: result
     - assert:
         that:
           - result is changed
-          - result.data.newRoleMembership == ["db_datareader"]
+
+    - name: Remove user from database role (old method) again
+      lowlydba.sqlserver.user_role:
+        state: "absent"
+        role: "db_datareader"
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Get user rolelist to check if old method task worked (old method doesn't return membershipList)
+      lowlydba.sqlserver.user_role:
+      register: result
+    - assert:
+        that:
+          - result is not changed
+          - result.data.roleMembership == null
 
   always:
     - name: Drop user

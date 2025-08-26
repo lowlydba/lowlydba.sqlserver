@@ -15,149 +15,166 @@ $spec = @{
     options = @{
         database = @{type = 'str'; required = $true }
         username = @{type = 'str'; required = $true }
-        roles = @{type = 'list'; elements = 'str'; required = $true; aliases = 'role' }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
-        remove_unlisted = @{type = 'bool'; required = $false; default = 'false' }
+        role = @{type = 'str'; required = $false}
+        roles = @{
+            default = @{}
+            type = 'dict'
+            options = @{
+                add = @{
+                    default = @()
+                    type = 'list'
+                    elements = 'str'
+                }
+                remove = @{
+                    default = @()
+                    type = 'list'
+                    elements = 'str'
+                }
+                set = @{
+                    default = $null
+                    type = 'list'
+                    elements = 'str'
+                }
+            }
+        }
     }
+    required_one_of = @(
+        , @("role", "roles")
+    )
+    mutually_exclusive = @(
+        , @("role", "roles")
+    )
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
 $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $username = $module.Params.username
 $database = $module.Params.database
+$role = $module.Params.role
 $roles = $module.Params.roles
 $state = $module.Params.state
 $remove_unlisted = $module.Params.remove_unlisted
 $checkMode = $module.CheckMode
+$compatibilityMode = $false
 
 $module.Result.changed = $false
 
-$getUserSplat = @{
+# Map the "old" style way of using state and role on to the add/remove/set methods
+if ($role -and $state -eq 'present') {
+    $roles.add = @(, $role)
+    $compatibilityMode = $true
+}
+if ($role -and $state -eq 'absent') {
+    $roles.remove = @(, $role)
+    $compatibilityMode = $true
+}
+
+$commonParamSplat = @{
     SqlInstance = $sqlInstance
     SqlCredential = $sqlCredential
     Database = $database
-    User = $username
     EnableException = $true
 }
 
 $outputProps = @{}
 
 # Verify user and role(s) exist, DBATools currently fails silently
-$existingUser = Get-DbaDbUser @getUserSplat
+$existingUser = Get-DbaDbUser @commonParamSplat -user $username
 if ($null -eq $existingUser) {
     $module.FailJson("User [$username] does not exist in database [$database].")
 }
 
-$roles | ForEach-Object {
+$combinedRoles = ( $roles['set'] + $roles['add'] + $roles['remove'] ) | Select-Object -Unique
+$combinedRoles | ForEach-Object {
     $thisRole = $_
-    $getRoleSplat = @{
-        SqlInstance = $sqlInstance
-        SqlCredential = $sqlCredential
-        Database = $database
-        Role = $thisrole
-        EnableException = $true
-    }
-    $existingRole = Get-DbaDbRole @getRoleSplat
+    $existingRole = Get-DbaDbRole @commonParamSplat -role $thisRole
     if ($null -eq $existingRole) {
         $module.FailJson("Role [$thisRole] does not exist in database [$database].")
     }
 }
 
-# Get role members of all roles we care about to compare against later
-$getRoleMemberSplat = @{
-    SqlInstance = $sqlInstance
-    SqlCredential = $sqlCredential
-    Database = $database
-    IncludeSystemUser = $true
-    EnableException = $true
+# Sanity check on the add/remove clause not having the same role.
+$sameRoles = Compare-Object $roles['add'] $roles['remove'] -IncludeEqual | Where-Object {$_.SideIndicator -eq '=='} | Select-Object -ExpandProperty InputObject
+if ( $sameRoles.count -ge 1 ) {
+    $module.FailJson("Role [$($sameRoles -join ', ')] exists in both the add and remove lists.")
 }
-$existingRoleMembership = Get-DbaDbRoleMember @getRoleMemberSplat | Where-Object {$_.UserName -eq $username} | Select -ExpandProperty role | Sort-Object
 
-if ($state -eq "absent") {
-    $roles | ForEach-Object {
-        $thisRole = $_
-        if ( $existingRoleMembership -contains $thisRole ) {
-            try {
-                $removeRoleMemberSplat = @{
-                    SqlInstance = $sqlInstance
-                    SqlCredential = $sqlCredential
-                    User = $username
-                    Database = $database
-                    Role = $thisRole
-                    EnableException = $true
-                    WhatIf = $checkMode
-                    Confirm = $false
-                }
-                Remove-DbaDbRoleMember @removeRoleMemberSplat
-                $module.Result.changed = $true
-            }
-            catch {
-                $module.FailJson("Removing user [$username] from database role [$thisRole] failed: $($_.Exception.Message)", $_)
-            }
-        }
-    }
+# Get current role membership of all roles for the user to compare against
+$existingRoleMembership = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true `
+        | Where-Object {$_.UserName -eq $username} `
+        | Select -ExpandProperty role `
+        | Sort-Object
+if ($null -eq $existingRoleMembership) {$existingRoleMembership = @()}
+
+if ( $null -ne $roles['set'] ) {
+    $comparison = Compare-Object $existingRoleMembership $roles['set']
+    $rolesToAdd = $comparison | Where-Object {$_.SideIndicator -eq '=>'} | Select-Object -ExpandProperty InputObject
+    $rolesToRemove = $comparison | Where-Object {$_.SideIndicator -eq '<='} | Select-Object -ExpandProperty InputObject
+} else {
+    $rolesToAdd = Compare-Object $existingRoleMembership $roles['add'] | Where-Object {$_.SideIndicator -eq '=>'} | Select-Object -ExpandProperty InputObject
+    $rolesToRemove = Compare-Object $existingRoleMembership $roles['remove'] -IncludeEqual | Where-Object {$_.SideIndicator -eq '=='} | Select-Object -ExpandProperty InputObject
 }
-elseif ($state -eq "present") {
-    # Add user to role
-    $roles | ForEach-Object {
-        $thisRole = $_
-        if ($existingRoleMembership -notcontains $thisRole) {
-            try {
-                $addRoleMemberSplat = @{
-                    SqlInstance = $sqlInstance
-                    SqlCredential = $sqlCredential
-                    User = $username
-                    Database = $database
-                    Role = $thisRole
-                    EnableException = $true
-                    WhatIf = $checkMode
-                    Confirm = $false
-                }
-                Add-DbaDbRoleMember @addRoleMemberSplat
-                $module.Result.changed = $true
-            }
-            catch {
-                $module.FailJson("Adding user [$username] to database role [$thisRole] failed: $($_.Exception.Message)", $_)
-            }
+
+# Add user to new roles
+$rolesToAdd | ForEach-Object {
+    $thisRole = $_
+    try {
+        $addRoleMemberSplat = @{
+            User = $username
+            Role = $thisRole
+            WhatIf = $checkMode
+            Confirm = $false
         }
+        $commandResult = Add-DbaDbRoleMember @commonParamSplat @addRoleMemberSplat
+        $module.Result.changed = $true
     }
-}
-if ($state -eq "present" -and $remove_unlisted -eq $true) {
-    #remove users from roles that weren't listed (if we got the remove_unlisted option set to true)
-    $existingRoleMembership | ForEach-Object {
-        $thisRole = $_
-        if ($roles -notcontains $thisRole) {
-            try {
-                $removeRoleMemberSplat = @{
-                    SqlInstance = $sqlInstance
-                    SqlCredential = $sqlCredential
-                    User = $username
-                    Database = $database
-                    Role = $thisRole
-                    EnableException = $true
-                    WhatIf = $checkMode
-                    Confirm = $false
-                }
-                Remove-DbaDbRoleMember @removeRoleMemberSplat
-                $module.Result.changed = $true
-            }
-            catch {
-                $module.FailJson("Removing user [$username] from extra unlisted database role [$thisRole] failed: $($_.Exception.Message)", $_)
-            }
-        }
+    catch {
+        $module.FailJson("Adding user [$username] to database role [$thisRole] failed: $($_.Exception.Message)", $_)
     }
 }
 
-try {
-    #after changing any roles above, see what our new membership is and report it back
-    $newRoleMembership = Get-DbaDbRoleMember @getRoleMemberSplat | Where-Object {$_.UserName -eq $username} | Select -ExpandProperty role | Sort-Object
+# remove user from unneeded roles
+$rolesToRemove | ForEach-Object {
+    $thisRole = $_
+    try {
+        $removeRoleMemberSplat = @{
+            User = $username
+            Role = $thisRole
+            WhatIf = $checkMode
+            Confirm = $false
+        }
+        $commandResult = Remove-DbaDbRoleMember @commonParamSplat @removeRoleMemberSplat
+        $module.Result.changed = $true
+    }
+    catch {
+        $module.FailJson("Removing user [$username] from database role [$thisRole] failed: $($_.Exception.Message)", $_)
+    }
 }
-catch {
-    $module.FailJson("Failure getting new role membership: $($_.Exception.Message)", $_)
+
+# if we're still using old mode (using $state and $role) save command result as results,
+# otherwise send back full list of old and new roles.
+if ($compatibilityMode) {
+    $output = $commandResult
+} else {
+    try {
+        # after changing any roles above, see what our new membership is and report it back
+        $newRoleMembership = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true `
+                | Where-Object {$_.UserName -eq $username} `
+                | Select-Object -ExpandProperty role `
+                | Sort-Object
+    }
+    catch {
+        $module.FailJson("Failure getting new role membership: $($_.Exception.Message)", $_)
+    }
+    $outputProps.roleMembership = [array]$newRoleMembership
+    if ( $module.Result.changed ) {
+        $outputProps.diff = @{}
+        $outputProps.diff.after = [array]$newRoleMembership
+        $outputProps.diff.before = [array]$existingRoleMembership
+    }
+    $output = New-Object -TypeName PSCustomObject -Property $outputProps
 }
-$outputProps.newRoleMembership = [array]$newRoleMembership
-$outputProps.oldRoleMembership = [array]$existingRoleMembership
-$output = New-Object -TypeName PSCustomObject -Property $outputProps
 
 try {
     if ($null -ne $output) {

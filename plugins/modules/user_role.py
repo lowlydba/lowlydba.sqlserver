@@ -22,17 +22,38 @@ options:
       - Name of the user.
     type: str
     required: true
+  role:
+    description
+      - The database role for the user to be modified.
+      - When used with State set to present, will add the user to this role.
+      - When used with State set to absent, will remove the user from this role.
+      - Mutually exclusive with roles
+    type: str
   roles:
     description:
-      - The database role for the user to be modified.
-    type: list
-    required: true
-  remove_unlisted:
-    description:
-      - When set to true, will remove any other roles that aren't listed in roles.
-    type: boolean
-    required: false
-    default: false
+      - The database roles for the user to be added, removed or set.
+      - Mutually exclusive with role
+    type: dict
+    suboptions:
+      add:
+        description:
+          - Adds the user to the specified roles, keeping the
+            existing role membership if they are not specified.
+        type: list
+        elements: str
+      remove:
+        description:
+          - Removes the user from the specified roles, keeping the
+            existing role membership if they are not specified.
+        type: list
+        elements: str
+      set:
+        description:
+          - Adds the user to the specified roles.
+          - User will be removed from any other roles not specified.
+          - Set this to an empty list to remove all members from a group..
+        type: list
+        elements: str
     version_added: 2.6.2
 author: "John McCall (@lowlydba)"
 requirements:
@@ -57,12 +78,13 @@ EXAMPLES = r'''
     sql_instance: sql-01.myco.io
     username: TheIntern
     database: InternProject1
-    role:
-      - db_datareader
-      - db_datawriter
+    roles:
+      add:
+        - db_datareader
+        - db_datawriter
 
 - name: Remove a user from a fixed db role
-  lowlydba.sqlserver.login:
+  lowlydba.sqlserver.user_role:
     sql_instance: sql-01.myco.io
     username: TheIntern
     database: InternProject1
@@ -70,29 +92,40 @@ EXAMPLES = r'''
     state: absent
 
 - name: Add a user to a custom db role
-  lowlydba.sqlserver.login:
+  lowlydba.sqlserver.user_role:
     sql_instance: sql-01.myco.io
     username: TheIntern
     database: InternProject1
     role: db_intern
-    state: absent
+    state: present
 
 - name: Specify a list of roles that user should be in and remove all others
-  lowlydba.sqlserver.login:
+  lowlydba.sqlserver.user_role:
     sql_instance: sql-01.myco.io
     username: TheIntern
     database: InternProject1
-    role:
-      - db_datareader
-      - db_datawriter
+    roles:
+      set:
+        - db_datareader
+        - db_datawriter
     state: present
-    remove_unlisted: true
 
+- name: Remove user from all roles on this database
+  lowlydba.sqlserver.user_role:
+    sql_instance: sql-01.myco.io
+    username: TheIntern
+    database: InternProject1
+    roles:
+      set: []
+    state: present
 '''
 
 RETURN = r'''
 data:
-  description: Output from the C(Remove-DbaDbRoleMember), (Get-DbaDbRoleMember), or C(Add-DbaDbRoleMember) functions.
+  description:
+    - If called with role, then data is output from the C(Remove-DbaDbRoleMember), (Get-DbaDbRoleMember), or C(Add-DbaDbRoleMember) functions.
+    - If called with roles, then data returned roleMembership, which is an array of roles that the user is now a member of.
+    - If called without either role or roles, then data returned is roleMembership which is users current list of roles.
   returned: success, but not in check_mode.
   type: dict
 '''
