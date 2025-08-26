@@ -23,7 +23,7 @@ options:
     type: str
     required: true
   role:
-    description
+    description:
       - The database role for the user to be modified.
       - When used with State set to present, will add the user to this role.
       - When used with State set to absent, will remove the user from this role.
