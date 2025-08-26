@@ -34,6 +34,7 @@ options:
       - The database roles for the user to be added, removed or set.
       - Mutually exclusive with role
     type: dict
+    default: {}
     suboptions:
       add:
         description:
@@ -41,12 +42,14 @@ options:
             existing role membership if they are not specified.
         type: list
         elements: str
+        default: []
       remove:
         description:
           - Removes the user from the specified roles, keeping the
             existing role membership if they are not specified.
         type: list
         elements: str
+        default: []
       set:
         description:
           - Adds the user to the specified roles.
@@ -54,7 +57,7 @@ options:
           - Set this to an empty list to remove all members from a group..
         type: list
         elements: str
-    version_added: 2.6.2
+    version_added: 2.7
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
