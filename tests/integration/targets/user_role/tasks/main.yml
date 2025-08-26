@@ -74,7 +74,7 @@
     - assert:
         that:
           - result is changed
-          - result.data.newRoleMembership == ["db_owner"]
+          - result.data.roleMembership == ["db_owner"]
 
     - name: Add user to non-existent database role
       lowlydba.sqlserver.user_role:
