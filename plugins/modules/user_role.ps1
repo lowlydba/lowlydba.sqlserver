@@ -94,29 +94,25 @@ $combinedRoles | ForEach-Object {
 }
 
 # Sanity check on the add/remove clause not having the same role.
-$sameRoles = Compare-Object $roles['add'] $roles['remove'] -IncludeEqual | Where-Object { $_.SideIndicator -eq '==' } | Select-Object -ExpandProperty InputObject
-if ( $sameRoles.count -ge 1 ) {
+$sameRoles = ( Compare-Object $roles['add'] $roles['remove'] -IncludeEqual Where-Object { $_.SideIndicator -eq '==' } ).InputObject
+if ($sameRoles.count -ge 1) {
     $module.FailJson("Role [$($sameRoles -join ', ')] exists in both the add and remove lists.")
 }
 
 # Get current role membership of all roles for the user to compare against
-$existingRoleMembership = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true `
-    | Where-Object { $_.UserName -eq $username } `
-    | Select-Object -ExpandProperty role `
-    | Sort-Object
+$membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
+$existingRoleMembership = $membershipObjects.role | Sort-Object
+
 if ($null -eq $existingRoleMembership) { $existingRoleMembership = @() }
 
-if ( $null -ne $roles['set'] ) {
+if ($null -ne $roles['set']) {
     $comparison = Compare-Object $existingRoleMembership $roles['set']
-    $rolesToAdd = $comparison | Where-Object { $_.SideIndicator -eq '=>' } | Select-Object -ExpandProperty InputObject
-    $rolesToRemove = $comparison | Where-Object { $_.SideIndicator -eq '<=' } | Select-Object -ExpandProperty InputObject
-} else {
-    $rolesToAdd = Compare-Object $existingRoleMembership $roles['add'] `
-        | Where-Object { $_.SideIndicator -eq '=>' } `
-        | Select-Object -ExpandProperty InputObject
-    $rolesToRemove = Compare-Object $existingRoleMembership $roles['remove'] -IncludeEqual `
-        | Where-Object { $_.SideIndicator -eq '==' } `
-        | Select-Object -ExpandProperty InputObject
+    $rolesToAdd = ( $comparison | Where-Object { $_.SideIndicator -eq '=>' } ).InputObject
+    $rolesToRemove = ( $comparison | Where-Object { $_.SideIndicator -eq '<=' } ).InputObject
+}
+else {
+    $rolesToAdd = ( Compare-Object $existingRoleMembership $roles['add'] | Where-Object { $_.SideIndicator -eq '=>' } ).InputObject
+    $rolesToRemove = ( Compare-Object $existingRoleMembership $roles['remove'] -IncludeEqual | Where-Object { $_.SideIndicator -eq '==' } ).InputObject
 }
 
 # Add user to new roles
@@ -159,19 +155,18 @@ $rolesToRemove | ForEach-Object {
 # otherwise send back full list of old and new roles.
 if ($compatibilityMode) {
     $output = $commandResult
-} else {
+}
+else {
     try {
         # after changing any roles above, see what our new membership is and report it back
-        $newRoleMembership = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true `
-            | Where-Object { $_.UserName -eq $username } `
-            | Select-Object -ExpandProperty role `
-            | Sort-Object
+        $membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
+        $roleMembership = $membershipObjects.role | Sort-Object
     }
     catch {
         $module.FailJson("Failure getting new role membership: $($_.Exception.Message)", $_)
     }
     $outputProps.roleMembership = [array]$newRoleMembership
-    if ( $module.Result.changed ) {
+    if ($module.Result.changed) {
         $outputProps.diff = @{}
         $outputProps.diff.after = [array]$newRoleMembership
         $outputProps.diff.before = [array]$existingRoleMembership
