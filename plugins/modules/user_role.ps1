@@ -160,7 +160,7 @@ else {
     try {
         # after changing any roles above, see what our new membership is and report it back
         $membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
-        $roleMembership = $membershipObjects.role | Sort-Object
+        $newRoleMembership = $membershipObjects.role | Sort-Object
     }
     catch {
         $module.FailJson("Failure getting new role membership: $($_.Exception.Message)", $_)
