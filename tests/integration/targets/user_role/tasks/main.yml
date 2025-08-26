@@ -167,7 +167,7 @@
     - assert:
         that:
           - result is changed
-          - result.data.roleMembership == null
+          - result.data.roleMembership == []
 
     - name: Remove user from all roles using set with blank array again
       lowlydba.sqlserver.user_role:
@@ -226,7 +226,7 @@
     - assert:
         that:
           - result is not changed
-          - result.data.roleMembership == null
+          - result.data.roleMembership == []
 
   always:
     - name: Drop user

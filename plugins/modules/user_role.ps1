@@ -101,7 +101,7 @@ if ($sameRoles.count -ge 1) {
 
 # Get current role membership of all roles for the user to compare against
 $membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
-$existingRoleMembership = $membershipObjects.role | Sort-Object
+$existingRoleMembership = @(, $membershipObjects.role | Sort-Object)
 
 if ($null -eq $existingRoleMembership) { $existingRoleMembership = @() }
 
@@ -158,16 +158,16 @@ else {
     try {
         # after changing any roles above, see what our new membership is and report it back
         $membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
-        $newRoleMembership = $membershipObjects.role | Sort-Object
+        $newRoleMembership = @(, $membershipObjects.role | Sort-Object)
     }
     catch {
         $module.FailJson("Failure getting new role membership: $($_.Exception.Message)", $_)
     }
-    $outputProps.roleMembership = [array]$newRoleMembership
+    $outputProps.roleMembership = $newRoleMembership
     if ($module.Result.changed) {
         $outputProps.diff = @{}
-        $outputProps.diff.after = [array]$newRoleMembership
-        $outputProps.diff.before = [array]$existingRoleMembership
+        $outputProps.diff.after = $newRoleMembership
+        $outputProps.diff.before = $existingRoleMembership
     }
     $output = New-Object -TypeName PSCustomObject -Property $outputProps
 }
