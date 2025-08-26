@@ -116,8 +116,7 @@ else {
 }
 
 # Add user to new roles
-$rolesToAdd | ForEach-Object {
-    $thisRole = $_
+foreach ($thisRole in $rolesToAdd) {
     try {
         $addRoleMemberSplat = @{
             User = $username
@@ -134,8 +133,7 @@ $rolesToAdd | ForEach-Object {
 }
 
 # remove user from unneeded roles
-$rolesToRemove | ForEach-Object {
-    $thisRole = $_
+foreach ($thisRole in $rolesToRemove) {
     try {
         $removeRoleMemberSplat = @{
             User = $username

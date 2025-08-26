@@ -57,7 +57,7 @@ options:
           - Set this to an empty list to remove all members from a group..
         type: list
         elements: str
-    version_added: 2.7
+    version_added: 2.7.0
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
