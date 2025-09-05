@@ -1,0 +1,2 @@
+trivial:
+  - Replace deprecated ``ansible.module_utils.six`` (``text_type``/``binary_type``) with native Python 3 ``str``/``bytes`` in test connection plugin ``local_pwsh`` (PR #334).
