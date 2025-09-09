@@ -28,7 +28,6 @@ import fcntl
 import getpass
 
 from ansible.errors import AnsibleError, AnsibleFileNotFound
-from ansible.module_utils.six import text_type, binary_type
 from ansible.module_utils._text import to_bytes, to_native, to_text
 from ansible.plugins.connection import ConnectionBase
 from ansible.utils.display import Display
@@ -82,11 +81,14 @@ class Connection(ConnectionBase):
 
         display.vvv(u"EXEC {0}".format(to_text(cmd)), host=self._play_context.remote_addr)
         display.debug("opening command with Popen()")
-
-        if isinstance(cmd, (text_type, binary_type)):
+        # Using native Python 3 types instead of ansible.module_utils.six (text_type, binary_type)
+        if isinstance(cmd, (str, bytes)):
             cmd = to_bytes(cmd)
+            shell = True
         else:
-            cmd = map(to_bytes, cmd)
+            # ensure we realize the map for reuse in Popen
+            cmd = list(map(to_bytes, cmd))
+            shell = False
 
         master = None
         stdin = subprocess.PIPE
@@ -102,7 +104,7 @@ class Connection(ConnectionBase):
 
         p = subprocess.Popen(
             cmd,
-            shell=isinstance(cmd, (text_type, binary_type)),
+            shell=shell,
             executable=executable,
             cwd=self.cwd,
             stdin=stdin,
