@@ -101,18 +101,18 @@ if ($sameRoles.count -ge 1) {
 
 # Get current role membership of all roles for the user to compare against
 $membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
-$existingRoleMembership = @(, $membershipObjects.role | Sort-Object)
+$existingRoleMembership = [array]($membershipObjects.role | Sort-Object)
 
 if ($null -eq $existingRoleMembership) { $existingRoleMembership = @() }
 
 if ($null -ne $roles['set']) {
-    $comparison = Compare-Object $existingRoleMembership $roles['set']
+    $comparison = Compare-Object $existingRoleMembership ([array]$roles['set'])
     $rolesToAdd = ( $comparison | Where-Object { $_.SideIndicator -eq '=>' } ).InputObject
     $rolesToRemove = ( $comparison | Where-Object { $_.SideIndicator -eq '<=' } ).InputObject
 }
 else {
-    $rolesToAdd = ( Compare-Object $existingRoleMembership $roles['add'] | Where-Object { $_.SideIndicator -eq '=>' } ).InputObject
-    $rolesToRemove = ( Compare-Object $existingRoleMembership $roles['remove'] -IncludeEqual | Where-Object { $_.SideIndicator -eq '==' } ).InputObject
+    $rolesToAdd = ( Compare-Object $existingRoleMembership ([array]$roles['add']) | Where-Object { $_.SideIndicator -eq '=>' } ).InputObject
+    $rolesToRemove = ( Compare-Object $existingRoleMembership ([array]$roles['remove']) -IncludeEqual | Where-Object { $_.SideIndicator -eq '==' } ).InputObject
 }
 
 # Add user to new roles
@@ -158,7 +158,7 @@ else {
     try {
         # after changing any roles above, see what our new membership is and report it back
         $membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
-        $newRoleMembership = @(, $membershipObjects.role | Sort-Object)
+        $newRoleMembership = [array]($membershipObjects.role | Sort-Object)
     }
     catch {
         $module.FailJson("Failure getting new role membership: $($_.Exception.Message)", $_)
