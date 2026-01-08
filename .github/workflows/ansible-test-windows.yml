@@ -65,7 +65,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
@@ -95,7 +95,7 @@ jobs:
         shell: cmd
         run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
 
-      - uses: Vampire/setup-wsl@v4.1.0
+      - uses: Vampire/setup-wsl@v6.0.0
         with:
           distribution: ${{ matrix.wsl }}
           update: "false"
@@ -184,7 +184,7 @@ jobs:
           ansible-test coverage xml -v --requirements
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
-      - uses: codecov/codecov-action@v5.5.1
+      - uses: codecov/codecov-action@v5.5.2
         with:
           fail_ci_if_error: false
         env:
