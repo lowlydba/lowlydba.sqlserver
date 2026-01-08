@@ -589,5 +589,3 @@ releases:
       - Added ability for user_role module to take a list of roles. Optionally can also remove unlisted roles.
       release_summary: Added support for managing multiple roles per user with the
         user_role module.
-    fragments:
-    - 333-user-role-list.yml

@@ -32,6 +32,9 @@ $spec = @{
                     elements = 'str'
                 }
                 set = @{
+                    # Intentionally use $null (not @()) so later checks (e.g. $null -ne $roles["set"])
+                    # can distinguish "not provided" (null) from "provided as empty array" ([]),
+                    # allowing roles.set: [] to remove all roles.
                     default = $null
                     type = 'list'
                     elements = 'str'

@@ -54,10 +54,10 @@ options:
         description:
           - Adds the user to the specified roles.
           - User will be removed from any other roles not specified.
-          - Set this to an empty list to remove all members from a group.
+          - Set this to an empty list to remove all role memberships from the user.
         type: list
         elements: str
-    version_added: 2.7.0
+    version_added: 2.8.0
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
