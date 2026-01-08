@@ -81,7 +81,22 @@ if ($null -eq $existingUser) {
     $module.FailJson("User [$username] does not exist in database [$database].")
 }
 
-$combinedRoles = ( $roles['set'] + $roles['add'] + $roles['remove'] ) | Select-Object -Unique
+# Ensure that when using the 'roles' parameter directly, at least one operation is specified.
+if (-not $compatibilityMode) {
+    $hasSet    = ($null -ne $roles['set']    -and @($roles['set']).Count    -gt 0)
+    $hasAdd    = ($null -ne $roles['add']    -and @($roles['add']).Count    -gt 0)
+    $hasRemove = ($null -ne $roles['remove'] -and @($roles['remove']).Count -gt 0)
+
+    if (-not ($hasSet -or $hasAdd -or $hasRemove)) {
+        $module.FailJson("When using the 'roles' parameter, you must specify at least one of: roles.set, roles.add, or roles.remove.")
+    }
+}
+
+$rolesSet    = if ($null -ne $roles['set'])    { @($roles['set']) }    else { @() }
+$rolesAdd    = if ($null -ne $roles['add'])    { @($roles['add']) }    else { @() }
+$rolesRemove = if ($null -ne $roles['remove']) { @($roles['remove']) } else { @() }
+
+$combinedRoles = ($rolesSet + $rolesAdd + $rolesRemove) | Select-Object -Unique
 $combinedRoles | ForEach-Object {
     $thisRole = $_
     $existingRole = Get-DbaDbRole @commonParamSplat -role $thisRole
