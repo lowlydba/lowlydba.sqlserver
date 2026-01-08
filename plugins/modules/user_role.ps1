@@ -39,9 +39,6 @@ $spec = @{
             }
         }
     }
-    required_one_of = @(
-        , @("role", "roles")
-    )
     mutually_exclusive = @(
         , @("role", "roles")
     )
