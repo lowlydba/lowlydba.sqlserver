@@ -54,7 +54,7 @@ options:
         description:
           - Adds the user to the specified roles.
           - User will be removed from any other roles not specified.
-          - Set this to an empty list to remove all members from a group..
+          - Set this to an empty list to remove all members from a group.
         type: list
         elements: str
     version_added: 2.7.0
@@ -127,8 +127,8 @@ RETURN = r'''
 data:
   description:
     - If called with role, then data is output from the C(Remove-DbaDbRoleMember), (Get-DbaDbRoleMember), or C(Add-DbaDbRoleMember) functions.
-    - If called with roles, then data returned roleMembership, which is an array of roles that the user is now a member of.
-    - If called without either role or roles, then data returned is roleMembership which is users current list of roles.
+    - If called with roles, then data returned is roleMembership, which is an array of roles that the user is now a member of.
+    - If called without either role or roles, then the data returned is roleMembership which is the user's current list of roles.
   returned: success, but not in check_mode.
   type: dict
 '''
