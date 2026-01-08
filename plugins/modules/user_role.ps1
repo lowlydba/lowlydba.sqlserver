@@ -83,8 +83,8 @@ if ($null -eq $existingUser) {
 
 # Ensure that when using the 'roles' parameter directly, at least one operation is specified.
 if (-not $compatibilityMode) {
-    $hasSet    = ($null -ne $roles['set']    -and @($roles['set']).Count    -gt 0)
-    $hasAdd    = ($null -ne $roles['add']    -and @($roles['add']).Count    -gt 0)
+    $hasSet = ($null -ne $roles['set'] -and @($roles['set']).Count -gt 0)
+    $hasAdd = ($null -ne $roles['add'] -and @($roles['add']).Count -gt 0)
     $hasRemove = ($null -ne $roles['remove'] -and @($roles['remove']).Count -gt 0)
 
     if (-not ($hasSet -or $hasAdd -or $hasRemove)) {
@@ -92,8 +92,8 @@ if (-not $compatibilityMode) {
     }
 }
 
-$rolesSet    = if ($null -ne $roles['set'])    { @($roles['set']) }    else { @() }
-$rolesAdd    = if ($null -ne $roles['add'])    { @($roles['add']) }    else { @() }
+$rolesSet = if ($null -ne $roles['set']) { @($roles['set']) } else { @() }
+$rolesAdd = if ($null -ne $roles['add']) { @($roles['add']) } else { @() }
 $rolesRemove = if ($null -ne $roles['remove']) { @($roles['remove']) } else { @() }
 
 $combinedRoles = ($rolesSet + $rolesAdd + $rolesRemove) | Select-Object -Unique
