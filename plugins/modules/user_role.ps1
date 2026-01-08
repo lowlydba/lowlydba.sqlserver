@@ -119,12 +119,31 @@ if ($null -eq $existingRoleMembership) { $existingRoleMembership = @() }
 
 if ($null -ne $roles['set']) {
     $comparison = Compare-Object $existingRoleMembership ([array]$roles['set'])
-    $rolesToAdd = ( $comparison | Where-Object { $_.SideIndicator -eq '=>' } ).InputObject
-    $rolesToRemove = ( $comparison | Where-Object { $_.SideIndicator -eq '<=' } ).InputObject
+    if ($null -eq $comparison) {
+        $rolesToAdd = @()
+        $rolesToRemove = @()
+    }
+    else {
+        $rolesToAdd = ( $comparison | Where-Object { $_.SideIndicator -eq '=>' } ).InputObject
+        $rolesToRemove = ( $comparison | Where-Object { $_.SideIndicator -eq '<=' } ).InputObject
+    }
 }
 else {
-    $rolesToAdd = ( Compare-Object $existingRoleMembership ([array]$roles['add']) | Where-Object { $_.SideIndicator -eq '=>' } ).InputObject
-    $rolesToRemove = ( Compare-Object $existingRoleMembership ([array]$roles['remove']) -IncludeEqual | Where-Object { $_.SideIndicator -eq '==' } ).InputObject
+    $comparisonAdd = Compare-Object $existingRoleMembership ([array]$roles['add'])
+    if ($null -eq $comparisonAdd) {
+        $rolesToAdd = @()
+    }
+    else {
+        $rolesToAdd = ( $comparisonAdd | Where-Object { $_.SideIndicator -eq '=>' } ).InputObject
+    }
+
+    $comparisonRemove = Compare-Object $existingRoleMembership ([array]$roles['remove']) -IncludeEqual
+    if ($null -eq $comparisonRemove) {
+        $rolesToRemove = @()
+    }
+    else {
+        $rolesToRemove = ( $comparisonRemove | Where-Object { $_.SideIndicator -eq '==' } ).InputObject
+    }
 }
 
 # Add user to new roles
