@@ -583,3 +583,9 @@ releases:
     fragments:
     - 329-add-agent-outputfile.yml
     release_date: '2025-08-16'
+  2.8.0:
+    changes:
+      minor_changes:
+      - Added ability for user_role module to take a list of roles. Optionally can also remove unlisted roles.
+      release_summary: Added support for managing multiple roles per user with the
+        user_role module.

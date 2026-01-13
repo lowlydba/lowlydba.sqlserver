@@ -13,11 +13,38 @@ $ErrorActionPreference = "Stop"
 $spec = @{
     supports_check_mode = $true
     options = @{
-        database = @{type = 'str'; required = $true }
-        username = @{type = 'str'; required = $true }
-        role = @{type = 'str'; required = $true }
-        state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
+        database = @{ type = 'str'; required = $true }
+        username = @{ type = 'str'; required = $true }
+        state = @{ type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
+        role = @{ type = 'str'; required = $false }
+        roles = @{
+            default = @{}
+            type = 'dict'
+            options = @{
+                add = @{
+                    default = @()
+                    type = 'list'
+                    elements = 'str'
+                }
+                remove = @{
+                    default = @()
+                    type = 'list'
+                    elements = 'str'
+                }
+                set = @{
+                    # Intentionally use $null (not @()) so later checks (e.g. $null -ne $roles["set"])
+                    # can distinguish "not provided" (null) from "provided as empty array" ([]),
+                    # allowing roles.set: [] to remove all roles.
+                    default = $null
+                    type = 'list'
+                    elements = 'str'
+                }
+            }
+        }
     }
+    mutually_exclusive = @(
+        , @("role", "roles")
+    )
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
@@ -25,90 +52,161 @@ $sqlInstance, $sqlCredential = Get-SqlCredential -Module $module
 $username = $module.Params.username
 $database = $module.Params.database
 $role = $module.Params.role
+$roles = $module.Params.roles
 $state = $module.Params.state
 $checkMode = $module.CheckMode
+$compatibilityMode = $false
 
 $module.Result.changed = $false
 
-$getUserSplat = @{
-    SqlInstance = $sqlInstance
-    SqlCredential = $sqlCredential
-    Database = $database
-    User = $username
-    EnableException = $true
+# Map the "old" style way of using state and role on to the add/remove/set methods
+if ($role -and $state -eq 'present') {
+    $roles.add = @(, $role)
+    $compatibilityMode = $true
 }
-$getRoleSplat = @{
-    SqlInstance = $sqlInstance
-    SqlCredential = $sqlCredential
-    Database = $database
-    Role = $role
-    EnableException = $true
+if ($role -and $state -eq 'absent') {
+    $roles.remove = @(, $role)
+    $compatibilityMode = $true
 }
-$getRoleMemberSplat = @{
+
+$commonParamSplat = @{
     SqlInstance = $sqlInstance
     SqlCredential = $sqlCredential
     Database = $database
-    Role = $role
-    IncludeSystemUser = $true
     EnableException = $true
 }
 
-# Verify user and role exist, DBATools currently fails silently
-$existingUser = Get-DbaDbUser @getUserSplat
+$outputProps = @{}
+
+# Verify user and role(s) exist, DBATools currently fails silently
+$existingUser = Get-DbaDbUser @commonParamSplat -user $username
 if ($null -eq $existingUser) {
     $module.FailJson("User [$username] does not exist in database [$database].")
 }
-$existingRole = Get-DbaDbRole @getRoleSplat
-if ($null -eq $existingRole) {
-    $module.FailJson("Role [$role] does not exist in database [$database].")
-}
 
-# Get role members
-$existingRoleMembers = Get-DbaDbRoleMember @getRoleMemberSplat
+# Ensure that when using the 'roles' parameter directly, at least one operation is specified.
+if (-not $compatibilityMode) {
+    $hasSet = ($null -ne $roles['set'] -and @($roles['set']).Count -gt 0)
+    $hasAdd = ($null -ne $roles['add'] -and @($roles['add']).Count -gt 0)
+    $hasRemove = ($null -ne $roles['remove'] -and @($roles['remove']).Count -gt 0)
 
-if ($state -eq "absent") {
-    if ($existingRoleMembers.username -contains $username) {
-        try {
-            $removeRoleMemberSplat = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                User = $username
-                Database = $database
-                Role = $role
-                EnableException = $true
-                WhatIf = $checkMode
-                Confirm = $false
-            }
-            $output = Remove-DbaDbRoleMember @removeRoleMemberSplat
-            $module.Result.changed = $true
-        }
-        catch {
-            $module.FailJson("Removing user [$username] from database role [$role] failed: $($_.Exception.Message)", $_)
-        }
+    if (-not ($hasSet -or $hasAdd -or $hasRemove)) {
+        $module.FailJson("When using the 'roles' parameter, you must specify at least one of: roles.set, roles.add, or roles.remove.")
     }
 }
-elseif ($state -eq "present") {
-    # Add user to role
-    if ($existingRoleMembers.username -notcontains $username) {
-        try {
-            $addRoleMemberSplat = @{
-                SqlInstance = $sqlInstance
-                SqlCredential = $sqlCredential
-                User = $username
-                Database = $database
-                Role = $role
-                EnableException = $true
-                WhatIf = $checkMode
-                Confirm = $false
-            }
-            $output = Add-DbaDbRoleMember @addRoleMemberSplat
-            $module.Result.changed = $true
-        }
-        catch {
-            $module.FailJson("Adding user [$username] to database role [$role] failed: $($_.Exception.Message)", $_)
-        }
+
+$rolesSet = if ($null -ne $roles['set']) { @($roles['set']) } else { @() }
+$rolesAdd = if ($null -ne $roles['add']) { @($roles['add']) } else { @() }
+$rolesRemove = if ($null -ne $roles['remove']) { @($roles['remove']) } else { @() }
+
+$combinedRoles = ($rolesSet + $rolesAdd + $rolesRemove) | Select-Object -Unique
+$combinedRoles | ForEach-Object {
+    $thisRole = $_
+    $existingRole = Get-DbaDbRole @commonParamSplat -role $thisRole
+    if ($null -eq $existingRole) {
+        $module.FailJson("Role [$thisRole] does not exist in database [$database].")
     }
 }
+
+# Sanity check on the add/remove clause not having the same role.
+$sameRoles = ( Compare-Object $roles['add'] $roles['remove'] -IncludeEqual | Where-Object { $_.SideIndicator -eq '==' } ).InputObject
+if ($sameRoles.count -ge 1) {
+    $module.FailJson("Role [$($sameRoles -join ', ')] exists in both the add and remove lists.")
+}
+
+# Get current role membership of all roles for the user to compare against
+$membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
+$existingRoleMembership = [array]($membershipObjects.role | Sort-Object)
+
+if ($null -eq $existingRoleMembership) { $existingRoleMembership = @() }
+
+if ($null -ne $roles['set']) {
+    $comparison = Compare-Object $existingRoleMembership ([array]$roles['set'])
+    if ($null -eq $comparison) {
+        $rolesToAdd = @()
+        $rolesToRemove = @()
+    }
+    else {
+        $rolesToAdd = ( $comparison | Where-Object { $_.SideIndicator -eq '=>' } ).InputObject
+        $rolesToRemove = ( $comparison | Where-Object { $_.SideIndicator -eq '<=' } ).InputObject
+    }
+}
+else {
+    $comparisonAdd = Compare-Object $existingRoleMembership ([array]$roles['add'])
+    if ($null -eq $comparisonAdd) {
+        $rolesToAdd = @()
+    }
+    else {
+        $rolesToAdd = ( $comparisonAdd | Where-Object { $_.SideIndicator -eq '=>' } ).InputObject
+    }
+
+    $comparisonRemove = Compare-Object $existingRoleMembership ([array]$roles['remove']) -IncludeEqual
+    if ($null -eq $comparisonRemove) {
+        $rolesToRemove = @()
+    }
+    else {
+        $rolesToRemove = ( $comparisonRemove | Where-Object { $_.SideIndicator -eq '==' } ).InputObject
+    }
+}
+
+# Add user to new roles
+foreach ($thisRole in $rolesToAdd) {
+    try {
+        $addRoleMemberSplat = @{
+            User = $username
+            Role = $thisRole
+            WhatIf = $checkMode
+            Confirm = $false
+        }
+        $commandResult = Add-DbaDbRoleMember @commonParamSplat @addRoleMemberSplat
+        $module.Result.changed = $true
+    }
+    catch {
+        $module.FailJson("Adding user [$username] to database role [$thisRole] failed: $($_.Exception.Message)", $_)
+    }
+}
+
+# remove user from unneeded roles
+foreach ($thisRole in $rolesToRemove) {
+    try {
+        $removeRoleMemberSplat = @{
+            User = $username
+            Role = $thisRole
+            WhatIf = $checkMode
+            Confirm = $false
+        }
+        $commandResult = Remove-DbaDbRoleMember @commonParamSplat @removeRoleMemberSplat
+        $module.Result.changed = $true
+    }
+    catch {
+        $module.FailJson("Removing user [$username] from database role [$thisRole] failed: $($_.Exception.Message)", $_)
+    }
+}
+
+# if we're still using old mode (using $state and $role) save command result as results,
+# otherwise send back full list of old and new roles.
+if ($compatibilityMode) {
+    $output = $commandResult
+}
+else {
+    try {
+        # after changing any roles above, see what our new membership is and report it back
+        $membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
+        $newRoleMembership = [array]($membershipObjects.role | Sort-Object)
+        if ($null -eq $newRoleMembership) { $newRoleMembership = @() }
+    }
+    catch {
+        $module.FailJson("Failure getting new role membership: $($_.Exception.Message)", $_)
+    }
+    $outputProps.roleMembership = $newRoleMembership
+    if ($module.Result.changed) {
+        $outputProps.diff = @{}
+        $outputProps.diff.after = $newRoleMembership
+        $outputProps.diff.before = $existingRoleMembership
+    }
+    $output = New-Object -TypeName PSCustomObject -Property $outputProps
+}
+
 try {
     if ($null -ne $output) {
         $resultData = ConvertTo-SerializableObject -InputObject $output
