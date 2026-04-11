@@ -52,8 +52,6 @@ jobs:
     name: Sanity (Ⓐ${{ matrix.ansible }})
     permissions:
       contents: write  # Required for uploading coverage reports
-    env:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}  # zizmor: ignore[secrets-outside-env] -- Codecov token needed for coverage uploads; environment protection would block PR-triggered runs
     strategy:
       matrix:
         # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
@@ -89,6 +87,8 @@ jobs:
       - uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   ###
   # Integration tests (RECOMMENDED)
@@ -104,11 +104,9 @@ jobs:
     name: I (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
     permissions:
       contents: write  # Required for uploading coverage reports
-    env:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}  # zizmor: ignore[secrets-outside-env] -- Codecov token needed for coverage uploads; environment protection would block PR-triggered runs
     services:
       sqlserver:
-        image: mcr.microsoft.com/mssql/server@sha256:c9f2f1560c56b6aea104f08cd1fc24daf964e149002fddef7c606da48141ad1f
+        image: mcr.microsoft.com/mssql/server:2022-latest
         ports:
           - 1433:1433
         env:
@@ -152,3 +150,5 @@ jobs:
       - uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
