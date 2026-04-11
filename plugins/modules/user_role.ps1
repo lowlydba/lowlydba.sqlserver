@@ -169,7 +169,7 @@ else {
 
     try {
         $membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
-        $currentRoleMembership = [array]($membershipObjects.Role | Sort-Object)
+        $currentRoleMembership = [array](($membershipObjects.Role).Name | Sort-Object)
         if ($null -eq $currentRoleMembership) { $currentRoleMembership = @() }
     }
     catch {
@@ -232,7 +232,7 @@ else {
 
         try {
             $membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
-            $currentRoleMembership = [array]($membershipObjects.Role | Sort-Object)
+            $currentRoleMembership = [array](($membershipObjects.Role).Name | Sort-Object)
             if ($null -eq $currentRoleMembership) { $currentRoleMembership = @() }
         }
         catch {
@@ -305,7 +305,7 @@ else {
 
         try {
             $membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
-            $currentRoleMembership = [array]($membershipObjects.Role | Sort-Object)
+            $currentRoleMembership = [array](($membershipObjects.Role).Name | Sort-Object)
             if ($null -eq $currentRoleMembership) { $currentRoleMembership = @() }
         }
         catch {
