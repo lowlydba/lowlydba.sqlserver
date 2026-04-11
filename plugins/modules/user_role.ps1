@@ -154,15 +154,16 @@ else {
     $rolesAddSpecified = $null -ne $roles['add']
     $rolesRemoveSpecified = $null -ne $roles['remove']
 
-    $hasSet = $rolesSetSpecified -and @($roles['set']).Count -gt 0
+    # Key presence determines intent; empty list is a valid explicit operation (e.g. set: [] removes all roles)
+    $hasSet = $rolesSetSpecified
     $hasAdd = $rolesAddSpecified -and @($roles['add']).Count -gt 0
     $hasRemove = $rolesRemoveSpecified -and @($roles['remove']).Count -gt 0
 
-    if (-not ($hasSet -or $hasAdd -or $hasRemove) -and -not ($rolesSetSpecified -or $rolesAddSpecified -or $rolesRemoveSpecified)) {
-        $module.FailJson("When using the 'roles' parameter, you must specify at least one of: roles.set, roles.add, or roles.remove.")
+    if (-not ($rolesSetSpecified -or $rolesAddSpecified -or $rolesRemoveSpecified)) {
+        $module.FailJson("When using 'roles', at least one key (roles.set, roles.add, or roles.remove) must be present.")
     }
 
-    if ($hasSet -and ($hasAdd -or $hasRemove)) {
+    if ($rolesSetSpecified -and ($rolesAddSpecified -or $rolesRemoveSpecified)) {
         $module.FailJson("The 'roles.set' option cannot be combined with 'roles.add' or 'roles.remove'.")
     }
 
@@ -179,10 +180,16 @@ else {
 
     if ($hasSet) {
         $desiredRoles = [array]($roles['set'] | Sort-Object)
-        $toAdd = Compare-Object -ReferenceObject $currentRoleMembership -DifferenceObject $desiredRoles |
-            Where-Object { $_.SideIndicator -eq '=>' } | Select-Object -ExpandProperty InputObject
-        $toRemove = Compare-Object -ReferenceObject $currentRoleMembership -DifferenceObject $desiredRoles |
-            Where-Object { $_.SideIndicator -eq '<=' } | Select-Object -ExpandProperty InputObject
+        if ($currentRoleMembership.Count -eq 0 -and $desiredRoles.Count -eq 0) {
+            $toAdd = @()
+            $toRemove = @()
+        }
+        else {
+            $toAdd = Compare-Object -ReferenceObject $currentRoleMembership -DifferenceObject $desiredRoles |
+                Where-Object { $_.SideIndicator -eq '=>' } | Select-Object -ExpandProperty InputObject
+            $toRemove = Compare-Object -ReferenceObject $currentRoleMembership -DifferenceObject $desiredRoles |
+                Where-Object { $_.SideIndicator -eq '<=' } | Select-Object -ExpandProperty InputObject
+        }
 
         if ($toAdd.Count -gt 0) {
             foreach ($roleToAdd in $toAdd) {

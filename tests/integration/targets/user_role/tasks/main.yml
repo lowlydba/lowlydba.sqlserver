@@ -259,18 +259,6 @@
           - result is not changed
           - result.data.roleMembership | length == 3
 
-    - name: Test using roles param with only empty lists (valid - query mode)
-      lowlydba.sqlserver.user_role:
-        username: "{{ username }}"
-        database: "{{ database }}"
-        roles:
-          add: []
-      register: result
-    - assert:
-        that:
-          - result is not changed
-          - result.data.roleMembership | length == 3
-
     - name: "Test error: non-existent role in roles.add"
       lowlydba.sqlserver.user_role:
         username: "{{ username }}"
@@ -330,6 +318,47 @@
         that:
           - result is changed
           - result.data.roleMembership | length == 1
+
+    - name: Set roles to empty list (removes all memberships)
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          set: []
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.roleMembership | length == 0
+          - "'db_datareader' in result.data.removed"
+
+    - name: Set roles to empty list again (idempotency)
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          set: []
+      register: result
+    - assert:
+        that:
+          - result is not changed
+          - result.data.roleMembership | length == 0
+
+    - name: "Test error: cannot combine roles.set with roles.add"
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          set: []
+          add:
+            - db_datareader
+      register: error_result
+      failed_when: error_result.failed
+      ignore_errors: true
+    - assert:
+        that:
+          - error_result.failed == true
+          - "'roles.set' in error_result.msg"
 
     - name: "Test error: cannot use state with roles parameter"
       lowlydba.sqlserver.user_role:

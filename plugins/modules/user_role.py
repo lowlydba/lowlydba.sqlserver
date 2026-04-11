@@ -27,27 +27,28 @@ options:
     description:
       - A dictionary of roles to manage for the user.
       - Supports three keys C(add), C(remove), and C(set).
-      - C(add) adds the user to the specified roles.
-      - C(remove) removes the user from the specified roles.
-      - C(set) replaces all current roles with the specified roles.
-      - At least one of C(add), C(remove), or C(set) must be specified.
+      - C(add) adds the user to the specified roles. An empty list is a no-op and returns current membership.
+      - C(remove) removes the user from the specified roles. An empty list is a no-op and returns current membership.
+      - C(set) replaces all current roles with the specified roles. An empty list removes all role memberships.
+      - C(set) cannot be combined with C(add) or C(remove).
+      - At least one key must be present.
     type: dict
     required: false
     version_added: "2.8.0"
     suboptions:
       add:
         description:
-          - A list of role names to add the user to.
+          - A list of role names to add the user to. May be empty to query current membership without changes.
         type: list
         elements: str
       remove:
         description:
-          - A list of role names to remove the user from.
+          - A list of role names to remove the user from. May be empty to query current membership without changes.
         type: list
         elements: str
       set:
         description:
-          - A list of role names that replaces the user's current roles.
+          - A list of role names that replaces the user's current roles. An empty list removes all role memberships.
         type: list
         elements: str
   role:
@@ -133,18 +134,22 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from the C(Add-DbaDbRoleMember), C(Remove-DbaDbRoleMember), or C(Get-DbaDbRoleMember) functions.
-  returned: success, but not in check_mode.
+  description:
+    - For the C(roles) parameter - a summary object containing current role membership and any roles added or removed.
+    - For the legacy C(role) parameter - output from C(Add-DbaDbRoleMember) or C(Remove-DbaDbRoleMember). Not returned in check_mode.
+  returned: success
   type: dict
   contains:
     roleMembership:
-      description: List of roles the user is a member of.
+      description: List of roles the user is currently a member of. In check_mode reflects state before any changes.
       type: list
       sample: ["db_owner", "db_datareader"]
     added:
-      description: List of roles that were added to the user.
+      description: List of roles that were added (or would be added in check_mode).
       type: list
+      elements: str
     removed:
-      description: List of roles that were removed from the user.
+      description: List of roles that were removed (or would be removed in check_mode).
       type: list
+      elements: str
 '''
