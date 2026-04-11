@@ -25,12 +25,12 @@ options:
     required: true
   roles:
     description:
-      - A dictionary of roles to manage for the user. Supports three keys: add, remove, and set.
-      - Each key accepts a list of role names.
-      - add adds the user to the specified roles.
-      - remove removes the user from the specified roles.
-      - set replaces all current roles with the specified roles.
-      - When using I(roles), at least one of add, remove, or set must be specified.
+      - A dictionary of roles to manage for the user.
+      - Supports three keys C(add), C(remove), and C(set).
+      - C(add) adds the user to the specified roles.
+      - C(remove) removes the user from the specified roles.
+      - C(set) replaces all current roles with the specified roles.
+      - At least one of C(add), C(remove), or C(set) must be specified.
     type: dict
     required: false
     version_added: "2.8.0"
@@ -53,22 +53,17 @@ options:
   role:
     description:
       - The database role for the user to be modified.
-      - This is the legacy parameter. Use I(roles) for more advanced functionality.
+      - "B(Deprecated:) This parameter is deprecated and will be removed in version 3.0.0. Use I(roles) instead."
     type: str
     required: false
-    deprecated:
-      removed_in: "3.0.0"
-      why: Replaced by the more flexible I(roles) parameter that supports add/remove/set pattern.
-      alternative: Use I(roles) with add, remove, or set.
   state:
     description:
       - Desired state of the user role membership.
+      - "Only applicable when using the I(role) parameter (legacy mode). Ignored when using I(roles)."
     type: str
     choices:
       - present
       - absent
-    default: present
-    version_added: "2.8.0"
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module

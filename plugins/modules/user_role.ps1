@@ -17,10 +17,14 @@ $spec = @{
         username = @{type = 'str'; required = $true }
         roles = @{type = 'dict'; required = $false }
         role = @{type = 'str'; required = $false }
-        state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
+        state = @{type = 'str'; required = $false; choices = @('present', 'absent') }
     }
-    mutually_exclusive = @(@('role', 'roles'))
-    required_one_of = @(@('role', 'roles'))
+    mutually_exclusive = @(
+        , @('role', 'roles')
+    )
+    required_one_of = @(
+        , @('role', 'roles')
+    )
 }
 
 $module = [Ansible.Basic.AnsibleModule]::Create($args, $spec, @(Get-LowlyDbaSqlServerAuthSpec))
@@ -64,6 +68,11 @@ if ($null -eq $existingUser) {
 
 if ($null -ne $role) {
     $compatibilityMode = $true
+    
+    # Set default state for legacy mode if not specified
+    if ($null -eq $state) {
+        $state = 'present'
+    }
 
     $getRoleSplat = @{
         SqlInstance = $sqlInstance
@@ -142,6 +151,11 @@ if ($null -ne $role) {
 }
 else {
     $compatibilityMode = $false
+    
+    # Reject state parameter when using new roles mode
+    if ($null -ne $state) {
+        $module.FailJson("The 'state' parameter is not supported when using roles. Only 'role' parameter supports state.")
+    }
 
     $rolesSetSpecified = $null -ne $roles['set']
     $rolesAddSpecified = $null -ne $roles['add']

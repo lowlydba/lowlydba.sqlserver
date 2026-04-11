@@ -271,7 +271,7 @@
           - result is not changed
           - result.data.roleMembership | length == 3
 
-    - name: Test error: non-existent role in roles.add
+    - name: "Test error: non-existent role in roles.add"
       lowlydba.sqlserver.user_role:
         username: "{{ username }}"
         database: "{{ database }}"
@@ -286,7 +286,7 @@
           - error_result.failed == true
           - "'Role [db_NonExistentRole12345] does not exist in database' in error_result.msg"
 
-    - name: Test error: non-existent role in roles.set
+    - name: "Test error: non-existent role in roles.set"
       lowlydba.sqlserver.user_role:
         username: "{{ username }}"
         database: "{{ database }}"
@@ -302,7 +302,7 @@
           - error_result.failed == true
           - "'Role [db_NonExistentRole12345] does not exist in database' in error_result.msg"
 
-    - name: Test error: cannot use both role and roles
+    - name: "Test error: cannot use both role and roles"
       lowlydba.sqlserver.user_role:
         username: "{{ username }}"
         database: "{{ database }}"
@@ -331,7 +331,7 @@
           - result is changed
           - result.data.roleMembership | length == 1
 
-    - name: Test error: cannot use state with roles parameter
+    - name: "Test error: cannot use state with roles parameter"
       lowlydba.sqlserver.user_role:
         username: "{{ username }}"
         database: "{{ database }}"
