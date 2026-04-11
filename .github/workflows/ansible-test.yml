@@ -35,9 +35,8 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-# Restrict default permissions for security
-permissions:
-  contents: read
+# Deny all permissions at workflow level - scope per job
+permissions: {}
 
 env:
   NAMESPACE: lowlydba
@@ -54,7 +53,7 @@ jobs:
     permissions:
       contents: write  # Required for uploading coverage reports
     env:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}  # zizmor: ignore[secrets-outside-env] -- Codecov token needed for coverage uploads; environment protection would block PR-triggered runs
     strategy:
       matrix:
         # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
@@ -70,7 +69,7 @@ jobs:
       # .../ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/
 
       - name: Check out code
-        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98 # v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
           persist-credentials: false
@@ -106,7 +105,7 @@ jobs:
     permissions:
       contents: write  # Required for uploading coverage reports
     env:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}  # zizmor: ignore[secrets-outside-env] -- Codecov token needed for coverage uploads; environment protection would block PR-triggered runs
     services:
       sqlserver:
         image: mcr.microsoft.com/mssql/server@sha256:c9f2f1560c56b6aea104f08cd1fc24daf964e149002fddef7c606da48141ad1f
@@ -127,7 +126,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98 # v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
           persist-credentials: false

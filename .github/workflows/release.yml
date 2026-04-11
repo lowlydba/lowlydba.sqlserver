@@ -10,9 +10,8 @@ concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: true
 
-# Restrict default permissions for security
-permissions:
-  contents: read
+# Deny all permissions at workflow level - scope per job
+permissions: {}
 
 env:
   GHP_BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
@@ -24,12 +23,13 @@ jobs:
     permissions:
       contents: write  # Required for creating releases and tags
     env:
-      VERSION: ${{ github.event.inputs.version }}
-      GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      VERSION: ${{ github.event.inputs.version }}  # zizmor: ignore[template-injection] -- User input is required for this workflow
+      GHP_BASE_URL: ${{ env.GHP_BASE_URL }}  # zizmor: ignore[template-injection] -- Set at workflow level
+      GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}  # zizmor: ignore[secrets-outside-env] -- Galaxy API key needed for publishing; workflow_dispatch only
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # zizmor: ignore[secrets-outside-env] -- GitHub token needed for release creation; workflow_dispatch only
     steps:
       - name: Checkout
-        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98 # v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
 
@@ -44,20 +44,21 @@ jobs:
       - name: Publish to Galaxy
         uses: artis3n/ansible_galaxy_collection@325f5822aea7846e7d46a2522456898e9295acf2 # v3.0.0
         with:
-          api_key: ${{ secrets.GALAXY_API_KEY }}
+          api_key: ${{ env.GALAXY_API_KEY }}
 
       - name: Validate version is published to Galaxy
-        run: curl --head -s -f -o /dev/null https://galaxy.ansible.com/download/lowlydba-sqlserver-${VERSION}.tar.gz
-        env:
-          VERSION: ${{ github.event.inputs.version }}
+        run: curl --head -s -f -o /dev/null "https://galaxy.ansible.com/download/lowlydba-sqlserver-${VERSION}.tar.gz"
 
       - name: Build release description
         shell: python
+        env:
+          VERSION: ${{ env.VERSION }}
+          GHP_BASE_URL: ${{ env.GHP_BASE_URL }}
         run: |
           import os
           import yaml
 
-          ver = '${{ github.event.inputs.version }}'
+          ver = '$VERSION'
           ver_anchor = str.replace(ver, '.', '-')
 
           with open('changelogs/changelog.yaml', 'r') as s:
@@ -79,19 +80,17 @@ jobs:
 
           View the [complete changelog](https://github.com/lowlydba/lowlydba.sqlserver/blob/main/CHANGELOG.rst#v%s) to see all changes.
 
-          View the [full documentation for release ${{ github.event.inputs.version }}](${{ env.GHP_BASE_URL }}/tag/${{ github.event.inputs.version }}).
-          ''' % (reldate, summary, ver_anchor)
+          View the [full documentation for release %s](%s/tag/%s).
+          ''' % (reldate, summary, ver_anchor, ver, os.environ['GHP_BASE_URL'], ver)
 
           with open(os.environ['GITHUB_ENV'], 'a') as e:
               e.write("RELEASE_DESCRIPTION<<EOF\n%s\nEOF" % description)
 
       - name: Create Release
         id: create_release
-        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe # v2.6.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe  # zizmor: ignore[superfluous-actions] -- Using action for release creation provides better GitHub API integration and version tagging features
         with:
           token: ${{ env.GITHUB_TOKEN }}
-          tag_name: ${{ github.event.inputs.version }}
-          name: ${{ github.event.inputs.version }}
+          tag_name: ${{ env.VERSION }}
+          name: ${{ env.VERSION }}
           body: ${{ env.RELEASE_DESCRIPTION }}

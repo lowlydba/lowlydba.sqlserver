@@ -67,27 +67,27 @@ jobs:
 
     permissions:
       # Required for uploading coverage reports
-      contents: write
+      contents: write  # Required for uploading coverage reports
       # Required for OIDC token authentication
-      id-token: write
+      id-token: write  # Required for OIDC token authentication
     env:
-      NAMESPACE: lowlydba
-      COLLECTION_NAME: sqlserver
-      GHWS: ${{ env.GHWS }}
-      GROUP: ${{ matrix.group }}
-      ANSIBLE: ${{ matrix.ansible }}
+      NAMESPACE: lowlydba  # zizmor: ignore[template-injection] -- Static value
+      COLLECTION_NAME: sqlserver  # zizmor: ignore[template-injection] -- Static value
+      GHWS: ${{ env.GHWS }}  # zizmor: ignore[template-injection] -- Dynamically computed in earlier step
+      GROUP: ${{ matrix.group }}  # zizmor: ignore[template-injection] -- Matrix value from controlled environment
+      ANSIBLE: ${{ matrix.ansible }}  # zizmor: ignore[template-injection] -- Matrix value from controlled environment
       PYTHON: python3
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}  # zizmor: ignore[secrets-outside-env] -- Codecov token needed for coverage uploads; environment protection would block PR-triggered runs
       WORKSPACE: ${{ github.workspace }}
 
     steps:
       - name: Check out code
-        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98 # v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
           persist-credentials: false
 
-      - name: Create an admin user
+      - name: Create an admin user  # zizmor: ignore[misfeature] -- Windows-specific cmd required for net user commands; pwsh cannot create local users
         shell: cmd
         run: |
           net user admin pass123@ /add /y
@@ -109,7 +109,7 @@ jobs:
         run: |
           Get-Service -Name MongoDB | Where-Object Status -eq 'Running' | Stop-Service -Force
 
-      - name: Add a hosts entry
+      - name: Add a hosts entry  # zizmor: ignore[misfeature] -- Windows-specific cmd required for hosts file modification
         shell: cmd
         run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
 
@@ -128,7 +128,7 @@ jobs:
       - name: Get Linux workspace path
         shell: pwsh
         run: |
-          # $ws = & wslpath --% -u -a "${{ github.workspace }}""
+          # $ws = & wslpath --% -u -a "$env:WORKSPACE""
           # seems wslpath is not available on server 2019
 
           function ConvertTo-LinuxPathCrappy {
@@ -148,23 +148,27 @@ jobs:
                   '/mnt/{0}/{1}' -f $drive, $rooted
               }
           }
-          $ws = ConvertTo-LinuxPathCrappy -LiteralPath "${{ github.workspace }}"
+          $ws = ConvertTo-LinuxPathCrappy -LiteralPath "$env:WORKSPACE"
           Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$ws"
 
       # Override break-sys-pkg defaults, because we don't need to bother with python venv for CI
       - name: Install ansible-base
+        env:
+          ANSIBLE: ${{ matrix.ansible }}
         run: |
           python3 -m pip config set global.break-system-packages true
           python3 -m pip install --upgrade setuptools pypsrp --disable-pip-version-check --retries 10
-          python3 -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
+          python3 -m pip install "https://github.com/ansible/ansible/archive/$ANSIBLE.tar.gz" --disable-pip-version-check --retries 10
 
       - name: Install collection dependencies
         id: collection-dependency
+        # zizmor: ignore[template-injection] -- GHWS is dynamically computed earlier in the workflow
         run: ansible-galaxy collection install ansible.windows -p "${{ env.GHWS }}"
         continue-on-error: true
 
       - name: Retry install collection dependencies
         if: steps.collection-dependency.outcome == 'failure'
+        # zizmor: ignore[template-injection] -- GHWS is dynamically computed earlier in the workflow
         run: ansible-galaxy collection install ansible.windows -p "${{ env.GHWS }}"
 
       - name: Set integration test options
@@ -185,25 +189,32 @@ jobs:
       - name: Retry SQL Server install
         id: retry1
         if: steps.mssqlsuite.outcome == 'failure'
-        uses: potatoqualitee/mssqlsuite@2291d923e83859edd871679c05b379037376761f
+        uses: potatoqualitee/mssqlsuite@2291d923e83859edd871679c05b379037376761f # v1.12
         with:
           install: sqlengine
           sa-password: L0wlydb4
           version: 2022
 
       - name: Run integration test
+        env:
+          GHWS: ${{ env.GHWS }}
+          NAMESPACE: ${{ env.NAMESPACE }}
+          COLLECTION_NAME: ${{ env.COLLECTION_NAME }}
+          GROUP: ${{ env.GROUP }}
         run: |
-          pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
-          ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements windows/group/${{ matrix.group }}/
+          pushd "$GHWS/ansible_collections/$NAMESPACE/$COLLECTION_NAME"
+          ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements windows/group/$GROUP/
 
       - name: Generate coverage report
+        env:
+          GHWS: ${{ env.GHWS }}
+          NAMESPACE: ${{ env.NAMESPACE }}
+          COLLECTION_NAME: ${{ env.COLLECTION_NAME }}
         run: |
-          pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
+          pushd "$GHWS/ansible_collections/$NAMESPACE/$COLLECTION_NAME"
           ansible-test coverage xml -v --requirements
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
       - uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           fail_ci_if_error: false
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
