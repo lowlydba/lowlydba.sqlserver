@@ -193,31 +193,32 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 </div></td>
 <td><div class="ansible-option-cell"><p>A dictionary of roles to manage for the user.</p>
 <p>Supports three keys <code class="docutils literal notranslate"><span class="pre">add</span></code>, <code class="docutils literal notranslate"><span class="pre">remove</span></code>, and <code class="docutils literal notranslate"><span class="pre">set</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">add</span></code> adds the user to the specified roles.</p>
-<p><code class="docutils literal notranslate"><span class="pre">remove</span></code> removes the user from the specified roles.</p>
-<p><code class="docutils literal notranslate"><span class="pre">set</span></code> replaces all current roles with the specified roles.</p>
-<p>At least one of <code class="docutils literal notranslate"><span class="pre">add</span></code>, <code class="docutils literal notranslate"><span class="pre">remove</span></code>, or <code class="docutils literal notranslate"><span class="pre">set</span></code> must be specified.</p>
+<p><code class="docutils literal notranslate"><span class="pre">add</span></code> adds the user to the specified roles. An empty list is a no-op and returns current membership.</p>
+<p><code class="docutils literal notranslate"><span class="pre">remove</span></code> removes the user from the specified roles. An empty list is a no-op and returns current membership.</p>
+<p><code class="docutils literal notranslate"><span class="pre">set</span></code> replaces all current roles with the specified roles. An empty list removes all role memberships.</p>
+<p><code class="docutils literal notranslate"><span class="pre">set</span></code> cannot be combined with <code class="docutils literal notranslate"><span class="pre">add</span></code> or <code class="docutils literal notranslate"><span class="pre">remove</span></code>.</p>
+<p>At least one key must be present.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-roles/add"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-role-module-parameter-roles-add"><strong>add</strong></p>
 <a class="ansibleOptionLink" href="#parameter-roles/add" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
-<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>A list of role names to add the user to.</p>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>A list of role names to add the user to. May be empty to query current membership without changes.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-roles/remove"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-role-module-parameter-roles-remove"><strong>remove</strong></p>
 <a class="ansibleOptionLink" href="#parameter-roles/remove" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
-<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>A list of role names to remove the user from.</p>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>A list of role names to remove the user from. May be empty to query current membership without changes.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="parameter-roles/set"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-role-module-parameter-roles-set"><strong>set</strong></p>
 <a class="ansibleOptionLink" href="#parameter-roles/set" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
-<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>A list of role names that replaces the user’s current roles.</p>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>A list of role names that replaces the user’s current roles. An empty list removes all role memberships.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -367,15 +368,16 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="return-data"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-role-module-return-data"><strong>data</strong></p>
 <a class="ansibleOptionLink" href="#return-data" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Output from the <code class="docutils literal notranslate"><span class="pre">Add-DbaDbRoleMember</span></code>, <code class="docutils literal notranslate"><span class="pre">Remove-DbaDbRoleMember</span></code>, or <code class="docutils literal notranslate"><span class="pre">Get-DbaDbRoleMember</span></code> functions.</p>
-<p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> success, but not in check_mode.</p>
+<td><div class="ansible-option-cell"><p>For the <code class="docutils literal notranslate"><span class="pre">roles</span></code> parameter - a summary object containing current role membership and any roles added or removed.</p>
+<p>For the legacy <code class="docutils literal notranslate"><span class="pre">role</span></code> parameter - output from <code class="docutils literal notranslate"><span class="pre">Add-DbaDbRoleMember</span></code> or <code class="docutils literal notranslate"><span class="pre">Remove-DbaDbRoleMember</span></code>. Not returned in check_mode.</p>
+<p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> success</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-indent"></div><div class="ansible-option-cell">
 <div class="ansibleOptionAnchor" id="return-data/added"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-role-module-return-data-added"><strong>added</strong></p>
 <a class="ansibleOptionLink" href="#return-data/added" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
-<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>List of roles that were added to the user.</p>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>List of roles that were added (or would be added in check_mode).</p>
 <p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> success</p>
 </div></td>
 </tr>
@@ -383,7 +385,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="return-data/removed"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-role-module-return-data-removed"><strong>removed</strong></p>
 <a class="ansibleOptionLink" href="#return-data/removed" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
-<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>List of roles that were removed from the user.</p>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>List of roles that were removed (or would be removed in check_mode).</p>
 <p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> success</p>
 </div></td>
 </tr>
@@ -391,7 +393,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="return-data/roleMembership"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-user-role-module-return-data-rolemembership"><strong>roleMembership</strong></p>
 <a class="ansibleOptionLink" href="#return-data/roleMembership" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
-<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>List of roles the user is a member of.</p>
+<td><div class="ansible-option-indent-desc"></div><div class="ansible-option-cell"><p>List of roles the user is currently a member of. In check_mode reflects state before any changes.</p>
 <p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> success</p>
 <p class="ansible-option-line ansible-option-sample"><strong class="ansible-option-sample-bold">Sample:</strong> <code class="ansible-option-sample docutils literal notranslate"><span class="pre">[&quot;db_owner&quot;,</span> <span class="pre">&quot;db_datareader&quot;]</span></code></p>
 </div></td>
