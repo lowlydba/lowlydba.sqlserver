@@ -113,7 +113,7 @@ jobs:
         shell: cmd
         run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
 
-      - uses: Vampire/setup-wsl@f9577ca4c38935b96f9e985505bb5973a11efe48 # v6.0.0
+      - uses: Vampire/setup-wsl@887f39deb6c0976365e546926fe66f41b77d65ff # v6.1.0
         with:
           distribution: ${{ matrix.wsl }}
           update: "false"

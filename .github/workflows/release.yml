@@ -34,7 +34,7 @@ jobs:
           persist-credentials: false
 
       - name: Set up Python
-        uses: actions/setup-python@28f2168f4d98ee0445e3c6321f6e6616c83dd5ec # v6
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: 3.8
 
@@ -42,7 +42,7 @@ jobs:
         run: pip install pyyaml
 
       - name: Publish to Galaxy
-        uses: artis3n/ansible_galaxy_collection@325f5822aea7846e7d46a2522456898e9295acf2 # v3.0.0
+        uses: artis3n/ansible_galaxy_collection@ffbca2460a5a1c600b941bbf1536bd61de1c2227 # v3.0.0
         with:
           api_key: ${{ env.GALAXY_API_KEY }}
 

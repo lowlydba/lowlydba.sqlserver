@@ -61,7 +61,7 @@ jobs:
     name: PR comments
     steps:
       - name: PR comment
-        uses: ansible-community/github-docs-build/actions/ansible-docs-build-comment@50bb8f670ad5ff11443bd94e51369debb8d34775 # main
+        uses: ansible-community/github-docs-build/actions/ansible-docs-build-comment@50bb8f670ad5ff11443bd94e51369debb8d34775 # zizmor: ignore[stale-action-refs] -- Using main branch SHA of ansible-community maintained action; branch is stable
         with:
           body-includes: '## Docs Build'
           reactions: heart

@@ -75,7 +75,7 @@ jobs:
           persist-credentials: false
 
       - name: Run confidence tests
-        uses: ansible-community/ansible-test-gh-action@9e1c70a1e9c97c666c4e578d8c021f65501cffb8 # v1.17.0
+        uses: ansible-community/ansible-test-gh-action@d3a8ec7a59694e25e210fcd44738910149537f0e # v1.17.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: sanity
@@ -136,7 +136,7 @@ jobs:
         run: cp integration_config.sample.yml integration_config.yml
 
       - name: Run integration tests
-        uses: ansible-community/ansible-test-gh-action@9e1c70a1e9c97c666c4e578d8c021f65501cffb8 # v1.17.0
+        uses: ansible-community/ansible-test-gh-action@d3a8ec7a59694e25e210fcd44738910149537f0e # v1.17.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: integration
