@@ -279,8 +279,7 @@ else {
         }
 
         if ($hasRemove) {
-            $toRemove = Compare-Object -ReferenceObject $currentRoleMembership -DifferenceObject $roles['remove'] |
-                Where-Object { $_.SideIndicator -eq '<=' } | Select-Object -ExpandProperty InputObject
+            $toRemove = @($roles['remove'] | Where-Object { $_ -in $currentRoleMembership })
 
             if ($toRemove.Count -gt 0) {
                 foreach ($roleToRemove in $toRemove) {
