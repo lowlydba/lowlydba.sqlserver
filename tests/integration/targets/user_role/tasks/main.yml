@@ -345,7 +345,7 @@
     - assert:
         that:
           - error_result.failed == true
-          - '"state" parameter is not supported' in error_result.msg
+          - error_result.msg is search("state.*parameter.*not.*supported")
 
   always:
     - name: Drop user
@@ -354,4 +354,3 @@
     - name: Drop login
       lowlydba.sqlserver.login:
         state: "absent"
-
