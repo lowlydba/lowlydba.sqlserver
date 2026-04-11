@@ -39,7 +39,7 @@ $checkMode = $module.CheckMode
 
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
-if ($null -ne $roles -and $state -ne 'present') {
+if ($null -ne $roles -and $null -ne $state) {
     $msg = "The 'state' parameter is not supported when using the 'roles' parameter. "
     $msg += "Use roles.add, roles.remove, or roles.set to control membership changes."
     $module.FailJson($msg)
