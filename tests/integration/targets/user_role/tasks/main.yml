@@ -354,3 +354,4 @@
     - name: Drop login
       lowlydba.sqlserver.login:
         state: "absent"
+
