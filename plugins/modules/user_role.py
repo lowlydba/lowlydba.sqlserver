@@ -10,7 +10,8 @@ module: user_role
 short_description: Configures a user's role in a database.
 description:
   - Adds or removes a user's role in a database.
-version_added: 2.4.0
+  - Use the I(roles) option to work with multiple roles at once using the add/remove/set pattern.
+version_added: "2.4.0"
 options:
   database:
     description:
@@ -22,11 +23,52 @@ options:
       - Name of the user.
     type: str
     required: true
+  roles:
+    description:
+      - A dictionary of roles to manage for the user. Supports three keys: add, remove, and set.
+      - Each key accepts a list of role names.
+      - add adds the user to the specified roles.
+      - remove removes the user from the specified roles.
+      - set replaces all current roles with the specified roles.
+      - When using I(roles), at least one of add, remove, or set must be specified.
+    type: dict
+    required: false
+    version_added: "2.8.0"
+    suboptions:
+      add:
+        description:
+          - A list of role names to add the user to.
+        type: list
+        elements: str
+      remove:
+        description:
+          - A list of role names to remove the user from.
+        type: list
+        elements: str
+      set:
+        description:
+          - A list of role names that replaces the user's current roles.
+        type: list
+        elements: str
   role:
     description:
       - The database role for the user to be modified.
+      - This is the legacy parameter. Use I(roles) for more advanced functionality.
     type: str
-    required: true
+    required: false
+    deprecated:
+      removed_in: "3.0.0"
+      why: Replaced by the more flexible I(roles) parameter that supports add/remove/set pattern.
+      alternative: Use I(roles) with add, remove, or set.
+  state:
+    description:
+      - Desired state of the user role membership.
+    type: str
+    choices:
+      - present
+      - absent
+    default: present
+    version_added: "2.8.0"
 author: "John McCall (@lowlydba)"
 requirements:
   - L(dbatools,https://www.powershellgallery.com/packages/dbatools/) PowerShell module
@@ -34,37 +76,80 @@ extends_documentation_fragment:
   - lowlydba.sqlserver.sql_credentials
   - lowlydba.sqlserver.attributes.check_mode
   - lowlydba.sqlserver.attributes.platform_all
-  - lowlydba.sqlserver.state
 '''
 
 EXAMPLES = r'''
-- name: Add a user to a fixed db role
+- name: Add a user to a fixed db role (legacy)
   lowlydba.sqlserver.user_role:
     sql_instance: sql-01.myco.io
     username: TheIntern
     database: InternProject1
     role: db_owner
 
-- name: Remove a user from a fixed db role
-  lowlydba.sqlserver.login:
+- name: Remove a user from a fixed db role (legacy)
+  lowlydba.sqlserver.user_role:
     sql_instance: sql-01.myco.io
     username: TheIntern
     database: InternProject1
     role: db_owner
     state: absent
 
-- name: Add a user to a custom db role
-  lowlydba.sqlserver.login:
+- name: Add user to multiple roles
+  lowlydba.sqlserver.user_role:
     sql_instance: sql-01.myco.io
     username: TheIntern
     database: InternProject1
-    role: db_intern
-    state: absent
+    roles:
+      add:
+        - db_owner
+        - db_datareader
+
+- name: Remove user from multiple roles
+  lowlydba.sqlserver.user_role:
+    sql_instance: sql-01.myco.io
+    username: TheIntern
+    database: InternProject1
+    roles:
+      remove:
+        - db_owner
+        - db_datareader
+
+- name: Set user's roles (replace all current roles)
+  lowlydba.sqlserver.user_role:
+    sql_instance: sql-01.myco.io
+    username: TheIntern
+    database: InternProject1
+    roles:
+      set:
+        - db_datareader
+        - db_datawriter
+
+- name: Combine add and remove operations
+  lowlydba.sqlserver.user_role:
+    sql_instance: sql-01.myco.io
+    username: TheIntern
+    database: InternProject1
+    roles:
+      add:
+        - db_securityadmin
+      remove:
+        - db_owner
 '''
 
 RETURN = r'''
 data:
-  description: Output from the C(Remove-DbaDbRoleMember), (Get-DbaDbRoleMember), or C(Add-DbaDbRoleMember) functions.
+  description: Output from the C(Add-DbaDbRoleMember), C(Remove-DbaDbRoleMember), or C(Get-DbaDbRoleMember) functions.
   returned: success, but not in check_mode.
   type: dict
+  contains:
+    roleMembership:
+      description: List of roles the user is a member of.
+      type: list
+      sample: ["db_owner", "db_datareader"]
+    added:
+      description: List of roles that were added to the user.
+      type: list
+    removed:
+      description: List of roles that were removed from the user.
+      type: list
 '''
