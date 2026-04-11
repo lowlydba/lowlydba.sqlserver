@@ -179,9 +179,15 @@ else {
     $desiredRoles = @()
 
     if ($hasSet) {
-        $desiredRoles = [array]($roles['set'] | Sort-Object)
-        if ($currentRoleMembership.Count -eq 0 -and $desiredRoles.Count -eq 0) {
+        $desiredRoles = @($roles['set'] | Sort-Object)
+        if ($desiredRoles.Count -eq 0) {
+            # set: [] — remove all current roles
             $toAdd = @()
+            $toRemove = @($currentRoleMembership)
+        }
+        elseif ($currentRoleMembership.Count -eq 0) {
+            # no current roles — add all desired
+            $toAdd = @($desiredRoles)
             $toRemove = @()
         }
         else {
