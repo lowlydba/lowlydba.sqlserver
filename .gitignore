@@ -136,3 +136,7 @@ dmypy.json
 
 # VS Code settings
 .vscode/
+
+# AI
+
+AGENTS.md
