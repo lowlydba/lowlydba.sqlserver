@@ -12,15 +12,14 @@ on:
     - cron: '0 13 * * *'
 
 permissions:
-  pages: write
-  id-token: write
+  contents: read  # Required for reading collection content
 
 jobs:
   build-docs:
     permissions:
-      contents: read
+      contents: read  # Required for reading collection content
     name: Build Ansible Docs
-    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-push.yml@main
+    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-push.yml@50bb8f670ad5ff11443bd94e51369debb8d34775 # main
     with:
       init-lenient: false
       init-fail-on-error: true
@@ -29,12 +28,12 @@ jobs:
     # for now we won't run this on forks
     if: github.repository == 'lowlydba/lowlydba.sqlserver'
     permissions:
-      contents: write
-      pages: write
-      id-token: write
+      contents: write  # Required for writing release/tag artifacts
+      pages: write  # Required for publishing docs to GitHub Pages
+      id-token: write  # Required for OIDC authentication
     needs: [build-docs]
     name: Publish Ansible Docs
-    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-publish-gh-pages.yml@main
+    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-publish-gh-pages.yml@50bb8f670ad5ff11443bd94e51369debb8d34775 # main
     with:
       artifact-name: ${{ needs.build-docs.outputs.artifact-name }}
     secrets:

@@ -1,17 +1,16 @@
 name: Collection Docs
 concurrency:
-  group: docs-pr-${{ github.head_ref }}
+  group: docs-pr-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 on:
-  pull_request_target:
+  pull_request_target: # zizmor: ignore[dangerous-triggers] -- pull_request_target is required to have permissions to comment on PRs from forks
     types: [opened, synchronize, reopened, closed]
 
 env:
   GHP_BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
 
 permissions:
-  pages: write
-  id-token: write
+  contents: read
 
 jobs:
   validate-docs:
@@ -19,7 +18,7 @@ jobs:
       contents: read
     name: Validate Ansible Docs
     if: github.event.action != 'closed'
-    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-push.yml@main
+    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-push.yml@50bb8f670ad5ff11443bd94e51369debb8d34775 # main
     with:
       artifact-upload: false
       init-lenient: false
@@ -28,11 +27,11 @@ jobs:
 
   build-docs:
     permissions:
-      contents: read
-      pages: write
-      id-token: write
+      contents: read  # Required for reading collection content
+      pages: write  # Required for publishing docs to GitHub Pages
+      id-token: write  # Required for OIDC authentication
     name: Build Ansible Docs
-    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-pr.yml@main
+    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-pr.yml@50bb8f670ad5ff11443bd94e51369debb8d34775 # main
     with:
       init-lenient: true
       init-fail-on-error: false
@@ -42,12 +41,12 @@ jobs:
     # for now we won't run this on forks
     if: github.repository == 'lowlydba/lowlydba.sqlserver'
     permissions:
-      contents: write
-      pages: write
-      id-token: write
+      contents: write  # Required for writing release/tag artifacts
+      pages: write  # Required for publishing docs to GitHub Pages
+      id-token: write  # Required for OIDC authentication
     needs: [build-docs]
     name: Publish Ansible Docs
-    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-publish-gh-pages.yml@main
+    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-publish-gh-pages.yml@50bb8f670ad5ff11443bd94e51369debb8d34775 # main
     with:
       artifact-name: ${{ needs.build-docs.outputs.artifact-name }}
       action: ${{ (github.event.action == 'closed' || needs.build-docs.outputs.changed != 'true') && 'teardown' || 'publish' }}
@@ -56,13 +55,13 @@ jobs:
 
   comment:
     permissions:
-      pull-requests: write
-    runs-on: ubuntu-latest
+      pull-requests: write  # Required for commenting on PRs
+    runs-on: ubuntu-slim
     needs: [publish-docs-gh-pages, build-docs]
     name: PR comments
     steps:
       - name: PR comment
-        uses: ansible-community/github-docs-build/actions/ansible-docs-build-comment@main
+        uses: ansible-community/github-docs-build/actions/ansible-docs-build-comment@50bb8f670ad5ff11443bd94e51369debb8d34775 # zizmor: ignore[stale-action-refs] -- Using main branch SHA of ansible-community maintained action; branch is stable
         with:
           body-includes: '## Docs Build'
           reactions: heart
