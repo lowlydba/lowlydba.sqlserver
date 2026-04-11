@@ -40,7 +40,9 @@ $checkMode = $module.CheckMode
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
 if ($null -ne $roles -and $state -ne 'present') {
-    $module.FailJson("The 'state' parameter is not supported when using the 'roles' parameter. Use roles.add, roles.remove, or roles.set to control membership changes.")
+    $msg = "The 'state' parameter is not supported when using the 'roles' parameter. "
+    $msg += "Use roles.add, roles.remove, or roles.set to control membership changes."
+    $module.FailJson($msg)
 }
 
 $module.Result.changed = $false
@@ -67,8 +69,6 @@ if ($null -eq $existingUser) {
 }
 
 if ($null -ne $role) {
-    $compatibilityMode = $true
-    
     # Set default state for legacy mode if not specified
     if ($null -eq $state) {
         $state = 'present'
@@ -150,8 +150,6 @@ if ($null -ne $role) {
     $module.ExitJson()
 }
 else {
-    $compatibilityMode = $false
-    
     # Reject state parameter when using new roles mode
     if ($null -ne $state) {
         $module.FailJson("The 'state' parameter is not supported when using roles. Only 'role' parameter supports state.")
@@ -169,8 +167,6 @@ else {
         $module.FailJson("When using the 'roles' parameter, you must specify at least one of: roles.set, roles.add, or roles.remove.")
     }
 
-    $queryMode = -not ($hasSet -or $hasAdd -or $hasRemove)
-
     try {
         $membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
         $currentRoleMembership = [array]($membershipObjects.Role | Sort-Object)
@@ -184,8 +180,10 @@ else {
 
     if ($hasSet) {
         $desiredRoles = [array]($roles['set'] | Sort-Object)
-        $toAdd = Compare-Object -ReferenceObject $currentRoleMembership -DifferenceObject $desiredRoles | Where-Object { $_.SideIndicator -eq '=>' } | Select-Object -ExpandProperty InputObject
-        $toRemove = Compare-Object -ReferenceObject $currentRoleMembership -DifferenceObject $desiredRoles | Where-Object { $_.SideIndicator -eq '<=' } | Select-Object -ExpandProperty InputObject
+        $toAdd = Compare-Object -ReferenceObject $currentRoleMembership -DifferenceObject $desiredRoles |
+            Where-Object { $_.SideIndicator -eq '=>' } | Select-Object -ExpandProperty InputObject
+        $toRemove = Compare-Object -ReferenceObject $currentRoleMembership -DifferenceObject $desiredRoles |
+            Where-Object { $_.SideIndicator -eq '<=' } | Select-Object -ExpandProperty InputObject
 
         if ($toAdd.Count -gt 0) {
             foreach ($roleToAdd in $toAdd) {
@@ -251,7 +249,8 @@ else {
         $desiredRoles = [array]($desiredRoles | Sort-Object -Unique)
 
         if ($hasAdd) {
-            $toAdd = Compare-Object -ReferenceObject $currentRoleMembership -DifferenceObject $roles['add'] | Where-Object { $_.SideIndicator -eq '=>' } | Select-Object -ExpandProperty InputObject
+            $toAdd = Compare-Object -ReferenceObject $currentRoleMembership -DifferenceObject $roles['add'] |
+                Where-Object { $_.SideIndicator -eq '=>' } | Select-Object -ExpandProperty InputObject
 
             if ($toAdd.Count -gt 0) {
                 foreach ($roleToAdd in $toAdd) {
@@ -280,7 +279,8 @@ else {
         }
 
         if ($hasRemove) {
-            $toRemove = Compare-Object -ReferenceObject $currentRoleMembership -DifferenceObject $roles['remove'] | Where-Object { $_.SideIndicator -eq '<=' } | Select-Object -ExpandProperty InputObject
+            $toRemove = Compare-Object -ReferenceObject $currentRoleMembership -DifferenceObject $roles['remove'] |
+                Where-Object { $_.SideIndicator -eq '<=' } | Select-Object -ExpandProperty InputObject
 
             if ($toRemove.Count -gt 0) {
                 foreach ($roleToRemove in $toRemove) {
