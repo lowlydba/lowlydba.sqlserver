@@ -3,7 +3,7 @@ concurrency:
   group: docs-pr-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 on:
-  pull_request:
+  pull_request_target: # zizmor: ignore[dangerous-triggers] -- pull_request_target is required to have permissions to comment on PRs from forks
     types: [opened, synchronize, reopened, closed]
 
 env:
