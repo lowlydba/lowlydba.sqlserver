@@ -4,6 +4,14 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
+v2.8.1
+======
+
+Release Summary
+---------------
+
+Re-release of 2.8.0 code to fix a broken publish workflow.
+
 v2.8.0
 ======
 

@@ -604,3 +604,9 @@ releases:
     - remove-six-usage.yml
     - user-role-roles-list.yml
     release_date: '2026-04-11'
+  2.8.1:
+    changes:
+      release_summary: Re-release of 2.8.0 code to fix a broken publish workflow.
+    fragments:
+    - 2.8.1.yml
+    release_date: '2026-04-11'
