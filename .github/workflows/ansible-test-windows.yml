@@ -192,23 +192,14 @@ jobs:
           sa-password: L0wlydb4
           version: 2022
 
-      - name: Run integration test
-        env:
-          GHWS: ${{ env.GHWS }}
-          NAMESPACE: ${{ env.NAMESPACE }}
-          COLLECTION_NAME: ${{ env.COLLECTION_NAME }}
-          GROUP: ${{ env.GROUP }}
+      - name: Run integration test  # zizmor: ignore[template-injection] -- env.GHWS is a computed path; matrix values are controlled enums
         run: |
-          pushd "$GHWS/ansible_collections/$NAMESPACE/$COLLECTION_NAME"
-          ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements windows/group/$GROUP/
+          pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
+          ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements windows/group/${{ matrix.group }}/
 
-      - name: Generate coverage report
-        env:
-          GHWS: ${{ env.GHWS }}
-          NAMESPACE: ${{ env.NAMESPACE }}
-          COLLECTION_NAME: ${{ env.COLLECTION_NAME }}
+      - name: Generate coverage report  # zizmor: ignore[template-injection] -- env.GHWS is a computed path
         run: |
-          pushd "$GHWS/ansible_collections/$NAMESPACE/$COLLECTION_NAME"
+          pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
           ansible-test coverage xml -v --requirements
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
