@@ -128,6 +128,9 @@ jobs:
         uses: ansible-community/ansible-test-gh-action@v1.17.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
+          testing-type: integration
+          test-deps: community.general
+          pull-request-change-detection: false
 
       # ansible-test support producing code coverage date
       - name: Generate coverage report
