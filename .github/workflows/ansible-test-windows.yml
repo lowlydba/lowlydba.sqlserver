@@ -74,7 +74,6 @@ jobs:
     env:
       NAMESPACE: lowlydba  # zizmor: ignore[template-injection] -- Static value
       COLLECTION_NAME: sqlserver  # zizmor: ignore[template-injection] -- Static value
-      GHWS: ${{ env.GHWS }}  # zizmor: ignore[template-injection] -- Dynamically computed in earlier step
       GROUP: ${{ matrix.group }}  # zizmor: ignore[template-injection] -- Matrix value from controlled environment
       ANSIBLE: ${{ matrix.ansible }}  # zizmor: ignore[template-injection] -- Matrix value from controlled environment
       PYTHON: python3
