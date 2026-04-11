@@ -24,7 +24,7 @@ on:
 
 # Cancel existing runs on new commits to a branch
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 # Deny all permissions at workflow level - scope per job

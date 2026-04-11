@@ -1,6 +1,6 @@
 name: Collection Docs
 concurrency:
-  group: docs-pr-${{ github.head_ref }}
+  group: docs-pr-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 on:
   pull_request:
