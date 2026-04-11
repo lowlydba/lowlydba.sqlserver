@@ -62,11 +62,18 @@ jobs:
       run:
         shell: wsl-bash {0}
 
+    permissions:
+      # Required for uploading coverage reports
+      contents: write
+      # Required for OIDC token authentication
+      id-token: write
+
     steps:
       - name: Check out code
-        uses: actions/checkout@v6
+        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98 # v6
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
+          persist-credentials: false
 
       - name: Create an admin user
         shell: cmd
@@ -94,7 +101,7 @@ jobs:
         shell: cmd
         run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
 
-      - uses: Vampire/setup-wsl@v6.0.0
+      - uses: Vampire/setup-wsl@f9577ca4c38935b96f9e985505bb5973a11efe48 # v6.0.0
         with:
           distribution: ${{ matrix.wsl }}
           update: "false"
@@ -157,7 +164,7 @@ jobs:
       - name: Install SQL Server
         continue-on-error: true
         id: mssqlsuite
-        uses: potatoqualitee/mssqlsuite@v1.12
+        uses: potatoqualitee/mssqlsuite@2291d923e83859edd871679c05b379037376761f # v1.12
         with:
           install: sqlengine
           sa-password: L0wlydb4
@@ -166,7 +173,7 @@ jobs:
       - name: Retry SQL Server install
         id: retry1
         if: steps.mssqlsuite.outcome == 'failure'
-        uses: potatoqualitee/mssqlsuite@v1.12
+        uses: potatoqualitee/mssqlsuite@2291d923e83859edd871679c05b379037376761f
         with:
           install: sqlengine
           sa-password: L0wlydb4
@@ -183,7 +190,7 @@ jobs:
           ansible-test coverage xml -v --requirements
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
-      - uses: codecov/codecov-action@v6.0.0
+      - uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           fail_ci_if_error: false
         env:

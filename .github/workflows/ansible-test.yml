@@ -47,6 +47,8 @@ jobs:
 
   sanity:
     name: Sanity (Ⓐ${{ matrix.ansible }})
+    permissions:
+      contents: write  # Required for uploading coverage reports
     strategy:
       matrix:
         # https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix
@@ -62,12 +64,13 @@ jobs:
       # .../ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/
 
       - name: Check out code
-        uses: actions/checkout@v6
+        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98 # v6
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
+          persist-credentials: false
 
       - name: Run confidence tests
-        uses: ansible-community/ansible-test-gh-action@v1.17.0
+        uses: ansible-community/ansible-test-gh-action@9e1c70a1e9c97c666c4e578d8c021f65501cffb8 # v1.17.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: sanity
@@ -78,7 +81,7 @@ jobs:
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
-      - uses: codecov/codecov-action@v6.0.0
+      - uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           fail_ci_if_error: false
         env:
@@ -96,9 +99,11 @@ jobs:
   integration:
     runs-on: ubuntu-latest
     name: I (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
+    permissions:
+      contents: write  # Required for uploading coverage reports
     services:
       sqlserver:
-        image: mcr.microsoft.com/mssql/server:2022-latest
+        image: mcr.microsoft.com/mssql/server@sha256:c9f2f1560c56b6aea104f08cd1fc24daf964e149002fddef7c606da48141ad1f
         ports:
           - 1433:1433
         env:
@@ -116,16 +121,17 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v6
+        uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98 # v6
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
+          persist-credentials: false
 
       - name: Set integration test options
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}/tests/integration
         run: cp integration_config.sample.yml integration_config.yml
 
       - name: Run integration tests
-        uses: ansible-community/ansible-test-gh-action@v1.17.0
+        uses: ansible-community/ansible-test-gh-action@9e1c70a1e9c97c666c4e578d8c021f65501cffb8 # v1.17.0
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: integration
@@ -138,7 +144,7 @@ jobs:
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
-      - uses: codecov/codecov-action@v6.0.0
+      - uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           fail_ci_if_error: false
         env:
