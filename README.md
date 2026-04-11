@@ -4,6 +4,7 @@
 [![CI](https://github.com/lowlydba/lowlydba.sqlserver/actions/workflows/ansible-test.yml/badge.svg)](https://github.com/lowlydba/lowlydba.sqlserver/actions/workflows/ansible-test.yml)
 [![CI (Windows)](https://github.com/lowlydba/lowlydba.sqlserver/actions/workflows/ansible-test-windows.yml/badge.svg)](https://github.com/lowlydba/lowlydba.sqlserver/actions/workflows/ansible-test-windows.yml)
 [![codecov](https://codecov.io/gh/lowlydba/lowlydba.sqlserver/branch/main/graph/badge.svg?token=3TW3VBCn9N)](https://codecov.io/gh/lowlydba/lowlydba.sqlserver)
+[![immutable release ruleset](https://img.shields.io/badge/immutable%20tags-active-green?logo=github)](https://github.com/lowlydba/lowlydba.sqlserver/rules/14953198)
 
 [![GPL v3](https://img.shields.io/github/license/lowlydba/lowlydba.sqlserver)](https://github.com/lowlydba/lowlydba.sqlserver/blob/main/LICENSE)
 [![Ansible Collection Downloads](https://img.shields.io/ansible/collection/d/lowlydba/sqlserver)](https://galaxy.ansible.com/ui/repo/published/lowlydba/sqlserver)

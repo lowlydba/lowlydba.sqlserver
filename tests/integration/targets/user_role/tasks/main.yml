@@ -41,8 +41,6 @@
       sql_password: "{{ sqlserver_password }}"
       database: "{{ database }}"
       username: "{{ username }}"
-      role: "{{ role }}"
-      state: present
   tags: ["sqlserver.user"]
   block:
     - name: Create login
@@ -66,16 +64,19 @@
           - result.data.Login == login_name
           - result.data.Name == username
 
-    - name: Add user to database role
+    - name: Add user to database role (legacy)
       lowlydba.sqlserver.user_role:
+        role: "{{ role }}"
+        state: present
       register: result
     - assert:
         that:
           - result is changed
 
-    - name: Add user to non-existent database role
+    - name: Add user to non-existent database role (legacy)
       lowlydba.sqlserver.user_role:
         role: db_IMadeThisOneUp
+        state: present
       register: error_result
       failed_when: error_result.failed
       ignore_errors: true
@@ -84,9 +85,11 @@
           - error_result.failed == true
           - "'Role [db_IMadeThisOneUp] does not exist in database' in error_result.msg"
 
-    - name: Add non-existent user to database role
+    - name: Add non-existent user to database role (legacy)
       lowlydba.sqlserver.user_role:
         username: NewUserWhoThis
+        role: "{{ role }}"
+        state: present
       register: error_result
       failed_when: error_result.failed
       ignore_errors: true
@@ -95,20 +98,283 @@
           - error_result.failed == true
           - "'User [NewUserWhoThis] does not exist in database' in error_result.msg"
 
-    - name: Add user again to database role
+    - name: Add user again to database role (legacy - idempotency)
       lowlydba.sqlserver.user_role:
+        role: "{{ role }}"
+        state: present
       register: result
     - assert:
         that:
           - result is not changed
 
-    - name: Remove user from database role
+    - name: Remove user from database role (legacy)
       lowlydba.sqlserver.user_role:
-        state: "absent"
+        role: "{{ role }}"
+        state: absent
       register: result
     - assert:
         that:
           - result is changed
+
+    - name: Add user to multiple roles using roles.add
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          add:
+            - db_owner
+            - db_datareader
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.roleMembership | length == 2
+          - "'db_owner' in result.data.roleMembership"
+          - "'db_datareader' in result.data.roleMembership"
+          - "'db_owner' in result.data.added"
+          - "'db_datareader' in result.data.added"
+
+    - name: Add user again to multiple roles (idempotency)
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          add:
+            - db_owner
+            - db_datareader
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Add user to additional role using roles.add
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          add:
+            - db_securityadmin
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.roleMembership | length == 3
+          - "'db_securityadmin' in result.data.roleMembership"
+          - "'db_securityadmin' in result.data.added"
+
+    - name: Remove user from roles using roles.remove
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          remove:
+            - db_owner
+            - db_datareader
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.roleMembership | length == 1
+          - result.data.roleMembership[0] == "db_securityadmin"
+          - "'db_owner' in result.data.removed"
+          - "'db_datareader' in result.data.removed"
+
+    - name: Remove user from role they're not in (idempotency)
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          remove:
+            - db_owner
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Set user's roles (replace all) using roles.set
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          set:
+            - db_datareader
+            - db_datawriter
+            - db_ddladmin
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.roleMembership | length == 3
+          - "'db_datareader' in result.data.roleMembership"
+          - "'db_datawriter' in result.data.roleMembership"
+          - "'db_ddladmin' in result.data.roleMembership"
+          - "'db_securityadmin' in result.data.removed"
+          - "'db_datareader' in result.data.added"
+          - "'db_datawriter' in result.data.added"
+          - "'db_ddladmin' in result.data.added"
+
+    - name: Set user's roles again (idempotency)
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          set:
+            - db_datareader
+            - db_datawriter
+            - db_ddladmin
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
+    - name: Combine add and remove operations
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          add:
+            - db_owner
+          remove:
+            - db_ddladmin
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.roleMembership | length == 3
+          - "'db_owner' in result.data.roleMembership"
+          - "'db_datawriter' in result.data.roleMembership"
+          - "'db_datareader' in result.data.roleMembership"
+          - "'db_owner' in result.data.added"
+          - "'db_ddladmin' in result.data.removed"
+
+    - name: Query current role membership (no changes - query mode)
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          add: []
+      register: result
+    - assert:
+        that:
+          - result is not changed
+          - result.data.roleMembership | length == 3
+
+    - name: "Test error: non-existent role in roles.add"
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          add:
+            - db_NonExistentRole12345
+      register: error_result
+      failed_when: error_result.failed
+      ignore_errors: true
+    - assert:
+        that:
+          - error_result.failed == true
+          - "'Role [db_NonExistentRole12345] does not exist in database' in error_result.msg"
+
+    - name: "Test error: non-existent role in roles.set"
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          set:
+            - db_datareader
+            - db_NonExistentRole12345
+      register: error_result
+      failed_when: error_result.failed
+      ignore_errors: true
+    - assert:
+        that:
+          - error_result.failed == true
+          - "'Role [db_NonExistentRole12345] does not exist in database' in error_result.msg"
+
+    - name: "Test error: cannot use both role and roles"
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        role: db_datareader
+        roles:
+          add:
+            - db_datawriter
+      register: error_result
+      failed_when: error_result.failed
+      ignore_errors: true
+    - assert:
+        that:
+          - error_result.failed == true
+          - "'mutually exclusive' in error_result.msg"
+
+    - name: Test roles parameter works without state (new feature)
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          set:
+            - db_datareader
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.roleMembership | length == 1
+
+    - name: Set roles to empty list (removes all memberships)
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          set: []
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.roleMembership | length == 0
+          - "'db_datareader' in result.data.removed"
+
+    - name: Set roles to empty list again (idempotency)
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          set: []
+      register: result
+    - assert:
+        that:
+          - result is not changed
+          - result.data.roleMembership | length == 0
+
+    - name: "Test error: cannot combine roles.set with roles.add"
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        roles:
+          set: []
+          add:
+            - db_datareader
+      register: error_result
+      failed_when: error_result.failed
+      ignore_errors: true
+    - assert:
+        that:
+          - error_result.failed == true
+          - "'roles.set' in error_result.msg"
+
+    - name: "Test error: cannot use state with roles parameter"
+      lowlydba.sqlserver.user_role:
+        username: "{{ username }}"
+        database: "{{ database }}"
+        state: absent
+        roles:
+          add:
+            - db_datawriter
+      register: error_result
+      failed_when: error_result.failed
+      ignore_errors: true
+    - assert:
+        that:
+          - error_result.failed == true
+          - error_result.msg is search("state.*parameter.*not.*supported")
 
   always:
     - name: Drop user

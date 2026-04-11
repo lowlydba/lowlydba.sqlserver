@@ -44,6 +44,7 @@ jobs:
   integration:
     runs-on: ${{ matrix.os }}
     name: I (Ⓐ${{ matrix.ansible }}+win-2022|grp${{ matrix.group }})
+    continue-on-error: ${{ matrix.ansible == 'devel' }}
     strategy:
       fail-fast: false
       matrix:
@@ -73,9 +74,7 @@ jobs:
     env:
       NAMESPACE: lowlydba  # zizmor: ignore[template-injection] -- Static value
       COLLECTION_NAME: sqlserver  # zizmor: ignore[template-injection] -- Static value
-      GHWS: ${{ env.GHWS }}  # zizmor: ignore[template-injection] -- Dynamically computed in earlier step
       GROUP: ${{ matrix.group }}  # zizmor: ignore[template-injection] -- Matrix value from controlled environment
-      ANSIBLE: ${{ matrix.ansible }}  # zizmor: ignore[template-injection] -- Matrix value from controlled environment
       PYTHON: python3
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}  # zizmor: ignore[secrets-outside-env] -- Codecov token needed for coverage uploads; environment protection would block PR-triggered runs
       WORKSPACE: ${{ github.workspace }}
@@ -152,13 +151,11 @@ jobs:
           Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$ws"
 
       # Override break-sys-pkg defaults, because we don't need to bother with python venv for CI
-      - name: Install ansible-base
-        env:
-          ANSIBLE: ${{ matrix.ansible }}
+      - name: Install ansible-base (${{ matrix.ansible }})  # zizmor: ignore[template-injection] -- matrix.ansible is a controlled enum value (stable-2.19, stable-2.20, devel)
         run: |
           python3 -m pip config set global.break-system-packages true
           python3 -m pip install --upgrade setuptools pypsrp --disable-pip-version-check --retries 10
-          python3 -m pip install "https://github.com/ansible/ansible/archive/$ANSIBLE.tar.gz" --disable-pip-version-check --retries 10
+          python3 -m pip install "https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz" --disable-pip-version-check --retries 10
 
       - name: Install collection dependencies
         id: collection-dependency
@@ -195,26 +192,27 @@ jobs:
           sa-password: L0wlydb4
           version: 2022
 
-      - name: Run integration test
-        env:
-          GHWS: ${{ env.GHWS }}
-          NAMESPACE: ${{ env.NAMESPACE }}
-          COLLECTION_NAME: ${{ env.COLLECTION_NAME }}
-          GROUP: ${{ env.GROUP }}
+      - name: Run integration test  # zizmor: ignore[template-injection] -- env.GHWS is a computed path; matrix values are controlled enums
         run: |
-          pushd "$GHWS/ansible_collections/$NAMESPACE/$COLLECTION_NAME"
-          ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements windows/group/$GROUP/
+          pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
+          ansible-test windows-integration -v --color --retry-on-error --continue-on-error --diff --coverage --requirements windows/group/${{ matrix.group }}/
 
-      - name: Generate coverage report
-        env:
-          GHWS: ${{ env.GHWS }}
-          NAMESPACE: ${{ env.NAMESPACE }}
-          COLLECTION_NAME: ${{ env.COLLECTION_NAME }}
+      - name: Generate coverage report  # zizmor: ignore[template-injection] -- env.GHWS is a computed path
         run: |
-          pushd "$GHWS/ansible_collections/$NAMESPACE/$COLLECTION_NAME"
+          pushd "${{ env.GHWS }}/ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}"
           ansible-test coverage xml -v --requirements
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
       - uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
         with:
           fail_ci_if_error: false
+
+  win-ci-test-rollup:
+    name: Are we good?
+    runs-on: ubuntu-slim
+    needs: [integration]
+    if: always()
+    steps:
+      - uses: lowlydba/are-we-good@7efad05442f92a1203940ca8b79dd4fb930e75d4 # v1.0.2
+        with:
+          jobs: ${{ toJSON(needs) }}

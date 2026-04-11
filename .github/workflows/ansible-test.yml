@@ -50,6 +50,7 @@ jobs:
 
   sanity:
     name: Sanity (Ⓐ${{ matrix.ansible }})
+    continue-on-error: ${{ matrix.ansible == 'devel' }}
     permissions:
       contents: write  # Required for uploading coverage reports
     strategy:
@@ -102,6 +103,7 @@ jobs:
   integration:
     runs-on: ubuntu-latest
     name: I (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
+    continue-on-error: ${{ matrix.ansible == 'devel' }}
     permissions:
       contents: write  # Required for uploading coverage reports
     services:
@@ -152,3 +154,13 @@ jobs:
           fail_ci_if_error: false
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} # zizmor: ignore[secrets-outside-env] -- Codecov token needed for uploading coverage; workflow_dispatch only
+
+  ci-test-rollup:
+    name: Are we good?
+    runs-on: ubuntu-slim
+    needs: [sanity, integration]
+    if: always()
+    steps:
+      - uses: lowlydba/are-we-good@7efad05442f92a1203940ca8b79dd4fb930e75d4 # v1.0.2
+        with:
+          jobs: ${{ toJSON(needs) }}

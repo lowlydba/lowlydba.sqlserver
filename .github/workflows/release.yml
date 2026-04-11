@@ -24,7 +24,7 @@ jobs:
       contents: write  # Required for creating releases and tags
     env:
       VERSION: ${{ github.event.inputs.version }}  # zizmor: ignore[template-injection] -- User input is required for this workflow
-      GHP_BASE_URL: ${{ env.GHP_BASE_URL }}  # zizmor: ignore[template-injection] -- Set at workflow level
+      GHP_BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
       GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}  # zizmor: ignore[secrets-outside-env] -- Galaxy API key needed for publishing; workflow_dispatch only
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # zizmor: ignore[secrets-outside-env] -- GitHub token needed for release creation; workflow_dispatch only
     steps:
