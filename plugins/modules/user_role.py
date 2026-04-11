@@ -59,7 +59,7 @@ options:
   state:
     description:
       - Desired state of the user role membership.
-      - "Only applicable when using the I(role) parameter (legacy mode). Ignored when using I(roles)."
+      - "Only applicable when using the I(role) parameter (legacy mode). Cannot be used with I(roles)."
     type: str
     choices:
       - present

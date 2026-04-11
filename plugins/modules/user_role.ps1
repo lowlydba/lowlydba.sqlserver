@@ -150,11 +150,6 @@ if ($null -ne $role) {
     $module.ExitJson()
 }
 else {
-    # Reject state parameter when using new roles mode
-    if ($null -ne $state) {
-        $module.FailJson("The 'state' parameter is not supported when using roles. Only 'role' parameter supports state.")
-    }
-
     $rolesSetSpecified = $null -ne $roles['set']
     $rolesAddSpecified = $null -ne $roles['add']
     $rolesRemoveSpecified = $null -ne $roles['remove']
@@ -165,6 +160,10 @@ else {
 
     if (-not ($hasSet -or $hasAdd -or $hasRemove) -and -not ($rolesSetSpecified -or $rolesAddSpecified -or $rolesRemoveSpecified)) {
         $module.FailJson("When using the 'roles' parameter, you must specify at least one of: roles.set, roles.add, or roles.remove.")
+    }
+
+    if ($hasSet -and ($hasAdd -or $hasRemove)) {
+        $module.FailJson("The 'roles.set' option cannot be combined with 'roles.add' or 'roles.remove'.")
     }
 
     try {
