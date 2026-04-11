@@ -345,7 +345,7 @@
     - assert:
         that:
           - error_result.failed == true
-          - "'mutually exclusive' in error_result.msg"
+          - "'state' parameter is not supported" in error_result.msg
 
   always:
     - name: Drop user

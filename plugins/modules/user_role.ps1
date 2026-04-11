@@ -19,7 +19,7 @@ $spec = @{
         role = @{type = 'str'; required = $false }
         state = @{type = 'str'; required = $false; default = 'present'; choices = @('present', 'absent') }
     }
-    mutually_exclusive = @(@('role', 'roles'), @('roles', 'state'))
+    mutually_exclusive = @(@('role', 'roles'))
     required_one_of = @(@('role', 'roles'))
 }
 
@@ -32,6 +32,10 @@ $roles = $module.Params.roles
 $role = $module.Params.role
 $state = $module.Params.state
 $checkMode = $module.CheckMode
+
+if ($null -ne $roles -and $state -ne 'present') {
+    $module.FailJson("The 'state' parameter is not supported when using the 'roles' parameter. Use roles.add, roles.remove, or roles.set to control membership changes.")
+}
 
 $module.Result.changed = $false
 
