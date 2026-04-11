@@ -96,7 +96,7 @@ if ($null -ne $role) {
             }
             $existingRoleMembers = Get-DbaDbRoleMember @getRoleMemberSplat
 
-            if ($existingRoleMembers.username -contains $username) {
+            if ($existingRoleMembers.UserName -contains $username) {
                 $removeRoleMemberSplat = @{
                     SqlInstance = $sqlInstance
                     SqlCredential = $sqlCredential
@@ -127,7 +127,7 @@ if ($null -ne $role) {
             }
             $existingRoleMembers = Get-DbaDbRoleMember @getRoleMemberSplat
 
-            if ($existingRoleMembers.username -notcontains $username) {
+            if ($existingRoleMembers.UserName -notcontains $username) {
                 $addRoleMemberSplat = @{
                     SqlInstance = $sqlInstance
                     SqlCredential = $sqlCredential
@@ -169,7 +169,7 @@ else {
 
     try {
         $membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
-        $currentRoleMembership = [array](($membershipObjects.Role).Name | Sort-Object)
+        $currentRoleMembership = [array]($membershipObjects.Role | Sort-Object)
         if ($null -eq $currentRoleMembership) { $currentRoleMembership = @() }
     }
     catch {
@@ -232,7 +232,7 @@ else {
 
         try {
             $membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
-            $currentRoleMembership = [array](($membershipObjects.Role).Name | Sort-Object)
+            $currentRoleMembership = [array]($membershipObjects.Role | Sort-Object)
             if ($null -eq $currentRoleMembership) { $currentRoleMembership = @() }
         }
         catch {
@@ -305,7 +305,7 @@ else {
 
         try {
             $membershipObjects = Get-DbaDbRoleMember @commonParamSplat -IncludeSystemUser $true | Where-Object { $_.UserName -eq $username }
-            $currentRoleMembership = [array](($membershipObjects.Role).Name | Sort-Object)
+            $currentRoleMembership = [array]($membershipObjects.Role | Sort-Object)
             if ($null -eq $currentRoleMembership) { $currentRoleMembership = @() }
         }
         catch {
