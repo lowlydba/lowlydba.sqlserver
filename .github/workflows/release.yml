@@ -58,7 +58,7 @@ jobs:
           import os
           import yaml
 
-          ver = '$VERSION'
+          ver = os.environ['VERSION']
           ver_anchor = str.replace(ver, '.', '-')
 
           with open('changelogs/changelog.yaml', 'r') as s:
