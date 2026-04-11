@@ -3,7 +3,7 @@ concurrency:
   group: docs-pr-${{ github.head_ref }}
   cancel-in-progress: true
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize, reopened, closed]
 
 env:

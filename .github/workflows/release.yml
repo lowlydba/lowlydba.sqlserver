@@ -6,6 +6,14 @@ on:
         description: "Version number to release"
         required: true
 
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: true
+
+# Restrict default permissions for security
+permissions:
+  contents: read
+
 env:
   GHP_BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
 
@@ -15,6 +23,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write  # Required for creating releases and tags
+    env:
+      VERSION: ${{ github.event.inputs.version }}
+      GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@0c366fd6a839edf440554fa01a7085ccba70ac98 # v6
@@ -35,9 +47,9 @@ jobs:
           api_key: ${{ secrets.GALAXY_API_KEY }}
 
       - name: Validate version is published to Galaxy
-        run: curl --head -s -f -o /dev/null https://galaxy.ansible.com/download/lowlydba-sqlserver-${GITHUB_EVENT_INPUTS_VERSION}.tar.gz
+        run: curl --head -s -f -o /dev/null https://galaxy.ansible.com/download/lowlydba-sqlserver-${VERSION}.tar.gz
         env:
-          GITHUB_EVENT_INPUTS_VERSION: ${{ github.event.inputs.version }}
+          VERSION: ${{ github.event.inputs.version }}
 
       - name: Build release description
         shell: python

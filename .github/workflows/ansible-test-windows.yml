@@ -27,6 +27,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Deny all permissions at workflow level - scope per job
+permissions: {}
+
 env:
   NAMESPACE: lowlydba
   COLLECTION_NAME: sqlserver
@@ -67,6 +70,15 @@ jobs:
       contents: write
       # Required for OIDC token authentication
       id-token: write
+    env:
+      NAMESPACE: lowlydba
+      COLLECTION_NAME: sqlserver
+      GHWS: ${{ env.GHWS }}
+      GROUP: ${{ matrix.group }}
+      ANSIBLE: ${{ matrix.ansible }}
+      PYTHON: python3
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      WORKSPACE: ${{ github.workspace }}
 
     steps:
       - name: Check out code
@@ -140,11 +152,11 @@ jobs:
           Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$ws"
 
       # Override break-sys-pkg defaults, because we don't need to bother with python venv for CI
-      - name: Install ansible-base (${{ matrix.ansible }})
+      - name: Install ansible-base
         run: |
-          ${{ matrix.python }} -m pip config set global.break-system-packages true
-          ${{ matrix.python }} -m pip install --upgrade setuptools pypsrp --disable-pip-version-check --retries 10
-          ${{ matrix.python }} -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
+          python3 -m pip config set global.break-system-packages true
+          python3 -m pip install --upgrade setuptools pypsrp --disable-pip-version-check --retries 10
+          python3 -m pip install https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz --disable-pip-version-check --retries 10
 
       - name: Install collection dependencies
         id: collection-dependency
