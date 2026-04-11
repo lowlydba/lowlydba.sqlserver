@@ -88,7 +88,7 @@ jobs:
         with:
           fail_ci_if_error: false
         env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} # zizmor: ignore[secrets-outside-env] -- Codecov token needed for uploading coverage; workflow_dispatch only
 
   ###
   # Integration tests (RECOMMENDED)
@@ -106,7 +106,7 @@ jobs:
       contents: write  # Required for uploading coverage reports
     services:
       sqlserver:
-        image: mcr.microsoft.com/mssql/server:2022-latest
+        image: mcr.microsoft.com/mssql/server:2022-latest # zizmor: ignore[unpinned-images] -- Trusted publisher for this CI use case
         ports:
           - 1433:1433
         env:
@@ -151,4 +151,4 @@ jobs:
         with:
           fail_ci_if_error: false
         env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} # zizmor: ignore[secrets-outside-env] -- Codecov token needed for uploading coverage; workflow_dispatch only
