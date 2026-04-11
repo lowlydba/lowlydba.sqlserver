@@ -1,3 +1,0 @@
----
-minor_changes:
-  - user_role - Added ``roles`` parameter with ``add``/``remove``/``set`` pattern to manage multiple roles. The existing ``role`` parameter is deprecated and will be removed in 3.0.0. (#352)

@@ -4,6 +4,22 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
+v2.8.0
+======
+
+Release Summary
+---------------
+
+Hardened GitHub Actions workflows against supply chain attacks using pinned
+SHA hashes, scoped permissions, and zizmor security analysis. Added a ``roles``
+input to the ``user_role`` module for managing multiple database role memberships
+simultaneously using the ``add``/``remove``/``set`` pattern.
+
+Minor Changes
+-------------
+
+- user_role - Added ``roles`` parameter with ``add``/``remove``/``set`` pattern to manage multiple roles. The existing ``role`` parameter is deprecated and will be removed in 3.0.0. (#352)
+
 v2.7.0
 ======
 
