@@ -33,6 +33,8 @@ $role = $module.Params.role
 $state = $module.Params.state
 $checkMode = $module.CheckMode
 
+$PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }
+
 if ($null -ne $roles -and $state -ne 'present') {
     $module.FailJson("The 'state' parameter is not supported when using the 'roles' parameter. Use roles.add, roles.remove, or roles.set to control membership changes.")
 }
@@ -43,7 +45,6 @@ $commonParamSplat = @{
     SqlInstance = $sqlInstance
     SqlCredential = $sqlCredential
     Database = $database
-    EnableException = $true
 }
 
 $outputProps = @{}
@@ -55,7 +56,6 @@ $getUserSplat = @{
     SqlCredential = $sqlCredential
     Database = $database
     User = $username
-    EnableException = $true
 }
 $existingUser = Get-DbaDbUser @getUserSplat
 if ($null -eq $existingUser) {
@@ -70,7 +70,6 @@ if ($null -ne $role) {
         SqlCredential = $sqlCredential
         Database = $database
         Role = $role
-        EnableException = $true
     }
     $existingRole = Get-DbaDbRole @getRoleSplat
     if ($null -eq $existingRole) {
@@ -85,7 +84,6 @@ if ($null -ne $role) {
                 Database = $database
                 Role = $role
                 IncludeSystemUser = $true
-                EnableException = $true
             }
             $existingRoleMembers = Get-DbaDbRoleMember @getRoleMemberSplat
 
@@ -96,9 +94,6 @@ if ($null -ne $role) {
                     User = $username
                     Database = $database
                     Role = $role
-                    EnableException = $true
-                    WhatIf = $checkMode
-                    Confirm = $false
                 }
                 $output = Remove-DbaDbRoleMember @removeRoleMemberSplat
                 $module.Result.changed = $true
@@ -120,7 +115,6 @@ if ($null -ne $role) {
                 Database = $database
                 Role = $role
                 IncludeSystemUser = $true
-                EnableException = $true
             }
             $existingRoleMembers = Get-DbaDbRoleMember @getRoleMemberSplat
 
@@ -131,9 +125,6 @@ if ($null -ne $role) {
                     User = $username
                     Database = $database
                     Role = $role
-                    EnableException = $true
-                    WhatIf = $checkMode
-                    Confirm = $false
                 }
                 $output = Add-DbaDbRoleMember @addRoleMemberSplat
                 $module.Result.changed = $true
@@ -196,9 +187,6 @@ else {
                         User = $username
                         Database = $database
                         Role = $roleToAdd
-                        EnableException = $true
-                        WhatIf = $checkMode
-                        Confirm = $false
                     }
                     Add-DbaDbRoleMember @addRoleMemberSplat
                     $addedRoles += $roleToAdd
@@ -219,9 +207,6 @@ else {
                         User = $username
                         Database = $database
                         Role = $roleToRemove
-                        EnableException = $true
-                        WhatIf = $checkMode
-                        Confirm = $false
                     }
                     Remove-DbaDbRoleMember @removeRoleMemberSplat
                     $removedRoles += $roleToRemove
@@ -268,9 +253,6 @@ else {
                             User = $username
                             Database = $database
                             Role = $roleToAdd
-                            EnableException = $true
-                            WhatIf = $checkMode
-                            Confirm = $false
                         }
                         Add-DbaDbRoleMember @addRoleMemberSplat
                         $addedRoles += $roleToAdd
@@ -295,9 +277,6 @@ else {
                             User = $username
                             Database = $database
                             Role = $roleToRemove
-                            EnableException = $true
-                            WhatIf = $checkMode
-                            Confirm = $false
                         }
                         Remove-DbaDbRoleMember @removeRoleMemberSplat
                         $removedRoles += $roleToRemove
