@@ -47,6 +47,15 @@ jobs:
       - name: Install PyYaml
         run: pip install pyyaml
 
+      - name: Validate version matches galaxy.yml
+        run: |
+          GALAXY_VERSION=$(python -c "import yaml; print(yaml.safe_load(open('galaxy.yml'))['version'])")
+          if [ "${GALAXY_VERSION}" != "${VERSION}" ]; then
+            echo "::error::Input version '${VERSION}' does not match galaxy.yml version '${GALAXY_VERSION}'."
+            exit 1
+          fi
+          echo "Version ${VERSION} matches galaxy.yml"
+
       - name: Check if version exists on Galaxy
         id: check_galaxy_version
         run: |
