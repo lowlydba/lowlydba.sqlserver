@@ -5,6 +5,11 @@ on:
       version:
         description: "Version number to release"
         required: true
+      overwrite_existing:
+        description: "Overwrite version if already published to Galaxy"
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   group: release-${{ github.ref }}
@@ -24,6 +29,7 @@ jobs:
       contents: write  # Required for creating releases and tags
     env:
       VERSION: ${{ github.event.inputs.version }}  # zizmor: ignore[template-injection] -- User input is required for this workflow
+      OVERWRITE_EXISTING: ${{ github.event.inputs.overwrite_existing }}  # zizmor: ignore[template-injection] -- Boolean input is safe for this comparison
       GHP_BASE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
       GALAXY_API_KEY: ${{ secrets.GALAXY_API_KEY }}  # zizmor: ignore[secrets-outside-env] -- Galaxy API key needed for publishing; workflow_dispatch only
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # zizmor: ignore[secrets-outside-env] -- GitHub token needed for release creation; workflow_dispatch only
@@ -40,6 +46,23 @@ jobs:
 
       - name: Install PyYaml
         run: pip install pyyaml
+
+      - name: Check if version exists on Galaxy
+        id: check_galaxy_version
+        run: |
+          if curl --head -s -f -o /dev/null "https://galaxy.ansible.com/download/lowlydba-sqlserver-${VERSION}.tar.gz"; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Version ${VERSION} already exists on Galaxy"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "Version ${VERSION} does not yet exist on Galaxy"
+          fi
+
+      - name: Abort if version exists and overwrite not enabled
+        if: steps.check_galaxy_version.outputs.exists == 'true' && env.OVERWRITE_EXISTING != 'true'
+        run: |
+          echo "::error::Version ${VERSION} already exists on Galaxy. Set overwrite_existing=true to overwrite."
+          exit 1
 
       - name: Publish to Galaxy
         uses: artis3n/ansible_galaxy_collection@ffbca2460a5a1c600b941bbf1536bd61de1c2227 # v3.0.0
@@ -87,10 +110,7 @@ jobs:
               e.write("RELEASE_DESCRIPTION<<EOF\n%s\nEOF" % description)
 
       - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@153bb8e04406b158c6c84fc1615b65b24149a1fe  # zizmor: ignore[superfluous-actions] -- Using action for release creation provides better GitHub API integration and version tagging features
-        with:
-          token: ${{ env.GITHUB_TOKEN }}
-          tag_name: ${{ env.VERSION }}
-          name: ${{ env.VERSION }}
-          body: ${{ env.RELEASE_DESCRIPTION }}
+        run: |
+          gh release create "${VERSION}" \
+            --title "${VERSION}" \
+            --notes "${RELEASE_DESCRIPTION}"
