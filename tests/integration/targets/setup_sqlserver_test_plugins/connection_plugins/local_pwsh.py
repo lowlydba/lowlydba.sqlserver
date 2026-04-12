@@ -68,12 +68,13 @@ class Connection(ConnectionBase):
 
         display.debug("in local_pwsh.exec_command()")
 
-        # mac (darwin) has different pwsh install location than linux
-        if sys.platform.startswith('darwin'):
-            executable = '/usr/local/bin/pwsh'
-        else:
-            executable = '/usr/bin/pwsh'
-        # executable = C.DEFAULT_EXECUTABLE.split()[0] if C.DEFAULT_EXECUTABLE else None
+        # Locate pwsh dynamically; fall back to platform-specific defaults
+        executable = shutil.which('pwsh')
+        if executable is None:
+            if sys.platform.startswith('darwin'):
+                executable = '/usr/local/bin/pwsh'
+            else:
+                executable = '/usr/bin/pwsh'
 
         if not os.path.exists(to_bytes(executable, errors='surrogate_or_strict')):
             raise AnsibleError("failed to find the executable specified %s."
