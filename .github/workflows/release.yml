@@ -78,6 +78,12 @@ jobs:
         with:
           api_key: ${{ env.GALAXY_API_KEY }}
 
+      - name: Upload collection artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: lowlydba-sqlserver-${{ env.VERSION }}
+          path: ${{ github.workspace }}/lowlydba-sqlserver-${{ env.VERSION }}.tar.gz
+
       - name: Validate version is published to Galaxy
         run: curl --head -s -f -o /dev/null "https://galaxy.ansible.com/download/lowlydba-sqlserver-${VERSION}.tar.gz"
 
