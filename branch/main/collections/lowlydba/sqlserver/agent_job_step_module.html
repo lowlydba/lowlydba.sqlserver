@@ -374,7 +374,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <span class="w">    </span><span class="nt">job</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MyJob</span>
 <span class="w">    </span><span class="nt">step_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Step1</span>
 <span class="w">    </span><span class="nt">step_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;TRUNCATE</span><span class="nv"> </span><span class="s">TABLE</span><span class="nv"> </span><span class="s">dbo.TestData;&quot;</span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">"TRUNCATE</span><span class="nv"> </span><span class="s">TABLE</span><span class="nv"> </span><span class="s">dbo.TestData;"</span>
 
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a job step with output file</span>
 <span class="w">  </span><span class="nt">lowlydba.sqlserver.agent_job_step</span><span class="p">:</span>
@@ -382,8 +382,8 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <span class="w">    </span><span class="nt">job</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MyJob</span>
 <span class="w">    </span><span class="nt">step_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Step2</span>
 <span class="w">    </span><span class="nt">step_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;SELECT</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">FROM</span><span class="nv"> </span><span class="s">sys.databases;&quot;</span>
-<span class="w">    </span><span class="nt">output_file</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;C:\\Logs\\MyJob_Step2.log&quot;</span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">"SELECT</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">FROM</span><span class="nv"> </span><span class="s">sys.databases;"</span>
+<span class="w">    </span><span class="nt">output_file</span><span class="p">:</span><span class="w"> </span><span class="s">"C:\\Logs\\MyJob_Step2.log"</span>
 </pre></div>
 </div>
 </section>
