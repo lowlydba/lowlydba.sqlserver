@@ -1,2 +1,2 @@
 minor_changes:
-  - Add missing check-mode and idempotency assertions to the ``backup``, ``restore``, ``availability_group``, and ``ag_replica`` integration test targets, and exercise a non-default ``deployment_method`` in the ``install_script`` targets (https://github.com/lowlydba/lowlydba.sqlserver/issues/381).
+  - Add check-mode assertions for the ``backup`` and ``restore`` integration test targets, add idempotency assertions for the ``availability_group`` and ``ag_replica`` targets, and exercise a non-default ``deployment_method`` in the ``install_script`` targets (https://github.com/lowlydba/lowlydba.sqlserver/issues/381).
