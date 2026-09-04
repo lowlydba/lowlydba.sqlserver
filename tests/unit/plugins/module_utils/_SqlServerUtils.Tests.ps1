@@ -11,7 +11,7 @@
 #>
 
 BeforeAll {
-    $script:ModulePath = Resolve-Path (Join-Path $PSScriptRoot '../../../../plugins/module_utils/_SqlServerUtils.psm1')
+    $script:ModulePath = Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '../../../../plugins/module_utils/_SqlServerUtils.psm1')
     Import-Module $script:ModulePath -Force
 
     # Get-SqlCredential validates that -Module is an instance of Ansible.Basic.AnsibleModule.
