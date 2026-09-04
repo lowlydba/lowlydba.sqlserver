@@ -135,7 +135,7 @@ try {
             if ($null -ne $smoDatabase) {
                 $smoDatabase.Refresh()
             }
-            $InputObject | Add-Member -MemberType NoteProperty -Name "SecondaryMaxDop" -Value ([int]$smoDatabase.SecondaryMaxDop) -Force
+            $InputObject | Add-Member -MemberType NoteProperty -Name "SecondaryMaxDop" -Value ([int]$smoDatabase.MaxDopForSecondary) -Force
             $InputObject | Add-Member -MemberType NoteProperty -Name "RCSI" -Value $smoDatabase.IsReadCommittedSnapshotOn -Force
             foreach ($name in @("SecondaryMaxDop", "MaxDop", "RCSI")) {
                 if ($InputObject.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames -notcontains $name) {

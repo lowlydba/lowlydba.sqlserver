@@ -1,2 +1,3 @@
 bugfixes:
   - database - ``data`` is re-read from the server after applying changes instead of echoing the requested ``recovery_model``, ``compatibility``, ``rcsi``, ``maxdop`` and ``secondary_maxdop`` values (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
+  - database - the current ``secondary_maxdop`` was read from a nonexistent SMO property, so every run with ``secondary_maxdop`` set reported ``changed`` and re-applied it (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
