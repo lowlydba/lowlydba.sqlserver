@@ -19,7 +19,7 @@ jobs:
     permissions:
       contents: read  # Required for reading collection content
     name: Build Ansible Docs
-    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-push.yml@0442e4ef1e1f2ac6169f4c8f74cf8c1aa905e91b # zizmor: ignore[stale-action-refs] -- Using main branch SHA of ansible-community maintained action; branch is stable, no tags published
+    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-push.yml@0442e4ef1e1f2ac6169f4c8f74cf8c1aa905e91b # zizmor: ignore[stale-action-refs] -- Upstream repo publishes no release tags; pin to main HEAD commit
     with:
       init-lenient: false
       init-fail-on-error: true
