@@ -1,0 +1,2 @@
+bugfixes:
+  - rg_workload_group - replace the ``Compare-Object`` comparison between a hashtable and the SMO object with an explicit per-property comparison to avoid spurious changes (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).

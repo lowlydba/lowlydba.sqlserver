@@ -1,0 +1,4 @@
+bugfixes:
+  - login - ``password_policy_enforced`` and ``password_expiration_enabled`` set to ``false`` reported ``changed`` but never passed ``$false`` to ``Set-DbaLogin``, so the setting stayed enabled (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
+breaking_changes:
+  - login - an explicit ``false`` for ``password_policy_enforced`` or ``password_expiration_enabled`` now disables the setting on the login instead of leaving it unchanged (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).

@@ -4,49 +4,6 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
-v3.0.0
-======
-
-Minor Changes
--------------
-
-- login - ``language`` can now be changed on an existing login. Previously it was only applied when creating the login (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- module_utils - add ``Get-DesiredStateDiff`` for comparing desired option values against an SMO object property by property.
-
-Breaking Changes / Porting Guide
---------------------------------
-
-- availability_group - an explicit ``false`` for ``dtc_support_enabled``, ``basic_availability_group``, ``database_health_trigger`` or ``is_distributed_ag`` now disables the setting on an existing availability group instead of being ignored (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- backup - ``compress``, ``encryption_certificate``, ``azure_base_url`` and ``azure_credential`` now take effect. Playbooks that set these options previously got an uncompressed, unencrypted, local backup regardless of the values supplied (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- install_script - ``deployment_method`` now takes effect. Playbooks that set ``SingleTransaction``, ``TransactionPerScript`` or ``AlwaysRollback`` previously ran with ``NoTransaction`` (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- login - an explicit ``false`` for ``password_policy_enforced`` or ``password_expiration_enabled`` now disables the setting on the login instead of leaving it unchanged (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- sa - an explicit ``false`` for ``password_policy_enforced`` or ``password_expiration_enabled`` now disables the setting on the login instead of leaving it unchanged (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-
-Bugfixes
---------
-
-- ag_listener - ``ip_address``, ``subnet_mask`` and ``dhcp`` were only used when creating a new listener, so changing them on an existing listener reported no change and left it untouched. These settings can't be altered in place, so a mismatch between the requested and current IP configuration now drops and re-creates the listener via ``Remove-DbaAgListener`` and ``Add-DbaAgListener`` (https://github.com/lowlydba/lowlydba.sqlserver/issues/376).
-- ag_replica - ``data`` now returns the existing replica when no change is needed instead of being omitted (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- ag_replica - replace the ``Compare-Object`` comparison between a hashtable and the SMO object with an explicit per-property comparison so enums and bools compare cleanly against Ansible values (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- agent_job_step - Fix inability to rename a step by ``step_id``. The module now looks up the existing step by ``step_id`` when ``state=present``, instead of by ``step_name``, so a rename (new ``step_name``, same ``step_id``) is correctly detected as an update.
-- agent_job_step - ``data`` is re-read from the server after applying changes instead of being patched with the requested ``output_file`` value (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- availability_group - ``data`` now returns the existing availability group when no change is needed instead of being omitted (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- availability_group - ``dtc_support_enabled``, ``basic_availability_group``, ``database_health_trigger`` and ``is_distributed_ag`` were only passed to ``Set-DbaAvailabilityGroup`` when ``true``, so they could not be disabled on an existing availability group (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- availability_group - replace the ``Compare-Object`` comparison between a hashtable and the SMO object with an explicit per-property comparison so enums and bools compare cleanly against Ansible values (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- backup - the ``compress``, ``encryption_certificate``, ``azure_base_url`` and ``azure_credential`` options were read from the wrong variable and never passed to ``Backup-DbaDatabase`` (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- database - ``data`` is re-read from the server after applying changes instead of echoing the requested ``recovery_model``, ``compatibility``, ``rcsi``, ``maxdop`` and ``secondary_maxdop`` values (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- database - the current ``secondary_maxdop`` was read from a nonexistent SMO property, so every run with ``secondary_maxdop`` set reported ``changed`` and re-applied it (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- install_script - the ``deployment_method`` option was accepted but never passed to ``Install-DboScript`` (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- login - ``password_policy_enforced`` and ``password_expiration_enabled`` set to ``false`` reported ``changed`` but never passed ``$false`` to ``Set-DbaLogin``, so the setting stayed enabled (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- login - a changed ``default_database`` on an existing login did not set ``changed`` and was only applied if another option also changed (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- login, credential - failure messages no longer include the raw parameter splat (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- resource_governor - omitting ``classifier_function`` reported ``changed`` on every run when the instance already had a classifier function configured (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- restore - the ``azure_credential`` option was read from the wrong variable and never passed to ``Restore-DbaDatabase`` (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- rg_resource_pool - ``data`` now returns the existing resource pool when no change is needed instead of being omitted (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- rg_resource_pool - replace the ``Compare-Object`` comparison between a hashtable and the SMO object with an explicit per-property comparison to avoid spurious changes (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- rg_workload_group - replace the ``Compare-Object`` comparison between a hashtable and the SMO object with an explicit per-property comparison to avoid spurious changes (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-- sa - ``password_policy_enforced`` and ``password_expiration_enabled`` set to ``false`` reported ``changed`` but never passed ``$false`` to ``Set-DbaLogin``, so the setting stayed enabled (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-
 v2.8.1
 ======
 
