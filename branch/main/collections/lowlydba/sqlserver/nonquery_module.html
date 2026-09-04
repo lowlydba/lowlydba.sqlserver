@@ -129,7 +129,7 @@
 <h1>lowlydba.sqlserver.nonquery module – Executes a generic nonquery<a class="headerlink" href="#lowlydba-sqlserver-nonquery-module-executes-a-generic-nonquery" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/lowlydba/sqlserver/">lowlydba.sqlserver collection</a> (version 2.8.1).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/lowlydba/sqlserver/">lowlydba.sqlserver collection</a> (version 3.0.0).</p>
 <p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">lowlydba.sqlserver</span></code>.
@@ -151,6 +151,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Synopsis</a><a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Execute a nonquery against a database. Does not return a resultset. Ideal for ad-hoc configurations or DML queries.</p></li>
+<li><p>The statement is executed as supplied and is not idempotent; the module always reports <code class="docutils literal notranslate"><span class="pre">changed</span></code> when it runs. Guard it with a <code class="docutils literal notranslate"><span class="pre">when</span></code> condition or a preceding check if repeat runs must be no-ops.</p></li>
 </ul>
 </section>
 <section id="requirements">

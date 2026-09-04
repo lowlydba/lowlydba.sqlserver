@@ -129,7 +129,7 @@
 <h1>lowlydba.sqlserver.availability_group module – Configures availability group(s)<a class="headerlink" href="#lowlydba-sqlserver-availability-group-module-configures-availability-group-s" title="Link to this heading"></a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/lowlydba/sqlserver/">lowlydba.sqlserver collection</a> (version 2.8.1).</p>
+<p>This module is part of the <a class="reference external" href="https://galaxy.ansible.com/ui/repo/published/lowlydba/sqlserver/">lowlydba.sqlserver collection</a> (version 3.0.0).</p>
 <p>It is not included in <code class="docutils literal notranslate"><span class="pre">ansible-core</span></code>.
 To check whether it is installed, run <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">list</span></code>.</p>
 <p>To install it, use: <code class="code docutils literal notranslate"><span class="pre">ansible-galaxy</span> <span class="pre">collection</span> <span class="pre">install</span> <span class="pre">lowlydba.sqlserver</span></code>.
@@ -152,6 +152,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Synopsis</a><a class="headerlink" href="#synopsis" title="Link to this heading"></a></h2>
 <ul class="simple">
 <li><p>Configures SQL Server Availability Group(s) with up to one replica.</p></li>
+<li><p>When the availability group already exists, only <em>automated_backup_preference</em>, <em>cluster_type</em>, <em>dtc_support_enabled</em>, <em>basic_availability_group</em>, <em>database_health_trigger</em>, <em>is_distributed_ag</em>, <em>failure_condition_level</em> and <em>healthcheck_timeout</em> are reconciled. All other options apply only when the availability group is created.</p></li>
 </ul>
 </section>
 <section id="requirements">
@@ -220,7 +221,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-availability_mode" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Whether the replica should be Asynchronous or Synchronous.</p>
-<p>Only used in creating a new availability group.</p>
+<p>Only used when creating a new availability group.</p>
 <p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
 <ul class="simple">
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;AsynchronousCommit&quot;</span></code></p></li>
@@ -259,6 +260,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <p><em class="ansible-option-versionadded">added in lowlydba.sqlserver 2.6.0</em></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Indicates whether the availability group is Contained. Requires DBATools &gt;= 2.1.15</p>
+<p>Only used when creating a new availability group.</p>
 <p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
 <ul class="simple">
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
@@ -273,6 +275,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Name of the database to create the Availability Group for.</p>
+<p>Only used when creating a new availability group.</p>
 </div></td>
 </tr>
 <tr class="row-odd"><td><div class="ansible-option-cell">
@@ -304,6 +307,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-failover_mode" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Whether the replica have Automatic or Manual failover.</p>
+<p>Only used when creating a new availability group.</p>
 <p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
 <ul class="simple">
 <li><p><code class="ansible-option-default-bold docutils literal notranslate"><strong><span class="pre">&quot;Automatic&quot;</span></strong></code> <span class="ansible-option-choices-default-mark">← (default)</span></p></li>
@@ -331,6 +335,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-force" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Drop and recreate the database on remote servers using fresh backup.</p>
+<p>Only used when creating a new availability group.</p>
 <p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
 <ul class="simple">
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
@@ -363,6 +368,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-seeding_mode" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Default seeding mode for the replica. Should remain as the default otherwise manual setup may be required.</p>
+<p>Only used when creating a new availability group.</p>
 <p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
 <ul class="simple">
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">&quot;Automatic&quot;</span></code></p></li>
@@ -375,6 +381,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-shared_path" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The network share where the backups will be backed up and restored from.</p>
+<p>Only used when creating a new availability group with <em>seeding_mode=Manual</em>.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -389,6 +396,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-sql_instance_secondary" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>The secondary SQL Server instance for the new Availability Group.</p>
+<p>Only used when creating a new availability group.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -436,6 +444,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-use_last_backup" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">boolean</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Use the last full and log backup of database. A log backup must be the last backup.</p>
+<p>Only used when creating a new availability group.</p>
 <p class="ansible-option-line"><strong class="ansible-option-choices">Choices:</strong></p>
 <ul class="simple">
 <li><p><code class="ansible-option-choices-entry docutils literal notranslate"><span class="pre">false</span></code></p></li>
@@ -498,7 +507,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="return-data"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-availability-group-module-return-data"><strong>data</strong></p>
 <a class="ansibleOptionLink" href="#return-data" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Output from the <code class="docutils literal notranslate"><span class="pre">New-DbaAvailabilityGroup</span></code> or <code class="docutils literal notranslate"><span class="pre">Set-DbaAvailabilityGroup</span></code> function.</p>
+<td><div class="ansible-option-cell"><p>Output from the <code class="docutils literal notranslate"><span class="pre">New-DbaAvailabilityGroup</span></code> or <code class="docutils literal notranslate"><span class="pre">Set-DbaAvailabilityGroup</span></code> function, or the existing availability group when no change was needed.</p>
 <p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> success, but not in check_mode.</p>
 </div></td>
 </tr>
