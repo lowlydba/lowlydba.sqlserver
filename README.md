@@ -1,5 +1,3 @@
-# lowlydba.sqlserver Collection for Ansible<!-- omit in toc -->
-
 ![lowlydba.sqlserver](docs/images/hero.png)
 
 [![CI](https://github.com/lowlydba/lowlydba.sqlserver/actions/workflows/ansible-test.yml/badge.svg)](https://github.com/lowlydba/lowlydba.sqlserver/actions/workflows/ansible-test.yml)
