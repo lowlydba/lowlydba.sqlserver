@@ -33,6 +33,7 @@ options:
   subnet_ip:
     description:
       - Subnet IP address(es) of the listener. Comma separated if multiple.
+      - Only reconciled against an existing listener when C(ip_address) is also supplied.
     type: list
     elements: str
     required: false
@@ -90,7 +91,8 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from the C(Add-DbaAgListener), C(Set-DbaAgListener), or C(Remove-DbaAgListener)/C(Add-DbaAgListener) function.
+  description: Output from the C(Add-DbaAgListener) or C(Set-DbaAgListener) function. When an existing listener's
+    IP/DHCP configuration is reconciled, this is the output of the C(Add-DbaAgListener) call used to re-create it.
   returned: success, but not in check_mode.
   type: dict
 '''

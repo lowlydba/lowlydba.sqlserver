@@ -49,16 +49,17 @@ function Get-DesiredListenerIp {
         Normalizes the desired IP configuration for a listener based on module params.
 
         .DESCRIPTION
-        Mirrors the IP/SubnetMask pairing logic used by Add-DbaAgListener so the desired
-        state can be compared against what already exists on the server.
+        Mirrors the IP/SubnetMask/SubnetIP pairing logic used by Add-DbaAgListener so the
+        desired state can be compared against what already exists on the server.
     #>
     param(
         [AllowNull()][string[]]$IpAddress,
+        [AllowNull()][string[]]$SubnetIp,
         [AllowNull()][string[]]$SubnetMask,
         [bool]$Dhcp
     )
     if ($Dhcp) {
-        return , [PSCustomObject]@{ IsDhcp = $true; IPAddress = $null; SubnetMask = $null }
+        return , [PSCustomObject]@{ IsDhcp = $true; IPAddress = $null; SubnetMask = $null; SubnetIP = $null }
     }
     if ($null -eq $IpAddress) {
         return @()
@@ -70,12 +71,23 @@ function Get-DesiredListenerIp {
     if ($masks.Count -eq 1 -and $IpAddress.Count -gt 1) {
         $masks = @($masks[0]) * $IpAddress.Count
     }
+    $subnets = $SubnetIp
+    if ($null -eq $subnets -or $subnets.Count -eq 0) {
+        # No subnet IPs supplied, calculate them from the IP/mask pairs like Add-DbaAgListener does.
+        $subnets = for ($i = 0; $i -lt $IpAddress.Count; $i++) {
+            (([ipaddress]$IpAddress[$i]).Address -band ([ipaddress]$masks[$i]).Address) -as [ipaddress]
+        }
+    }
+    elseif ($subnets.Count -eq 1 -and $IpAddress.Count -gt 1) {
+        $subnets = @($subnets[0]) * $IpAddress.Count
+    }
     $desired = @()
     for ($i = 0; $i -lt $IpAddress.Count; $i++) {
         $desired += [PSCustomObject]@{
             IsDhcp = $false
             IPAddress = [string]$IpAddress[$i]
             SubnetMask = [string]$masks[$i]
+            SubnetIP = [string]$subnets[$i]
         }
     }
     return $desired
@@ -87,7 +99,7 @@ function Test-ListenerIpMismatch {
         Compares the listener's current IP configuration against the desired state.
 
         .DESCRIPTION
-        Returns $true when the existing listener's IP addresses/subnet masks/DHCP
+        Returns $true when the existing listener's IP addresses/subnet masks/subnet IPs/DHCP
         setting differ from the desired configuration. Listener IPs can't be altered
         in place, so a mismatch means the listener must be dropped and re-created.
     #>
@@ -102,10 +114,15 @@ function Test-ListenerIpMismatch {
     $existingIps = @()
     foreach ($existingIp in $ExistingListener.AvailabilityGroupListenerIPAddresses) {
         if ($existingIp.IsDHCP) {
-            $existingIps += [PSCustomObject]@{ IsDhcp = $true; IPAddress = $null; SubnetMask = $null }
+            $existingIps += [PSCustomObject]@{ IsDhcp = $true; IPAddress = $null; SubnetMask = $null; SubnetIP = $null }
         }
         else {
-            $existingIps += [PSCustomObject]@{ IsDhcp = $false; IPAddress = [string]$existingIp.IPAddress; SubnetMask = [string]$existingIp.SubnetMask }
+            $existingIps += [PSCustomObject]@{
+                IsDhcp = $false
+                IPAddress = [string]$existingIp.IPAddress
+                SubnetMask = [string]$existingIp.SubnetMask
+                SubnetIP = [string]$existingIp.SubnetIP
+            }
         }
     }
     if ($existingIps.Count -ne $DesiredIps.Count) {
@@ -117,8 +134,8 @@ function Test-ListenerIpMismatch {
     if ($existingIps | Where-Object { $_.IsDhcp }) {
         return $true
     }
-    $existingSet = @($existingIps | ForEach-Object { "$($_.IPAddress)|$($_.SubnetMask)" } | Sort-Object)
-    $desiredSet = @($DesiredIps | ForEach-Object { "$($_.IPAddress)|$($_.SubnetMask)" } | Sort-Object)
+    $existingSet = @($existingIps | ForEach-Object { "$($_.IPAddress)|$($_.SubnetMask)|$($_.SubnetIP)" } | Sort-Object)
+    $desiredSet = @($DesiredIps | ForEach-Object { "$($_.IPAddress)|$($_.SubnetMask)|$($_.SubnetIP)" } | Sort-Object)
     return [bool](Compare-Object -ReferenceObject $existingSet -DifferenceObject $desiredSet)
 }
 
@@ -143,7 +160,7 @@ try {
             $module.Result.changed = $true
         }
         else {
-            $desiredIps = Get-DesiredListenerIp -IpAddress $ipAddress -SubnetMask $subnetMask -Dhcp $dhcp
+            $desiredIps = Get-DesiredListenerIp -IpAddress $ipAddress -SubnetIp $subnetIp -SubnetMask $subnetMask -Dhcp $dhcp
             if (Test-ListenerIpMismatch -ExistingListener $existingListener -DesiredIps $desiredIps) {
                 # IP addresses/DHCP cannot be altered in place, drop and re-create the listener.
                 $null = Remove-DbaAgListener -AvailabilityGroup $agName -Listener $listenerName
