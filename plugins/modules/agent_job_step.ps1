@@ -186,13 +186,11 @@ try {
                 $output = $refreshed
             }
         }
-        if ($null -ne $output -and $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames -notcontains "OutputFileName") {
-            $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("OutputFileName")
-        }
     }
 
     if ($null -ne $output) {
-        $resultData = ConvertTo-SerializableObject -InputObject $output
+        # Get-DbaAgentJobStep trims the default view (no ID, DatabaseName, OutputFileName), so serialize the full object
+        $resultData = ConvertTo-SerializableObject -InputObject $output -UseDefaultProperty $false
         $module.Result.data = $resultData
     }
     $module.ExitJson()
