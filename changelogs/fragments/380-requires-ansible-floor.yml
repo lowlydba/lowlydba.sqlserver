@@ -1,4 +1,0 @@
-breaking_changes:
-  - Raise ``requires_ansible`` to ``>=2.19``. The previously declared floor of ``>=2.12`` was never
-    tested by CI, which only runs sanity and integration tests against ``stable-2.19`` and newer
-    (https://github.com/lowlydba/lowlydba.sqlserver/issues/380).

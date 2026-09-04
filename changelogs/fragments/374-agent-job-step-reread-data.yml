@@ -1,2 +1,0 @@
-bugfixes:
-  - agent_job_step - ``data`` is re-read from the server after applying changes instead of being patched with the requested ``output_file`` value (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).

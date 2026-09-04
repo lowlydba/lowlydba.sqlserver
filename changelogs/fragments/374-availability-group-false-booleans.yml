@@ -1,4 +1,0 @@
-bugfixes:
-  - availability_group - ``dtc_support_enabled``, ``basic_availability_group``, ``database_health_trigger`` and ``is_distributed_ag`` were only passed to ``Set-DbaAvailabilityGroup`` when ``true``, so they could not be disabled on an existing availability group (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-breaking_changes:
-  - availability_group - an explicit ``false`` for ``dtc_support_enabled``, ``basic_availability_group``, ``database_health_trigger`` or ``is_distributed_ag`` now disables the setting on an existing availability group instead of being ignored (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).

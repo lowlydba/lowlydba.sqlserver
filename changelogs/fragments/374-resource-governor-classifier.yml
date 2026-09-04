@@ -1,2 +1,0 @@
-bugfixes:
-  - resource_governor - omitting ``classifier_function`` reported ``changed`` on every run when the instance already had a classifier function configured (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).

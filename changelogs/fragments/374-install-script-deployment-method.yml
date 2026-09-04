@@ -1,4 +1,0 @@
-bugfixes:
-  - install_script - the ``deployment_method`` option was accepted but never passed to ``Install-DboScript`` (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-breaking_changes:
-  - install_script - ``deployment_method`` now takes effect. Playbooks that set ``SingleTransaction``, ``TransactionPerScript`` or ``AlwaysRollback`` previously ran with ``NoTransaction`` (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
