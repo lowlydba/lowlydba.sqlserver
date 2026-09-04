@@ -113,5 +113,5 @@ try {
     }
 }
 catch {
-    $module.FailJson("Configuring credential failed: $($_.Exception.Message) ; $getCredendtialSplat", $_)
+    $module.FailJson("Configuring credential failed: $($_.Exception.Message)", $_)
 }

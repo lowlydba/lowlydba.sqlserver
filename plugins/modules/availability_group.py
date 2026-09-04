@@ -10,11 +10,15 @@ module: availability_group
 short_description: Configures availability group(s)
 description:
   - Configures SQL Server Availability Group(s) with up to one replica.
+  - When the availability group already exists, only I(automated_backup_preference), I(cluster_type), I(dtc_support_enabled),
+    I(basic_availability_group), I(database_health_trigger), I(is_distributed_ag), I(failure_condition_level) and
+    I(healthcheck_timeout) are reconciled. All other options apply only when the availability group is created.
 version_added: 0.4.0
 options:
   sql_instance_secondary:
     description:
       - The secondary SQL Server instance for the new Availability Group.
+      - Only used when creating a new availability group.
     type: str
     required: false
   sql_username_secondary:
@@ -30,6 +34,7 @@ options:
   database:
     description:
       - Name of the database to create the Availability Group for.
+      - Only used when creating a new availability group.
     type: str
     required: false
     aliases:
@@ -47,6 +52,7 @@ options:
   shared_path:
     description:
       - The network share where the backups will be backed up and restored from.
+      - Only used when creating a new availability group with I(seeding_mode=Manual).
     type: str
     required: false
   dtc_support_enabled:
@@ -62,6 +68,7 @@ options:
   contained_availability_group:
     description:
     - Indicates whether the availability group is Contained. Requires DBATools >= 2.1.15
+    - Only used when creating a new availability group.
     type: bool
     required: false
     version_added: "2.6.0"
@@ -99,6 +106,7 @@ options:
   failover_mode:
     description:
       - Whether the replica have Automatic or Manual failover.
+      - Only used when creating a new availability group.
     type: str
     required: false
     default: 'Automatic'
@@ -106,7 +114,7 @@ options:
   availability_mode:
     description:
       - Whether the replica should be Asynchronous or Synchronous.
-      - Only used in creating a new availability group.
+      - Only used when creating a new availability group.
     type: str
     required: false
     default: 'SynchronousCommit'
@@ -114,6 +122,7 @@ options:
   seeding_mode:
     description:
       - Default seeding mode for the replica. Should remain as the default otherwise manual setup may be required.
+      - Only used when creating a new availability group.
     type: str
     required: false
     default: 'Manual'
@@ -133,10 +142,12 @@ options:
   force:
     description:
       - Drop and recreate the database on remote servers using fresh backup.
+      - Only used when creating a new availability group.
     type: bool
   use_last_backup:
     description:
       - Use the last full and log backup of database. A log backup must be the last backup.
+      - Only used when creating a new availability group.
     type: bool
 author: "John McCall (@lowlydba)"
 requirements:
@@ -157,7 +168,9 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from the C(New-DbaAvailabilityGroup) or C(Set-DbaAvailabilityGroup) function.
+  description:
+    - Output from the C(New-DbaAvailabilityGroup) or C(Set-DbaAvailabilityGroup) function,
+      or the existing availability group when no change was needed.
   returned: success, but not in check_mode.
   type: dict
 '''

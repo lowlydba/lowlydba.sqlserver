@@ -104,6 +104,8 @@ jobs:
   integration:
     runs-on: ubuntu-latest
     name: I (Ⓐ${{ matrix.ansible }}+py${{ matrix.python }})
+    # Historically ~17m avg, ~31m max; guard against hung SQL Server containers
+    timeout-minutes: 60
     continue-on-error: ${{ matrix.ansible == 'devel' }}
     permissions:
       contents: write  # Required for uploading coverage reports

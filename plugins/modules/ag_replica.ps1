@@ -153,15 +153,17 @@ try {
             )
             $setReplicaSplat = @{}
             $addReplicaSplat.GetEnumerator() | Where-Object Key -in $compareReplicaProperty | ForEach-Object { $setReplicaSplat.Add($_.Key, $_.Value) }
-            [string[]]$compareProperty = $setReplicaSplat.Keys
-            $replicaDiff = Compare-Object -ReferenceObject $setReplicaSplat -DifferenceObject $existingReplica -Property $compareProperty
+            $replicaDiff = Get-DesiredStateDiff -Current $existingReplica -Desired $setReplicaSplat
             $setReplicaSplat.Add("SqlInstance", $sqlInstance)
             $setReplicaSplat.Add("SqlCredential", $sqlCredential)
             $setReplicaSplat.Add("Replica", $existingReplica.Name)
             $setReplicaSplat.Add("AvailabilityGroup", $agName)
-            if ($replicaDiff) {
+            if ($replicaDiff.Count -gt 0) {
                 $output = Set-DbaAgReplica @setReplicaSplat
                 $module.Result.changed = $true
+            }
+            else {
+                $output = $existingReplica
             }
         }
     }

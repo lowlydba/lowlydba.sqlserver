@@ -87,9 +87,9 @@ try {
     elseif ($state -eq "present") {
         if ($null -ne $existingWorkloadGroup) {
             # Check for value parity
-            $diff = Compare-Object -ReferenceObject $existingWorkloadGroup -DifferenceObject $options -Property $compareProperty
+            $diff = Get-DesiredStateDiff -Current $existingWorkloadGroup -Desired $options -Property $compareProperty
             # Set to new values
-            if ($null -ne $diff) {
+            if ($diff.Count -gt 0) {
                 $output = Set-DbaRgWorkloadGroup @options -WhatIf:$checkMode -EnableException
                 $module.Result.changed = $true
             }

@@ -35,18 +35,23 @@ try {
     if ($rg.Enabled -ne $enabled) {
         $change = $true
     }
-    if ($classifierFunction -ne "NULL" -and $rgClassifierFunction -ne $classifierFunction) {
-        $change = $true
-    }
-    if ($classifierFunction -eq "NULL" -and $null -ne $rgClassifierFunction) {
-        $change = $true
+    # Only evaluate the classifier function when it was supplied; omitting it leaves the current value untouched
+    if ($null -ne $classifierFunction) {
+        if ($classifierFunction -ne "NULL" -and [string]$rgClassifierFunction -ne $classifierFunction) {
+            $change = $true
+        }
+        if ($classifierFunction -eq "NULL" -and -not [string]::IsNullOrEmpty([string]$rgClassifierFunction)) {
+            $change = $true
+        }
     }
 
     if ($change) {
         $rgSplat = @{
             SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential
-            ClassifierFunction = $classifierFunction
+        }
+        if ($null -ne $classifierFunction) {
+            $rgSplat.Add("ClassifierFunction", $classifierFunction)
         }
         if ($enabled) {
             $rgSplat.Add("Enabled", $true)

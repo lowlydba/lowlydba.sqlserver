@@ -40,6 +40,7 @@ $executionTimeout = $module.Params.execution_timeout
 $createDatabase = $module.Params.create_database
 $noRecurse = $module.Params.no_recurse
 $noLogVersion = $module.Params.no_log_version
+$deploymentMethod = $module.Params.deployment_method
 $checkMode = $module.Checkmode
 $PSDefaultParameterValues = @{ "*:Confirm" = $false; "*:WhatIf" = $checkMode }
 
@@ -53,6 +54,7 @@ try {
         ExecutionTimeout = $executionTimeout
         CreateDatabase = $createDatabase
         NoRecurse = $noRecurse
+        DeploymentMethod = $deploymentMethod
         Silent = $true
         Type = "SqlServer"
     }

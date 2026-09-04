@@ -73,22 +73,22 @@ try {
         }
         if ($null -ne $defaultDatabase) {
             $setLoginSplat.add("DefaultDatabase", $defaultDatabase)
+            if ($existingLogin.DefaultDatabase -ne $defaultDatabase) {
+                $changed = $true
+            }
         }
         if ($null -ne $passwordExpirationEnabled) {
             if ($existingLogin.PasswordExpirationEnabled -ne $passwordExpirationEnabled) {
                 $changed = $true
             }
-            if ($passwordExpirationEnabled -eq $true) {
-                $setLoginSplat.add("PasswordExpirationEnabled", $true)
-            }
+            # Set-DbaLogin uses Test-Bound, so an explicit $false disables the setting
+            $setLoginSplat.add("PasswordExpirationEnabled", [bool]$passwordExpirationEnabled)
         }
         if ($null -ne $passwordPolicyEnforced) {
             if ($existingLogin.PasswordPolicyEnforced -ne $passwordPolicyEnforced) {
                 $changed = $true
             }
-            if ($passwordPolicyEnforced -eq $true) {
-                $setLoginSplat.add("PasswordPolicyEnforced", $true)
-            }
+            $setLoginSplat.add("PasswordPolicyEnforced", [bool]$passwordPolicyEnforced)
         }
         if ($true -eq $passwordMustChange) {
             if ($existingLogin.PasswordMustChange -ne $passwordMustChange) {
@@ -120,6 +120,16 @@ try {
                 $output = Set-DbaLogin @setLoginSplat
                 $module.result.changed = $true
             }
+            # Set-DbaLogin has no Language parameter, so fall back to SMO for existing logins
+            if ($null -ne $language -and $existingLogin.Language -ne $language) {
+                if (-not $checkMode) {
+                    $existingLogin.Language = $language
+                    $existingLogin.Alter()
+                    $existingLogin.Refresh()
+                }
+                $module.result.changed = $true
+                $output = Get-DbaLogin @getLoginSplat
+            }
         }
         # New login
         else {
@@ -150,5 +160,5 @@ try {
     $module.ExitJson()
 }
 catch {
-    $module.FailJson("Configuring login failed: $($_.Exception.Message) ; $setLoginSplat", $_)
+    $module.FailJson("Configuring login failed: $($_.Exception.Message)", $_)
 }

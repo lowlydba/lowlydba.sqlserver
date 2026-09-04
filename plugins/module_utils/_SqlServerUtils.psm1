@@ -182,5 +182,37 @@ function ConvertTo-SerializableObject {
     }
 }
 
-$exportMembers = @("Get-SqlCredential", "ConvertTo-SerializableObject", "Get-LowlyDbaSqlServerAuthSpec")
+function Get-DesiredStateDiff {
+    <#
+        .SYNOPSIS
+        Return the names of properties whose current server value differs from the desired value.
+
+        .DESCRIPTION
+        Compares an SMO / dbatools object against a hashtable of desired values (typically a splat) by property name.
+        Values are compared as case-insensitive strings so that enums, switches and booleans compare cleanly
+        against the string / bool values received from Ansible.
+    #>
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [AllowNull()]
+        [object]$Current,
+        [Parameter(Mandatory = $true)]
+        [hashtable]$Desired,
+        [Parameter()]
+        [string[]]$Property = $Desired.Keys
+    )
+    $diff = foreach ($name in $Property) {
+        if (-not $Desired.ContainsKey($name)) {
+            continue
+        }
+        $currentValue = if ($null -ne $Current) { $Current.$name } else { $null }
+        if ([string]$currentValue -ne [string]$Desired[$name]) {
+            $name
+        }
+    }
+    return [string[]]$diff
+}
+
+$exportMembers = @("Get-SqlCredential", "ConvertTo-SerializableObject", "Get-LowlyDbaSqlServerAuthSpec", "Get-DesiredStateDiff")
 Export-ModuleMember -Function $exportMembers
