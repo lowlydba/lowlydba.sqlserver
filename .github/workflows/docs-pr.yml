@@ -18,7 +18,7 @@ jobs:
       contents: read
     name: Validate Ansible Docs
     if: github.event.action != 'closed'
-    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-push.yml@50bb8f670ad5ff11443bd94e51369debb8d34775 # main
+    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-push.yml@0442e4ef1e1f2ac6169f4c8f74cf8c1aa905e91b # zizmor: ignore[stale-action-refs] -- Using main branch SHA of ansible-community maintained action; branch is stable, no tags published
     with:
       artifact-upload: false
       init-lenient: false
@@ -31,7 +31,7 @@ jobs:
       pages: write  # Required for publishing docs to GitHub Pages
       id-token: write  # Required for OIDC authentication
     name: Build Ansible Docs
-    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-pr.yml@50bb8f670ad5ff11443bd94e51369debb8d34775 # main
+    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-pr.yml@0442e4ef1e1f2ac6169f4c8f74cf8c1aa905e91b # zizmor: ignore[stale-action-refs] -- Using main branch SHA of ansible-community maintained action; branch is stable, no tags published
     with:
       init-lenient: true
       init-fail-on-error: false
@@ -46,7 +46,7 @@ jobs:
       id-token: write  # Required for OIDC authentication
     needs: [build-docs]
     name: Publish Ansible Docs
-    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-publish-gh-pages.yml@50bb8f670ad5ff11443bd94e51369debb8d34775 # main
+    uses: ansible-community/github-docs-build/.github/workflows/_shared-docs-build-publish-gh-pages.yml@0442e4ef1e1f2ac6169f4c8f74cf8c1aa905e91b # zizmor: ignore[stale-action-refs] -- Using main branch SHA of ansible-community maintained action; branch is stable, no tags published
     with:
       artifact-name: ${{ needs.build-docs.outputs.artifact-name }}
       action: ${{ (github.event.action == 'closed' || needs.build-docs.outputs.changed != 'true') && 'teardown' || 'publish' }}
