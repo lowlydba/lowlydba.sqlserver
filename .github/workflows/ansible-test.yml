@@ -61,6 +61,7 @@ jobs:
           # Testing against `devel` may fail as new tests are added.
           - stable-2.19
           - stable-2.20
+          - stable-2.21
           - devel
     runs-on: ubuntu-latest
     steps:
@@ -122,6 +123,7 @@ jobs:
         ansible:
           - stable-2.19
           - stable-2.20
+          - stable-2.21
           - devel
         python:
           - 3.10
@@ -158,7 +160,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} # zizmor: ignore[secrets-outside-env] -- Codecov token needed for uploading coverage; workflow_dispatch only
 
   ci-test-rollup:
-    name: Are we good?
+    name: Are we good? (Linux)
     runs-on: ubuntu-slim
     needs: [sanity, integration]
     if: always()

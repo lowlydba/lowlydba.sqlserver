@@ -57,6 +57,7 @@ jobs:
         ansible:
           - stable-2.19
           - stable-2.20
+          - stable-2.21
           - devel
         python:
           - python3
@@ -232,7 +233,7 @@ jobs:
           fail_ci_if_error: false
 
   win-ci-test-rollup:
-    name: Are we good?
+    name: Are we good? (Windows)
     runs-on: ubuntu-slim
     needs: [integration]
     if: always()
