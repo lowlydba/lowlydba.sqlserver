@@ -33,14 +33,16 @@ options:
   subnet_ip:
     description:
       - Subnet IP address(es) of the listener. Comma separated if multiple.
-      - Only reconciled against an existing listener when C(ip_address) is also supplied.
+      - Only reconciled against an existing listener when C(ip_address) is also supplied. Has no effect and is
+        not reconciled when C(dhcp=true).
     type: list
     elements: str
     required: false
   subnet_mask:
     description:
       - Sets the subnet IP mask(s) of the availability group listener. Comma separated if multiple.
-      - Only reconciled against an existing listener when C(ip_address) is also supplied.
+      - Only reconciled against an existing listener when C(ip_address) is also supplied. Has no effect and is
+        not reconciled when C(dhcp=true).
     type: list
     elements: str
     required: false
