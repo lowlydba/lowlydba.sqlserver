@@ -13,5 +13,9 @@ bugfixes:
   - sa - ``password_policy_enforced`` and ``password_expiration_enabled`` set to ``false`` are now applied to the login instead of only reporting a change.
   - resource_governor - omitting ``classifier_function`` no longer reports a change when a classifier function is already configured on the instance.
   - login, credential - no longer include parameter splats in failure messages.
+  - database - ``data`` is re-read from the server after applying changes instead of echoing the requested values.
+  - agent_job_step - ``data`` is re-read from the server after applying changes instead of being patched with the requested values.
+  - availability_group - document which options only apply when creating a new availability group.
+  - nonquery - document that the module is not idempotent and always reports ``changed``.
 minor_changes:
   - module_utils - add ``Get-DesiredStateDiff`` helper for comparing desired option values against server state.

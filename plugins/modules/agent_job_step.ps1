@@ -121,19 +121,7 @@ try {
                     Step = $stepName
                     OutputFile = $outputFile
                 }
-                $outputFileResult = Set-DbaAgentJobOutputFile @setOutputFileSplat
-                if ($null -ne $outputFileResult) {
-                    $module.Result.changed = $true
-                    # Add the OutputFileName property from the Set-DbaAgentJobOutputFile result
-                    if ($null -ne $outputFileResult.OutputFileName) {
-                        Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $outputFileResult.OutputFileName -Force
-                    }
-                }
-            }
-
-            # Ensure OutputFileName property is always available for consistency
-            if ($null -ne $output -and -not ($output.PSObject.Properties.Name -contains "OutputFileName")) {
-                Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $output.OutputFileName -Force
+                $null = Set-DbaAgentJobOutputFile @setOutputFileSplat
             }
         }
         # Update existing
@@ -176,24 +164,30 @@ try {
                     Step = $stepName  # Use the new step name since Set-DbaAgentJobStep already renamed it
                     OutputFile = $outputFile
                 }
-                $outputFileResult = Set-DbaAgentJobOutputFile @setOutputFileSplat
-                if ($null -ne $outputFileResult) {
-                    $module.Result.changed = $true
-                    # Add the OutputFileName property from the Set-DbaAgentJobOutputFile result
-                    if ($null -ne $outputFileResult.OutputFileName) {
-                        Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $outputFileResult.OutputFileName -Force
-                    }
-                }
-            }
-
-            # Ensure OutputFileName property is always available
-            if ($null -ne $output -and -not ($output.PSObject.Properties.Name -contains "OutputFileName")) {
-                Add-Member -InputObject $output -MemberType NoteProperty -Name "OutputFileName" -Value $output.OutputFileName -Force
+                $null = Set-DbaAgentJobOutputFile @setOutputFileSplat
+                $module.Result.changed = $true
             }
 
             if ($diff -or $checkMode) {
                 $module.Result.changed = $true
             }
+        }
+
+        # Re-read the step so data reflects server state; SMO can lag briefly after a rename, so retry a few times
+        if (-not $checkMode -and $null -ne $output) {
+            for ($attempt = 0; $attempt -lt 5; $attempt++) {
+                $refreshed = Get-DbaAgentJobStep -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Job $job | Where-Object Name -eq $stepName
+                if ($null -ne $refreshed) {
+                    break
+                }
+                Start-Sleep -Milliseconds 500
+            }
+            if ($null -ne $refreshed) {
+                $output = $refreshed
+            }
+        }
+        if ($null -ne $output -and $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames -notcontains "OutputFileName") {
+            $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("OutputFileName")
         }
     }
 

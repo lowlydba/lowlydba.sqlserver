@@ -128,20 +128,27 @@ try {
         }
 
         # Add non-standard fields to output
+        function Add-DatabaseOutputField {
+            param ([Parameter(Mandatory = $true)]$InputObject)
+            $server.Databases.Refresh()
+            $smoDatabase = $server.Databases[$database]
+            if ($null -ne $smoDatabase) {
+                $smoDatabase.Refresh()
+            }
+            $InputObject | Add-Member -MemberType NoteProperty -Name "SecondaryMaxDop" -Value ([int]$smoDatabase.SecondaryMaxDop) -Force
+            $InputObject | Add-Member -MemberType NoteProperty -Name "RCSI" -Value $smoDatabase.IsReadCommittedSnapshotOn -Force
+            foreach ($name in @("SecondaryMaxDop", "MaxDop", "RCSI")) {
+                if ($InputObject.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames -notcontains $name) {
+                    $InputObject.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add($name)
+                }
+            }
+            return $InputObject
+        }
         if ($null -ne $output) {
-            # Secondary MaxDop
-            [int]$existingSecondaryMaxDop = $server.Databases[$database].SecondaryMaxDop
-            $output | Add-Member -MemberType NoteProperty -Name "SecondaryMaxDop" -Value $existingSecondaryMaxDop
-            $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("SecondaryMaxDop")
-
-            # MaxDop (exists, but is not in default display)
-            $existingMaxDop = $server.Databases[$database].MaxDop
-            $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("MaxDop")
-
-            # RCSI
-            $existingRCSI = $server.Databases[$database].IsReadCommittedSnapshotOn
-            $output | Add-Member -MemberType NoteProperty -Name "RCSI" -Value $existingRCSI
-            $output.PSStandardMembers.DefaultDisplayPropertySet.ReferencedPropertyNames.Add("RCSI")
+            $output = Add-DatabaseOutputField -InputObject $output
+            $existingMaxDop = $output.MaxDop
+            $existingSecondaryMaxDop = $output.SecondaryMaxDop
+            $existingRCSI = $output.RCSI
         }
 
         # Recovery Model
@@ -158,7 +165,6 @@ try {
                         Confirm = $false
                     }
                     $null = Set-DbaDbRecoveryModel @recoveryModelSplat
-                    $output.RecoveryModel = $recoveryModel
                     $module.Result.changed = $true
                 }
             }
@@ -181,7 +187,6 @@ try {
                         EnableException = $true
                     }
                     $null = Set-DbaDbCompatibility @compatSplat
-                    $output.Compatibility = $compatibility
                     $module.Result.changed = $true
                 }
             }
@@ -197,7 +202,6 @@ try {
                     if (-not $checkMode) {
                         $server.Databases[$database].IsReadCommittedSnapshotOn = $rcsiEnabled
                         $server.Databases[$database].Alter()
-                        $output.RCSI = $rcsiEnabled
                     }
                     $module.Result.changed = $true
                 }
@@ -215,7 +219,6 @@ try {
                     if (-not $checkMode) {
                         $server.Databases[$database].MaxDop = $maxDop
                         $server.Databases[$database].Alter()
-                        $output.MaxDop = $MaxDOP
                     }
                     $module.Result.changed = $true
                 }
@@ -232,7 +235,6 @@ try {
                     if (-not $checkMode) {
                         $server.Databases[$database].MaxDopForSecondary = $secondaryMaxDOP
                         $server.Databases[$database].Alter()
-                        $output.SecondaryMaxDop = $secondaryMaxDop
                     }
                     $module.Result.changed = $true
                 }
@@ -240,6 +242,11 @@ try {
             catch {
                 $module.FailJson("Setting MaxDop for secondary mode failed.", $_)
             }
+        }
+
+        # Re-read server state so data reflects what was actually applied rather than the requested values
+        if ($module.Result.changed -and -not $checkMode -and $null -ne $output) {
+            $output = Add-DatabaseOutputField -InputObject (Get-DbaDatabase @getDatabaseSplat)
         }
     }
 
