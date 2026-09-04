@@ -1,0 +1,2 @@
+trivial:
+  - ci - add ``timeout-minutes`` to the Linux (60m) and Windows (45m) integration jobs so hung runs fail instead of consuming the 6h default.
