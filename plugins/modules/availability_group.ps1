@@ -210,7 +210,8 @@ try {
             if ($null -ne $isDistributedAg) {
                 $setAgSplat.Add("IsDistributedAvailabilityGroup", [bool]$isDistributedAg)
             }
-            $agDiff = Get-DesiredStateDiff -Current $existingAG -Desired $setAgSplat -Property ($setAgSplat.Keys | Where-Object { $_ -ne "AllAvailabilityGroups" })
+            $compareProperty = $setAgSplat.Keys | Where-Object { $_ -ne "AllAvailabilityGroups" }
+            $agDiff = Get-DesiredStateDiff -Current $existingAG -Desired $setAgSplat -Property $compareProperty
             if ($agDiff.Count -gt 0) {
                 $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat
                 $module.Result.changed = $true
