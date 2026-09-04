@@ -251,6 +251,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-subnet_ip" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Subnet IP address(es) of the listener. Comma separated if multiple.</p>
+<p>Only reconciled against an existing listener when <code class="docutils literal notranslate"><span class="pre">ip_address</span></code> is also supplied. Has no effect and is not reconciled when <code class="docutils literal notranslate"><span class="pre">dhcp=true</span></code>.</p>
 </div></td>
 </tr>
 <tr class="row-even"><td><div class="ansible-option-cell">
@@ -258,7 +259,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <a class="ansibleOptionLink" href="#parameter-subnet_mask" title="Permalink to this option"></a><p class="ansible-option-type-line"><span class="ansible-option-type">list</span> / <span class="ansible-option-elements">elements=string</span></p>
 </div></td>
 <td><div class="ansible-option-cell"><p>Sets the subnet IP mask(s) of the availability group listener. Comma separated if multiple.</p>
-<p>Only reconciled against an existing listener when <code class="docutils literal notranslate"><span class="pre">ip_address</span></code> is also supplied.</p>
+<p>Only reconciled against an existing listener when <code class="docutils literal notranslate"><span class="pre">ip_address</span></code> is also supplied. Has no effect and is not reconciled when <code class="docutils literal notranslate"><span class="pre">dhcp=true</span></code>.</p>
 <p class="ansible-option-line"><strong class="ansible-option-default-bold">Default:</strong> <code class="ansible-option-default docutils literal notranslate"><span class="pre">[&quot;255.255.255.0&quot;]</span></code></p>
 </div></td>
 </tr>
@@ -330,7 +331,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <div class="ansibleOptionAnchor" id="return-data"></div><p class="ansible-option-title" id="ansible-collections-lowlydba-sqlserver-ag-listener-module-return-data"><strong>data</strong></p>
 <a class="ansibleOptionLink" href="#return-data" title="Permalink to this return value"></a><p class="ansible-option-type-line"><span class="ansible-option-type">dictionary</span></p>
 </div></td>
-<td><div class="ansible-option-cell"><p>Output from the <code class="docutils literal notranslate"><span class="pre">Add-DbaAgListener</span></code>, <code class="docutils literal notranslate"><span class="pre">Set-DbaAgListener</span></code>, or <code class="docutils literal notranslate"><span class="pre">Remove-DbaAgListener</span></code>/<code class="docutils literal notranslate"><span class="pre">Add-DbaAgListener</span></code> function.</p>
+<td><div class="ansible-option-cell"><p>Output from the <code class="docutils literal notranslate"><span class="pre">Add-DbaAgListener</span></code> or <code class="docutils literal notranslate"><span class="pre">Set-DbaAgListener</span></code> function. When an existing listener’s IP/DHCP configuration is reconciled, this is the output of the <code class="docutils literal notranslate"><span class="pre">Add-DbaAgListener</span></code> call used to re-create it.</p>
 <p class="ansible-option-line"><strong class="ansible-option-returned-bold">Returned:</strong> success, but not in check_mode.</p>
 </div></td>
 </tr>
