@@ -1,0 +1,6 @@
+minor_changes:
+  - Add a Pester unit test suite under ``tests/unit/plugins/module_utils/`` covering the
+    ``module_utils`` helpers (``Get-LowlyDbaSqlServerAuthSpec``, ``Get-SqlCredential``,
+    ``ConvertTo-SerializableObject``), and wire it into CI as a standalone job since
+    ``ansible-test units`` only supports Python
+    (https://github.com/lowlydba/lowlydba.sqlserver/issues/382).

@@ -93,6 +93,33 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} # zizmor: ignore[secrets-outside-env] -- Codecov token needed for uploading coverage; workflow_dispatch only
 
   ###
+  # Pester unit tests for plugins/module_utils (PowerShell helpers)
+  #
+  # ansible-test units only supports Python, so PowerShell module_utils helpers are
+  # unit tested here via Pester instead. See tests/unit/plugins/module_utils/.
+
+  pester:
+    name: Pester unit tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read  # Required for actions/checkout
+    steps:
+      - name: Check out code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Run Pester unit tests
+        shell: pwsh
+        run: |
+          Import-Module Pester -MinimumVersion 5.0 -ErrorAction Stop
+          $config = New-PesterConfiguration
+          $config.Run.Path = 'tests/unit'
+          $config.Run.Exit = $true
+          $config.Output.Verbosity = 'Detailed'
+          Invoke-Pester -Configuration $config
+
+  ###
   # Integration tests (RECOMMENDED)
   #
   # https://docs.ansible.com/ansible/latest/dev_guide/testing_integration.html
@@ -162,7 +189,7 @@ jobs:
   ci-test-rollup:
     name: Are we good? (Linux)
     runs-on: ubuntu-slim
-    needs: [sanity, integration]
+    needs: [sanity, integration, pester]
     if: always()
     steps:
       - uses: lowlydba/are-we-good@bb8ee9e793e4233fac1992bb880e2a28bed7f42f # v1.0.3
