@@ -82,7 +82,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
           persist-credentials: false
@@ -152,11 +152,33 @@ jobs:
           Add-Content -LiteralPath $env:GITHUB_ENV -Value "GHWS=$ws"
 
       # Override break-sys-pkg defaults, because we don't need to bother with python venv for CI
+      #
+      # ansible-core devel requires Python >= 3.13 (see pyproject.toml on the devel branch),
+      # which isn't packaged in the Ubuntu-24.04 WSL image used here (default python3 is 3.12).
+      # actions/setup-python only provisions the Windows host, not this WSL guest, so install a
+      # standalone Python 3.13 via uv for that leg instead of an apt/PPA install.
       - name: Install ansible-base (${{ matrix.ansible }})  # zizmor: ignore[template-injection] -- matrix.ansible is a controlled enum value (stable-2.19, stable-2.20, devel)
         run: |
-          python3 -m pip config set global.break-system-packages true
-          python3 -m pip install --upgrade setuptools pypsrp --disable-pip-version-check --retries 10
-          python3 -m pip install "https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz" --disable-pip-version-check --retries 10
+          PYTHON_BIN=python3
+          if [ "${{ matrix.ansible }}" = "devel" ]; then
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+            "$HOME/.local/bin/uv" python install 3.13
+            PYTHON_BIN="$("$HOME/.local/bin/uv" python find 3.13)"
+          fi
+          "$PYTHON_BIN" -m pip config set global.break-system-packages true
+          "$PYTHON_BIN" -m pip install --upgrade setuptools pypsrp --disable-pip-version-check --retries 10
+          "$PYTHON_BIN" -m pip install "https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz" --disable-pip-version-check --retries 10
+          if [ "${{ matrix.ansible }}" = "devel" ]; then
+            # uv's standalone Python isn't on PATH, and its console scripts don't land in
+            # /usr/local/bin like the system python3 case does, so symlink them there for later
+            # wsl-bash steps (each one is a fresh --norc/--noprofile shell, nothing persists).
+            BIN_DIR="$(dirname "$PYTHON_BIN")"
+            for SCRIPT in ansible ansible-config ansible-console ansible-doc ansible-galaxy ansible-inventory ansible-playbook ansible-pull ansible-vault ansible-test; do
+              if [ -x "$BIN_DIR/$SCRIPT" ]; then
+                ln -sf "$BIN_DIR/$SCRIPT" "/usr/local/bin/$SCRIPT"
+              fi
+            done
+          fi
 
       - name: Install collection dependencies
         id: collection-dependency
@@ -204,7 +226,7 @@ jobs:
           ansible-test coverage xml -v --requirements
 
       # See the reports at https://codecov.io/gh/lowlydba/lowlydba.sqlserver
-      - uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
+      - uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
           fail_ci_if_error: false
 
