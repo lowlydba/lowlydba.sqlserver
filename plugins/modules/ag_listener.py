@@ -25,6 +25,8 @@ options:
   ip_address:
     description:
       - IP address(es) of the listener. Comma separated if multiple.
+      - If this differs from the listener's current IP address(es), the listener is dropped and re-created since
+        IP addresses cannot be altered in place.
     type: list
     elements: str
     required: false
@@ -37,6 +39,7 @@ options:
   subnet_mask:
     description:
       - Sets the subnet IP mask(s) of the availability group listener. Comma separated if multiple.
+      - Only reconciled against an existing listener when C(ip_address) is also supplied.
     type: list
     elements: str
     required: false
@@ -50,6 +53,8 @@ options:
   dhcp:
     description:
       - Indicates whether the listener uses DHCP.
+      - If this differs from the listener's current configuration, the listener is dropped and re-created since
+        this cannot be altered in place.
     type: bool
     required: false
     default: false
@@ -85,7 +90,7 @@ EXAMPLES = r'''
 
 RETURN = r'''
 data:
-  description: Output from the C(Add-DbaAgListener) or C(Set-DbaAgListener) function.
+  description: Output from the C(Add-DbaAgListener), C(Set-DbaAgListener), or C(Remove-DbaAgListener)/C(Add-DbaAgListener) function.
   returned: success, but not in check_mode.
   type: dict
 '''

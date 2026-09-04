@@ -1,0 +1,3 @@
+bugfixes:
+  - ag_listener - Reconcile IP address, subnet mask, and DHCP settings against an existing listener instead of only
+    checking the port. Since these cannot be altered in place, a mismatch drops and re-creates the listener (#376).
