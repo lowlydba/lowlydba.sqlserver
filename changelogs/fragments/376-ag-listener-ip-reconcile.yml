@@ -1,3 +1,6 @@
 bugfixes:
-  - ag_listener - Reconcile IP address, subnet mask, and DHCP settings against an existing listener instead of only
-    checking the port. Since these cannot be altered in place, a mismatch drops and re-creates the listener (#376).
+  - ag_listener - ``ip_address``, ``subnet_mask`` and ``dhcp`` were only used when creating a new listener, so
+    changing them on an existing listener reported no change and left it untouched. These settings can't be
+    altered in place, so a mismatch between the requested and current IP configuration now drops and re-creates
+    the listener via ``Remove-DbaAgListener`` and ``Add-DbaAgListener``
+    (https://github.com/lowlydba/lowlydba.sqlserver/issues/376).
