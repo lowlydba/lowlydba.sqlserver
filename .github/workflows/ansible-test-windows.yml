@@ -124,6 +124,16 @@ jobs:
             python3-pip
             openssh-client
 
+      # ansible-core devel requires Python >= 3.13 (see pyproject.toml on the devel branch),
+      # which isn't packaged in the Ubuntu-24.04 WSL image used here (default python3 is 3.12).
+      - name: Install Python 3.13 (devel only)  # zizmor: ignore[template-injection] -- matrix.ansible is a controlled enum value (stable-2.19, stable-2.20, devel)
+        if: matrix.ansible == 'devel'
+        run: |
+          sudo add-apt-repository -y ppa:deadsnakes/ppa
+          sudo apt-get update
+          sudo apt-get install -y python3.13 python3.13-venv
+          python3.13 -m ensurepip --upgrade
+
       - name: Get Linux workspace path
         shell: pwsh
         run: |
@@ -153,9 +163,13 @@ jobs:
       # Override break-sys-pkg defaults, because we don't need to bother with python venv for CI
       - name: Install ansible-base (${{ matrix.ansible }})  # zizmor: ignore[template-injection] -- matrix.ansible is a controlled enum value (stable-2.19, stable-2.20, devel)
         run: |
-          python3 -m pip config set global.break-system-packages true
-          python3 -m pip install --upgrade setuptools pypsrp --disable-pip-version-check --retries 10
-          python3 -m pip install "https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz" --disable-pip-version-check --retries 10
+          PYTHON_BIN=python3
+          if [ "${{ matrix.ansible }}" = "devel" ]; then
+            PYTHON_BIN=python3.13
+          fi
+          "$PYTHON_BIN" -m pip config set global.break-system-packages true
+          "$PYTHON_BIN" -m pip install --upgrade setuptools pypsrp --disable-pip-version-check --retries 10
+          "$PYTHON_BIN" -m pip install "https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz" --disable-pip-version-check --retries 10
 
       - name: Install collection dependencies
         id: collection-dependency
