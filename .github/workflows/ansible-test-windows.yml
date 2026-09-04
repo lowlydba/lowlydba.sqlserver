@@ -55,6 +55,7 @@ jobs:
         ansible:
           - stable-2.19
           - stable-2.20
+          - stable-2.21
           - devel
         python:
           - python3
