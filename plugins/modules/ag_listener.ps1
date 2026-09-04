@@ -99,14 +99,15 @@ function Test-ListenerIpMismatch {
         # Caller did not request management of IP/DHCP settings, leave as-is.
         return $false
     }
-    $existingIps = @($ExistingListener.AvailabilityGroupListenerIPAddresses | ForEach-Object {
-        if ($_.IsDHCP) {
-            [PSCustomObject]@{ IsDhcp = $true; IPAddress = $null; SubnetMask = $null }
+    $existingIps = @()
+    foreach ($existingIp in $ExistingListener.AvailabilityGroupListenerIPAddresses) {
+        if ($existingIp.IsDHCP) {
+            $existingIps += [PSCustomObject]@{ IsDhcp = $true; IPAddress = $null; SubnetMask = $null }
         }
         else {
-            [PSCustomObject]@{ IsDhcp = $false; IPAddress = [string]$_.IPAddress; SubnetMask = [string]$_.SubnetMask }
+            $existingIps += [PSCustomObject]@{ IsDhcp = $false; IPAddress = [string]$existingIp.IPAddress; SubnetMask = [string]$existingIp.SubnetMask }
         }
-    })
+    }
     if ($existingIps.Count -ne $DesiredIps.Count) {
         return $true
     }
