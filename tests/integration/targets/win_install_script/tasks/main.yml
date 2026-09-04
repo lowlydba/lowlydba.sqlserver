@@ -28,6 +28,7 @@
       lowlydba.sqlserver.install_script:
         no_log_version: true
         path: "{{ script_file.dest }}"
+        deployment_method: "SingleTransaction"
       register: result
     - assert:
         that:

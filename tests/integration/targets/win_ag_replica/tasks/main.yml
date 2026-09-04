@@ -78,6 +78,17 @@
           - result.data.FailoverMode == failover_mode
           - result is changed
 
+    - name: Set replica again (idempotency check)
+      lowlydba.sqlserver.ag_replica:
+        session_timeout: 20
+        endpoint_url: "TCP://{{ ag.data.SqlInstance }}:5022"
+        read_only_routing_list: "{{ ag.data.SqlInstance }}"
+        read_only_routing_connection_url: "TCP://{{ ag.data.SqlInstance }}:1433"
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
   always:
     - name: Drop availability group
       lowlydba.sqlserver.availability_group:
