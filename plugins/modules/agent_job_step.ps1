@@ -93,6 +93,15 @@ try {
         # step_id and step_name are both required here, and step_name may be a new name for an
         # existing step (rename), so look up strictly by the immutable id rather than by name.
         $existingJobStep = $existingJobSteps | Where-Object Id -eq $stepId
+
+        # Validate step name isn't taken already by another step - must be unique within a job.
+        # This covers both renaming onto an already-taken name and creating a new step whose
+        # name collides with an existing one under a different step_id.
+        $conflictingStep = $existingJobSteps | Where-Object { $_.Name -eq $stepName -and $_.ID -ne $stepId }
+        if ($conflictingStep) {
+            $module.FailJson("There is already a step named '$stepName' for this job with an ID of $($conflictingStep.ID).")
+        }
+
         $jobStepParams = @{
             SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential
@@ -143,12 +152,6 @@ try {
         }
         # Update existing
         else {
-            # Validate step name isn't taken already by another step - must be unique within a job
-            $conflictingStep = $existingJobSteps | Where-Object { $_.Name -eq $stepName -and $_.ID -ne $existingJobStep.ID }
-            if ($conflictingStep) {
-                $module.FailJson("There is already a step named '$stepName' for this job with an ID of $($conflictingStep.ID).")
-            }
-
             # Reference by old name in case new name differs for step id
             $jobStepParams.StepName = $existingJobStep.Name
             $jobStepParams.Add("NewName", $StepName)
