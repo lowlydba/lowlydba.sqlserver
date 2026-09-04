@@ -1,0 +1,4 @@
+bugfixes:
+  - agent_job_step - Fix inability to rename a step by ``step_id``. The module now looks
+    up the existing step by ``step_id`` when ``state=present``, instead of by ``step_name``,
+    so a rename (new ``step_name``, same ``step_id``) is correctly detected as an update.

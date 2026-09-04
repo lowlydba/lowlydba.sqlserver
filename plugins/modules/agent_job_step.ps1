@@ -65,20 +65,22 @@ $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false
 # Configure Agent job step
 try {
     $existingJobSteps = Get-DbaAgentJobStep -SqlInstance $SqlInstance -SqlCredential $sqlCredential -Job $job
-    $existingJobStep = $existingJobSteps | Where-Object Name -eq $stepName
 
     if ($state -eq "absent") {
-        if ($null -eq $existingJobStep) {
-            # try fetching name by id if we only care about removing
+        # Either step_id or step_name may be supplied; look up by whichever is available.
+        $existingJobStep = $null
+        if ($stepId) {
             $existingJobStep = $existingJobSteps | Where-Object Id -eq $stepId
-            $stepName = $existingJobStep.Name
+        }
+        if ($null -eq $existingJobStep -and $stepName) {
+            $existingJobStep = $existingJobSteps | Where-Object Name -eq $stepName
         }
         if ($existingJobStep) {
             $removeStepSplat = @{
                 SqlInstance = $sqlInstance
                 SqlCredential = $sqlCredential
                 Job = $job
-                StepName = $stepName
+                StepName = $existingJobStep.Name
             }
             $output = Remove-DbaAgentJobStep @removeStepSplat
             $module.Result.changed = $true
@@ -88,6 +90,18 @@ try {
         if (!($stepName) -or !($stepId)) {
             $module.FailJson("Step name and step_id must be specified when state=present.")
         }
+        # step_id and step_name are both required here, and step_name may be a new name for an
+        # existing step (rename), so look up strictly by the immutable id rather than by name.
+        $existingJobStep = $existingJobSteps | Where-Object Id -eq $stepId
+
+        # Validate step name isn't taken already by another step - must be unique within a job.
+        # This covers both renaming onto an already-taken name and creating a new step whose
+        # name collides with an existing one under a different step_id.
+        $conflictingStep = $existingJobSteps | Where-Object { $_.Name -eq $stepName -and $_.ID -ne $stepId }
+        if ($conflictingStep) {
+            $module.FailJson("There is already a step named '$stepName' for this job with an ID of $($conflictingStep.ID).")
+        }
+
         $jobStepParams = @{
             SqlInstance = $sqlInstance
             SqlCredential = $sqlCredential
@@ -126,11 +140,6 @@ try {
         }
         # Update existing
         else {
-            # Validate step name isn't taken already - must be unique within a job
-            if ($existingJobStep.Name -eq $StepName -and $existingJobStep.ID -ne $stepId) {
-                $module.FailJson("There is already a step named '$StepName' for this job with an ID of $($existingJobStep.ID).")
-            }
-
             # Reference by old name in case new name differs for step id
             $jobStepParams.StepName = $existingJobStep.Name
             $jobStepParams.Add("NewName", $StepName)

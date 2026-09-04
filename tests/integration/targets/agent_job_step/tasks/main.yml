@@ -129,6 +129,32 @@
           - result.data.State == "Existing"
           - result is not changed
 
+    - name: Rename agent job step by step_id
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "{{ job_step3 }} renamed"
+        step_id: 3
+        database: "model"
+      register: result
+    - assert:
+        that:
+          - result.data != None
+          - result.data.Name == job_step3 + " renamed"
+          - result.data.ID == 3
+          - result.data.DatabaseName == "model"
+          - result.data.State == "Existing"
+          - result is changed
+
+    - name: Verify rename onto an already-taken name fails cleanly
+      lowlydba.sqlserver.agent_job_step:
+        step_name: "{{ job_step2 }}"
+        step_id: 3
+        database: "model"
+      register: result
+      failed_when: result is not failed
+    - assert:
+        that:
+          - result is not changed
+
     - name: Create agent job step with output file
       lowlydba.sqlserver.agent_job_step:
         step_name: "Step with output file"
