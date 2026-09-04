@@ -1,4 +1,0 @@
-bugfixes:
-  - login - a changed ``default_database`` on an existing login did not set ``changed`` and was only applied if another option also changed (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-minor_changes:
-  - login - ``language`` can now be changed on an existing login. Previously it was only applied when creating the login (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).

@@ -1,3 +1,0 @@
-bugfixes:
-  - availability_group - replace the ``Compare-Object`` comparison between a hashtable and the SMO object with an explicit per-property comparison so enums and bools compare cleanly against Ansible values (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
-  - availability_group - ``data`` now returns the existing availability group when no change is needed instead of being omitted (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).

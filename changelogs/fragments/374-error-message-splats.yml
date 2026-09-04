@@ -1,2 +1,0 @@
-bugfixes:
-  - login, credential - failure messages no longer include the raw parameter splat (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
