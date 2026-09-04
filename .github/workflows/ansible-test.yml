@@ -158,7 +158,7 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} # zizmor: ignore[secrets-outside-env] -- Codecov token needed for uploading coverage; workflow_dispatch only
 
   ci-test-rollup:
-    name: Are we good?
+    name: Are we good? (Linux)
     runs-on: ubuntu-slim
     needs: [sanity, integration]
     if: always()

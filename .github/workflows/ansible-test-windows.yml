@@ -209,7 +209,7 @@ jobs:
           fail_ci_if_error: false
 
   win-ci-test-rollup:
-    name: Are we good?
+    name: Are we good? (Windows)
     runs-on: ubuntu-slim
     needs: [integration]
     if: always()
