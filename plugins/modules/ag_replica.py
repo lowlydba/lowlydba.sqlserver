@@ -130,10 +130,10 @@ EXAMPLES = r'''
 - name: Add a DR replica
   lowlydba.sqlserver.ag_replica:
     ag_name: 'AG_MyDatabase'
-    sql_instance_primary: sql-01.myco.io
+    sql_instance: sql-01.myco.io
     sql_instance_replica: sql-02.myco.io
     failover_mode: 'Manual'
-    availability_mode: 'Asynchronous'
+    availability_mode: 'AsynchronousCommit'
     seeding_mode: 'Automatic'
     connection_mode_in_primary_role: 'AllowAllConnections'
     connection_mode_in_secondary_role: 'AllowNoConnections'

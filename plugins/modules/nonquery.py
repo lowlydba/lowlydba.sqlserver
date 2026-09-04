@@ -10,6 +10,8 @@ module: nonquery
 short_description: Executes a generic nonquery
 description:
   - Execute a nonquery against a database. Does not return a resultset. Ideal for ad-hoc configurations or DML queries.
+  - The statement is executed as supplied and is not idempotent; the module always reports C(changed) when it runs.
+    Guard it with a C(when) condition or a preceding check if repeat runs must be no-ops.
 version_added: 0.1.0
 options:
   database:

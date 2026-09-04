@@ -44,6 +44,8 @@ jobs:
   integration:
     runs-on: ${{ matrix.os }}
     name: I (Ⓐ${{ matrix.ansible }}+win-2022|grp${{ matrix.group }})
+    # Historically ~17m avg, ~21m max; guard against hung WSL/SQL Server setup
+    timeout-minutes: 45
     continue-on-error: ${{ matrix.ansible == 'devel' }}
     strategy:
       fail-fast: false

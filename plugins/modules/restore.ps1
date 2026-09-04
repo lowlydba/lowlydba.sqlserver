@@ -79,7 +79,7 @@ $noRecovery = $module.Params.no_recovery
 $maxTransferSize = $module.Params.max_transfer_size
 $blockSize = $module.Params.block_size
 $bufferCount = $module.Params.buffer_count
-$azureCredential = $modules.Param.azure_credential
+$azureCredential = $module.Params.azure_credential
 $checkMode = $module.CheckMode
 $module.Result.changed = $false
 $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false; "*:WhatIf" = $checkMode }

@@ -61,6 +61,53 @@
         that:
           - result is not changed
 
+    - name: Enable password policy on existing login
+      lowlydba.sqlserver.login:
+        default_database: "model"
+        password_policy_enforced: true
+        skip_password_reset: true
+        enabled: true
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.PasswordPolicyEnforced is true
+
+    - name: Disable password policy on existing login
+      lowlydba.sqlserver.login:
+        default_database: "model"
+        password_policy_enforced: false
+        skip_password_reset: true
+        enabled: true
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.PasswordPolicyEnforced is false
+
+    - name: Change language on existing login
+      lowlydba.sqlserver.login:
+        default_database: "model"
+        language: "British"
+        skip_password_reset: true
+        enabled: true
+      register: result
+    - assert:
+        that:
+          - result is changed
+          - result.data.Language == "British"
+
+    - name: Change language on existing login (idempotent)
+      lowlydba.sqlserver.login:
+        default_database: "model"
+        language: "British"
+        skip_password_reset: true
+        enabled: true
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
     - name: Drop login
       lowlydba.sqlserver.login:
         state: "absent"
