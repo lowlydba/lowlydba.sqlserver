@@ -1,0 +1,2 @@
+bugfixes:
+  - database - ``data`` is re-read from the server after applying changes instead of echoing the requested ``recovery_model``, ``compatibility``, ``rcsi``, ``maxdop`` and ``secondary_maxdop`` values (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).

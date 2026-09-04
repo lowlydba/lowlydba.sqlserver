@@ -1,0 +1,3 @@
+bugfixes:
+  - ag_replica - replace the ``Compare-Object`` comparison between a hashtable and the SMO object with an explicit per-property comparison so enums and bools compare cleanly against Ansible values (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
+  - ag_replica - ``data`` now returns the existing replica when no change is needed instead of being omitted (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).

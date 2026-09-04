@@ -1,0 +1,4 @@
+bugfixes:
+  - backup - the ``compress``, ``encryption_certificate``, ``azure_base_url`` and ``azure_credential`` options were read from the wrong variable and never passed to ``Backup-DbaDatabase`` (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).
+breaking_changes:
+  - backup - ``compress``, ``encryption_certificate``, ``azure_base_url`` and ``azure_credential`` now take effect. Playbooks that set these options previously got an uncompressed, unencrypted, local backup regardless of the values supplied (https://github.com/lowlydba/lowlydba.sqlserver/issues/374).

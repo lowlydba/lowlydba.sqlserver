@@ -1,0 +1,2 @@
+minor_changes:
+  - module_utils - add ``Get-DesiredStateDiff`` for comparing desired option values against an SMO object property by property.

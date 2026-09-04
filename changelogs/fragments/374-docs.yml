@@ -1,0 +1,5 @@
+trivial:
+  - availability_group - document which options are reconciled on an existing availability group and which only apply at creation.
+  - nonquery - document that the module is not idempotent and always reports ``changed``.
+  - ag_replica - fix the example, which used the nonexistent ``sql_instance_primary`` option and ``availability_mode`` value ``Asynchronous``.
+  - README - fix ``dlevel`` typo.
