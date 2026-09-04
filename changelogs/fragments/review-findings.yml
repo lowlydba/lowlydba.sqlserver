@@ -1,0 +1,17 @@
+bugfixes:
+  - backup - fix the ``compress``, ``encryption_certificate``, ``azure_base_url`` and ``azure_credential`` options being silently ignored due to mis-referenced module parameters.
+  - restore - fix the ``azure_credential`` option being silently ignored due to a mis-referenced module parameter.
+  - install_script - the ``deployment_method`` option is now passed to ``Install-DboScript`` instead of being ignored.
+  - availability_group - ``dtc_support_enabled``, ``basic_availability_group``, ``database_health_trigger`` and ``is_distributed_ag`` can now be set to ``false`` on an existing availability group.
+  - availability_group - replace the fragile ``Compare-Object`` state comparison with an explicit per-property comparison to avoid spurious changes.
+  - ag_replica - replace the fragile ``Compare-Object`` state comparison with an explicit per-property comparison to avoid spurious changes.
+  - rg_resource_pool - replace the fragile ``Compare-Object`` state comparison with an explicit per-property comparison to avoid spurious changes.
+  - rg_workload_group - replace the fragile ``Compare-Object`` state comparison with an explicit per-property comparison to avoid spurious changes.
+  - login - ``password_policy_enforced`` and ``password_expiration_enabled`` set to ``false`` are now applied to the login instead of only reporting a change.
+  - login - changes to ``default_database`` on an existing login are now detected and applied.
+  - login - ``language`` can now be changed on an existing login.
+  - sa - ``password_policy_enforced`` and ``password_expiration_enabled`` set to ``false`` are now applied to the login instead of only reporting a change.
+  - resource_governor - omitting ``classifier_function`` no longer reports a change when a classifier function is already configured on the instance.
+  - login, credential - no longer include parameter splats in failure messages.
+minor_changes:
+  - module_utils - add ``Get-DesiredStateDiff`` helper for comparing desired option values against server state.

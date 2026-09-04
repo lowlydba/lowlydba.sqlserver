@@ -94,11 +94,14 @@ try {
         $options.Add("WhatIf", $checkMode)
         if ($null -ne $existingResourcePool) {
             # Check for value parity
-            $diff = Compare-Object -ReferenceObject $options -DifferenceObject $existingResourcePool -Property $compareProperty
-            if ($null -ne $diff) {
+            $diff = Get-DesiredStateDiff -Current $existingResourcePool -Desired $options -Property $compareProperty
+            if ($diff.Count -gt 0) {
                 # Set to new values
                 $output = Set-DbaRgResourcePool @options -EnableException
                 $module.Result.changed = $true
+            }
+            else {
+                $output = $existingResourcePool
             }
         }
         else {

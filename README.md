@@ -72,7 +72,7 @@ To learn how to maintain / become a maintainer of this collection, refer to the 
 
 - 2.19
 - 2.20
-- dlevel
+- devel
 
 ### SQL Server
 

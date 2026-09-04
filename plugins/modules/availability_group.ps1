@@ -166,7 +166,7 @@ try {
         # Create the AG with initial replica(s)
         if ($null -eq $existingAG) {
             # Full backup requirement for new AG via automatic seeding
-            if ($seedingMode -eq "automatic" -and $null -ne $database) {
+            if ($seedingMode -eq "Automatic" -and $null -ne $database) {
                 $dbBackup = Get-DbaLastBackup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Database $database
                 if ($null -eq $dbBackup.LastFullBackup -and $allowNullBackup -eq $true) {
                     $backupSplat = @{
@@ -191,14 +191,15 @@ try {
             if ($all_ags -eq $true) {
                 $setAgSplat.Add("AllAvailabilityGroups", $all_ags)
             }
-            if ($dtcSupportEnabled -eq $true) {
-                $setAgSplat.Add("DtcSupportEnabled", $dtcSupportEnabled)
+            # Set-DbaAvailabilityGroup uses Test-Bound, so explicit $false values disable these settings
+            if ($null -ne $dtcSupportEnabled) {
+                $setAgSplat.Add("DtcSupportEnabled", [bool]$dtcSupportEnabled)
             }
-            if ($basicAvailabilityGroup -eq $true) {
-                $setAgSplat.Add("BasicAvailabilityGroup", $basicAvailabilityGroup)
+            if ($null -ne $basicAvailabilityGroup) {
+                $setAgSplat.Add("BasicAvailabilityGroup", [bool]$basicAvailabilityGroup)
             }
-            if ($databaseHealthTrigger -eq $true) {
-                $setAgSplat.Add("DatabaseHealthTrigger", $databaseHealthTrigger)
+            if ($null -ne $databaseHealthTrigger) {
+                $setAgSplat.Add("DatabaseHealthTrigger", [bool]$databaseHealthTrigger)
             }
             if ($null -ne $failureConditionLevel) {
                 $setAgSplat.Add("FailureConditionLevel", $failureConditionLevel)
@@ -206,14 +207,16 @@ try {
             if ($null -ne $healthCheckTimeout) {
                 $setAgSplat.Add("HealthCheckTimeout", $healthCheckTimeout)
             }
-            if ($isDistributedAg -eq $true) {
-                $setAgSplat.Add("IsDistributedAvailabilityGroup", $isDistributedAg)
+            if ($null -ne $isDistributedAg) {
+                $setAgSplat.Add("IsDistributedAvailabilityGroup", [bool]$isDistributedAg)
             }
-            $compareProperty = ($existingAG.Properties | Where-Object Name -in $setAgSplat.Keys).Name
-            $agDiff = Compare-Object -ReferenceObject $existingAG -DifferenceObject $setAgSplat -Property $compareProperty
-            if ($null -ne $agDiff) {
+            $agDiff = Get-DesiredStateDiff -Current $existingAG -Desired $setAgSplat -Property ($setAgSplat.Keys | Where-Object { $_ -ne "AllAvailabilityGroups" })
+            if ($agDiff.Count -gt 0) {
                 $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat
                 $module.Result.changed = $true
+            }
+            else {
+                $output = $existingAG
             }
         }
     }

@@ -49,17 +49,14 @@ try {
         if ($sa.PasswordExpirationEnabled -ne $passwordExpirationEnabled) {
             $changed = $true
         }
-        if ($passwordExpirationEnabled -eq $true) {
-            $setLoginSplat.add("PasswordExpirationEnabled", $true)
-        }
+        # Set-DbaLogin uses Test-Bound, so an explicit $false disables the setting
+        $setLoginSplat.add("PasswordExpirationEnabled", [bool]$passwordExpirationEnabled)
     }
     if ($null -ne $passwordPolicyEnforced) {
         if ($sa.PasswordPolicyEnforced -ne $passwordPolicyEnforced) {
             $changed = $true
         }
-        if ($passwordPolicyEnforced -eq $true) {
-            $setLoginSplat.add("PasswordPolicyEnforced", $true)
-        }
+        $setLoginSplat.add("PasswordPolicyEnforced", [bool]$passwordPolicyEnforced)
     }
     if ($true -eq $passwordMustChange) {
         if ($sa.PasswordMustChange -ne $passwordMustChange) {
