@@ -43,7 +43,7 @@ jobs:
 
   integration:
     runs-on: ${{ matrix.os }}
-    name: I (Ⓐ${{ matrix.ansible }}+win-2022|grp${{ matrix.group }})
+    name: I (Ⓐ${{ matrix.ansible }}+win-2025|grp${{ matrix.group }})
     # Historically ~17m avg, ~21m max; guard against hung WSL/SQL Server setup
     timeout-minutes: 45
     continue-on-error: ${{ matrix.ansible == 'devel' }}
@@ -51,7 +51,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - windows-2022
+          - windows-2025
         wsl:
           - Ubuntu-24.04
         ansible:
@@ -98,18 +98,10 @@ jobs:
       - name: Set up the runner for PowerShell remoting
         shell: powershell
         run: |
-          $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/38e50c9f819a045ea4d40068f83e78adbfaf2e68/examples/scripts/ConfigureRemotingForAnsible.ps1'))
+          # Pinned to a commit in the current home of this script; latest version at
+          # https://github.com/ansible/ansible-documentation/blob/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
+          $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible-documentation/b8cf495929aa200a11abc7468d1fb6cd9c0e1613/examples/scripts/ConfigureRemotingForAnsible.ps1'))
           & $sb -Verbose -ForceNewSSLCert 4>&1
-
-      - name: Enable winrm
-        shell: powershell
-        run: |
-          winrm quickconfig -force
-
-      - name: Why is MongoDB running? Disable it.
-        shell: powershell
-        run: |
-          Get-Service -Name MongoDB | Where-Object Status -eq 'Running' | Stop-Service -Force
 
       - name: Add a hosts entry  # zizmor: ignore[misfeature] -- Windows-specific cmd required for hosts file modification
         shell: cmd
