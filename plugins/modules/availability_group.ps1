@@ -212,6 +212,9 @@ try {
             }
             $compareProperty = $setAgSplat.Keys | Where-Object { $_ -ne "AllAvailabilityGroups" }
             $agDiff = Get-DesiredStateDiff -Current $existingAG -Desired $setAgSplat -Property $compareProperty
+            $module.Result.debug_ag_diff = @($agDiff)
+            $module.Result.debug_ag_current = $compareProperty | ForEach-Object { "$($_)=$($existingAG.$_)" }
+            $module.Result.debug_ag_desired = $setAgSplat.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }
             if ($agDiff.Count -gt 0) {
                 $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat
                 $module.Result.changed = $true
