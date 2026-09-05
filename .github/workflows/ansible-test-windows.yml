@@ -105,12 +105,7 @@ jobs:
           net localgroup Administrators admin /add
 
       - name: Set up the runner for PowerShell remoting
-        shell: powershell
-        run: |
-          # Pinned to a commit in the current home of this script; latest version at
-          # https://github.com/ansible/ansible-documentation/blob/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
-          $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible-documentation/b8cf495929aa200a11abc7468d1fb6cd9c0e1613/examples/scripts/ConfigureRemotingForAnsible.ps1'))
-          & $sb -Verbose -ForceNewSSLCert 4>&1
+        uses: lowlysre/config-ansible-remote-action@89ef42324b31e17b10f7e520508a1cab14c2ef33 # v1.0.0
 
       - name: Add a hosts entry  # zizmor: ignore[misfeature] -- Windows-specific cmd required for hosts file modification
         shell: cmd
