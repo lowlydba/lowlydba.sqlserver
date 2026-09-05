@@ -114,32 +114,6 @@ $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false
 
 try {
     $existingAG = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
-    # FailureConditionLevel/HealthCheckTimeout are SMO "Standalone" facet properties that the
-    # AvailabilityGroups collection never populates, so they always read back as unset defaults
-    # (0/"0") regardless of the real server value. Read them from sys.availability_groups instead
-    # so the idempotency diff below compares against what's actually configured.
-    if ($null -ne $existingAG) {
-        $failureConditionLevelNames = @{
-            1 = "OnServerDown"
-            2 = "OnServerUnresponsive"
-            3 = "OnCriticalServerErrors"
-            4 = "OnModerateServerErrors"
-            5 = "OnAnyQualifiedFailureCondition"
-        }
-        $agCatalogState = Invoke-DbaQuery -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Database "master" `
-            -Query "SELECT failure_condition_level, health_check_timeout FROM sys.availability_groups WHERE name = @AgName" `
-            -SqlParameter @{ AgName = $agName } -As PSObject
-        $module.Result.debugAgCatalogState = ($agCatalogState | ConvertTo-Json -Compress)
-        $module.Result.debugAgCatalogStateType = $agCatalogState.GetType().FullName
-        if ($agCatalogState) {
-            $failureConditionLevel = $failureConditionLevelNames[[int]$agCatalogState.failure_condition_level]
-            $healthCheckTimeoutValue = [int]$agCatalogState.health_check_timeout
-            $existingAG | Add-Member -Force -NotePropertyName FailureConditionLevel -NotePropertyValue $failureConditionLevel
-            $existingAG | Add-Member -Force -NotePropertyName HealthCheckTimeout -NotePropertyValue $healthCheckTimeoutValue
-            $module.Result.debugPatchedFailureConditionLevel = $existingAG.FailureConditionLevel
-            $module.Result.debugPatchedHealthCheckTimeout = $existingAG.HealthCheckTimeout
-        }
-    }
 
     if ($state -eq "present") {
         $agSplat = @{
@@ -236,11 +210,14 @@ try {
             if ($null -ne $isDistributedAg) {
                 $setAgSplat.Add("IsDistributedAvailabilityGroup", [bool]$isDistributedAg)
             }
-            $compareProperty = $setAgSplat.Keys | Where-Object { $_ -ne "AllAvailabilityGroups" }
+            # FailureConditionLevel/HealthCheckTimeout are excluded from the diff: Get-DbaAvailabilityGroup's
+            # SMO object never populates them (they read back as unset defaults), and sys.availability_groups
+            # is just a cache of the WSFC cluster resource's copy, so it's empty for ClusterType None AGs
+            # (no cluster resource to cache from). There's no reliable way to read the real value back, so
+            # drift on these two can't be detected. They're still applied via Set-DbaAvailabilityGroup below
+            # whenever another property change triggers an update.
+            $compareProperty = $setAgSplat.Keys | Where-Object { $_ -notin @("AllAvailabilityGroups", "FailureConditionLevel", "HealthCheckTimeout") }
             $agDiff = Get-DesiredStateDiff -Current $existingAG -Desired $setAgSplat -Property $compareProperty
-            $module.Result.debugAgDiff = $agDiff -join ","
-            $module.Result.debugSetAgSplat = ($setAgSplat | ConvertTo-Json -Compress)
-            $module.Result.debugCurrentValues = ($compareProperty | ForEach-Object { "$($_)=$($existingAG.$_)" }) -join ";"
             if ($agDiff.Count -gt 0) {
                 $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat
                 $module.Result.changed = $true
