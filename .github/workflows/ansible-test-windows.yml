@@ -98,7 +98,9 @@ jobs:
       - name: Set up the runner for PowerShell remoting
         shell: powershell
         run: |
-          $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/38e50c9f819a045ea4d40068f83e78adbfaf2e68/examples/scripts/ConfigureRemotingForAnsible.ps1'))
+          # Pinned to a commit in the current home of this script; latest version at
+          # https://github.com/ansible/ansible-documentation/blob/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
+          $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible-documentation/b8cf495929aa200a11abc7468d1fb6cd9c0e1613/examples/scripts/ConfigureRemotingForAnsible.ps1'))
           & $sb -Verbose -ForceNewSSLCert 4>&1
 
       - name: Add a hosts entry  # zizmor: ignore[misfeature] -- Windows-specific cmd required for hosts file modification
