@@ -121,11 +121,21 @@ jobs:
           update: "false"
           use-cache: "true"
           wsl-version: 1
-          additional-packages: |
-            git
-            ${{ matrix.python }}
-            python3-pip
-            openssh-client
+
+      # archive.ubuntu.com/security.ubuntu.com occasionally serve a Packages file that doesn't
+      # match the just-fetched InRelease hash (mirror mid-sync). Retrying almost always succeeds,
+      # so do our own apt-get here instead of relying on setup-wsl's one-shot additional-packages.
+      - name: Install WSL packages (with retry)  # zizmor: ignore[template-injection] -- matrix.python is a controlled enum value (python3)
+        run: |
+          echo 'Acquire::Retries "3";' | sudo tee /etc/apt/apt.conf.d/80-retries > /dev/null
+          for attempt in 1 2 3; do
+            if sudo apt-get update && sudo apt-get install -y git ${{ matrix.python }} python3-pip openssh-client; then
+              exit 0
+            fi
+            echo "apt-get failed (attempt $attempt), retrying..."
+            sleep 10
+          done
+          exit 1
 
       - name: Get Linux workspace path
         shell: pwsh
