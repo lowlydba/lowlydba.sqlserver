@@ -130,8 +130,10 @@ try {
             -Query "SELECT failure_condition_level, health_check_timeout FROM sys.availability_groups WHERE name = @AgName" `
             -SqlParameter @{ AgName = $agName }
         if ($agCatalogState) {
-            $existingAG | Add-Member -Force -NotePropertyName FailureConditionLevel -NotePropertyValue $failureConditionLevelNames[[int]$agCatalogState.failure_condition_level]
-            $existingAG | Add-Member -Force -NotePropertyName HealthCheckTimeout -NotePropertyValue ([int]$agCatalogState.health_check_timeout)
+            $failureConditionLevel = $failureConditionLevelNames[[int]$agCatalogState.failure_condition_level]
+            $healthCheckTimeoutValue = [int]$agCatalogState.health_check_timeout
+            $existingAG | Add-Member -Force -NotePropertyName FailureConditionLevel -NotePropertyValue $failureConditionLevel
+            $existingAG | Add-Member -Force -NotePropertyName HealthCheckTimeout -NotePropertyValue $healthCheckTimeoutValue
         }
     }
 
