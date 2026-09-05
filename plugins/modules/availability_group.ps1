@@ -210,7 +210,13 @@ try {
             if ($null -ne $isDistributedAg) {
                 $setAgSplat.Add("IsDistributedAvailabilityGroup", [bool]$isDistributedAg)
             }
-            $compareProperty = $setAgSplat.Keys | Where-Object { $_ -ne "AllAvailabilityGroups" }
+            # FailureConditionLevel/HealthCheckTimeout are excluded from the diff: Get-DbaAvailabilityGroup's
+            # SMO object never populates them (they read back as unset defaults), and sys.availability_groups
+            # is just a cache of the WSFC cluster resource's copy, so it's empty for ClusterType None AGs
+            # (no cluster resource to cache from). There's no reliable way to read the real value back, so
+            # drift on these two can't be detected. They're still applied via Set-DbaAvailabilityGroup below
+            # whenever another property change triggers an update.
+            $compareProperty = $setAgSplat.Keys | Where-Object { $_ -notin @("AllAvailabilityGroups", "FailureConditionLevel", "HealthCheckTimeout") }
             $agDiff = Get-DesiredStateDiff -Current $existingAG -Desired $setAgSplat -Property $compareProperty
             if ($agDiff.Count -gt 0) {
                 $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat

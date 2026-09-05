@@ -64,6 +64,13 @@
           - result.data.AvailabilityReplicas != None
           - result is changed
 
+    - name: Create availability group again (idempotency check)
+      lowlydba.sqlserver.availability_group:
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
     - name: Change availability group
       lowlydba.sqlserver.availability_group:
         dtc_support_enabled: true

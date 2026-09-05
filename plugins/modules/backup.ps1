@@ -129,6 +129,10 @@ try {
     if ($null -ne $output) {
         $resultData = ConvertTo-SerializableObject -InputObject $output
         $module.Result.data = $resultData
+    }
+    # Backup-DbaDatabase returns nothing under -WhatIf, but a backup is never a no-op, so report
+    # changed based on check_mode too, not just on whether an output object came back.
+    if ($checkMode -or $null -ne $output) {
         $module.Result.changed = $true
     }
     $module.ExitJson()

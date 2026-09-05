@@ -23,3 +23,16 @@
           - result.data.End != None
           - result.data.Duration != None
           - result is changed
+
+    - name: Backup a database in check mode
+      lowlydba.sqlserver.backup:
+        sql_instance: "{{ sqlserver_instance }}"
+        sql_username: "{{ sqlserver_username }}"
+        sql_password: "{{ sqlserver_password }}"
+        database: "{{ database_name }}"
+        block_size: "16kb"
+      check_mode: true
+      register: result
+    - assert:
+        that:
+          - result is changed

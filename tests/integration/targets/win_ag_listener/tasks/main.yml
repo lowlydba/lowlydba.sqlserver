@@ -7,7 +7,7 @@
     failover_mode: "Manual"
     availability_mode: "AsynchronousCommit"
     force: true
-    port: 1433
+    listener_port: 1433
   module_defaults:
     lowlydba.sqlserver.availability_group:
       sql_instance: "{{ sqlserver_instance }}"
@@ -24,7 +24,7 @@
       sql_password: "{{ sqlserver_password }}"
       ag_name: "{{ ag_name }}"
       listener_name: "{{ listener_name }}"
-      port: "{{ port }}"
+      port: "{{ listener_port }}"
       ip_address:
         - "192.168.6.9"
       subnet_mask:
@@ -52,7 +52,7 @@
           - result.data.SqlInstance != None
           - result.data.AvailabilityGroup == ag_name
           - result.data.Name == listener_name
-          - result.data.PortNumber == port
+          - result.data.PortNumber == listener_port
           - result is changed
 
     - name: Change ag listener port
