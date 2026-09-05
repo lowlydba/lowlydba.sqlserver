@@ -114,10 +114,25 @@ $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false
 
 try {
     $existingAG = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
-    # SMO only eager-loads a subset of AvailabilityGroup properties (e.g. FailureConditionLevel, HealthCheckTimeout
-    # come back as unset defaults). Refresh so the idempotency diff below compares real server values.
+    # FailureConditionLevel/HealthCheckTimeout are SMO "Standalone" facet properties that the
+    # AvailabilityGroups collection never populates, so they always read back as unset defaults
+    # (0/"0") regardless of the real server value. Read them from sys.availability_groups instead
+    # so the idempotency diff below compares against what's actually configured.
     if ($null -ne $existingAG) {
-        $existingAG.Refresh()
+        $failureConditionLevelNames = @{
+            1 = "OnServerDown"
+            2 = "OnServerUnresponsive"
+            3 = "OnCriticalServerErrors"
+            4 = "OnModerateServerErrors"
+            5 = "OnAnyQualifiedFailureCondition"
+        }
+        $agCatalogState = Invoke-DbaQuery -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Database "master" `
+            -Query "SELECT failure_condition_level, health_check_timeout FROM sys.availability_groups WHERE name = @AgName" `
+            -SqlParameter @{ AgName = $agName }
+        if ($agCatalogState) {
+            $existingAG | Add-Member -Force -NotePropertyName FailureConditionLevel -NotePropertyValue $failureConditionLevelNames[[int]$agCatalogState.failure_condition_level]
+            $existingAG | Add-Member -Force -NotePropertyName HealthCheckTimeout -NotePropertyValue ([int]$agCatalogState.health_check_timeout)
+        }
     }
 
     if ($state -eq "present") {

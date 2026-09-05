@@ -105,11 +105,6 @@ try {
     $replicaInstance = Connect-DbaInstance -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential
     $allReplicas = Get-DbaAgReplica -SqlInstance $replicaSqlInstance -SqlCredential $replicaSqlCredential -AvailabilityGroup $agName
     $existingReplica = $allReplicas | Where-Object Name -eq $replicaInstance.DomainInstanceName
-    # SMO only eager-loads a subset of AvailabilityReplica properties, so refresh before comparing
-    # against desired state (see availability_group.ps1 for the same fix and rationale).
-    if ($null -ne $existingReplica) {
-        $existingReplica.Refresh()
-    }
 
     if ($state -eq "present") {
         $addReplicaSplat = @{
