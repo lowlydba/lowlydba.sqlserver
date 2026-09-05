@@ -138,7 +138,7 @@ jobs:
       contents: write  # Required for uploading coverage reports
     services:
       sqlserver:
-        image: mcr.microsoft.com/mssql/server:2022-latest # zizmor: ignore[unpinned-images] -- Trusted publisher for this CI use case
+        image: mcr.microsoft.com/mssql/server:2025-latest # zizmor: ignore[unpinned-images] -- Trusted publisher for this CI use case
         ports:
           - 1433:1433
         env:
