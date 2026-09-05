@@ -114,6 +114,11 @@ $PSDefaultParameterValues = @{ "*:EnableException" = $true; "*:Confirm" = $false
 
 try {
     $existingAG = Get-DbaAvailabilityGroup -SqlInstance $sqlInstance -SqlCredential $sqlCredential -AvailabilityGroup $agName
+    # SMO only eager-loads a subset of AvailabilityGroup properties (e.g. FailureConditionLevel, HealthCheckTimeout
+    # come back as unset defaults). Refresh so the idempotency diff below compares real server values.
+    if ($null -ne $existingAG) {
+        $existingAG.Refresh()
+    }
 
     if ($state -eq "present") {
         $agSplat = @{
@@ -212,9 +217,6 @@ try {
             }
             $compareProperty = $setAgSplat.Keys | Where-Object { $_ -ne "AllAvailabilityGroups" }
             $agDiff = Get-DesiredStateDiff -Current $existingAG -Desired $setAgSplat -Property $compareProperty
-            $module.Result.debug_ag_diff = @($agDiff)
-            $module.Result.debug_ag_current = $compareProperty | ForEach-Object { "$($_)=$($existingAG.$_)" }
-            $module.Result.debug_ag_desired = $setAgSplat.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }
             if ($agDiff.Count -gt 0) {
                 $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat
                 $module.Result.changed = $true
