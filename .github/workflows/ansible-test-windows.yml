@@ -43,10 +43,12 @@ jobs:
 
   integration:
     runs-on: ${{ matrix.os }}
-    name: I (Ⓐ${{ matrix.ansible }}+win-2022|grp${{ matrix.group }})
+    name: I (Ⓐ${{ matrix.ansible }}+${{ matrix.os }}|grp${{ matrix.group }})
     # Historically ~17m avg, ~21m max; guard against hung WSL/SQL Server setup
     timeout-minutes: 45
-    continue-on-error: ${{ matrix.ansible == 'devel' }}
+    # TEMPORARY: exploring a windows-2025 migration; that leg is allowed to fail without
+    # blocking the rollup while we validate it. Remove once decided either way.
+    continue-on-error: ${{ matrix.ansible == 'devel' || matrix.os == 'windows-2025' }}
     strategy:
       fail-fast: false
       matrix:
@@ -65,6 +67,13 @@ jobs:
           - "1"
           - "2"
           #- '3'
+        # TEMPORARY: single probe job to see what breaks on windows-2025. Remove once decided.
+        include:
+          - os: windows-2025
+            wsl: Ubuntu-24.04
+            ansible: stable-2.21
+            python: python3
+            group: "1"
     defaults:
       run:
         shell: wsl-bash {0}
