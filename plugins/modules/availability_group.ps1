@@ -128,12 +128,16 @@ try {
         }
         $agCatalogState = Invoke-DbaQuery -SqlInstance $sqlInstance -SqlCredential $sqlCredential -Database "master" `
             -Query "SELECT failure_condition_level, health_check_timeout FROM sys.availability_groups WHERE name = @AgName" `
-            -SqlParameter @{ AgName = $agName }
+            -SqlParameter @{ AgName = $agName } -As PSObject
+        $module.Result.debugAgCatalogState = ($agCatalogState | ConvertTo-Json -Compress)
+        $module.Result.debugAgCatalogStateType = $agCatalogState.GetType().FullName
         if ($agCatalogState) {
             $failureConditionLevel = $failureConditionLevelNames[[int]$agCatalogState.failure_condition_level]
             $healthCheckTimeoutValue = [int]$agCatalogState.health_check_timeout
             $existingAG | Add-Member -Force -NotePropertyName FailureConditionLevel -NotePropertyValue $failureConditionLevel
             $existingAG | Add-Member -Force -NotePropertyName HealthCheckTimeout -NotePropertyValue $healthCheckTimeoutValue
+            $module.Result.debugPatchedFailureConditionLevel = $existingAG.FailureConditionLevel
+            $module.Result.debugPatchedHealthCheckTimeout = $existingAG.HealthCheckTimeout
         }
     }
 
@@ -234,6 +238,9 @@ try {
             }
             $compareProperty = $setAgSplat.Keys | Where-Object { $_ -ne "AllAvailabilityGroups" }
             $agDiff = Get-DesiredStateDiff -Current $existingAG -Desired $setAgSplat -Property $compareProperty
+            $module.Result.debugAgDiff = $agDiff -join ","
+            $module.Result.debugSetAgSplat = ($setAgSplat | ConvertTo-Json -Compress)
+            $module.Result.debugCurrentValues = ($compareProperty | ForEach-Object { "$($_)=$($existingAG.$_)" }) -join ";"
             if ($agDiff.Count -gt 0) {
                 $output = $existingAG | Set-DbaAvailabilityGroup @setAgSplat
                 $module.Result.changed = $true
