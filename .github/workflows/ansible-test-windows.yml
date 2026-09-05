@@ -115,11 +115,6 @@ jobs:
         run: |
           winrm quickconfig -force
 
-      - name: Why is MongoDB running? Disable it.
-        shell: powershell
-        run: |
-          Get-Service -Name MongoDB | Where-Object Status -eq 'Running' | Stop-Service -Force
-
       - name: Add a hosts entry  # zizmor: ignore[misfeature] -- Windows-specific cmd required for hosts file modification
         shell: cmd
         run: echo 127.0.0.1 sqlserver >> "%WinDir%\System32\Drivers\etc\hosts"
