@@ -208,7 +208,7 @@ jobs:
         with:
           install: sqlengine
           sa-password: L0wlydb4
-          version: 2022
+          version: 2025
 
       - name: Retry SQL Server install
         id: retry1
@@ -217,7 +217,7 @@ jobs:
         with:
           install: sqlengine
           sa-password: L0wlydb4
-          version: 2022
+          version: 2025
 
       - name: Run integration test  # zizmor: ignore[template-injection] -- env.GHWS is a computed path; matrix values are controlled enums
         run: |
