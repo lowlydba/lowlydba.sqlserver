@@ -80,6 +80,15 @@ jobs:
       GROUP: ${{ matrix.group }}  # zizmor: ignore[template-injection] -- Matrix value from controlled environment
       PYTHON: python3
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}  # zizmor: ignore[secrets-outside-env] -- Codecov token needed for coverage uploads; environment protection would block PR-triggered runs
+      # Relative to github.workspace, which is also the default cwd for wsl-bash steps below.
+      # wsl.exe transparently maps that Windows path into WSL via drvfs, so the same files on
+      # disk can be cached directly by actions/cache (running on the Windows host) without
+      # reaching into the WSL rootfs (where pip's real default cache dir would otherwise live).
+      PIP_CACHE_DIR: .pip-cache
+      # wsl-bash launches `wsl.exe bash ...` directly, which does NOT inherit arbitrary Windows
+      # env vars; only names listed in WSLENV get imported into the guest. /u makes this
+      # one-way (Windows -> Linux), no path translation needed since the value is relative.
+      WSLENV: PIP_CACHE_DIR/u
 
     steps:
       - name: Check out code
@@ -95,12 +104,7 @@ jobs:
           net localgroup Administrators admin /add
 
       - name: Set up the runner for PowerShell remoting
-        shell: powershell
-        run: |
-          # Pinned to a commit in the current home of this script; latest version at
-          # https://github.com/ansible/ansible-documentation/blob/devel/examples/scripts/ConfigureRemotingForAnsible.ps1
-          $sb = [ScriptBlock]::Create((New-Object System.Net.Webclient).DownloadString('https://raw.githubusercontent.com/ansible/ansible-documentation/b8cf495929aa200a11abc7468d1fb6cd9c0e1613/examples/scripts/ConfigureRemotingForAnsible.ps1'))
-          & $sb -Verbose -ForceNewSSLCert 4>&1
+        uses: lowlysre/config-ansible-remote-action@89ef42324b31e17b10f7e520508a1cab14c2ef33 # v1.0.0
 
       - name: Add a hosts entry  # zizmor: ignore[misfeature] -- Windows-specific cmd required for hosts file modification
         shell: cmd
@@ -127,6 +131,14 @@ jobs:
             sleep 10
           done
           exit 1
+
+      - name: Cache pip downloads/wheels
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ env.PIP_CACHE_DIR }}
+          key: ${{ runner.os }}-pip-${{ matrix.ansible }}-${{ matrix.group }}-${{ github.run_id }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.ansible }}-${{ matrix.group }}-
 
       # Override break-sys-pkg defaults, because we don't need to bother with python venv for CI
       #
