@@ -738,3 +738,33 @@ releases:
     - ci-integration-timeouts.yml
     - release-summary.yml
     release_date: '2026-09-04'
+  3.1.0:
+    changes:
+      bugfixes:
+      - availability_group - Fix ``changed`` being incorrectly reported as ``true``
+        on an unchanged AG. ``Get-DbaAvailabilityGroup``'s SMO object never populates
+        ``FailureConditionLevel``/``HealthCheckTimeout`` (they read back as unset
+        defaults), and ``sys.availability_groups`` is a cache of the WSFC cluster
+        resource's copy, so it's empty for AGs with ``cluster_type`` set to ``None``.
+        Since neither source can be trusted, both properties are now excluded from
+        the idempotency diff; they're still applied via ``Set-DbaAvailabilityGroup``
+        whenever another property change triggers an update (https://github.com/lowlydba/lowlydba.sqlserver/issues/381).
+      - backup, restore - Fix ``changed`` being reported as ``false`` in ``check_mode``,
+        since ``Backup-DbaDatabase``/``Restore-DbaDatabase`` return no output under
+        ``-WhatIf`` (https://github.com/lowlydba/lowlydba.sqlserver/issues/381).
+      minor_changes:
+      - Add a Pester unit test suite under ``tests/unit/plugins/module_utils/`` covering
+        the ``module_utils`` helpers (``Get-LowlyDbaSqlServerAuthSpec``, ``Get-SqlCredential``,
+        ``ConvertTo-SerializableObject``), and wire it into CI as a standalone job
+        since ``ansible-test units`` only supports Python (https://github.com/lowlydba/lowlydba.sqlserver/issues/382).
+      - Add check-mode assertions for the ``backup`` and ``restore`` integration test
+        targets, add idempotency assertions for the ``availability_group`` and ``ag_replica``
+        targets, and exercise a non-default ``deployment_method`` in the ``install_script``
+        targets (https://github.com/lowlydba/lowlydba.sqlserver/issues/381).
+      - Standardize module documentation examples and correct invalid parameters,
+        missing required options, and incorrect module references (https://github.com/lowlydba/lowlydba.sqlserver/pull/399).
+    fragments:
+    - 381-integration-test-gaps.yml
+    - 382-pester-unit-tests.yml
+    - 399-documentation-examples.yml
+    release_date: '2026-09-08'
