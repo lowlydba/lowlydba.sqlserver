@@ -112,7 +112,7 @@ EXAMPLES = r'''
   lowlydba.sqlserver.agent_job_step:
     sql_instance: sql01.example.com
     job: NightlyBackup
-    step_name: UpdateStatistics
+    step_name: TruncateStagingTable
     step_id: 1
     command: "TRUNCATE TABLE dbo.TestData;"
 
@@ -123,7 +123,7 @@ EXAMPLES = r'''
     step_name: ListDatabases
     step_id: 2
     command: "SELECT * FROM sys.databases;"
-    output_file: "C:\Logs\NightlyBackup_ListDatabases.log"
+    output_file: "C:\\Logs\\NightlyBackup_ListDatabases.log"
 '''
 
 RETURN = r'''

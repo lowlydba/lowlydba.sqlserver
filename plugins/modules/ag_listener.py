@@ -85,7 +85,7 @@ EXAMPLES = r'''
     ip_address:
       - 10.0.20.20
     subnet_ip:
-      - 255.255.252.0
+      - 10.0.20.0
     subnet_mask:
       - 255.255.255.0
 '''

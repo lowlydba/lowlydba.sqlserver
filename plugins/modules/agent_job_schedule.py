@@ -122,8 +122,9 @@ EXAMPLES = r'''
     schedule: DailySchedule
     force: true
     enabled: true
-    start_date: '2026-01-01'
-    end_date: '2099-12-31'
+    frequency_type: Daily
+    start_date: '20260101'
+    end_date: '20991231'
     start_time: '010500'
     end_time: '140030'
     state: present
