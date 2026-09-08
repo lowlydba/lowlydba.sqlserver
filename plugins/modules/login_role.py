@@ -33,23 +33,23 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Add a user to a fixed server role
+- name: Add a login to a fixed server role
   lowlydba.sqlserver.login_role:
-    sql_instance: sql-01.myco.io
-    login: TheIntern
+    sql_instance: sql01.example.com
+    login: app_login
     server_role: sysadmin
 
-- name: Remove a user from a fixed server role
+- name: Remove a login from a fixed server role
   lowlydba.sqlserver.login_role:
-    sql_instance: sql-01.myco.io
-    login: TheIntern
+    sql_instance: sql01.example.com
+    login: app_login
     server_role: sysadmin
     state: absent
 
-- name: Add a user to a custom server role
+- name: Add a login to a custom server role
   lowlydba.sqlserver.login_role:
-    sql_instance: sql-01.myco.io
-    login: TheIntern
+    sql_instance: sql01.example.com
+    login: app_login
     server_role: demi-admin
 '''
 

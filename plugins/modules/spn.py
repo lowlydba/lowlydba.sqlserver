@@ -42,28 +42,15 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Add server SPN
+- name: Add a server SPN
   lowlydba.sqlserver.spn:
-    computer: sql-01.myco.io
-    service_account: myco\sql-svc
+    computer: sql01.example.com
+    service_account: EXAMPLE\sql-svc
 
-- name: Create an AG Listener
-  lowlydba.sqlserver.ag_listener:
-    sql_instance_primary: sql-01.myco.io
-    ag_name: AG_MyDatabase
-    listener_name: aglMyDatabase
-    ip_address:
-      - 10.0.20.20
-      - 10.1.77.77
-    subnet_ip:
-      - 255.255.252.0
-    subnet_mask:
-      - 255.255.255.0
-
-- name: Add SPN for new AG listener on port 1433
+- name: Add an SPN for an availability group listener
   lowlydba.sqlserver.spn:
-    computer: aglMyDatabase.myco.io:1433
-    service_account: myco\sql-svc
+    computer: AG-App.example.com:1433
+    service_account: EXAMPLE\sql-svc
 '''
 
 RETURN = r'''

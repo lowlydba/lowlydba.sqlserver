@@ -86,10 +86,11 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Install/Update Maintenance Solution
-  lowlydba.sqlserver.multitool:
-    sql_instance: sql-01.myco.io
-    database: main
+- name: Install or update Ola Hallengren's Maintenance Solution
+  lowlydba.sqlserver.maintenance_solution:
+    sql_instance: sql01.example.com
+    database: DbaTools
+    install_jobs: true
     replace_existing: true
 '''
 

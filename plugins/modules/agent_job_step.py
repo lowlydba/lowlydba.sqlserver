@@ -102,28 +102,28 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Create a job
+- name: Create a SQL Server Agent job
   lowlydba.sqlserver.agent_job:
-    sql_instance: sql-01.myco.io
-    job: MyJob
+    sql_instance: sql01.example.com
+    job: NightlyBackup
     force: true
 
-- name: Create a job step
+- name: Create a SQL Server Agent job step
   lowlydba.sqlserver.agent_job_step:
-    sql_instance: sql-01.myco.io
-    job: MyJob
-    step_name: Step1
+    sql_instance: sql01.example.com
+    job: NightlyBackup
+    step_name: TruncateStagingTable
     step_id: 1
     command: "TRUNCATE TABLE dbo.TestData;"
 
-- name: Create a job step with output file
+- name: Create a job step with output redirected to a file
   lowlydba.sqlserver.agent_job_step:
-    sql_instance: sql-01.myco.io
-    job: MyJob
-    step_name: Step2
+    sql_instance: sql01.example.com
+    job: NightlyBackup
+    step_name: ListDatabases
     step_id: 2
     command: "SELECT * FROM sys.databases;"
-    output_file: "C:\\Logs\\MyJob_Step2.log"
+    output_file: "C:\\Logs\\NightlyBackup_ListDatabases.log"
 '''
 
 RETURN = r'''

@@ -21,9 +21,9 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Get basic info for an instance
+- name: Get basic instance information
   lowlydba.sqlserver.instance_info:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
 '''
 
 RETURN = r'''

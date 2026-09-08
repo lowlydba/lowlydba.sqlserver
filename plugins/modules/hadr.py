@@ -49,9 +49,9 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Enable hadr with service restart
+- name: Enable HADR and restart the SQL Server service
   lowlydba.sqlserver.hadr:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
     enabled: true
     force: true
 '''

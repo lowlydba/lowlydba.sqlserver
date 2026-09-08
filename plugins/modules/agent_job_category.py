@@ -34,10 +34,10 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Create a maintenance job category
+- name: Create a SQL Server Agent job category
   lowlydba.sqlserver.agent_job_category:
-    sql_instance: sql-01.myco.io
-    category: "Index Maintenance"
+    sql_instance: sql01.example.com
+    category: Index Maintenance
 '''
 
 RETURN = r'''

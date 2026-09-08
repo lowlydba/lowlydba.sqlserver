@@ -39,10 +39,10 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Install/Update sp_whoisactive
+- name: Install or update sp_WhoIsActive
   lowlydba.sqlserver.sp_whoisactive:
-    sql_instance: sql-01.myco.io
-    database: lowlydb
+    sql_instance: sql01.example.com
+    database: DbaTools
 '''
 
 RETURN = r'''

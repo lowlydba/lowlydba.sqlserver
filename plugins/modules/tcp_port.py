@@ -49,14 +49,14 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Set the default port
+- name: Set the default SQL Server port
   lowlydba.sqlserver.tcp_port:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
     port: 1433
 
-- name: Set a non-standard default port
+- name: Set a non-standard SQL Server port
   lowlydba.sqlserver.tcp_port:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
     port: 1933
 '''
 

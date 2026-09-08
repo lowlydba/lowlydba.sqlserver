@@ -115,22 +115,24 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Create a job schedule
+- name: Create a daily SQL Server Agent schedule
   lowlydba.sqlserver.agent_job_schedule:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
+    job: NightlyBackup
     schedule: DailySchedule
     force: true
     enabled: true
-    start_date: 2020-05-25  # May 25, 2020
-    end_date: 2099-05-25    # May 25, 2099
-    start_time: 010500      # 01:05:00 AM
-    end_time: 140030        # 02:00:30 PM
+    frequency_type: Daily
+    start_date: '20260101'
+    end_date: '20991231'
+    start_time: '010500'
+    end_time: '140030'
     state: present
 
-- name: Create a job with schedule
+- name: Assign the schedule to a SQL Server Agent job
   lowlydba.sqlserver.agent_job:
-    sql_instance: sql-01.myco.io
-    job: MyJob
+    sql_instance: sql01.example.com
+    job: NightlyBackup
     force: true
     schedule: DailySchedule
 '''

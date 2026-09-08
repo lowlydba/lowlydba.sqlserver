@@ -90,9 +90,9 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Migrate a database
+- name: Apply database migration scripts
   lowlydba.sqlserver.install_script:
-    sql_instance: test-server.my.company.com
+    sql_instance: sql01.example.com
     database: AdventureWorks
     path: migrations
 '''

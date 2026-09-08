@@ -28,13 +28,13 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Automatically configure SQL max memory
+- name: Automatically configure SQL Server max memory
   lowlydba.sqlserver.memory:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
 
-- name: Manually configure SQL max memory
+- name: Set SQL Server max memory explicitly
   lowlydba.sqlserver.memory:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
     max: 10240
 '''
 

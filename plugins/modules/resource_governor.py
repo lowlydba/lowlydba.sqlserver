@@ -33,9 +33,9 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Enable resource governor
+- name: Enable Resource Governor
   lowlydba.sqlserver.resource_governor:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
     enabled: true
 '''
 

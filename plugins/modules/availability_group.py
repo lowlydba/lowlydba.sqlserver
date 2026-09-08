@@ -160,10 +160,10 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Create Availability Group
+- name: Create an availability group
   lowlydba.sqlserver.availability_group:
-    sql_instance: sql-01.myco.io
-    ag_name: AG_MyDatabase
+    sql_instance: sql01.example.com
+    ag_name: AG_App
 '''
 
 RETURN = r'''

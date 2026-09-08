@@ -72,21 +72,20 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Create Availability Group
+- name: Create an availability group
   lowlydba.sqlserver.availability_group:
-    sql_instance: sql-01.myco.io
-    ag_name: AG_MyDatabase
+    sql_instance: sql01.example.com
+    ag_name: AG_App
 
-- name: Create AG Listener
+- name: Create an availability group listener
   lowlydba.sqlserver.ag_listener:
-    sql_instance_primary: sql-01.myco.io
-    ag_name: AG_MyDatabase
-    listener_name: aglMyDatabase
+    sql_instance: sql01.example.com
+    ag_name: AG_App
+    listener_name: AG-App
     ip_address:
       - 10.0.20.20
-      - 10.1.77.77
     subnet_ip:
-      - 255.255.252.0
+      - 10.0.20.0
     subnet_mask:
       - 255.255.255.0
 '''
