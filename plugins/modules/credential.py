@@ -58,28 +58,31 @@ extends_documentation_fragment:
 EXAMPLES = r'''
 - name: Create a credential with a password
   lowlydba.sqlserver.credential:
-    sql_instance: sql-01.myco.io
-    identity: ad\\user
-    name: MyCredential
-    password : <Password>
+    sql_instance: sql01.example.com
+    identity: EXAMPLE\sql-backup
+    name: BackupCredential
+    password: "{{ vault_backup_credential_password }}"
 
 - name: Replace an existing credential
   lowlydba.sqlserver.credential:
-    sql_instance: sql-01.myco.io
-    identity: MyIdentity
+    sql_instance: sql01.example.com
+    identity: EXAMPLE\sql-backup
+    name: BackupCredential
+    password: "{{ vault_backup_credential_password }}"
     force: true
 
 - name: Create a credential using a SAS token for a backup URL
   lowlydba.sqlserver.credential:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
     identity: SHARED ACCESS SIGNATURE
-    name: https://<azure storage account name>.blob.core.windows.net/<blob container>
-    password : <Shared Access Token>
+    name: https://examplestorage.blob.core.windows.net/sql-backups
+    password: "{{ vault_azure_storage_sas_token }}"
 
 - name: Remove a credential
   lowlydba.sqlserver.credential:
-    sql_instance: sql-01.myco.io
-    identity: MyIdentity
+    sql_instance: sql01.example.com
+    identity: EXAMPLE\sql-backup
+    name: BackupCredential
     state: absent
 '''
 

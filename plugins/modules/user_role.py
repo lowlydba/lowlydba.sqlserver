@@ -75,26 +75,26 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Add a user to a fixed db role (legacy)
+- name: Add a user to a fixed database role (legacy)
   lowlydba.sqlserver.user_role:
-    sql_instance: sql-01.myco.io
-    username: TheIntern
-    database: InternProject1
+    sql_instance: sql01.example.com
+    username: app_user
+    database: AppDb
     role: db_owner
 
-- name: Remove a user from a fixed db role (legacy)
+- name: Remove a user from a fixed database role (legacy)
   lowlydba.sqlserver.user_role:
-    sql_instance: sql-01.myco.io
-    username: TheIntern
-    database: InternProject1
+    sql_instance: sql01.example.com
+    username: app_user
+    database: AppDb
     role: db_owner
     state: absent
 
 - name: Add user to multiple roles
   lowlydba.sqlserver.user_role:
-    sql_instance: sql-01.myco.io
-    username: TheIntern
-    database: InternProject1
+    sql_instance: sql01.example.com
+    username: app_user
+    database: AppDb
     roles:
       add:
         - db_owner
@@ -102,9 +102,9 @@ EXAMPLES = r'''
 
 - name: Remove user from multiple roles
   lowlydba.sqlserver.user_role:
-    sql_instance: sql-01.myco.io
-    username: TheIntern
-    database: InternProject1
+    sql_instance: sql01.example.com
+    username: app_user
+    database: AppDb
     roles:
       remove:
         - db_owner
@@ -112,9 +112,9 @@ EXAMPLES = r'''
 
 - name: Set user's roles (replace all current roles)
   lowlydba.sqlserver.user_role:
-    sql_instance: sql-01.myco.io
-    username: TheIntern
-    database: InternProject1
+    sql_instance: sql01.example.com
+    username: app_user
+    database: AppDb
     roles:
       set:
         - db_datareader
@@ -122,9 +122,9 @@ EXAMPLES = r'''
 
 - name: Combine add and remove operations
   lowlydba.sqlserver.user_role:
-    sql_instance: sql-01.myco.io
-    username: TheIntern
-    database: InternProject1
+    sql_instance: sql01.example.com
+    username: app_user
+    database: AppDb
     roles:
       add:
         - db_securityadmin

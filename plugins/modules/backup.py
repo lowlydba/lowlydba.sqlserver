@@ -175,17 +175,17 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Create striped full database backup in default dir
+- name: Create a striped full database backup
   lowlydba.sqlserver.backup:
-    sql_instance: sql-01.myco.io
-    database: LowlyDB
+    sql_instance: sql01.example.com
+    database: AppDb
     type: full
     file_count: 8
 
-- name: Create t-log backup
+- name: Create a transaction log backup
   lowlydba.sqlserver.backup:
-    sql_instance: sql-01.myco.io
-    database: LowlyDB
+    sql_instance: sql01.example.com
+    database: AppDb
     type: log
 '''
 

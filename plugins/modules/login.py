@@ -81,16 +81,16 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Create a login
+- name: Create a SQL login
   lowlydba.sqlserver.login:
-    sql_instance: sql-01.myco.io
-    login: TheIntern
-    password: ReallyComplexStuff12345!
+    sql_instance: sql01.example.com
+    login: app_login
+    password: "{{ vault_app_login_password }}"
 
-- name: Disable a login
+- name: Disable a SQL login
   lowlydba.sqlserver.login:
-    sql_instance: sql-01.myco.io
-    login: TheIntern
+    sql_instance: sql01.example.com
+    login: app_login
     enabled: false
 '''
 

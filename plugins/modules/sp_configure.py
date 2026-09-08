@@ -33,9 +33,9 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Enable remote DAC connection
+- name: Enable remote DAC connections
   lowlydba.sqlserver.sp_configure:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
     name: RemoteDacConnectionsEnabled
     value: 1
 '''

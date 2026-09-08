@@ -71,22 +71,22 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Enable resource governor
+- name: Enable Resource Governor
   lowlydba.sqlserver.resource_governor:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
     enabled: true
 
-- name: Create rg resource pool
+- name: Create a Resource Governor pool
   lowlydba.sqlserver.rg_resource_pool:
-    sql_instance: sql-01.myco.io
-    resource_pool: "rpLittle"
+    sql_instance: sql01.example.com
+    resource_pool: ReportingPool
     max_cpu_perc: 5
 
-- name: Create rg workload group
+- name: Create a Resource Governor workload group
   lowlydba.sqlserver.rg_workload_group:
-    sql_instance: sql-01.myco.io
-    workload_group: rgMyGroup
-    resource_pool: rpLittle
+    sql_instance: sql01.example.com
+    workload_group: ReportingWorkload
+    resource_pool: ReportingPool
     resource_pool_type: Internal
     max_dop: 2
     state: present

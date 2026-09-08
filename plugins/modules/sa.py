@@ -55,14 +55,14 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Disable sa login
+- name: Disable the sa login
   lowlydba.sqlserver.sa:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
     enabled: false
 
-- name: Rename sa login
+- name: Rename the sa login
   lowlydba.sqlserver.sa:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
     new_name: 'notthesayourelookingfor'
 '''
 

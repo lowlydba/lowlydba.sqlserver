@@ -204,21 +204,24 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Restore a Database
+- name: Restore a database from the latest backup
   lowlydba.sqlserver.restore:
-    sql_instance: sql-01.myco.io
-    database: LowlyDB
+    sql_instance: sql01.example.com
+    database: AppDb
+    path: C:\SQLBackups\AppDb
 
-- name: Restore a Database and allow future T-Log restores
+- name: Restore a database and leave it ready for transaction log restores
   lowlydba.sqlserver.restore:
-    sql_instance: sql-01.myco.io
-    database: LowlyDB1
+    sql_instance: sql01.example.com
+    database: AppDb
+    path: C:\SQLBackups\AppDb
     no_recovery: true
 
-- name: Verify backup files, no restore
+- name: Verify backup files without restoring
   lowlydba.sqlserver.restore:
-    sql_instance: sql-01.myco.io
-    database: LowlyDB2
+    sql_instance: sql01.example.com
+    database: AppDb
+    path: C:\SQLBackups\AppDb
     verify_only: true
 '''
 

@@ -69,10 +69,10 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Create a job
+- name: Create a SQL Server Agent job
   lowlydba.sqlserver.agent_job:
-    sql_instance: sql-01.myco.io
-    job: MyJob
+    sql_instance: sql01.example.com
+    job: NightlyBackup
     force: true
 '''
 

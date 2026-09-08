@@ -51,8 +51,8 @@ extends_documentation_fragment:
 EXAMPLES = r'''
 - name: Install DBA MultiTool
   lowlydba.sqlserver.dba_multitool:
-    sql_instance: test-server.my.company.com
-    database: dba_tools
+    sql_instance: sql01.example.com
+    database: DbaTools
 '''
 
 RETURN = r'''

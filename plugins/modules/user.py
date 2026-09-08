@@ -49,27 +49,27 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Create a user
+- name: Create a database user
   lowlydba.sqlserver.user:
-    sql_instance: sql-01.myco.io
-    login: TheIntern
-    username: TheIntern
-    database: InternProject1
+    sql_instance: sql01.example.com
+    login: app_login
+    username: app_user
+    database: AppDb
 
-- name: Change user's schema
-  lowlydba.sqlserver.login:
-    sql_instance: sql-01.myco.io
-    login: TheIntern
-    username: TheIntern
-    database: InternProject1
+- name: Set a database user's default schema
+  lowlydba.sqlserver.user:
+    sql_instance: sql01.example.com
+    login: app_login
+    username: app_user
+    database: AppDb
     default_schema: dev
 
 - name: Remove a user
-  lowlydba.sqlserver.login:
-    sql_instance: sql-01.myco.io
-    login: TheIntern
-    username: TheIntern
-    database: InternProject1
+  lowlydba.sqlserver.user:
+    sql_instance: sql01.example.com
+    login: app_login
+    username: app_user
+    database: AppDb
     state: absent
 '''
 

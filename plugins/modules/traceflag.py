@@ -34,15 +34,15 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Eliminate successful backup information from SQL Error Log
+- name: Suppress successful backup messages in the SQL Server error log
   lowlydba.sqlserver.traceflag:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
     trace_flag: 3226
     enabled: true
 
-- name: Disable trace flag
+- name: Disable the backup message trace flag
   lowlydba.sqlserver.traceflag:
-    sql_instance: sql-01.myco.io
+    sql_instance: sql01.example.com
     trace_flag: 3226
     enabled: false
 '''

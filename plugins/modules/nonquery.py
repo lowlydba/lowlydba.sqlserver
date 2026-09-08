@@ -40,11 +40,11 @@ extends_documentation_fragment:
 '''
 
 EXAMPLES = r'''
-- name: Update a table value
+- name: Update active users
   lowlydba.sqlserver.nonquery:
-    sql_instance: sql-01-myco.io
-    database: userdb
-    nonquery: "UPDATE dbo.User set IsActive = 1;"
+    sql_instance: sql01.example.com
+    database: AppDb
+    nonquery: "UPDATE dbo.Users SET IsActive = 1;"
 '''
 
 RETURN = r''' # '''
