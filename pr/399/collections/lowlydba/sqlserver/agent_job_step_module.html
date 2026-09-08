@@ -372,7 +372,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <span class="w">  </span><span class="nt">lowlydba.sqlserver.agent_job_step</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">sql_instance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sql01.example.com</span>
 <span class="w">    </span><span class="nt">job</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NightlyBackup</span>
-<span class="w">    </span><span class="nt">step_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UpdateStatistics</span>
+<span class="w">    </span><span class="nt">step_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TruncateStagingTable</span>
 <span class="w">    </span><span class="nt">step_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">"TRUNCATE</span><span class="nv"> </span><span class="s">TABLE</span><span class="nv"> </span><span class="s">dbo.TestData;"</span>
 
@@ -383,7 +383,7 @@ see <a class="reference internal" href="#ansible-collections-lowlydba-sqlserver-
 <span class="w">    </span><span class="nt">step_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ListDatabases</span>
 <span class="w">    </span><span class="nt">step_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
 <span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="s">"SELECT</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">FROM</span><span class="nv"> </span><span class="s">sys.databases;"</span>
-<span class="w">    </span><span class="nt">output_file</span><span class="p">:</span><span class="w"> </span><span class="s">"C:\Logs\NightlyBackup_ListDatabases.log"</span>
+<span class="w">    </span><span class="nt">output_file</span><span class="p">:</span><span class="w"> </span><span class="s">"C:\\Logs\\NightlyBackup_ListDatabases.log"</span>
 </pre></div>
 </div>
 </section>
