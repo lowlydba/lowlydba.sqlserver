@@ -7,6 +7,11 @@ lowlydba.sqlserver Release Notes
 v3.1.0
 ======
 
+Release Summary
+---------------
+
+This release fixes two ``changed``-reporting bugs (``availability_group`` incorrectly reporting ``changed=true`` on an unchanged AG, and ``backup``/``restore`` incorrectly reporting ``changed=false`` under ``check_mode``), adds a Pester unit test suite for the shared ``module_utils`` helpers, closes integration test gaps for ``availability_group``, ``ag_replica``, ``backup``, ``restore`` and ``install_script``, and standardizes module documentation examples.
+
 Minor Changes
 -------------
 

@@ -740,6 +740,12 @@ releases:
     release_date: '2026-09-04'
   3.1.0:
     changes:
+      release_summary: This release fixes two ``changed``-reporting bugs (``availability_group``
+        incorrectly reporting ``changed=true`` on an unchanged AG, and ``backup``/``restore``
+        incorrectly reporting ``changed=false`` under ``check_mode``), adds a Pester
+        unit test suite for the shared ``module_utils`` helpers, closes integration
+        test gaps for ``availability_group``, ``ag_replica``, ``backup``, ``restore``
+        and ``install_script``, and standardizes module documentation examples.
       bugfixes:
       - availability_group - Fix ``changed`` being incorrectly reported as ``true``
         on an unchanged AG. ``Get-DbaAvailabilityGroup``'s SMO object never populates
