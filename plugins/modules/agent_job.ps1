@@ -47,6 +47,11 @@ try {
     if ($state -eq "absent") {
         if ($null -ne $existingJob) {
             $output = $existingJob | Remove-DbaAgentJob -Confirm:$false -WhatIf:$checkMode -EnableException
+            # Remove-DbaAgentJob can emit its single result as a one-item collection depending on the
+            # dbatools version; normalize to a scalar so module.Result.data is always an object, not a list.
+            if ($output -is [array]) {
+                $output = $output | Select-Object -Last 1
+            }
             $module.Result.changed = $true
         }
     }
