@@ -1,0 +1,5 @@
+---
+bugfixes:
+  - agent_job, agent_job_step - fixed ``state=absent`` returning ``data`` as a list instead of a
+    single object on some dbatools versions, which broke templating on the removed job/step's
+    properties (e.g. ``result.data.ComputerName``).

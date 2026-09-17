@@ -83,6 +83,11 @@ try {
                 StepName = $existingJobStep.Name
             }
             $output = Remove-DbaAgentJobStep @removeStepSplat
+            # Remove-DbaAgentJobStep can emit its single result as a one-item collection depending on
+            # the dbatools version; normalize to a scalar so module.Result.data is always an object, not a list.
+            if ($output -is [array]) {
+                $output = $output | Select-Object -Last 1
+            }
             $module.Result.changed = $true
         }
     }
