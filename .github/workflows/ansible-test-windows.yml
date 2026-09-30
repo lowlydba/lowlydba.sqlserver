@@ -187,20 +187,22 @@ jobs:
       - name: Install SQL Server
         continue-on-error: true
         id: mssqlsuite
-        uses: potatoqualitee/mssqlsuite@2291d923e83859edd871679c05b379037376761f # v1.12
+        uses: potatoqualitee/mssqlsuite@bc850f242e5fe551e36cea6fa4bed608c58fa489 # v2
         with:
           install: sqlengine
           sa-password: L0wlydb4
           version: 2025
+          disable-telemetry: true
 
       - name: Retry SQL Server install
         id: retry1
         if: steps.mssqlsuite.outcome == 'failure'
-        uses: potatoqualitee/mssqlsuite@2291d923e83859edd871679c05b379037376761f # v1.12
+        uses: potatoqualitee/mssqlsuite@bc850f242e5fe551e36cea6fa4bed608c58fa489 # v2
         with:
           install: sqlengine
           sa-password: L0wlydb4
           version: 2025
+          disable-telemetry: true
 
       - name: Run integration test  # zizmor: ignore[template-injection] -- matrix values are controlled enums
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
