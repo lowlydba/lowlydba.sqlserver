@@ -192,6 +192,6 @@ jobs:
     needs: [sanity, integration, pester]
     if: always()
     steps:
-      - uses: lowlydba/are-we-good@0f90ea9fa5e47188fcb69d9306fb8b3abb656018 # v1.2.0
+      - uses: lowlydba/are-we-good@1ecff0b757007002852e9e89b863e7f455f7ad7b # v1.2.1
         with:
           jobs: ${{ toJSON(needs) }}
