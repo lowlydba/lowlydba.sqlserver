@@ -192,7 +192,7 @@ jobs:
           install: sqlengine
           sa-password: L0wlydb4
           version: 2025
-          disable-telemetry: true
+          disable-telemetry: false # Only works on non-Developer edition (default option)
 
       - name: Retry SQL Server install
         id: retry1
@@ -202,7 +202,7 @@ jobs:
           install: sqlengine
           sa-password: L0wlydb4
           version: 2025
-          disable-telemetry: true
+          disable-telemetry: false # Only works on non-Developer edition (default option)
 
       - name: Run integration test  # zizmor: ignore[template-injection] -- matrix values are controlled enums
         working-directory: ./ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
