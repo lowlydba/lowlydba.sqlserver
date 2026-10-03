@@ -36,12 +36,38 @@ env:
   DBATOOLS_VERSION: "2.0.0"
 
 jobs:
+  # Fetch files that tests would otherwise download straight from GitHub (rate limits/403s),
+  # retrying here once, then hand them to every integration job as an artifact.
+  prefetch:
+    name: Prefetch test downloads
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
+    permissions: {}
+    steps:
+      - name: Download sp_WhoIsActive
+        run: |
+          mkdir -p prefetch
+          curl --fail --silent --show-error --location \
+            --retry 5 --retry-delay 10 --retry-all-errors \
+            --output prefetch/sp_WhoIsActive.sql \
+            https://raw.githubusercontent.com/amachanic/sp_whoisactive/master/sp_WhoIsActive.sql
+          test -s prefetch/sp_WhoIsActive.sql
+
+      - name: Upload prefetched files
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: win-test-prefetch
+          path: prefetch/
+          if-no-files-found: error
+          retention-days: 1
+
   ###
   # Integration tests (RECOMMENDED)
   #
   # https://docs.ansible.com/ansible/latest/dev_guide/testing_integration.html
 
   integration:
+    needs: [prefetch]
     runs-on: ${{ matrix.os }}
     name: I (Ⓐ${{ matrix.ansible }}+win-2025|grp${{ matrix.group }})
     # Historically ~17m avg, ~21m max; guard against hung WSL/SQL Server setup
@@ -88,7 +114,9 @@ jobs:
       # wsl-bash launches `wsl.exe bash ...` directly, which does NOT inherit arbitrary Windows
       # env vars; only names listed in WSLENV get imported into the guest. /u makes this
       # one-way (Windows -> Linux), no path translation needed since the value is relative.
-      WSLENV: PIP_CACHE_DIR/u
+      WSLENV: PIP_CACHE_DIR/u:WHOISACTIVE_LOCAL_FILE/u
+      # Windows path (consumed on the target) to the prefetched sp_WhoIsActive.sql so tests skip the GitHub download.
+      WHOISACTIVE_LOCAL_FILE: C:\prefetch\sp_WhoIsActive.sql
 
     steps:
       - name: Check out code
@@ -96,6 +124,12 @@ jobs:
         with:
           path: ansible_collections/${{env.NAMESPACE}}/${{env.COLLECTION_NAME}}
           persist-credentials: false
+
+      - name: Download prefetched test files
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: win-test-prefetch
+          path: C:\prefetch
 
       - name: Create an admin user  # zizmor: ignore[misfeature] -- Windows-specific cmd required for net user commands; pwsh cannot create local users
         shell: cmd
@@ -220,7 +254,7 @@ jobs:
   win-ci-test-rollup:
     name: Are we good? (Windows)
     runs-on: ubuntu-slim
-    needs: [integration]
+    needs: [prefetch, integration]
     if: always()
     steps:
       - uses: lowlydba/are-we-good@1ecff0b757007002852e9e89b863e7f455f7ad7b # v1.2.1

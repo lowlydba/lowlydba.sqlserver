@@ -2,7 +2,8 @@
 - name: Var block
   vars:
     target_database: "master"
-    whoisactive_local_file: "/tmp/sp_WhoIsActive.sql"
+    whoisactive_prefetched_file: "{{ lookup('ansible.builtin.env', 'WHOISACTIVE_LOCAL_FILE') }}"
+    whoisactive_local_file: "{{ whoisactive_prefetched_file or '/tmp/sp_WhoIsActive.sql' }}"
   module_defaults:
     lowlydba.sqlserver.sp_whoisactive:
       sql_instance: "{{ sqlserver_instance }}"
@@ -12,7 +13,7 @@
       local_file: "{{ whoisactive_local_file }}"
   tags: ["sp_whoisactive"]
   block:
-    # Downloading once with retries avoids intermittent 403s (rate limiting) from the module's own download.
+    # CI prefetches the script (WHOISACTIVE_LOCAL_FILE); otherwise download once with retries to avoid intermittent 403s.
     - name: Download sp_whoisactive script
       ansible.builtin.get_url:
         url: https://raw.githubusercontent.com/amachanic/sp_whoisactive/master/sp_WhoIsActive.sql
@@ -20,6 +21,7 @@
         mode: "0644"
         force: true
       register: download
+      when: not whoisactive_prefetched_file
       until: download is succeeded
       retries: 5
       delay: 10
