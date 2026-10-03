@@ -2,7 +2,7 @@
 - name: Var block
   vars:
     target_database: "master"
-    whoisactive_local_file: 'C:\Windows\Temp\sp_WhoIsActive.sql'
+    whoisactive_local_file: "/tmp/sp_WhoIsActive.sql"
   module_defaults:
     lowlydba.sqlserver.sp_whoisactive:
       sql_instance: "{{ sqlserver_instance }}"
@@ -14,9 +14,10 @@
   block:
     # Downloading once with retries avoids intermittent 403s (rate limiting) from the module's own download.
     - name: Download sp_whoisactive script
-      ansible.windows.win_get_url:
+      ansible.builtin.get_url:
         url: https://raw.githubusercontent.com/amachanic/sp_whoisactive/master/sp_WhoIsActive.sql
         dest: "{{ whoisactive_local_file }}"
+        mode: "0644"
         force: true
       register: download
       until: download is succeeded
