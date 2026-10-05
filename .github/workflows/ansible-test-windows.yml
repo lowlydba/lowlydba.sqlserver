@@ -257,6 +257,6 @@ jobs:
     needs: [prefetch, integration]
     if: always()
     steps:
-      - uses: lowlydba/are-we-good@1ecff0b757007002852e9e89b863e7f455f7ad7b # v1.2.1
+      - uses: lowlydba/are-we-good@6b10e5f2697555fbaf7f8f37ce38d4454c954a4c # v1.2.2
         with:
           jobs: ${{ toJSON(needs) }}
