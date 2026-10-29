@@ -59,7 +59,7 @@ jobs:
           name: win-test-prefetch
           path: prefetch/
           if-no-files-found: error
-          retention-days: 1
+          retention-days: 7
 
   ###
   # Integration tests (RECOMMENDED)
