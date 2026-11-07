@@ -184,7 +184,7 @@ jobs:
           - stable-2.22
           - devel
         python:
-          - 3.10
+          - 3.11
 
     steps:
       - name: Check out code
