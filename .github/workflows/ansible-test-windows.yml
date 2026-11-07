@@ -81,7 +81,6 @@ jobs:
         wsl:
           - Ubuntu-24.04
         ansible:
-          - stable-2.19
           - stable-2.20
           - stable-2.21
           - stable-2.22
@@ -181,7 +180,7 @@ jobs:
       # which isn't packaged in the Ubuntu-24.04 WSL image used here (default python3 is 3.12).
       # actions/setup-python only provisions the Windows host, not this WSL guest, so install a
       # standalone Python 3.13 via uv for that leg instead of an apt/PPA install.
-      - name: Install ansible-base (${{ matrix.ansible }})  # zizmor: ignore[template-injection] -- matrix.ansible is a controlled enum value (stable-2.19, stable-2.20, stable-2.21, stable-2.22, devel)
+      - name: Install ansible-base (${{ matrix.ansible }})  # zizmor: ignore[template-injection] -- matrix.ansible is a controlled enum value (stable-2.20, stable-2.21, stable-2.22, devel)
         run: |
           PYTHON_BIN=python3
           if [ "${{ matrix.ansible }}" = "devel" ]; then

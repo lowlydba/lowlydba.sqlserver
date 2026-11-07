@@ -69,8 +69,6 @@ To learn how to maintain / become a maintainer of this collection, refer to the 
 ## Tested with
 
 ### Ansible
-
-- 2.19
 - 2.20
 - 2.21
 - 2.22
