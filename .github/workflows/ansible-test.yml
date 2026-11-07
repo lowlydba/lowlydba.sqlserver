@@ -65,6 +65,7 @@ jobs:
           - stable-2.19
           - stable-2.20
           - stable-2.21
+          - stable-2.22
           - devel
     runs-on: ubuntu-latest
     steps:
@@ -182,6 +183,7 @@ jobs:
           - stable-2.19
           - stable-2.20
           - stable-2.21
+          - stable-2.22
           - devel
         python:
           - 3.10
