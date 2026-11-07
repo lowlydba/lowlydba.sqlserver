@@ -1,0 +1,3 @@
+---
+trivial:
+  - CI - added ansible-core ``stable-2.22`` to the sanity, integration, and Windows integration test matrices, dropped ``stable-2.19`` (EOL 2026-11-30), and raised the integration test Python version to 3.11.

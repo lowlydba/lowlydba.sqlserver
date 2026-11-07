@@ -81,9 +81,9 @@ jobs:
         wsl:
           - Ubuntu-24.04
         ansible:
-          - stable-2.19
           - stable-2.20
           - stable-2.21
+          - stable-2.22
           - devel
         python:
           - python3
@@ -176,14 +176,16 @@ jobs:
 
       # Override break-sys-pkg defaults, because we don't need to bother with python venv for CI
       #
-      # ansible-core devel requires Python >= 3.13 (see pyproject.toml on the devel branch),
+      # ansible-core 2.22 and newer (including devel) require Python >= 3.13 (see pyproject.toml on those branches),
       # which isn't packaged in the Ubuntu-24.04 WSL image used here (default python3 is 3.12).
       # actions/setup-python only provisions the Windows host, not this WSL guest, so install a
-      # standalone Python 3.13 via uv for that leg instead of an apt/PPA install.
-      - name: Install ansible-base (${{ matrix.ansible }})  # zizmor: ignore[template-injection] -- matrix.ansible is a controlled enum value (stable-2.19, stable-2.20, devel)
+      # standalone Python 3.13 via uv for those legs instead of an apt/PPA install.
+      - name: Install ansible-base (${{ matrix.ansible }})  # zizmor: ignore[template-injection] -- matrix.ansible is a controlled enum value (stable-2.20, stable-2.21, stable-2.22, devel)
         run: |
           PYTHON_BIN=python3
-          if [ "${{ matrix.ansible }}" = "devel" ]; then
+          USE_UV_PYTHON=true
+          case "${{ matrix.ansible }}" in stable-2.20|stable-2.21) USE_UV_PYTHON=false ;; esac
+          if [ "$USE_UV_PYTHON" = true ]; then
             curl -LsSf https://astral.sh/uv/install.sh | sh
             "$HOME/.local/bin/uv" python install 3.13
             PYTHON_BIN="$("$HOME/.local/bin/uv" python find 3.13)"
@@ -191,7 +193,7 @@ jobs:
           "$PYTHON_BIN" -m pip config set global.break-system-packages true
           "$PYTHON_BIN" -m pip install --upgrade setuptools pypsrp --disable-pip-version-check --retries 10
           "$PYTHON_BIN" -m pip install "https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz" --disable-pip-version-check --retries 10
-          if [ "${{ matrix.ansible }}" = "devel" ]; then
+          if [ "$USE_UV_PYTHON" = true ]; then
             # uv's standalone Python isn't on PATH, and its console scripts don't land in
             # /usr/local/bin like the system python3 case does, so symlink them there for later
             # wsl-bash steps (each one is a fresh --norc/--noprofile shell, nothing persists).
