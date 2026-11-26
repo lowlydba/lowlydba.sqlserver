@@ -14,7 +14,7 @@ version_added: 0.5.0
 options:
   sql_instance_replica:
     description:
-      - The SQL Server instance where of the replica to be configured.
+      - The SQL Server instance where the replica is configured.
     type: str
     required: true
   sql_username_replica:

@@ -740,12 +740,6 @@ releases:
     release_date: '2026-09-04'
   3.1.0:
     changes:
-      release_summary: This release fixes two ``changed``-reporting bugs (``availability_group``
-        incorrectly reporting ``changed=true`` on an unchanged AG, and ``backup``/``restore``
-        incorrectly reporting ``changed=false`` under ``check_mode``), adds a Pester
-        unit test suite for the shared ``module_utils`` helpers, closes integration
-        test gaps for ``availability_group``, ``ag_replica``, ``backup``, ``restore``
-        and ``install_script``, and standardizes module documentation examples.
       bugfixes:
       - availability_group - Fix ``changed`` being incorrectly reported as ``true``
         on an unchanged AG. ``Get-DbaAvailabilityGroup``'s SMO object never populates
@@ -769,8 +763,32 @@ releases:
         targets (https://github.com/lowlydba/lowlydba.sqlserver/issues/381).
       - Standardize module documentation examples and correct invalid parameters,
         missing required options, and incorrect module references (https://github.com/lowlydba/lowlydba.sqlserver/pull/399).
+      release_summary: This release fixes two ``changed``-reporting bugs (``availability_group``
+        incorrectly reporting ``changed=true`` on an unchanged AG, and ``backup``/``restore``
+        incorrectly reporting ``changed=false`` under ``check_mode``), adds a Pester
+        unit test suite for the shared ``module_utils`` helpers, closes integration
+        test gaps for ``availability_group``, ``ag_replica``, ``backup``, ``restore``
+        and ``install_script``, and standardizes module documentation examples.
     fragments:
     - 381-integration-test-gaps.yml
     - 382-pester-unit-tests.yml
     - 399-documentation-examples.yml
     release_date: '2026-09-08'
+  3.1.1:
+    changes:
+      bugfixes:
+      - Correct module option descriptions and related documentation typos.
+      - agent_job, agent_job_step - fixed ``state=absent`` returning ``data`` as a
+        list instead of a single object on some dbatools versions, which broke templating
+        on the removed job/step's properties (e.g. ``result.data.ComputerName``).
+      - database - Report a successful change when removing an existing database in
+        check mode.
+      - rg_workload_group - Keep repeated removals of an absent workload group idempotent.
+      release_summary: Fixes removal-state reporting and repeat-removal idempotency,
+        with module documentation corrections.
+    fragments:
+    - 383-ansible-core-2-22-ci.yml
+    - 403-agent-job-remove-data-list.yml
+    - 406-sp-whoisactive-test-download.yml
+    - sweep-bugs-docs.yml
+    release_date: '2026-11-25'

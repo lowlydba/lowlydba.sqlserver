@@ -12,11 +12,6 @@ description:
   - Enable or disable the High Availability Disaster Recovery (HADR) feature.
 version_added: 0.4.0
 options:
-  sql_instance:
-    description:
-      - The SQL Server instance to modify.
-    type: str
-    required: true
   username:
     description:
       - Username for alternative credential to authenticate with Windows.

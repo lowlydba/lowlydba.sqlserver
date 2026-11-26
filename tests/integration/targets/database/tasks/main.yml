@@ -67,6 +67,16 @@
           - result is changed
           - result.data.RCSI is false
 
+    - name: Drop a database in check mode
+      lowlydba.sqlserver.database:
+        database: "{{ database_name }}"
+        state: absent
+      register: result
+      check_mode: true
+    - assert:
+        that:
+          - result is changed
+
     - name: Drop a database
       lowlydba.sqlserver.database:
         database: "{{ database_name }}"

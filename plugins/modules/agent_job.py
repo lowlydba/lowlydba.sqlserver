@@ -36,8 +36,7 @@ options:
     version_added: '0.4.0'
   owner_login:
     description:
-      - The owning login for the database. Will default to the current user if
-        the database is being created and none supplied.
+      - The login that owns the SQL Agent job. Defaults to the current user when the job is created.
     type: str
     required: false
   start_step_id:

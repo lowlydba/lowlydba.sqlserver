@@ -12,11 +12,6 @@ description:
   - A wrapper for C(Install-DbaMultiTool) to fetch the latest version of the scripts, or install from a local cached version.
 version_added: 0.7.0
 options:
-  sql_instance:
-    description:
-      - The target SQL Server instance or instances. Server version must be SQL Server version 2005 or higher.
-    type: str
-    required: true
   local_file:
     description:
       - Specifies the path to a local file to install DBA MultiTool from. This should be the zip file as distributed by the maintainers.
@@ -36,7 +31,7 @@ options:
     required: true
   force:
     description:
-      - If this switch is enabled, the DBA MultiTool will be downloaded from the internet even if previously cached.
+      - Downloads the DBA MultiTool from the internet even when it is already cached.
     type: bool
     default: false
 author: "John McCall (@lowlydba)"
