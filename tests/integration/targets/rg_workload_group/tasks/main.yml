@@ -91,6 +91,14 @@
           - result.data.Status == "Dropped"
           - result is changed
 
+    - name: Drop workload group when already absent
+      lowlydba.sqlserver.rg_workload_group:
+        state: "absent"
+      register: result
+    - assert:
+        that:
+          - result is not changed
+
   always:
     - name: Drop workload group
       lowlydba.sqlserver.rg_workload_group:

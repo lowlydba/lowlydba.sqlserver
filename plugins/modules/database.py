@@ -63,7 +63,7 @@ options:
     type: bool
   only_accessible:
     description:
-      - Whether or not to enable Read Committed Snapshot Isolation.
+      - Whether to return only databases the account can access.
     default: true
     required: false
     type: bool

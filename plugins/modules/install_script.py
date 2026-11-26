@@ -9,7 +9,7 @@ DOCUMENTATION = r'''
 module: install_script
 short_description: Runs migration scripts against a database
 description:
-  - Uses the module C(DBOps) to run C(Dbo-InstallScript) against a target SQL Server database.
+  - Uses the dbops PowerShell module to run C(Install-DboScript) against a target SQL Server database.
 version_added: 0.11.0
 options:
   database:
@@ -19,13 +19,13 @@ options:
     type: str
   path:
     description:
-      - Directory where targeted sql scripts are stored.
+      - Directory where targeted SQL scripts are stored.
     type: str
     required: true
   schema_version_table:
     description:
-      - A table that will hold the history of script execution. This table is used to choose what scripts are going to be
-        run during the deployment, preventing the scripts from being execured twice.
+      - A table that holds script execution history. The module uses this table to select scripts during deployment and
+        prevents scripts from running twice.
     type: str
     required: false
   deployment_method:

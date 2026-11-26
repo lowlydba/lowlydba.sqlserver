@@ -30,7 +30,7 @@
 
 ## Modules
 
-For the most up to date information, see the [plugin section](https://lowlydba.github.io/lowlydba.sqlserver/branch/main/collections/lowlydba/sqlserver/index.html#plugins-in-lowlydba-sqlserver) of the documentation for this collection (<https://lowlydba.github.io/lowlydba.sqlserver>).
+For the most up-to-date information, see the [plugin section](https://lowlydba.github.io/lowlydba.sqlserver/branch/main/collections/lowlydba/sqlserver/index.html#plugins-in-lowlydba-sqlserver) of the documentation for this collection (<https://lowlydba.github.io/lowlydba.sqlserver>).
 
 For the current version contained in the Ansible Community General Collection, see the [official documentation](https://docs.ansible.com/ansible/latest/collections/lowlydba/sqlserver/index.html).
 
@@ -76,7 +76,7 @@ To learn how to maintain / become a maintainer of this collection, refer to the 
 
 ### SQL Server
 
-- SQL Server 2000 - current (via DBATools)
+- SQL Server 2000 - current (via dbatools)
 - Azure SQL Database Managed Instance - YMMV
 
 ## External requirements

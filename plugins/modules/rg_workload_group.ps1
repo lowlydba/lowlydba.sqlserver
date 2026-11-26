@@ -79,7 +79,7 @@ try {
     $existingWorkloadGroup = $existingResourcePool.WorkloadGroups | Where-Object Name -eq $options.WorkloadGroup
 
     if ($state -eq "absent") {
-        if ($null -ne $existingResourcePool) {
+        if ($null -ne $existingWorkloadGroup) {
             $output = $existingWorkloadGroup | Remove-DbaRgWorkloadGroup -WhatIf:$checkMode -EnableException
             $module.Result.changed = $true
         }

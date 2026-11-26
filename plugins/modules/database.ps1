@@ -65,10 +65,13 @@ try {
         if ($null -ne $existingDatabase) {
             try {
                 $droppedDatabase = $existingDatabase | Remove-DbaDatabase -WhatIf:$checkMode -EnableException -Confirm:$false
-                if ($droppedDatabase.Status -eq "Dropped") {
+                if ($checkMode) {
                     $module.Result.changed = $true
                 }
-                elseif ($droppedDatabase.Status -ne "Dropped") {
+                elseif ($droppedDatabase.Status -eq "Dropped") {
+                    $module.Result.changed = $true
+                }
+                else {
                     $module.FailJson("Database [$database] was not dropped. " + $droppedDatabase.Status)
                 }
             }
@@ -207,7 +210,7 @@ try {
                 }
             }
             catch {
-                $module.FailJson("Setting Read Commmitted Snapshot Isolation for [$database] failed.", $_)
+                $module.FailJson("Setting Read Committed Snapshot Isolation for [$database] failed.", $_)
             }
         }
 

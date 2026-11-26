@@ -62,7 +62,7 @@ options:
     default: false
   xp_dirtree:
     description:
-      - Switch that indicated file scanning should be performed by the SQL Server instance using C(xp_dirtree).
+      - Switch that indicates file scanning should be performed by the SQL Server instance using C(xp_dirtree).
       - This will scan recursively from the passed in path.
       - You must have sysadmin role membership on the instance for this to work.
     type: bool
