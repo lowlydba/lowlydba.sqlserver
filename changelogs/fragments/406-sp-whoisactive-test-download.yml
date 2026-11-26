@@ -1,3 +1,0 @@
----
-trivial:
-  - sp_whoisactive integration tests - download the script once with retries and install from ``local_file`` to avoid intermittent 403 rate-limit failures.

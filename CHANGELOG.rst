@@ -4,6 +4,22 @@ lowlydba.sqlserver Release Notes
 
 .. contents:: Topics
 
+v3.1.1
+======
+
+Release Summary
+---------------
+
+Fixes removal-state reporting and repeat-removal idempotency, with module documentation corrections.
+
+Bugfixes
+--------
+
+- Correct module option descriptions and related documentation typos.
+- agent_job, agent_job_step - fixed ``state=absent`` returning ``data`` as a list instead of a single object on some dbatools versions, which broke templating on the removed job/step's properties (e.g. ``result.data.ComputerName``).
+- database - Report a successful change when removing an existing database in check mode.
+- rg_workload_group - Keep repeated removals of an absent workload group idempotent.
+
 v3.1.0
 ======
 

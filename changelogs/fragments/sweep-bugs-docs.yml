@@ -1,4 +1,0 @@
-bugfixes:
-  - database - Report a successful change when removing an existing database in check mode.
-  - rg_workload_group - Keep repeated removals of an absent workload group idempotent.
-  - Correct module option descriptions and related documentation typos.
